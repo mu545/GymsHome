@@ -1,22 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:gymhome/models/gyms.dart';
 import 'package:gymhome/provider/gymsitems.dart';
+import 'package:gymhome/provider/womengymitems.dart';
 import 'package:gymhome/widgets/gymdescrption.dart';
 import 'package:gymhome/widgets/newhome.dart';
 import 'package:provider/provider.dart';
 
-class Widgtess extends StatefulWidget {
-  const Widgtess({ Key? key }) : super(key: key);
+class WomenWidgtess extends StatefulWidget {
+  const WomenWidgtess({ Key? key }) : super(key: key);
 
   @override
   _WidgtessState createState() => _WidgtessState();
 }
 
-class _WidgtessState extends State<Widgtess> {
+class _WidgtessState extends State<WomenWidgtess> {
   @override
   Widget build(BuildContext context) {
      final Gym = Provider.of<Gyms>(context);
-       final prodactDate = Provider.of<Gymsitems>(context);
+       final prodactDate = Provider.of<WomenGymsitems>(context);
     return ClipRRect(
                 child: Container(
                   margin: EdgeInsets.symmetric(horizontal: 10 , vertical: 10),
@@ -62,12 +63,7 @@ class _WidgtessState extends State<Widgtess> {
                             SizedBox(width: 8,),
                             Icon(Icons.star) 
                           ],
-                        ) , Text('Based on 320 Reviews')],) ,  SizedBox(width: 120,),Column(children: [Row(
-                          children: [
-                            Text(Gym.price.toString(), style: TextStyle(fontWeight: FontWeight.bold),),
-                            Text('SAR')
-                          ],
-                        ) , Row(
+                        ) , Text('Based on 320 Reviews')],) ,  SizedBox(width: 120,),Column(children: [Text('330 SAR', style: TextStyle(fontWeight: FontWeight.bold),) , Row(
                           children: [
                             Text('55 KM',style: TextStyle(fontWeight: FontWeight.bold)),
                                SizedBox(width: 0,),

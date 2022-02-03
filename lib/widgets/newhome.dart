@@ -2,15 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:gymhome/models/favorite.dart';
 import 'package:gymhome/models/gyms.dart';
 import 'package:gymhome/provider/gymsitems.dart';
-import 'package:gymhome/widgets/comparescreen.dart';
+
 import 'package:gymhome/widgets/empty.dart';
 import 'package:gymhome/widgets/favorite.dart';
 import 'package:gymhome/widgets/gymdescrption.dart';
 import 'package:gymhome/widgets/gymgrid.dart';
 import 'package:gymhome/widgets/profile.dart';
+import 'package:gymhome/widgets/search.dart';
+import 'package:gymhome/widgets/viewcompare.dart';
+import 'package:gymhome/widgets/womengym.dart';
 import 'package:provider/provider.dart';
 
 class NewHome extends StatefulWidget {
+  static const rounamed ='/ssssdff';
   const NewHome({ Key? key }) : super(key: key);
 
   @override
@@ -19,7 +23,7 @@ class NewHome extends StatefulWidget {
 
 class _NewHomeState extends State<NewHome> {
    int _selectedIndex = 0;
-   static const List<Widget> _list=[NewWidgetHome(),Comparepage(), Empty() ,Favorite(),Profile()];
+   static const List<Widget> _list=[NewWidgetHome(),Viewcompare(), Empty() ,Favorite(),Profile()];
   @override
    void _onItemTapped(int index) {
     setState(() {
@@ -51,10 +55,13 @@ class _NewHomeState extends State<NewHome> {
             ),
             BottomNavigationBarItem(
             
-              icon: Icon(Icons.sort),
-              label: 'Sort',
+              icon: Icon(Icons.sort
+              ),
+              label: 's'
+             
               
             ),
+            
              BottomNavigationBarItem(
             icon: Icon(Icons.favorite),
             label: 'Favorite',
@@ -104,39 +111,43 @@ class NewWidgetHome extends StatelessWidget {
        final prodactDate = Provider.of<Gymsitems>(context);
 // final gymitem = shoefav ? prodactDate.favoriteitem : prodactDate.items;
     return Scaffold(
-appBar: AppBar(title: Center(child: Text('HOME', style: TextStyle(color: Colors.black),)),backgroundColor: Colors.white, elevation: 0,actions: <Widget>[ IconButton(onPressed: (){}, icon: Icon(Icons.more_vert,color: Colors.black,),)], 
+appBar: AppBar(title: Center(child: Text('HOME', style: TextStyle(color: Colors.black),)),backgroundColor: Colors.white, elevation: 0,actions: <Widget>[ Searchlesss(), IconButton(onPressed: (){}, icon: Icon(Icons.more_vert,color: Colors.black,),)], 
       ),body: Column(
         children: [
-           Container(
-             height: 50,
-             child: const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-              child: TextField(
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  hintText: 'search ',
-                  // icon: Icon(Icons.search)
-                ),
-              ),
-          ),
-           ),
+          //  Container(
+          //    height: 50,
+          //    child: const Padding(
+          //     padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+          //     child: TextField(
+          //       decoration: InputDecoration(
+          //         border: OutlineInputBorder(),
+          //         hintText: 'search ',
+          //         // icon: Icon(Icons.search)
+          //       ),
+          //     ),
+          // ),
+          //  ),
         Row(
                children: [
                  Container(margin: EdgeInsets.symmetric(horizontal: 10), height: 20, width: 180, decoration: BoxDecoration(border: Border.all(color: Colors.grey),borderRadius: BorderRadius.circular(5)), child: Row(children: [Container(
                    child: FlatButton( 
-                                            
-                                              child: Text('Men',style: TextStyle(color: Colors.grey , fontSize: 13),),  
+                                            highlightColor: Colors.blue,
+                                            hoverColor: Colors.blue,
+
+                                              child: Text('Men',style: TextStyle(color: Colors.black , fontSize: 13),),  
                                               color: Colors.white,  
-                                              onPressed: () {/** */},  
+                                              onPressed: () =>ProductGrid(_ShowOnly),  
                
                                           ),
                  ), 
                                     
                                         FlatButton( 
-                                          
-                                            child: Text('Women',style: TextStyle(color: Colors.grey , fontSize: 13),),  
+                                            highlightColor: Colors.blue,
+                                            hoverColor: Colors.blue,
+
+                                            child: Text('Women',style: TextStyle(color: Colors.black , fontSize: 13),),  
                                             color: Colors.white,  
-                                            onPressed: () {/** */},  
+                                            onPressed: () =>Womegrid(_ShowOnly),  
                
                                         ), 
                                      

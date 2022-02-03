@@ -2,11 +2,19 @@ import 'dart:math';
 
 
 import 'package:flutter/material.dart';
+import 'package:gymhome/GymOwnerwidgets/ownerhome.dart';
+import 'package:gymhome/authintactions/auth.dart';
+import 'package:gymhome/widgets/drop.dart';
+import 'package:gymhome/widgets/newhome.dart';
+import 'package:provider/provider.dart';
+
+import '../authintactions/httpexe.dart';
 
 
 
 
 enum AuthMode { Signup, Login }
+enum AuthStatus { Customer, Owner  }
 
 class AuthScreen extends StatelessWidget {
   static const routeName = '/auth';
@@ -25,7 +33,7 @@ class AuthScreen extends StatelessWidget {
             decoration:  BoxDecoration(
               gradient: LinearGradient(
                 colors: [
-                  Color.fromARGB(255, 67, 173, 223).withOpacity(0.5),
+                  Color.fromARGB(255, 57, 158, 204).withOpacity(0.5),
                   Color.fromARGB(255, 255, 255, 255).withOpacity(0.9),
                 ],
                 begin: Alignment.topLeft,
@@ -100,10 +108,12 @@ class _AuthCardState extends State<AuthCard>
     with SingleTickerProviderStateMixin {
   final GlobalKey<FormState> _formKey = GlobalKey();
   AuthMode _authMode = AuthMode.Login;
+   AuthStatus _authStatis = AuthStatus.Customer;
   Map<String, String> _authData = {
     'email': '',
     'password': '',
   };
+  
   var _isLoading = false;
   final _passwordController = TextEditingController();
   late AnimationController _controller;
@@ -166,50 +176,63 @@ class _AuthCardState extends State<AuthCard>
 
   Future<void> _submit() async {
     if (!_formKey.currentState!.validate()) {
-      // Invalid!
+      _formKey.currentState!.save();
       return;
     }
-    _formKey.currentState!.save();
-    setState(() {
-      _isLoading = true;
-    });
-    // try {
-    //   if (_authMode == AuthMode.Login) {
-    //     // Log user in
-    //     await Provider.of<Auth>(context, listen: false).login(
-    //       _authData['email'],
-    //       _authData['password'],
-    //     );
-    //   } else {
-    //     // Sign user up
-    //     await Provider.of<Auth>(context, listen: false).signup(
-    //       _authData['email'],
-    //       _authData['password'],
-    //     );
-    //   }
-    // } on HttpException catch (error) {
-    //   var errorMessage = 'Authentication failed';
-    //   if (error.toString().contains('EMAIL_EXISTS')) {
-    //     errorMessage = 'This email address is already in use.';
-    //   } else if (error.toString().contains('INVALID_EMAIL')) {
-    //     errorMessage = 'This is not a valid email address';
-    //   } else if (error.toString().contains('WEAK_PASSWORD')) {
-    //     errorMessage = 'This password is too weak.';
-    //   } else if (error.toString().contains('EMAIL_NOT_FOUND')) {
-    //     errorMessage = 'Could not find a user with that email.';
-    //   } else if (error.toString().contains('INVALID_PASSWORD')) {
-    //     errorMessage = 'Invalid password.';
-    //   }
-    //   _showErrorDialog(errorMessage);
-    // } catch (error) {
-    //   const errorMessage =
-    //       'Could not authenticate you. Please try again later.';
-    //   _showErrorDialog(errorMessage);
-    // }
+    // _formKey.currentState!.save();
+      Navigator.of(context).pushNamed(NewHome.rounamed);
+    try {
+     {} if (_authMode == AuthMode.Login && _authStatis== AuthStatus.Customer) {
+        // Log user in
+        await Provider.of<Auth>(context, listen: false).login(
+          _authData['email']!,
+          _authData['password']!,
+        );
+        Navigator.of(context).pushNamed(NewHome.rounamed);
+      } 
+      else if(_authMode == AuthMode.Login && _authStatis== AuthStatus.Owner){
+          await Provider.of<Auth>(context, listen: false).login(
+          _authData['email']!,
+          _authData['password']!,
+        );
+        Navigator.of(context).pushNamed(OwnerHome.rounamed);
+      }
+    
+      
+      
+      else if(_authMode == AuthMode.Signup && _authStatis== AuthStatus.Customer){
+          await Provider.of<Auth>(context, listen: false).signup(
+          _authData['email']!,
+          _authData['password']!,
+        );
+        Navigator.of(context).pushNamed(NewHome.rounamed);
+      }    else if(_authMode == AuthMode.Signup && _authStatis== AuthStatus.Owner){
+          await Provider.of<Auth>(context, listen: false).signup(
+          _authData['email']!,
+          _authData['password']!,
+        );
+        Navigator.of(context).pushNamed(OwnerHome.rounamed);
+      } 
+    }
+     on HttpException catch (error) {
+      var errorMessage = 'Authentication failed';
+      if (error.toString().contains('EMAIL_EXISTS')) {
+        errorMessage = 'This email address is already in use.';
+      } else if (error.toString().contains('INVALID_EMAIL')) {
+        errorMessage = 'This is not a valid email address';
+      } else if (error.toString().contains('WEAK_PASSWORD')) {
+        errorMessage = 'This password is too weak.';
+      } else if (error.toString().contains('EMAIL_NOT_FOUND')) {
+        errorMessage = 'Could not find a user with that email.';
+      } else if (error.toString().contains('INVALID_PASSWORD')) {
+        errorMessage = 'Invalid password.';
+      }
+      _showErrorDialog(errorMessage);
+    } 
 
-    setState(() {
-      _isLoading = false;
-    });
+    // setState(() {
+    //   _isLoading = false;
+    // });
   }
 
   void _switchAuthMode() {
@@ -237,10 +260,10 @@ class _AuthCardState extends State<AuthCard>
       child: AnimatedContainer(
         duration: Duration(milliseconds: 300),
         curve: Curves.easeIn,
-        height: _authMode == AuthMode.Signup ? 620 : 260,
+        height: _authMode == AuthMode.Signup ? 720 : 300,
         // height: _heightAnimation.value.height,
         constraints:
-            BoxConstraints(minHeight: _authMode == AuthMode.Signup ? 620 : 260),
+            BoxConstraints(minHeight: _authMode == AuthMode.Signup ? 720 : 300),
         width: deviceSize.width * 0.75,
         padding: EdgeInsets.all(16.0),
         child: Form(
@@ -303,8 +326,9 @@ class _AuthCardState extends State<AuthCard>
                   ),
                 ),
                 SizedBox(
-                  height: 10,
+                  height: 5,
                 ),
+                DropDown() , 
                 if (_isLoading)
                   CircularProgressIndicator()
                 else

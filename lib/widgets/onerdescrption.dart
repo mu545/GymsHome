@@ -3,15 +3,15 @@ import 'package:gymhome/models/gyms.dart';
 import 'package:gymhome/provider/gymsitems.dart';
 import 'package:provider/provider.dart';
 
-class GymDescrption extends StatefulWidget {
-  const GymDescrption({ Key? key }) : super(key: key);
-  static const routeName = '/gym';
+class OwnerDescrption extends StatefulWidget {
+  const OwnerDescrption({ Key? key }) : super(key: key);
+  static const routeName = '/gsssym';
 
   @override
   _GymDescrptionState createState() => _GymDescrptionState();
 }
 
-class _GymDescrptionState extends State<GymDescrption> {
+class _GymDescrptionState extends State<OwnerDescrption> {
   @override
   Widget build(BuildContext context) {
      final productid = ModalRoute.of(context)!.settings.arguments as String;
@@ -27,19 +27,19 @@ class _GymDescrptionState extends State<GymDescrption> {
         
         Row(
           children: [
-            Container( margin: EdgeInsets.symmetric(horizontal: 10), child: Text(Gym.title)),
+            Container( margin: EdgeInsets.symmetric(horizontal: 10), child: Text(Gym.title, style: TextStyle(color: Colors.black),)),
               SizedBox(width: 170,),
               Column(
                 children: [
                   Row(
                     children: [
-                      Text('4.5', style: TextStyle(fontWeight: FontWeight.bold)),
-                        SizedBox(width: 8,),
-                      Icon(Icons.star) ,
+                      // Text('4.5', style: TextStyle(fontWeight: FontWeight.bold)),
+                      //   SizedBox(width: 8,),
+                      // Icon(Icons.star) ,
                     ],
                   ),
-                   Text('Based on 320 Reviews'),
-                      SizedBox(height: 10,),
+                  //  Text('Based on 320 Reviews'),
+                  //     SizedBox(height: 10,),
                    
                        
                 ],
@@ -53,75 +53,37 @@ class _GymDescrptionState extends State<GymDescrption> {
             Row( 
                            mainAxisAlignment: MainAxisAlignment.start,
                            children: [
-                             Container( margin: EdgeInsets.symmetric(horizontal: 10), child: Text('55 KM',style: TextStyle(fontWeight: FontWeight.bold))),
+                             Container( margin: EdgeInsets.symmetric(horizontal: 10), child: Text('',style: TextStyle(fontWeight: FontWeight.bold))),
                                SizedBox(width: 0,),
-                           Icon(Icons.directions_walk) 
+                          //  Icon(Icons.directions_walk) 
                            ],
                          ),
            Container(
              margin: EdgeInsets.symmetric(horizontal: 10),
              child: Row(
                children: [
-                 Text('Choose sup type'),
+                //  Text('Choose sup type'),
                ],
              ),
-           ), SizedBox(height: 7,), Row(
-             children: [
-               Container(margin: EdgeInsets.symmetric(horizontal: 10), height: 20, width: 390, decoration: BoxDecoration(border: Border.all(color: Colors.grey),borderRadius: BorderRadius.circular(5)), child: Row(children: [Container(
-                 child: FlatButton( 
-                                          
-                                            child: Text('Day',style: TextStyle(color: Colors.grey , fontSize: 13),),  
-                                            color: Colors.white,  
-                                            onPressed: () {/** */},  
-             
-                                        ),
-               ), 
-                                  
-                                      FlatButton( 
-                                        
-                                          child: Text('Month',style: TextStyle(color: Colors.grey , fontSize: 13),),  
-                                          color: Colors.white,  
-                                          onPressed: () {/** */},  
-             
-                                      ), 
-                                      FlatButton( 
-                                        
-                                          child: Text('3 Months',style: TextStyle(color: Colors.grey , fontSize: 13),),  
-                                          color: Colors.white,  
-                                          onPressed: () {/** */},  
-             
-                                      ), 
-                                      FlatButton( 
-                                        
-                                          child: Text('6 Months',style: TextStyle(color: Colors.grey , fontSize: 13),),  
-                                          color: Colors.white,  
-                                          onPressed: () {/** */},  
-             
-                                      ), 
-                                      // FlatButton( 
-                                        
-                                      //     child: Text('Month',style: TextStyle(color: Colors.blue , fontSize: 13),),  
-                                      //     color: Colors.white,  
-                                      //     onPressed: () {/** */},  
-             
-                                      // ), 
-                                     
-                                        ],),),
-             ],
-           )],
+           ), SizedBox(height: 7,),],
         ),SizedBox(height: 5,)  ,Container(margin: EdgeInsets.symmetric(horizontal: 10),
               child: Row(mainAxisAlignment: MainAxisAlignment.end,
               
                 children: [
-                  Text(lodedproductr.price.toString()),
+                  Text(lodedproductr.price.toString()), Text('SAR' , style: TextStyle(fontWeight: FontWeight.bold),)
                 ],
               ),
             ) , Container(
               margin: EdgeInsets.symmetric(horizontal: 10),
-              child: Row(
+              child: Column(
                 children: [
-                  Text(Gym.description),SizedBox(width: 5,),
-                  Text('_________________________________________________')
+                  Row(children: [Text('Descrption')],), 
+                  Row(
+                    children: [
+                      Text(Gym.description),SizedBox(width: 5,),
+                      Text('_________________________________________________')
+                    ],
+                  ),
                 ],
               ),
             ), 
@@ -306,10 +268,10 @@ class _GymDescrptionState extends State<GymDescrption> {
                          margin: EdgeInsets.symmetric(horizontal: 10),
                          child: Row(
                            children: [
-                             Text('Facilites info'),
+                             Text('Photos'),
                            ],
                          ),
-                       ), Image.network(lodedproductr.imageUrl), SizedBox(height: 10,)
+                       ), Image.network(''), SizedBox(height: 10,)
                        ,
                        Divider(color: Colors.black,)
 
@@ -317,66 +279,39 @@ class _GymDescrptionState extends State<GymDescrption> {
                            margin: EdgeInsets.symmetric(horizontal: 10),
                            child: Row(
                              children: [
-                               Text('Comments'),
+                              //  Text('Comments'),
                              ],
                            ),
-                         ) ,Column(
-                             children: [
-                               Container(
-                                 color: Colors.white,
-                                 height: 300,
-                                 width: 400,
-                                 child: Expanded(child: ListView.builder(itemCount: 4,itemBuilder: (context , ind) {return Container(
-              margin: EdgeInsets.symmetric(horizontal: 10 , vertical: 10),
-              
-              
-              
-              child: Card(  margin: EdgeInsets.symmetric(horizontal: 10 , vertical: 10), child: Column(children: [
-                
-                
-               Row(children: [Column(children: [Row(
-                  children: [
-                 Container( width: 60, height: 60, decoration: BoxDecoration(borderRadius: BorderRadius.circular(20) ),child:Image.network(lodedproductr.imageUrl) ,)
-                  ],
-                ) ],) ,  SizedBox(width: 10,),Column(children: [Text('Rev', style: TextStyle(fontWeight: FontWeight.bold),) , Row(
-                  children: [
-                    Text('Good',style: TextStyle(fontWeight: FontWeight.bold)),
-                   
-                  ],
-                )],)],)  ],),));;}),
-                                   ),
-                               ),
-                             ],
-                           )  ],
+                         ) ,  ],
                        ),
       ),
-          bottomNavigationBar: Container(
-         width: 200,
-         child: BottomNavigationBar(
-          //  fixedColor: Colors.black,
-          unselectedItemColor: Colors.grey,
-          items: const <BottomNavigationBarItem>[
+    //       bottomNavigationBar: Container(
+    //      width: 200,
+    //      child: BottomNavigationBar(
+    //       //  fixedColor: Colors.black,
+    //       unselectedItemColor: Colors.grey,
+    //       items: const <BottomNavigationBarItem>[
            
-            BottomNavigationBarItem(
-              icon: Icon(Icons.add),
-              label: '',
-            ),
-             BottomNavigationBarItem(
-              icon: Icon(Icons.add),
-              label: '',
-            ),
+    //         BottomNavigationBarItem(
+    //           icon: Icon(Icons.add),
+    //           label: '',
+    //         ),
+    //          BottomNavigationBarItem(
+    //           icon: Icon(Icons.add),
+    //           label: '',
+    //         ),
          
-            //  BottomNavigationBarItem(
-            //   icon: Icon(Icons.school),
-            //   label: 'School',
-            // ),
-            //  BottomNavigationBarItem(
-            //   icon: Icon(Icons.school),
-            //   label: 'School',
-            // ),
-          ],
+    //         //  BottomNavigationBarItem(
+    //         //   icon: Icon(Icons.school),
+    //         //   label: 'School',
+    //         // ),
+    //         //  BottomNavigationBarItem(
+    //         //   icon: Icon(Icons.school),
+    //         //   label: 'School',
+    //         // ),
+    //       ],
       
-    ),)
+    // ),)
           
       
     );

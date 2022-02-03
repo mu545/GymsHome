@@ -2,8 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gymhome/provider/gymsitems.dart';
 import 'package:gymhome/widgets/newhome.dart';
-import 'package:gymhome/widgets/ownerwidgetss.dart';
 import 'package:gymhome/widgets/widgetss.dart';
+import 'package:gymhome/widgets/womenwidgetss.dart';
 
 
 import 'package:provider/provider.dart';
@@ -11,11 +11,11 @@ import 'package:provider/provider.dart';
 
 
 
-class ProductGrid extends StatelessWidget {
+class Womegrid extends StatelessWidget {
  final bool shoefav;
 
 
-    ProductGrid(this.shoefav);
+    Womegrid(this.shoefav);
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +28,7 @@ class ProductGrid extends StatelessWidget {
         itemCount: prodctitem.length,
         itemBuilder: (ctx, ind) => ChangeNotifierProvider.value(
           value: prodctitem[ind],
-          child: OwnerWidgetss(),
+          child: WomenWidgtess(),
         ),
        
       

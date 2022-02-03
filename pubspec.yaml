@@ -32,6 +32,15 @@ dependencies:
   search_page: ^2.0.0+1
   http:
   provider: ^6.0.1
+  firebase_auth: 
+  firebase_core: ^1.6.0
+  cloud_firestore:
+  shared_preferences: ^2.0.12
+  image_picker: 
+  path_provider: ^2.0.8
+  path: ^1.8.0
+  sqflite: ^2.0.2
+  location: ^4.3.0
 
 
   # The following adds the Cupertino Icons font to your application.

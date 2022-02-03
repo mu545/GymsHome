@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 class Gyms with ChangeNotifier  {
  final String id;
@@ -6,21 +9,47 @@ class Gyms with ChangeNotifier  {
   final String description;
   final double price;
   final String imageUrl;
+  final String location ;
+  final String facilites ;
+  bool pool ; 
+  bool sauna ; 
+  bool rowing ; 
+  bool squash ;
+
+  final String hours;
      bool isFavorite;
+     bool iscompared;
        bool isadd;
 
   
 
 
-  Gyms({  required this.id,required this.title, required this.description,required this.price,required this.imageUrl,  this.isFavorite = false,  this.isadd=false});
+  Gyms({  required this.id,required this.title, required this.description,required this.price,required this.imageUrl,required this.location, required this.facilites,  this.sauna = false,this.rowing = false, this.pool = false, this.squash = false,required this.hours,   this.isFavorite = false, this.iscompared =false , this.isadd=false});
   
   Map<String, Gyms> _items = {};
   Map<String, Gyms> get items {
     return {..._items};
   }
-   void FavoiritStatus() {
+   Future<void> FavoiritStatus() async {
     final oldstates = isFavorite;
+    // isFavorite = !isFavorite;
+    // notifyListeners();
+    final url = 'https://gymshome-ce96b-default-rtdb.firebaseio.com/gyms.json';
+    try {
+      await http.patch(
+        Uri.parse(url),
+        body: json.encode({'isFavorite': isFavorite}),
+      );
+    } catch (error) {
+      isFavorite = oldstates;
+    }
+
     isFavorite = !isFavorite;
+    notifyListeners();
+  }
+   void CompareStatus() {
+    final oldstates = iscompared;
+    iscompared = !iscompared;
     notifyListeners();
     // final url = 'https://shop-app-664ca-default-rtdb.firebaseio.com/prod.json';
     // try {
@@ -34,6 +63,23 @@ class Gyms with ChangeNotifier  {
 
     // isFavorite = !isFavorite;
     // notifyListeners();
+  }
+  Future <void > poolstatus() async {
+    final oldstates = pool;
+    // pool = !pool;
+    // notifyListeners();
+    final url = 'https://gymshome-ce96b-default-rtdb.firebaseio.com/gyms.json';
+    try {
+      await http.patch(
+        Uri.parse(url),
+        body: json.encode({'pool': pool}),
+      );
+    } catch (error) {
+      pool = oldstates;
+    }
+
+    pool = !pool;
+    notifyListeners();
   }
 
   void favoriteproducts() {
@@ -51,7 +97,10 @@ class Gyms with ChangeNotifier  {
               title: exe.title,
               description:exe.description ,
               price: exe.price,
-              imageUrl: exe.imageUrl));
+              imageUrl: exe.imageUrl, 
+              location: exe.location, 
+              facilites: exe.facilites , 
+              hours: exe.hours));
     } else {
       _items.putIfAbsent(
           productId,
@@ -61,7 +110,7 @@ class Gyms with ChangeNotifier  {
               description: description,
               price: price,
              
-              imageUrl: imageUrl));
+              imageUrl: imageUrl , location: location , facilites: facilites , hours: hours));
     }
     notifyListeners();
   }

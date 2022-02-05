@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:flutter/material.dart';
 //import icons
 //import colors
@@ -9,6 +11,9 @@ class welcome extends StatefulWidget {
   @override
   _welcomeState createState() => _welcomeState();
 }
+
+enum AuthMode { Signup, Login }
+AuthMode _authMode = AuthMode.Login;
 
 class _welcomeState extends State<welcome> {
   bool isSignup = true;
@@ -76,7 +81,7 @@ class _welcomeState extends State<welcome> {
             top: 200,
             child: Container(
               padding: EdgeInsets.all(20),
-              height: 380,
+              height: 400,
               width: MediaQuery.of(context).size.width - 40,
               margin: EdgeInsets.symmetric(horizontal: 20),
               decoration: BoxDecoration(
@@ -150,110 +155,144 @@ class _welcomeState extends State<welcome> {
                       )
                     ],
                   ),
-                  Container(
-                    margin: EdgeInsets.only(top: 10),
-                    child: Column(children: [
-                      textfield(false, true, "Your email"),
-                      textfield(true, false, "Password"),
-                      textfield(true, false, "confirm password"),
-                      Padding(
-                        padding: EdgeInsets.all(20),
-                        child: Row(
-                          children: [
-                            GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  iscustomer = true;
-                                });
-                              },
-                              child: Row(
-                                children: [
-                                  Container(
-                                    height: 30,
-                                    width: 30,
-                                    margin: EdgeInsets.only(right: 8),
-                                    decoration: BoxDecoration(
-                                      color: iscustomer
-                                          ? colors.blue_base
-                                          : Colors.white,
-                                      border: Border.all(
-                                        width: 1,
-                                        color: colors.hinttext,
-                                      ),
-                                      borderRadius: BorderRadius.circular(15),
-                                    ),
-                                    child: Icon(
-                                      Icons.person,
-                                      color: iscustomer
-                                          ? Color.fromARGB(255, 255, 255, 255)
-                                          : colors.hinttext,
-                                    ),
-                                  ),
-                                  Text(
-                                    "Customer",
-                                    style: TextStyle(
-                                      color: iscustomer
-                                          ? colors.black60
-                                          : colors.hinttext,
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
-                            SizedBox(
-                              width: 30,
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  iscustomer = false;
-                                });
-                              },
-                              child: Row(
-                                children: [
-                                  Container(
-                                    height: 30,
-                                    width: 30,
-                                    margin: EdgeInsets.only(right: 8),
-                                    decoration: BoxDecoration(
-                                      color: iscustomer
-                                          ? Colors.white
-                                          : colors.blue_base,
-                                      border: Border.all(
-                                        width: 1,
-                                        color: colors.hinttext,
-                                      ),
-                                      borderRadius: BorderRadius.circular(15),
-                                    ),
-                                    child: Icon(
-                                      Icons.person,
-                                      color: iscustomer
-                                          ? colors.hinttext
-                                          : Color.fromARGB(255, 255, 255, 255),
-                                    ),
-                                  ),
-                                  Text(
-                                    "Gym owner",
-                                    style: TextStyle(
-                                      color: iscustomer
-                                          ? colors.hinttext
-                                          : colors.black60,
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
+                  if (isSignup)
+                    signup()
+                  else
+                    Container(
+                      margin: EdgeInsets.only(top: 20),
+                      child: Column(
+                        children: [
+                          textfield(false, true, "Your email"),
+                          textfield(true, false, "Password"),
+                        ],
                       ),
-                    ]),
-                  )
+                    ),
                 ],
               ),
             ),
           ),
         ],
       ),
+    );
+  }
+
+  Container signup() {
+    return Container(
+      margin: EdgeInsets.only(top: 20),
+      child: Column(children: [
+        textfield(false, true, "Your email"),
+        textfield(true, false, "Password"),
+        textfield(true, false, "confirm password"),
+        Padding(
+          padding: EdgeInsets.all(20),
+          child: Row(
+            children: [
+// is customer?
+
+              GestureDetector(
+                onTap: () {
+                  setState(() {
+                    iscustomer = true;
+                  });
+                },
+                child: Row(
+                  children: [
+                    Container(
+                      height: 30,
+                      width: 30,
+                      margin: EdgeInsets.only(right: 8),
+                      decoration: BoxDecoration(
+                        color: iscustomer ? colors.blue_base : Colors.white,
+                        border: Border.all(
+                          width: 1,
+                          color: colors.hinttext,
+                        ),
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      child: Icon(
+                        Icons.person,
+                        color: iscustomer
+                            ? Color.fromARGB(255, 255, 255, 255)
+                            : colors.hinttext,
+                      ),
+                    ),
+                    Text(
+                      "Customer",
+                      style: TextStyle(
+                        color: iscustomer ? colors.black60 : colors.hinttext,
+                      ),
+                    )
+                  ],
+                ),
+              ),
+
+              SizedBox(
+                width: 30,
+              ),
+
+// is gym owner?
+              GestureDetector(
+                onTap: () {
+                  setState(() {
+                    iscustomer = false;
+                  });
+                },
+                child: Row(
+                  children: [
+                    Container(
+                      height: 30,
+                      width: 30,
+                      margin: EdgeInsets.only(right: 8),
+                      decoration: BoxDecoration(
+                        color: iscustomer ? Colors.white : colors.blue_base,
+                        border: Border.all(
+                          width: 1,
+                          color: colors.hinttext,
+                        ),
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      child: Icon(
+                        Icons.person,
+                        color: iscustomer
+                            ? colors.hinttext
+                            : Color.fromARGB(255, 255, 255, 255),
+                      ),
+                    ),
+                    Text(
+                      "Gym owner",
+                      style: TextStyle(
+                        color: iscustomer ? colors.hinttext : colors.black60,
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+//submit botton
+        Container(
+          height: 40,
+          width: 200,
+          decoration: BoxDecoration(
+            color: colors.blue_base,
+            borderRadius: BorderRadius.circular(15),
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                isSignup ? "Sign Up" : "Login",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontFamily: 'Roboto',
+                  fontSize: 18,
+                ),
+              ),
+            ],
+          ),
+        )
+      ]),
     );
   }
 

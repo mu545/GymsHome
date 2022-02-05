@@ -219,6 +219,29 @@ class _EditaddState extends State<Editadd> {
                               );
                             },
                           ),
+                              TextFormField(
+                            initialValue: _initValues['faciltrs'],
+                            decoration: InputDecoration(
+                              labelText: 'faciltrs',
+                            ),
+                            maxLines: 3,
+                            focusNode: _descriptionFocusNode,
+                            keyboardType: TextInputType.multiline,
+                         
+                            onSaved: (value) {
+                              _editedProduct = Gyms(
+                                title: _editedProduct.title,
+                                price: _editedProduct.price,
+                                description: _editedProduct.description,
+                                imageUrl: _editedProduct.imageUrl,
+                                id: _editedProduct.id,
+                                isFavorite: _editedProduct.isFavorite,
+                                 location: _editedProduct.location, 
+                                      facilites: value! , 
+                                      hours: _editedProduct.hours
+                              );
+                            },
+                          ),
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: <Widget>[
@@ -274,40 +297,40 @@ class _EditaddState extends State<Editadd> {
                               ),
                                 ],
                               ),
-                               Column(
-                                 children: [
-                                   Row(
-                                     children: [
-                                        Container(
-                                    width: 60,
-                                    height: 25,
-                                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(10) , color: Colors.blue),
-                                    child: FlatButton( 
+            //                    Column(
+            //                      children: [
+            //                        Row(
+            //                          children: [
+            //                             Container(
+            //                         width: 60,
+            //                         height: 25,
+            //                         decoration: BoxDecoration(borderRadius: BorderRadius.circular(10) , color: Colors.blue),
+            //                         child: FlatButton( 
                                     
-                                      child: Text('Pool',style: TextStyle(color: Colors.blue , fontSize: 13),),  
-                                      color: Colors.white,  
-                                      onPressed: () => Gym.poolstatus(),  
+            //                           child: Text('Pool',style: TextStyle(color: Colors.blue , fontSize: 13),),  
+            //                           color: Colors.white,  
+            //                           onPressed: () {Gym.poolstatus();},  
 
                                       
-                                      shape: RoundedRectangleBorder(side: BorderSide(
-              color: Colors.blue,
-              width: 1,
-              style: BorderStyle.solid
-            ),
-                                    ),
-                                  ), 
+            //                           shape: RoundedRectangleBorder(side: BorderSide(
+            //   color: Colors.blue,
+            //   width: 1,
+            //   style: BorderStyle.solid
+            // ),
+            //                         ),
+            //                       ), 
                                  
-                                   ), 
-                                     ],
-                                   ),
-                                    // Row(
-                                    //   children: [
-                                    //     Text('Squash'),
-                                    //      MyStatefulWidget() ,
-                                    //   ],
-                                    // ),   
-                                 ],
-                               ),    
+            //                        ), 
+            //                          ],
+            //                        ),
+            //                         // Row(
+            //                         //   children: [
+            //                         //     Text('Squash'),
+            //                         //      MyStatefulWidget() ,
+            //                         //   ],
+            //                         // ),   
+            //                      ],
+            //                    ),    
                               ],
                           ),
                         ),

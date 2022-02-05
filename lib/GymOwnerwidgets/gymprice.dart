@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gymhome/GymOwnerwidgets/location.dart';
+import 'package:gymhome/GymOwnerwidgets/ownerhome.dart';
 import 'package:gymhome/models/gyms.dart';
 import 'package:gymhome/provider/gymsitems.dart';
 import 'package:provider/provider.dart';
@@ -85,13 +86,14 @@ class _AddGymState extends State<GymPrice> {
     }
   }
 
-  void _Saved() {
+ void _Saved() {
     final Validate = _form.currentState!.validate();
     // if (!Validate) {
     //   return;
     // }
     _form.currentState!.save();
     Provider.of<Gymsitems>(context, listen: false).addProduct(_editedProduct);
+    Navigator.of(context).pushNamed(OwnerHome.rounamed) ;
   //  Navigator.of(context).pushNamed(Location.routenamed);
     // if(_editfor.id != null){
 

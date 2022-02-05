@@ -24,9 +24,11 @@ class CompareGrid extends StatelessWidget {
   Widget build(BuildContext context) {
     final prodactDate = Provider.of<Gymsitems>(context);
    final Gym = Provider.of<Gyms>(context);
-    final Gymid = Provider.of<Gyms>(context).id;
-     final cartpro =
-            Provider.of<cart>(context,);
+      //   final productid = ModalRoute.of(context)!.settings.arguments as String;
+      //  final lodedproductr = Provider.of<Gymsitems>(context).FindbyId(productid);
+    // final Gymid = Provider.of<Gyms>(context).id;
+    //  final cartpro =
+    //         Provider.of<cart>(context,);
      final prodctitem = shoecompare ? prodactDate.compareitems : prodactDate.items;
     
        
@@ -42,7 +44,7 @@ class CompareGrid extends StatelessWidget {
               value: prodctitem[ind],
               child:  Row(children: [Column(children: [Container(margin: EdgeInsets.symmetric(horizontal: 10), height: 510, width: 150,  child: Card (   child: Column(
             children: [
-              Container( width: 130, height: 100, child: Image.network(Gym.imageUrl)),SizedBox(height: 30,),Text('Fitness Time'), SizedBox(height: 80,),Text('330 SAR'), SizedBox(height: 80,),Text('55 KM'),SizedBox(height: 50,),Text('4.5'),  SizedBox(height: 20,), Container(child: IconButton(onPressed: (){cartpro.remove(Gymid);}, icon: Icon(Icons.delete))),
+              Container( width: 130, height: 100, child: Image.network(Gym.imageUrl)),SizedBox(height: 30,),Text(Gym.title), SizedBox(height: 80,),Text(Gym.price.toString()), SizedBox(height: 80,),Text('55 KM'),SizedBox(height: 50,),Text('4.5'),  SizedBox(height: 20,), Container(child: IconButton(onPressed: (){}, icon: Icon(Icons.delete))),
             ],
           )))],),],)
             ),

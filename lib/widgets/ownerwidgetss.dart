@@ -45,16 +45,16 @@ class _WidgtessState extends State<OwnerWidgetss> {
                               ],
                             )], ),
                           ],
-                        ) , Row(children: [Column(children: [  ],) ,  SizedBox(width: 120,),Column(children: [Row(
+                        ) ,Column(children: [Row(
                           children: [
-                            Text(Gym.price.toString(), style: TextStyle(fontWeight: FontWeight.bold),),
+                           Text(Gym.title, style: TextStyle(fontWeight: FontWeight.bold),),  SizedBox(width: 280,),  Text(Gym.price.toString(), style: TextStyle(fontWeight: FontWeight.bold),),
                             Text('SAR')
                           ],
-                        ) , ],)],)  ],),),
+                        ) , ],)],)  ),),
               //       ), footer: GridTileBar(
               // backgroundColor: Colors.black87,
               // title: Text('T'),
                  ), ),
-              ),);
+              );
   }
 }

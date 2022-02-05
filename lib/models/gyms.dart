@@ -47,27 +47,44 @@ class Gyms with ChangeNotifier  {
     isFavorite = !isFavorite;
     notifyListeners();
   }
-   void CompareStatus() {
+  Future<void> CompareStatus() async {
     final oldstates = iscompared;
-    iscompared = !iscompared;
-    notifyListeners();
-    // final url = 'https://shop-app-664ca-default-rtdb.firebaseio.com/prod.json';
-    // try {
-    //   await http.patch(
-    //     Uri.parse(url),
-    //     body: json.encode({'isFavorite': isFavorite}),
-    //   );
-    // } catch (error) {
-    //   isFavorite = oldstates;
-    // }
-
     // isFavorite = !isFavorite;
     // notifyListeners();
+    final url = 'https://gymshome-ce96b-default-rtdb.firebaseio.com/gyms.json';
+    try {
+      await http.patch(
+        Uri.parse(url),
+        body: json.encode({'iscompared': iscompared}),
+      );
+    } catch (error) {
+      iscompared = oldstates;
+    }
+
+    iscompared = !iscompared;
+    notifyListeners();
   }
+  //  void CompareStatus() {
+  //   final oldstates = iscompared;
+  //   iscompared = !iscompared;
+  //   notifyListeners();
+  //   // final url = 'https://shop-app-664ca-default-rtdb.firebaseio.com/prod.json';
+  //   // try {
+  //   //   await http.patch(
+  //   //     Uri.parse(url),
+  //   //     body: json.encode({'isFavorite': isFavorite}),
+  //   //   );
+  //   // } catch (error) {
+  //   //   isFavorite = oldstates;
+  //   // }
+
+  //   // isFavorite = !isFavorite;
+  //   // notifyListeners();
+  // }
   Future <void > poolstatus() async {
     final oldstates = pool;
-    // pool = !pool;
-    // notifyListeners();
+    pool = !pool;
+    notifyListeners();
     final url = 'https://gymshome-ce96b-default-rtdb.firebaseio.com/gyms.json';
     try {
       await http.patch(

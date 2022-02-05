@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gymhome/models/gyms.dart';
 import 'package:gymhome/provider/gymsitems.dart';
+import 'package:gymhome/widgets/payment.dart';
 import 'package:provider/provider.dart';
 
 class GymDescrption extends StatefulWidget {
@@ -145,163 +146,163 @@ class _GymDescrptionState extends State<GymDescrption> {
               ),
             ),
             SizedBox(height:10),
-                        Column(
-                          children: [
-                            Container(
-                              margin: EdgeInsets.symmetric(horizontal: 10),
-                              child: Row(
-                                children: [
-                                  Container(
-                                    width: 60,
-                                    height: 25,
-                                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(10) , color: Colors.blue),
-                                    child: FlatButton( 
+            //             Column(
+            //               children: [
+            //                 Container(
+            //                   margin: EdgeInsets.symmetric(horizontal: 10),
+            //                   child: Row(
+            //                     children: [
+            //                       Container(
+            //                         width: 60,
+            //                         height: 25,
+            //                         decoration: BoxDecoration(borderRadius: BorderRadius.circular(10) , color: Colors.blue),
+            //                         child: FlatButton( 
                                     
-                                      child: Text('Pool',style: TextStyle(color: Colors.blue , fontSize: 13),),  
-                                      color: Colors.white,  
-                                      onPressed: () {/** */},  
-                                      shape: RoundedRectangleBorder(side: BorderSide(
-              color: Colors.blue,
-              width: 1,
-              style: BorderStyle.solid
-            ),
-                                    ),
-                                  ), 
+            //                           child: Text('Pool',style: TextStyle(color: Colors.blue , fontSize: 13),),  
+            //                           color: Colors.white,  
+            //                           onPressed: () {/** */},  
+            //                           shape: RoundedRectangleBorder(side: BorderSide(
+            //   color: Colors.blue,
+            //   width: 1,
+            //   style: BorderStyle.solid
+            // ),
+            //                         ),
+            //                       ), 
                                  
-                                   ), 
-                                   SizedBox(width: 8,),Container(
-                                    width: 73,
-                                    height: 25,
-                                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(10) , color: Colors.blue),
-                                    child: FlatButton( 
+            //                        ), 
+            //                        SizedBox(width: 8,),Container(
+            //                         width: 73,
+            //                         height: 25,
+            //                         decoration: BoxDecoration(borderRadius: BorderRadius.circular(10) , color: Colors.blue),
+            //                         child: FlatButton( 
                                     
-                                      child: Text('Sauna',style: TextStyle(color: Colors.blue, fontSize: 13),),  
-                                      color: Colors.white,  
-                                      onPressed: () {/** */},  
-                                      shape: RoundedRectangleBorder(side: BorderSide(
-              color: Colors.blue,
-              width: 1,
-              style: BorderStyle.solid
-            ),
-                                    ),
-                                  ), 
+            //                           child: Text('Sauna',style: TextStyle(color: Colors.blue, fontSize: 13),),  
+            //                           color: Colors.white,  
+            //                           onPressed: () {/** */},  
+            //                           shape: RoundedRectangleBorder(side: BorderSide(
+            //   color: Colors.blue,
+            //   width: 1,
+            //   style: BorderStyle.solid
+            // ),
+            //                         ),
+            //                       ), 
                                  
-                                   ),SizedBox(width: 8,), Container(
-                                    width: 76,
-                                    height: 25,
-                                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(10) , color: Colors.blue),
-                                    child: FlatButton( 
+            //                        ),SizedBox(width: 8,), Container(
+            //                         width: 76,
+            //                         height: 25,
+            //                         decoration: BoxDecoration(borderRadius: BorderRadius.circular(10) , color: Colors.blue),
+            //                         child: FlatButton( 
                                     
-                                      child: Text('Rowing',style: TextStyle(color: Colors.blue, fontSize: 13),),  
-                                      color: Colors.white,  
-                                      onPressed: () {/** */},  
-                                      shape: RoundedRectangleBorder(side: BorderSide(
-              color: Colors.blue,
-              width: 1,
-              style: BorderStyle.solid
-            ),
-                                    ),
-                                  ), 
+            //                           child: Text('Rowing',style: TextStyle(color: Colors.blue, fontSize: 13),),  
+            //                           color: Colors.white,  
+            //                           onPressed: () {/** */},  
+            //                           shape: RoundedRectangleBorder(side: BorderSide(
+            //   color: Colors.blue,
+            //   width: 1,
+            //   style: BorderStyle.solid
+            // ),
+            //                         ),
+            //                       ), 
                                  
-                                   ),SizedBox(width: 8,), Container(
-                                    width: 76,
-                                    height: 25,
-                                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(10) , color: Colors.blue),
-                                    child: FlatButton( 
+            //                        ),SizedBox(width: 8,), Container(
+            //                         width: 76,
+            //                         height: 25,
+            //                         decoration: BoxDecoration(borderRadius: BorderRadius.circular(10) , color: Colors.blue),
+            //                         child: FlatButton( 
                                     
-                                      child: Text('Squach',style: TextStyle(color: Colors.blue, fontSize: 13),),  
-                                      color: Colors.white,  
-                                      onPressed: () {/** */},  
-                                      shape: RoundedRectangleBorder(side: BorderSide(
-              color: Colors.blue,
-              width: 1,
-              style: BorderStyle.solid
-            ),
-                                    ),
-                                  ), 
+            //                           child: Text('Squach',style: TextStyle(color: Colors.blue, fontSize: 13),),  
+            //                           color: Colors.white,  
+            //                           onPressed: () {/** */},  
+            //                           shape: RoundedRectangleBorder(side: BorderSide(
+            //   color: Colors.blue,
+            //   width: 1,
+            //   style: BorderStyle.solid
+            // ),
+            //                         ),
+            //                       ), 
                                  
-                                   ),SizedBox(width: 8,), Container(
-                                    width: 73,
-                                    height: 25,
-                                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(10) , color: Colors.blue),
-                                    child: FlatButton( 
+            //                        ),SizedBox(width: 8,), Container(
+            //                         width: 73,
+            //                         height: 25,
+            //                         decoration: BoxDecoration(borderRadius: BorderRadius.circular(10) , color: Colors.blue),
+            //                         child: FlatButton( 
                                     
-                                      child: Text('Lokers',style: TextStyle(color: Colors.blue, fontSize: 13),),  
-                                      color: Colors.white,  
-                                      onPressed: () {/** */},  
-                                      shape: RoundedRectangleBorder(side: BorderSide(
-              color: Colors.blue,
-              width: 1,
-              style: BorderStyle.solid
-            ),
-                                    ),
-                                  ), 
+            //                           child: Text('Lokers',style: TextStyle(color: Colors.blue, fontSize: 13),),  
+            //                           color: Colors.white,  
+            //                           onPressed: () {/** */},  
+            //                           shape: RoundedRectangleBorder(side: BorderSide(
+            //   color: Colors.blue,
+            //   width: 1,
+            //   style: BorderStyle.solid
+            // ),
+            //                         ),
+            //                       ), 
                                  
-                                   ) ],
-                              ),
-                            ),
-                        SizedBox(width: 8, height: 10,), Row(
-                          children: [
-                            Container(
-                              margin: EdgeInsets.symmetric(horizontal: 8),
-                                        width: 150,
-                                        height: 25,
-                                        decoration: BoxDecoration(borderRadius: BorderRadius.circular(10) , color: Colors.blue),
-                                        child: FlatButton( 
+            //                        ) ],
+            //                   ),
+            //                 ),
+            //             SizedBox(width: 8, height: 10,), Row(
+            //               children: [
+            //                 Container(
+            //                   margin: EdgeInsets.symmetric(horizontal: 8),
+            //                             width: 150,
+            //                             height: 25,
+            //                             decoration: BoxDecoration(borderRadius: BorderRadius.circular(10) , color: Colors.blue),
+            //                             child: FlatButton( 
                                         
-                                          child: Text('Indoor Runing Track',style: TextStyle(color: Colors.blue, fontSize: 13),),  
-                                          color: Colors.white,  
-                                          onPressed: () {/** */},  
-                                          shape: RoundedRectangleBorder(side: BorderSide(
-              color: Colors.blue,
-              width: 1,
-              style: BorderStyle.solid
-            ),
-                                        ),
-                                      ), 
+            //                               child: Text('Indoor Runing Track',style: TextStyle(color: Colors.blue, fontSize: 13),),  
+            //                               color: Colors.white,  
+            //                               onPressed: () {/** */},  
+            //                               shape: RoundedRectangleBorder(side: BorderSide(
+            //   color: Colors.blue,
+            //   width: 1,
+            //   style: BorderStyle.solid
+            // ),
+            //                             ),
+            //                           ), 
                                      
-                                       ),
-                                        Container(
-                              margin: EdgeInsets.symmetric(horizontal: 8),
-                                        width: 66,
-                                        height: 25,
-                                        decoration: BoxDecoration(borderRadius: BorderRadius.circular(10) , color: Colors.blue),
-                                        child: FlatButton( 
+            //                            ),
+            //                             Container(
+            //                   margin: EdgeInsets.symmetric(horizontal: 8),
+            //                             width: 66,
+            //                             height: 25,
+            //                             decoration: BoxDecoration(borderRadius: BorderRadius.circular(10) , color: Colors.blue),
+            //                             child: FlatButton( 
                                         
-                                          child: Text('Khijh',style: TextStyle(color: Colors.blue, fontSize: 13),),  
-                                          color: Colors.white,  
-                                          onPressed: () {/** */},  
-                                          shape: RoundedRectangleBorder(side: BorderSide(
-              color: Colors.blue,
-              width: 1,
-              style: BorderStyle.solid
-            ),
-                                        ),
-                                      ), 
+            //                               child: Text('Khijh',style: TextStyle(color: Colors.blue, fontSize: 13),),  
+            //                               color: Colors.white,  
+            //                               onPressed: () {/** */},  
+            //                               shape: RoundedRectangleBorder(side: BorderSide(
+            //   color: Colors.blue,
+            //   width: 1,
+            //   style: BorderStyle.solid
+            // ),
+            //                             ),
+            //                           ), 
                                      
-                                       ),
-                                        Container(
-                              margin: EdgeInsets.symmetric(horizontal: 8),
-                                        width: 100,
-                                        height: 25,
-                                        decoration: BoxDecoration(borderRadius: BorderRadius.circular(10) , color: Colors.blue),
-                                        child: FlatButton( 
+            //                            ),
+            //                             Container(
+            //                   margin: EdgeInsets.symmetric(horizontal: 8),
+            //                             width: 100,
+            //                             height: 25,
+            //                             decoration: BoxDecoration(borderRadius: BorderRadius.circular(10) , color: Colors.blue),
+            //                             child: FlatButton( 
                                         
-                                          child: Text('Steam Bath',style: TextStyle(color: Colors.blue, fontSize: 13),),  
-                                          color: Colors.white,  
-                                          onPressed: () {/** */},  
-                                          shape: RoundedRectangleBorder(side: BorderSide(
-              color: Colors.blue,
-              width: 1,
-              style: BorderStyle.solid
-            ),
-                                        ),
-                                      ), 
+            //                               child: Text('Steam Bath',style: TextStyle(color: Colors.blue, fontSize: 13),),  
+            //                               color: Colors.white,  
+            //                               onPressed: () {/** */},  
+            //                               shape: RoundedRectangleBorder(side: BorderSide(
+            //   color: Colors.blue,
+            //   width: 1,
+            //   style: BorderStyle.solid
+            // ),
+            //                             ),
+            //                           ), 
                                      
-                                       ),
-                          ],
-                        ),  ],
-                        ),  
+            //                            ),
+            //               ],
+            //             ),  ],
+            //             ),  
                      SizedBox(height: 10,) , Container(
                          margin: EdgeInsets.symmetric(horizontal: 10),
                          child: Row(
@@ -350,33 +351,7 @@ class _GymDescrptionState extends State<GymDescrption> {
                            )  ],
                        ),
       ),
-          bottomNavigationBar: Container(
-         width: 200,
-         child: BottomNavigationBar(
-          //  fixedColor: Colors.black,
-          unselectedItemColor: Colors.grey,
-          items: const <BottomNavigationBarItem>[
-           
-            BottomNavigationBarItem(
-              icon: Icon(Icons.add),
-              label: '',
-            ),
-             BottomNavigationBarItem(
-              icon: Icon(Icons.add),
-              label: '',
-            ),
-         
-            //  BottomNavigationBarItem(
-            //   icon: Icon(Icons.school),
-            //   label: 'School',
-            // ),
-            //  BottomNavigationBarItem(
-            //   icon: Icon(Icons.school),
-            //   label: 'School',
-            // ),
-          ],
-      
-    ),)
+          bottomNavigationBar: Container( height: 70, child: new Row(children: [Container( margin: EdgeInsets.symmetric(horizontal: 10 , vertical: 10 ),  height: 35 , width: 140 , decoration: BoxDecoration(border: Border.all(color: Colors.grey)), child: FlatButton(onPressed: (){}, child: Text('New Review', style: TextStyle(color: Colors.blue),)))  , SizedBox(width: 90,), Container( height: 35 , width: 140 , decoration: BoxDecoration(border: Border.all(color: Colors.grey)), child: FlatButton(  color: Colors.blue,onPressed: (){Navigator.of(context).pushNamed(PaymentScreen.routeName);}, child: Text('Subscribe', style: TextStyle(color: Colors.white),))) ],)) 
           
       
     );

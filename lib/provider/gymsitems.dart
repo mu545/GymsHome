@@ -9,18 +9,18 @@ import 'dart:convert';
 
 class Gymsitems with ChangeNotifier {
   List<Gyms> _items = [
-    // Gyms(   id: 'p1',
-    //     title: 'Fitness Time',
-    //     description:
-    //         ' ',
-    //     price: 200,
-    //     imageUrl:
-    //         'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTYdK-lU-JxF6Czh43PSD8kF6LlF0ge9c4jxQ&usqp=CAU',
-    //         isFavorite: false ,
-    //         location: '' , 
-    //         facilites: '' ,
-    //         hours: '' 
-    // ),
+    Gyms(   id: 'p1',
+        title: 'Fitness Time',
+        description:
+            ' ',
+        price: 200,
+        imageUrl:
+            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTYdK-lU-JxF6Czh43PSD8kF6LlF0ge9c4jxQ&usqp=CAU',
+            isFavorite: false ,
+            location: '' , 
+            facilites: '' ,
+            hours: '' 
+    ),
     //  Gyms(   id: 'p2',
     //     title: 'Fitness Time',
     //     description:

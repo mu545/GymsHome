@@ -13,6 +13,7 @@ import 'package:gymhome/models/favorite.dart';
 import 'package:gymhome/models/gyms.dart';
 import 'package:gymhome/provider/gymsitems.dart';
 import 'package:gymhome/provider/womengymitems.dart';
+import 'package:gymhome/widgets/dsd.dart';
 import 'package:gymhome/widgets/edit.dart';
 
 import 'package:gymhome/widgets/gymdescrption.dart';
@@ -20,6 +21,7 @@ import 'package:gymhome/widgets/help.dart';
 
 import 'package:gymhome/widgets/newhome.dart';
 import 'package:gymhome/widgets/onerdescrption.dart';
+import 'package:gymhome/widgets/payment.dart';
 import 'package:gymhome/widgets/pic.dart';
 import 'package:gymhome/widgets/placess.dart';
 import 'package:gymhome/widgets/profile.dart';
@@ -83,7 +85,7 @@ class MyApp extends StatelessWidget {
             builder: (ctx, auth, _) => MaterialApp(
                   debugShowCheckedModeBanner: false,
            
-                  home: OwnerHome(),
+                  home: NewHome(),
                   routes: {
                     NewHome.rounamed : (ctx) =>NewHome() ,
                     OwnerHome.rounamed : (ctx) => OwnerHome() ,
@@ -95,6 +97,7 @@ class MyApp extends StatelessWidget {
                     Editadd.routeName:(ctx)=>Editadd() ,
                     Facilites.routenames : (ctx) => Facilites() ,
                     Addplace.routeName: (ctx) => Addplace(),
+                    PaymentScreen.routeName : (ctx) => PaymentScreen() 
 
             //  WomenGrid.routNamed :(ctx) =>WomenGrid(),
                     // Sigsa.routeName: (ctx) => Sigsa(),

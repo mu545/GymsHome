@@ -11,11 +11,11 @@ import 'package:provider/provider.dart';
 
 
 
-class ProductGrid extends StatelessWidget {
+class Ownergrids extends StatelessWidget {
  final bool shoefav;
 
 
-    ProductGrid(this.shoefav);
+    Ownergrids(this.shoefav);
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +28,7 @@ class ProductGrid extends StatelessWidget {
         itemCount: prodctitem.length,
         itemBuilder: (ctx, ind) => ChangeNotifierProvider.value(
           value: prodctitem[ind],
-          child: Widgtess(),
+          child: OwnerWidgetss(),
         ),
        
       

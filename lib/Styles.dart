@@ -1,18 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
 
 //Colors
-const blue_base = Color(0x4799B7);
-const blue_smooth = Color(0xCFE3EA);
+class colors {
+  static const blue_base = Color.fromARGB(253, 71, 153, 183);
+  static const blue_smooth = Color.fromARGB(255, 207, 227, 234);
 
-const yellow_base = Color(0xF3A72E);
-const yellow_smooth = Color(0xFCF3D7);
+  static const yellow_base = Color.fromARGB(255, 243, 167, 46);
+  static const yellow_smooth = Color.fromARGB(255, 252, 243, 215);
 
-const green_base = Color(0x2FA84F);
-const green_smooth = Color(0xDCF7E3);
+  static const green_base = Color.fromARGB(255, 47, 168, 79);
+  static const green_smooth = Color.fromARGB(255, 220, 247, 227);
 
-const red_base = Color(0xEA3D2F);
-const red_smooth = Color(0xFEE4E2);
+  static const red_base = Color.fromARGB(255, 234, 60, 47);
+  static const red_smooth = Color.fromARGB(255, 254, 228, 226);
 
 // icon color
-const iconscolor = Color(0x78909C);
+  static const iconscolor = Color.fromARGB(255, 120, 144, 156);
 //Fonts
+  static const black100 = Color.fromARGB(255, 26, 26, 26);
+  static const black60 = Color.fromARGB(255, 99, 99, 99);
+  static const hinttext = Color.fromARGB(62, 99, 99, 99);
+}

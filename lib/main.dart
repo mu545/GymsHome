@@ -24,11 +24,13 @@ import 'package:gymhome/widgets/onerdescrption.dart';
 import 'package:gymhome/widgets/pic.dart';
 import 'package:gymhome/widgets/placess.dart';
 import 'package:gymhome/widgets/profile.dart';
+import 'package:gymhome/widgets/resetpass.dart';
 import 'package:gymhome/widgets/signup.dart';
 import 'package:gymhome/widgets/ssss.dart';
 import 'package:gymhome/widgets/welcome.dart';
 import 'package:gymhome/widgets/womengym.dart';
 import 'package:provider/provider.dart';
+import 'package:gymhome/widgets/resetpass.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

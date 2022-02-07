@@ -1,9 +1,8 @@
-import 'dart:html';
-
 import 'package:flutter/material.dart';
 //import icons
 //import colors
 import 'package:gymhome/Styles.dart';
+import 'package:gymhome/widgets/resetpass.dart';
 
 class welcome extends StatefulWidget {
   const welcome({Key? key}) : super(key: key);
@@ -12,12 +11,19 @@ class welcome extends StatefulWidget {
   _welcomeState createState() => _welcomeState();
 }
 
-enum AuthMode { Signup, Login }
-AuthMode _authMode = AuthMode.Login;
+Map<String, GlobalKey<FormState>> _formKeys = {
+  'signup': GlobalKey<FormState>(),
+  'login': GlobalKey<FormState>()
+};
+Map<String, String> _authData = {
+  'email': '',
+  'password': '',
+};
 
 class _welcomeState extends State<welcome> {
   bool isSignup = true;
   bool iscustomer = true;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,6 +33,7 @@ class _welcomeState extends State<welcome> {
               top: 0,
               right: 0,
               left: 0,
+              // image
               child: Container(
                 height: 300,
                 decoration: BoxDecoration(
@@ -77,11 +84,11 @@ class _welcomeState extends State<welcome> {
                   ),
                 ),
               )),
-          Positioned(
-            top: 200,
+          Align(
+            alignment: Alignment.center,
             child: Container(
-              padding: EdgeInsets.all(20),
-              height: 400,
+              padding:
+                  EdgeInsets.only(top: 20, bottom: 10, right: 20, left: 20),
               width: MediaQuery.of(context).size.width - 40,
               margin: EdgeInsets.symmetric(horizontal: 20),
               decoration: BoxDecoration(
@@ -95,6 +102,7 @@ class _welcomeState extends State<welcome> {
                 ],
               ),
               child: Column(
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -116,6 +124,7 @@ class _welcomeState extends State<welcome> {
                                       ? colors.black60
                                       : colors.black100),
                             ),
+                            // line
                             if (!isSignup)
                               Container(
                                 margin: EdgeInsets.only(top: 4),
@@ -143,6 +152,7 @@ class _welcomeState extends State<welcome> {
                                       ? colors.black100
                                       : colors.black60),
                             ),
+                            // line
                             if (isSignup)
                               Container(
                                 margin: EdgeInsets.only(top: 4),
@@ -155,18 +165,70 @@ class _welcomeState extends State<welcome> {
                       )
                     ],
                   ),
+                  // Sign up
                   if (isSignup)
                     signup()
                   else
+                    //Login
                     Container(
                       margin: EdgeInsets.only(top: 20),
-                      child: Column(
-                        children: [
-                          textfield(false, true, "Your email"),
-                          textfield(true, false, "Password"),
-                        ],
+                      child: Form(
+                        key: _formKeys['login'],
+                        child: Column(
+                          children: [
+                            textfield(false, true, "Your email"),
+                            textfield(true, false, "Password"),
+                            Align(
+                              alignment: Alignment.bottomRight,
+                              child: GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              const resetpassword()));
+                                },
+                                child: Text(
+                                  "Forget password?",
+                                  style: TextStyle(
+                                    color: colors.blue_base,
+                                  ),
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
                       ),
                     ),
+                  SizedBox(
+                    height: 10,
+                  ),
+
+                  //submit botton
+
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        primary: colors.blue_base,
+                        onPrimary: colors.blue_smooth,
+                        minimumSize: Size(250, 40)),
+                    onPressed: () {
+                      // Validate returns true if the form is valid, or false otherwise.
+                      if (isSignup &&
+                          (_formKeys['signup']!.currentState!.validate())) {}
+                      if (!isSignup &&
+                          (_formKeys['login']!.currentState!.validate())) {}
+                      // If the form is valid, display a snackbar. In the real world,
+                      // you'd often call a server or save the information in a database.
+                    },
+                    child: Text(
+                      isSignup ? "Sign Up" : "Login",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontFamily: 'Roboto',
+                        fontSize: 18,
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -180,9 +242,16 @@ class _welcomeState extends State<welcome> {
     return Container(
       margin: EdgeInsets.only(top: 20),
       child: Column(children: [
-        textfield(false, true, "Your email"),
-        textfield(true, false, "Password"),
-        textfield(true, false, "confirm password"),
+        Form(
+          key: _formKeys['signup'],
+          child: Column(
+            children: [
+              textfield(false, true, "Your email"),
+              textfield(true, false, "Password"),
+              // textfield(true, false, "confirm password"),
+            ],
+          ),
+        ),
         Padding(
           padding: EdgeInsets.all(20),
           child: Row(
@@ -270,28 +339,6 @@ class _welcomeState extends State<welcome> {
             ],
           ),
         ),
-//submit botton
-        Container(
-          height: 40,
-          width: 200,
-          decoration: BoxDecoration(
-            color: colors.blue_base,
-            borderRadius: BorderRadius.circular(15),
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                isSignup ? "Sign Up" : "Login",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontFamily: 'Roboto',
-                  fontSize: 18,
-                ),
-              ),
-            ],
-          ),
-        )
       ]),
     );
   }
@@ -299,7 +346,7 @@ class _welcomeState extends State<welcome> {
   Widget textfield(bool ispassword, bool isemail, String hint) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 20),
-      child: TextField(
+      child: TextFormField(
         obscureText: ispassword,
         keyboardType: isemail ? TextInputType.emailAddress : TextInputType.text,
         decoration: InputDecoration(
@@ -315,6 +362,18 @@ class _welcomeState extends State<welcome> {
             color: colors.hinttext,
           ),
         ),
+        validator: (value) {
+          if (isemail && (value!.isEmpty || !value.contains('@'))) {
+            return 'Invalid email!';
+          }
+          if (ispassword && (value!.isEmpty || value.length < 5)) {
+            return 'Password is too short!';
+          }
+        },
+        onSaved: (value) {
+          if (isemail) _authData['email'] = value!;
+          if (ispassword) _authData['password'] = value!;
+        },
       ),
     );
   }

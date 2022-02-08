@@ -351,7 +351,7 @@ class _GymDescrptionState extends State<GymDescrption> {
                            )  ],
                        ),
       ),
-          bottomNavigationBar: Container( height: 70, child: new Row(children: [Container( margin: EdgeInsets.symmetric(horizontal: 10 , vertical: 10 ),  height: 35 , width: 140 , decoration: BoxDecoration(border: Border.all(color: Colors.grey)), child: FlatButton(onPressed: (){}, child: Text('New Review', style: TextStyle(color: Colors.blue),)))  , SizedBox(width: 90,), Container( height: 35 , width: 140 , decoration: BoxDecoration(border: Border.all(color: Colors.grey)), child: FlatButton(  color: Colors.blue,onPressed: (){Navigator.of(context).pushNamed(PaymentScreen.routeName);}, child: Text('Subscribe', style: TextStyle(color: Colors.white),))) ],)) 
+          bottomNavigationBar: Container( height: 70, child: new Row(children: [Container( margin: EdgeInsets.symmetric(horizontal: 10 , vertical: 10 ),  height: 35 , width: 140 , decoration: BoxDecoration(border: Border.all(color: Colors.grey)), child: FlatButton(onPressed: (){}, child: Text('New Review', style: TextStyle(color: Colors.blue),)))  , SizedBox(width: 90,), Container( height: 35 , width: 140 , decoration: BoxDecoration(border: Border.all(color: Colors.grey)), child: FlatButton(  color: Colors.blue,onPressed: (){}, child: Text('Subscribe', style: TextStyle(color: Colors.white),))) ],)) 
           
       
     );

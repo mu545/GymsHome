@@ -4,6 +4,7 @@
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:gymhome/Admin/adminhome.dart';
 import 'package:gymhome/GymOwnerwidgets/addgym.dart';
 import 'package:gymhome/GymOwnerwidgets/facilities.dart';
 import 'package:gymhome/GymOwnerwidgets/gymprice.dart';
@@ -33,7 +34,7 @@ import 'package:provider/provider.dart';
 void main() async{
    WidgetsFlutterBinding.ensureInitialized();
 
- Firebase.initializeApp();
+     Firebase.initializeApp();
   runApp(const MyApp());
 }
 
@@ -58,6 +59,7 @@ class MyApp extends StatelessWidget {
                 isFavorite: false , 
                 location:  '' , 
                 facilites:  '' , 
+                offer: 0,
                 hours : '' ,
                 ),
                 
@@ -69,9 +71,9 @@ class MyApp extends StatelessWidget {
           ChangeNotifierProvider(
             create: (ctx) => cart(),
           ),
-            ChangeNotifierProvider(
-            create: (ctx) => WomenGymsitems(),
-          ),
+          //   ChangeNotifierProvider(
+          //   create: (ctx) => WomenGymsitems(),
+          // ),
              ChangeNotifierProvider(
             create: (ctx) => great(),
           ),
@@ -85,7 +87,7 @@ class MyApp extends StatelessWidget {
             builder: (ctx, auth, _) => MaterialApp(
                   debugShowCheckedModeBanner: false,
            
-                  home: NewHome(),
+                  home: AdminHome (),
                   routes: {
                     NewHome.rounamed : (ctx) =>NewHome() ,
                     OwnerHome.rounamed : (ctx) => OwnerHome() ,
@@ -97,7 +99,7 @@ class MyApp extends StatelessWidget {
                     Editadd.routeName:(ctx)=>Editadd() ,
                     Facilites.routenames : (ctx) => Facilites() ,
                     Addplace.routeName: (ctx) => Addplace(),
-                    PaymentScreen.routeName : (ctx) => PaymentScreen() 
+                    // PaymentScreen.routeName : (ctx) => PaymentScreen() 
 
             //  WomenGrid.routNamed :(ctx) =>WomenGrid(),
                     // Sigsa.routeName: (ctx) => Sigsa(),

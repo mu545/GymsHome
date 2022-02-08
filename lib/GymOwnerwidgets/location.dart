@@ -17,7 +17,12 @@ class _LocationState extends State<Location> {
         appBar: AppBar(title: Center(child: Text('Add Gym', style: TextStyle(color: Colors.black),)),backgroundColor: Colors.white, elevation: 0,actions: <Widget>[ IconButton(onPressed: (){}, icon: Icon(Icons.more_vert,color: Colors.black,),)], ),
       body: Column(
         children: [
-          Container( margin: EdgeInsets.symmetric(horizontal: 10 , vertical: 10 ),  height: 420, width: 370 , child: Card(child: Column(children: [Text('Location'),    PlaceLocation() ,SizedBox(height: 70,), Container(
+          Container( margin: EdgeInsets.symmetric(horizontal: 10 , vertical: 10 ),  height: 420, width: 370 , child: Card(child: Column(children: [Text('Location'),    PlaceLocation() ,SizedBox(height: 70,), 
+     
+         SizedBox(height: 10,)
+   ,   
+        ],),)), 
+        Container(
            width: 250,height: 40,
            decoration: BoxDecoration(borderRadius: BorderRadius.circular(20), color: Colors.blue),
            child: FlatButton(
@@ -29,10 +34,7 @@ class _LocationState extends State<Location> {
                           
                           textColor: Theme.of(context).primaryColor,
                         ),
-         ),
-     
-         SizedBox(height: 10,)
-   ,   
+         ),  
          Container(
            width: 250,height: 40,
            decoration: BoxDecoration(   borderRadius: BorderRadius.circular(20), color: Colors.white),
@@ -50,8 +52,7 @@ class _LocationState extends State<Location> {
                   style: BorderStyle.solid
                 ), borderRadius: BorderRadius.circular(50)),
                         ),
-         )],),)),   
-        ],
+         )],
       ),
     );
   }

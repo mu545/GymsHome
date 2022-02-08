@@ -24,6 +24,7 @@ class _AddGymState extends State<GymPrice> {
     title: '',
     price: 0,
     description: '',
+    offer: 0,
     imageUrl: '',  location: '' , facilites:  '' , hours: ''
   );
 
@@ -116,46 +117,46 @@ class _AddGymState extends State<GymPrice> {
        children: [
          Container(  margin: EdgeInsets.symmetric(horizontal: 10 , vertical: 20), height: 400, width: 390 ,  child: Card(child: Column(children: [Row(children: [Container  ( margin: EdgeInsets.symmetric(horizontal: 20 , vertical: 10), child: Text('Price', style: TextStyle(fontSize: 30, color: Colors.blue),))],), 
       
-        Container(margin: EdgeInsets.symmetric(horizontal: 10), height: 20, width: 390, decoration: BoxDecoration(border: Border.all(color: Colors.grey),borderRadius: BorderRadius.circular(5)), child: Row(children: [Container(
-                   child: FlatButton( 
+        // Container(margin: EdgeInsets.symmetric(horizontal: 10), height: 20, width: 390, decoration: BoxDecoration(border: Border.all(color: Colors.grey),borderRadius: BorderRadius.circular(5)), child: Row(children: [Container(
+        //            child: FlatButton( 
                                             
-                                              child: Text('Day',style: TextStyle(color: Colors.grey , fontSize: 13),),  
-                                              color: Colors.white,  
-                                              onPressed: () {/** */},  
+        //                                       child: Text('Day',style: TextStyle(color: Colors.grey , fontSize: 13),),  
+        //                                       color: Colors.white,  
+        //                                       onPressed: () {/** */},  
                
-                                          ),
-                 ), 
+        //                                   ),
+        //          ), 
                                     
-                                        FlatButton( 
+        //                                 FlatButton( 
                                           
-                                            child: Text('Month',style: TextStyle(color: Colors.grey , fontSize: 13),),  
-                                            color: Colors.white,  
-                                            onPressed: () {/** */},  
+        //                                     child: Text('Month',style: TextStyle(color: Colors.grey , fontSize: 13),),  
+        //                                     color: Colors.white,  
+        //                                     onPressed: () {/** */},  
                
-                                        ), 
-                                        FlatButton( 
+        //                                 ), 
+        //                                 FlatButton( 
                                           
-                                            child: Text('3 Months',style: TextStyle(color: Colors.grey , fontSize: 13),),  
-                                            color: Colors.white,  
-                                            onPressed: () {/** */},  
+        //                                     child: Text('3 Months',style: TextStyle(color: Colors.grey , fontSize: 13),),  
+        //                                     color: Colors.white,  
+        //                                     onPressed: () {/** */},  
                
-                                        ), 
-                                        FlatButton( 
+        //                                 ), 
+        //                                 FlatButton( 
                                           
-                                            child: Text('6 Months',style: TextStyle(color: Colors.grey , fontSize: 13),),  
-                                            color: Colors.white,  
-                                            onPressed: () {/** */},  
+        //                                     child: Text('6 Months',style: TextStyle(color: Colors.grey , fontSize: 13),),  
+        //                                     color: Colors.white,  
+        //                                     onPressed: () {/** */},  
                
-                                        ), 
-                                        // FlatButton( 
+        //                                 ), 
+        //                                 // FlatButton( 
                                           
-                                        //     child: Text('Month',style: TextStyle(color: Colors.blue , fontSize: 13),),  
-                                        //     color: Colors.white,  
-                                        //     onPressed: () {/** */},  
+        //                                 //     child: Text('Month',style: TextStyle(color: Colors.blue , fontSize: 13),),  
+        //                                 //     color: Colors.white,  
+        //                                 //     onPressed: () {/** */},  
                
-                                        // ), 
+        //                                 // ), 
                                        
-                                          ],),),
+        //                                   ],),),
                                           SizedBox(height: 20,),
                                            Row(
                                              children: [
@@ -183,6 +184,7 @@ class _AddGymState extends State<GymPrice> {
                           isFavorite: _editedProduct.isFavorite,
                            location: _editedProduct.location, 
                                 facilites: _editedProduct.facilites , 
+                                  offer: _editedProduct.offer,
                                 hours: _editedProduct.hours
                         );
                       },
@@ -190,8 +192,48 @@ class _AddGymState extends State<GymPrice> {
                                             ),
                                        SizedBox(width: 10,),    Text('SAR')  ],
                                            ),
+                                             Row(
+                                             children: [
+                                            Expanded(
+                                              child:     TextFormField(
+                      initialValue: _initValues['offer'],
+
+
+
+
+                      decoration:   InputDecoration(
+                       
+                        labelText: 'Offer',
+                      ),
+                      textInputAction: TextInputAction.next,
+                      keyboardType: TextInputType.number,
+                      focusNode: _priceFocusNode,
+                      onFieldSubmitted: (_) {
+                        FocusScope.of(context)
+                            .requestFocus(_descriptionFocusNode);
+                      },
+                     
+                      onSaved: (value) {
+                        _editedProduct = Gyms(
+                          title: _editedProduct.title,
+                          price: double.parse(value!),
+                          description: _editedProduct.description,
+                          imageUrl: _editedProduct.imageUrl,
+                          id: _editedProduct.id,
+                          isFavorite: _editedProduct.isFavorite,
+                           location: _editedProduct.location, 
+                                facilites: _editedProduct.facilites , 
+                                  offer: _editedProduct.offer,
+                                hours: _editedProduct.hours
+                        );
+                      },
+                    ),
+                                            ),
+                                       SizedBox(width: 10,),    Text('%')  ],
+                                           ),
          SizedBox(height: 120,),
-          Container(
+        ],),)),
+        Container(
            width: 250,height: 40,
            decoration: BoxDecoration(borderRadius: BorderRadius.circular(20), color: Colors.blue),
            child: FlatButton(
@@ -222,8 +264,7 @@ class _AddGymState extends State<GymPrice> {
                   style: BorderStyle.solid
                 ), borderRadius: BorderRadius.circular(50)),
                         ),
-         )],),)),
-       ],
+         ) ],
      ),
    ),
    

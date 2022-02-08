@@ -47,7 +47,7 @@ class _WidgtessState extends State<OwnerWidgetss> {
                           ],
                         ) ,Column(children: [Row(
                           children: [
-                           Text(Gym.title, style: TextStyle(fontWeight: FontWeight.bold),),  SizedBox(width: 280,),  Text(Gym.price.toString(), style: TextStyle(fontWeight: FontWeight.bold),),
+                           Text(Gym.title, style: TextStyle(fontWeight: FontWeight.bold),),  SizedBox(width: 220,),  Text(Gym.price.toString(), style: TextStyle(fontWeight: FontWeight.bold),),
                             Text('SAR')
                           ],
                         ) , ],)],)  ),),

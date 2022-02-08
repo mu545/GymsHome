@@ -30,12 +30,13 @@ class CompareGrid extends StatelessWidget {
     //  final cartpro =
     //         Provider.of<cart>(context,);
      final prodctitem = shoecompare ? prodactDate.compareitems : prodactDate.items;
-    
+    //  final productid = ModalRoute.of(context)!.settings.arguments as String;
+    // final lodedproductr = Provider.of<Gymsitems>(context).FindbyId(productid);
        
     return  Scaffold(
 
       appBar: AppBar(backgroundColor: Colors.white, title: Center(child: Text('Compare gyms', style: TextStyle(color: Colors.black),)),elevation: 0,),
-      body :   shoecompare? Container(
+      body :   Container(
         margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         child: ListView.builder(
           scrollDirection: Axis.horizontal,
@@ -44,14 +45,14 @@ class CompareGrid extends StatelessWidget {
               value: prodctitem[ind],
               child:  Row(children: [Column(children: [Container(margin: EdgeInsets.symmetric(horizontal: 10), height: 510, width: 150,  child: Card (   child: Column(
             children: [
-              Container( width: 130, height: 100, child: Image.network(Gym.imageUrl)),SizedBox(height: 30,),Text(Gym.title), SizedBox(height: 80,),Text(Gym.price.toString()), SizedBox(height: 80,),Text('55 KM'),SizedBox(height: 50,),Text('4.5'),  SizedBox(height: 20,), Container(child: IconButton(onPressed: (){}, icon: Icon(Icons.delete))),
+              Container( width: 130, height: 100, child: Image.network(Gym.price.toString())),SizedBox(height: 30,),Text(''), SizedBox(height: 80,),Text(''), SizedBox(height: 80,),Text('55 KM'),SizedBox(height: 50,),Text('4.5'),  SizedBox(height: 20,), Container(child: IconButton(onPressed: (){}, icon: Icon(Icons.delete))),
             ],
           )))],),],)
             ),
            
           
         ),
-      ) : Text('No Gym', )
+      ) 
     );
   }
 }

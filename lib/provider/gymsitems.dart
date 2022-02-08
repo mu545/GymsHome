@@ -19,6 +19,7 @@ class Gymsitems with ChangeNotifier {
             isFavorite: false ,
             location: '' , 
             facilites: '' ,
+            offer: 0,
             hours: '' 
     ),
     //  Gyms(   id: 'p2',
@@ -79,6 +80,7 @@ List<Gyms> get favoriteproduct {
       title: '',
       location: '' , 
       facilites: '' , 
+      offer: 0,
       hours: '' ,
     ));
 
@@ -144,6 +146,7 @@ List<Gyms> get favoriteproduct {
           imageUrl: prodData['imageUrl'],
           location: prodData['location'],
           facilites: prodData['facil'],
+          offer: prodData['offer'],
           hours: prodData['hour'],
         ));
       });
@@ -202,10 +205,7 @@ List<Gyms> get favoriteproduct {
           'isFavorite': product.isFavorite,
           'Location' : product.location, 
           'faciltrs' : product.facilites , 
-          'Sauna' : product.facilites , 
-          'Pool' : product.facilites , 
-          'Rowing' : product.facilites , 
-          'Squash' : product.squash,
+         
           'hpurs' : product.hours
         }),
       );
@@ -218,10 +218,8 @@ List<Gyms> get favoriteproduct {
         id: json.decode(response.body)['name'],
           location: product.location , 
         facilites: product.facilites , 
-        pool: product.pool , 
-        sauna : product.sauna , 
-        rowing: product.rowing ,
-        squash: product.squash,
+        offer: product.offer,
+     
 
         hours: product.hours, 
       );

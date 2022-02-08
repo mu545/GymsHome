@@ -7,14 +7,11 @@ class Gyms with ChangeNotifier  {
  final String id;
   final String title;
   final String description;
-  final double price;
+   double price;
   final String imageUrl;
   final String location ;
   final String facilites ;
-  bool pool ; 
-  bool sauna ; 
-  bool rowing ; 
-  bool squash ;
+  final double offer ;
 
   final String hours;
      bool isFavorite;
@@ -24,7 +21,7 @@ class Gyms with ChangeNotifier  {
   
 
 
-  Gyms({  required this.id,required this.title, required this.description,required this.price,required this.imageUrl,required this.location, required this.facilites,  this.sauna = false,this.rowing = false, this.pool = false, this.squash = false,required this.hours,   this.isFavorite = false, this.iscompared =false , this.isadd=false});
+  Gyms({  required this.id,required this.title, required this.description,required this.price,required this.imageUrl,required this.location, required this.facilites, required  this.offer ,required this.hours,   this.isFavorite = false, this.iscompared =false , this.isadd=false});
   
   Map<String, Gyms> _items = {};
   Map<String, Gyms> get items {
@@ -81,23 +78,23 @@ class Gyms with ChangeNotifier  {
   //   // isFavorite = !isFavorite;
   //   // notifyListeners();
   // }
-  Future <void > poolstatus() async {
-    final oldstates = pool;
-    pool = !pool;
-    notifyListeners();
-    final url = 'https://gymshome-ce96b-default-rtdb.firebaseio.com/gyms.json';
-    try {
-      await http.patch(
-        Uri.parse(url),
-        body: json.encode({'pool': pool}),
-      );
-    } catch (error) {
-      pool = oldstates;
-    }
+  // Future <void > poolstatus() async {
+  //   final oldstates = pool;
+  //   pool = !pool;
+  //   notifyListeners();
+  //   final url = 'https://gymshome-ce96b-default-rtdb.firebaseio.com/gyms.json';
+  //   try {
+  //     await http.patch(
+  //       Uri.parse(url),
+  //       body: json.encode({'pool': pool}),
+  //     );
+  //   } catch (error) {
+  //     pool = oldstates;
+  //   }
 
-    pool = !pool;
-    notifyListeners();
-  }
+  //   pool = !pool;
+  //   notifyListeners();
+  // }
 
   void favoriteproducts() {
     final oldstates = isadd;
@@ -105,7 +102,7 @@ class Gyms with ChangeNotifier  {
 
     notifyListeners();
   }
-   void additem(String productId, String title, double price, String image) {
+   void additem(String productId, String title, double price, double offer , String image) {
     if (_items.containsKey(productId)) {
       _items.update(
           productId,
@@ -116,7 +113,8 @@ class Gyms with ChangeNotifier  {
               price: exe.price,
               imageUrl: exe.imageUrl, 
               location: exe.location, 
-              facilites: exe.facilites , 
+              facilites: exe.facilites ,
+              offer: exe.offer, 
               hours: exe.hours));
     } else {
       _items.putIfAbsent(
@@ -126,7 +124,7 @@ class Gyms with ChangeNotifier  {
               title: title,
               description: description,
               price: price,
-             
+             offer: offer,
               imageUrl: imageUrl , location: location , facilites: facilites , hours: hours));
     }
     notifyListeners();

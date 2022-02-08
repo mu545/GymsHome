@@ -31,6 +31,7 @@ class _EditaddState extends State<Editadd> {
     title: '',
     price: 0,
     description: '',
+    offer: 0,
     imageUrl: '',  location: '' , facilites:  '' , hours: ''
   );
 
@@ -164,38 +165,39 @@ class _EditaddState extends State<Editadd> {
                                 id: _editedProduct.id,
                                 isFavorite: _editedProduct.isFavorite,
                                  location: _editedProduct.location, 
+                                   offer: _editedProduct.offer,
                                       facilites: _editedProduct.facilites , 
                                       hours: _editedProduct.hours
                               );
                             },
                           ),
-                          TextFormField(
-                            initialValue: _initValues['price'],
-                            decoration: InputDecoration(
-                              labelText: 'Price',
-                            ),
-                            textInputAction: TextInputAction.next,
-                            keyboardType: TextInputType.number,
-                            focusNode: _priceFocusNode,
-                            onFieldSubmitted: (_) {
-                              FocusScope.of(context)
-                                  .requestFocus(_descriptionFocusNode);
-                            },
+                          // TextFormField(
+                          //   initialValue: _initValues['price'],
+                          //   decoration: InputDecoration(
+                          //     labelText: 'Price',
+                          //   ),
+                          //   textInputAction: TextInputAction.next,
+                          //   keyboardType: TextInputType.number,
+                          //   focusNode: _priceFocusNode,
+                          //   onFieldSubmitted: (_) {
+                          //     FocusScope.of(context)
+                          //         .requestFocus(_descriptionFocusNode);
+                          //   },
                            
-                            onSaved: (value) {
-                              _editedProduct = Gyms(
-                                title: _editedProduct.title,
-                                price: double.parse(value!),
-                                description: _editedProduct.description,
-                                imageUrl: _editedProduct.imageUrl,
-                                id: _editedProduct.id,
-                                isFavorite: _editedProduct.isFavorite,
-                                 location: _editedProduct.location, 
-                                      facilites: _editedProduct.facilites , 
-                                      hours: _editedProduct.hours
-                              );
-                            },
-                          ),
+                          //   onSaved: (value) {
+                          //     _editedProduct = Gyms(
+                          //       title: _editedProduct.title,
+                          //       price: double.parse(value!),
+                          //       description: _editedProduct.description,
+                          //       imageUrl: _editedProduct.imageUrl,
+                          //       id: _editedProduct.id,
+                          //       isFavorite: _editedProduct.isFavorite,
+                          //        location: _editedProduct.location, 
+                          //             facilites: _editedProduct.facilites , 
+                          //             hours: _editedProduct.hours
+                          //     );
+                          //   },
+                          // ),
                           TextFormField(
                             initialValue: _initValues['description'],
                             decoration: InputDecoration(
@@ -214,34 +216,35 @@ class _EditaddState extends State<Editadd> {
                                 id: _editedProduct.id,
                                 isFavorite: _editedProduct.isFavorite,
                                  location: _editedProduct.location, 
+                                   offer: _editedProduct.offer,
                                       facilites: _editedProduct.facilites , 
                                       hours: _editedProduct.hours
                               );
                             },
                           ),
-                              TextFormField(
-                            initialValue: _initValues['faciltrs'],
-                            decoration: InputDecoration(
-                              labelText: 'faciltrs',
-                            ),
-                            maxLines: 3,
-                            focusNode: _descriptionFocusNode,
-                            keyboardType: TextInputType.multiline,
+                          //     TextFormField(
+                          //   initialValue: _initValues['faciltrs'],
+                          //   decoration: InputDecoration(
+                          //     labelText: 'faciltrs',
+                          //   ),
+                          //   maxLines: 3,
+                          //   focusNode: _descriptionFocusNode,
+                          //   keyboardType: TextInputType.multiline,
                          
-                            onSaved: (value) {
-                              _editedProduct = Gyms(
-                                title: _editedProduct.title,
-                                price: _editedProduct.price,
-                                description: _editedProduct.description,
-                                imageUrl: _editedProduct.imageUrl,
-                                id: _editedProduct.id,
-                                isFavorite: _editedProduct.isFavorite,
-                                 location: _editedProduct.location, 
-                                      facilites: value! , 
-                                      hours: _editedProduct.hours
-                              );
-                            },
-                          ),
+                          //   onSaved: (value) {
+                          //     _editedProduct = Gyms(
+                          //       title: _editedProduct.title,
+                          //       price: _editedProduct.price,
+                          //       description: _editedProduct.description,
+                          //       imageUrl: _editedProduct.imageUrl,
+                          //       id: _editedProduct.id,
+                          //       isFavorite: _editedProduct.isFavorite,
+                          //        location: _editedProduct.location, 
+                          //             facilites: value! , 
+                          //             hours: _editedProduct.hours
+                          //     );
+                          //   },
+                          // ),
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: <Widget>[
@@ -289,6 +292,7 @@ class _EditaddState extends State<Editadd> {
                                       id: _editedProduct.id,
                                       isFavorite: _editedProduct.isFavorite,
                                       location: _editedProduct.location, 
+                                        offer: _editedProduct.offer,
                                       facilites: _editedProduct.facilites , 
                                       hours: _editedProduct.hours
                                     );
@@ -344,7 +348,7 @@ class _EditaddState extends State<Editadd> {
                                             child: FlatButton(
                                   child: Text(
                                       'Next', style: TextStyle(color: Colors.white),),
-                                  onPressed: _Saved ,
+                                  onPressed: (){Navigator.of(context).pushNamed(Location.routenamed);} ,
                                   padding: EdgeInsets.symmetric(horizontal: 30.0, vertical: 4),
                                   materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                                   textColor: Theme.of(context).primaryColor,

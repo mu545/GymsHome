@@ -14,7 +14,7 @@ class ImageInput extends StatefulWidget {
 class _ImageInputState extends State<ImageInput> {
    File ? _saveimage   ;
   @override
-  Future<void> _takedpicture() async {
+   Future<void> _takedpicture() async {
     File Imagefile =
         await ImagePicker.platform.getImage(
       source: ImageSource.camera,
@@ -49,7 +49,7 @@ class _ImageInputState extends State<ImageInput> {
                 color: Colors.blue,
               ),
               label: Text('Take picture'),
-            )
+            ), 
           ],
         ),
          Container(

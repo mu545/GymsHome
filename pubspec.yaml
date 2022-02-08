@@ -41,7 +41,7 @@ dependencies:
   path: ^1.8.0
   sqflite: ^2.0.2
   location: ^4.3.0
-  stripe_payment: 
+  # stripe_payment: 
 
 
   # The following adds the Cupertino Icons font to your application.

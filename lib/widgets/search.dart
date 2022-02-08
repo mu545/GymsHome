@@ -32,13 +32,14 @@ class _SearchlesssState extends State<Searchlesss> {
         context: context,
         delegate: SearchPage<Gyms>(
           
+          barTheme: ThemeData(backgroundColor: Colors.white) ,
           onQueryUpdate: (s) => print(s),
           items: productdata.items,
           searchStyle:  TextStyle(color: Colors.purple),
           searchLabel: 'Search ',
           suggestion: Center(
             child: Text(
-              'Write some characters  ',
+              'Write gym name  ',
               style: TextStyle(fontSize: 20, color: Colors.black),
             ),
           ),

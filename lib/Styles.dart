@@ -3,7 +3,7 @@ import 'package:flutter/painting.dart';
 
 //Colors
 class colors {
-  static const blue_base = Color.fromARGB(253, 71, 153, 183);
+  static const blue_base = Color.fromARGB(252, 71, 153, 183);
   static const blue_smooth = Color.fromARGB(255, 207, 227, 234);
 
   static const yellow_base = Color.fromARGB(255, 243, 167, 46);

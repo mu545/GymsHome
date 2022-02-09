@@ -1,27 +1,42 @@
+// database
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:gymhome/GymOwnerwidgets/ownerhome.dart';
 //import icons
 //import colors
 import 'package:gymhome/Styles.dart';
+import 'package:gymhome/widgets/newhome.dart';
 import 'package:gymhome/widgets/resetpass.dart';
 
+import '../authintactions/httpexe.dart';
+
+enum AuthMode { Signup, Login }
+
 class welcome extends StatefulWidget {
-  const welcome({Key? key}) : super(key: key);
+  //const welcome({Key? key}) : super(key: key);
 
   @override
   _welcomeState createState() => _welcomeState();
 }
 
-Map<String, GlobalKey<FormState>> _formKeys = {
-  'signup': GlobalKey<FormState>(),
-  'login': GlobalKey<FormState>()
-};
-Map<String, String> _authData = {
-  'email': '',
-  'password': '',
-};
+final password2 = TextEditingController();
+final _formkey = GlobalKey<FormState>();
+AuthMode _auth = AuthMode.Login;
+// Map<String, GlobalKey<FormState>> _formKeys = {
+//   'signup': GlobalKey<FormState>(),
+//   'login': GlobalKey<FormState>()
+// };
+// Map<String, String> _authData = {
+//   'email': '',
+//   'password': '',
+// };
 
 class _welcomeState extends State<welcome> {
-  bool isSignup = true;
+  final _auth = FirebaseAuth.instance;
+  late String email = '';
+  late String password = '';
+  bool isSignup = false;
   bool iscustomer = true;
 
   @override
@@ -165,43 +180,247 @@ class _welcomeState extends State<welcome> {
                       )
                     ],
                   ),
-                  // Sign up
-                  if (isSignup)
-                    signup()
-                  else
-                    //Login
-                    Container(
-                      margin: EdgeInsets.only(top: 20),
-                      child: Form(
-                        key: _formKeys['login'],
-                        child: Column(
-                          children: [
-                            textfield(false, true, "Your email"),
-                            textfield(true, false, "Password"),
+
+                  Container(
+                    margin: EdgeInsets.only(top: 20),
+                    child: Form(
+                      key: _formkey,
+                      child: Column(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 20),
+                            child: TextFormField(
+                                obscureText: false,
+                                keyboardType: TextInputType.emailAddress,
+                                decoration: InputDecoration(
+                                  enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color:
+                                              Color.fromARGB(62, 99, 99, 99)),
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(20))),
+                                  focusedBorder: OutlineInputBorder(
+                                      borderSide:
+                                          BorderSide(color: colors.blue_base),
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(20))),
+                                  contentPadding: EdgeInsets.all(10),
+                                  hintText: "your email",
+                                  hintStyle: TextStyle(
+                                    color: colors.hinttext,
+                                  ),
+                                ),
+                                validator: (value) {
+                                  if (value!.isEmpty || !value.contains('@'))
+                                    return 'Invalid email!';
+                                },
+                                onChanged: (value) {
+                                  email = value;
+                                }
+                                // onSaved: (value) {
+                                //   if (isemail) email = value!;
+                                //   if (ispassword) password = value!;
+                                // },
+                                ),
+                          ),
+                          // password
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 20),
+                            child: TextFormField(
+                              obscureText: true,
+                              keyboardType: TextInputType.visiblePassword,
+                              decoration: InputDecoration(
+                                enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: Color.fromARGB(62, 99, 99, 99)),
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(20))),
+                                focusedBorder: OutlineInputBorder(
+                                    borderSide:
+                                        BorderSide(color: colors.blue_base),
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(20))),
+                                contentPadding: EdgeInsets.all(10),
+                                hintText: "password",
+                                hintStyle: TextStyle(
+                                  color: colors.hinttext,
+                                ),
+                              ),
+                              validator: (value) {
+                                if (value!.isEmpty || value.length < 5) {
+                                  return 'Password is too short!';
+                                }
+                              },
+                              onChanged: (value) {
+                                password = value;
+                              },
+                              // onSaved: (value) {
+                              //   if (isemail) email = value!;
+                              //   if (ispassword) password = value!;
+                              // },
+                            ),
+                          ),
+                          // confirm password
+                          if (isSignup)
+                            Padding(
+                              padding: const EdgeInsets.only(bottom: 20),
+                              child: TextFormField(
+                                controller: password2,
+                                obscureText: true,
+                                keyboardType: TextInputType.visiblePassword,
+                                decoration: InputDecoration(
+                                  enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color:
+                                              Color.fromARGB(62, 99, 99, 99)),
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(20))),
+                                  focusedBorder: OutlineInputBorder(
+                                      borderSide:
+                                          BorderSide(color: colors.blue_base),
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(20))),
+                                  contentPadding: EdgeInsets.all(10),
+                                  hintText: "confirm password",
+                                  hintStyle: TextStyle(
+                                    color: colors.hinttext,
+                                  ),
+                                ),
+                                validator: (value) {
+                                  if (value!.isEmpty ||
+                                      value.length < 5 ||
+                                      password2.value.toString() == password) {
+                                    return 'password does not match!';
+                                  }
+                                },
+                                onChanged: (value) {
+                                  // email = value;
+                                },
+                                // onSaved: (value) {
+                                //   if (isemail) email = value!;
+                                //   if (ispassword) password = value!;
+                                // },
+                              ),
+                            ),
+
+                          //  forgot password
+                          if (!isSignup)
                             Align(
                               alignment: Alignment.bottomRight,
-                              child: GestureDetector(
-                                onTap: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              const resetpassword()));
-                                },
-                                child: Text(
-                                  "Forget password?",
-                                  style: TextStyle(
-                                    color: colors.blue_base,
+                              child: Padding(
+                                padding: EdgeInsets.only(bottom: 10),
+                                child: GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                const resetpassword()));
+                                  },
+                                  child: Text(
+                                    "Forget password?",
+                                    style: TextStyle(
+                                      fontFamily: 'Epilogue',
+                                      fontSize: 16,
+                                      color: colors.blue_base,
+                                    ),
                                   ),
                                 ),
                               ),
-                            )
-                          ],
-                        ),
+                            ),
+                          if (isSignup)
+                            Padding(
+                              padding: EdgeInsets.all(20),
+                              child: Row(
+                                children: [
+// is customer?
+
+                                  GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        iscustomer = true;
+                                      });
+                                    },
+                                    child: Row(
+                                      children: [
+                                        Icon(
+                                          Icons.person_rounded,
+                                          size: 30,
+                                          color: iscustomer
+                                              ? colors.iconscolor
+                                              : colors.hinttext,
+                                        ),
+                                        SizedBox(
+                                          width: 5,
+                                        ),
+                                        Text(
+                                          "Customer",
+                                          style: TextStyle(
+                                            fontSize: 16,
+                                            fontFamily: 'Roborto',
+                                            color: iscustomer
+                                                ? colors.iconscolor
+                                                : colors.hinttext,
+                                            fontWeight: iscustomer
+                                                ? FontWeight.bold
+                                                : FontWeight.normal,
+                                          ),
+                                        ),
+                                        Container(
+                                          height: 40,
+                                          width: 40,
+                                          margin: EdgeInsets.only(right: 8),
+                                          decoration: BoxDecoration(
+                                            color: iscustomer
+                                                ? Colors.white
+                                                : Colors.white,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+
+// is gym owner?
+                                  GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        iscustomer = false;
+                                      });
+                                    },
+                                    child: Row(
+                                      children: [
+                                        Icon(
+                                          Icons.business_rounded,
+                                          size: 30,
+                                          color: iscustomer
+                                              ? colors.hinttext
+                                              : colors.iconscolor,
+                                        ),
+                                        SizedBox(
+                                          width: 5,
+                                        ),
+                                        Text(
+                                          "Gym owner",
+                                          style: TextStyle(
+                                            fontSize: 16,
+                                            fontFamily: 'Roborto',
+                                            color: iscustomer
+                                                ? colors.hinttext
+                                                : colors.iconscolor,
+                                            fontWeight: iscustomer
+                                                ? FontWeight.normal
+                                                : FontWeight.bold,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                        ],
                       ),
                     ),
-                  SizedBox(
-                    height: 10,
                   ),
 
                   //submit botton
@@ -211,20 +430,72 @@ class _welcomeState extends State<welcome> {
                         primary: colors.blue_base,
                         onPrimary: colors.blue_smooth,
                         minimumSize: Size(250, 40)),
-                    onPressed: () {
+                    onPressed: () async {
                       // Validate returns true if the form is valid, or false otherwise.
-                      if (isSignup &&
-                          (_formKeys['signup']!.currentState!.validate())) {}
-                      if (!isSignup &&
-                          (_formKeys['login']!.currentState!.validate())) {}
-                      // If the form is valid, display a snackbar. In the real world,
-                      // you'd often call a server or save the information in a database.
-                    },
+                      try {
+                        // ignore: curly_braces_in_flow_control_structures
+                        if (isSignup && _formkey.currentState!.validate()) {
+                          await _auth.createUserWithEmailAndPassword(
+                              email: email, password: password);
+                          if (iscustomer) {
+                            FirebaseFirestore.instance
+                                .collection("Customer")
+                                .doc(email)
+                                .set({});
+                            Navigator.of(context).pushNamed(NewHome.rounamed);
+                          } else {
+                            FirebaseFirestore.instance
+                                .collection("Gym Owner")
+                                .doc(email)
+                                .set({});
+                            Navigator.of(context).pushNamed(OwnerHome.rounamed);
+                          }
+                          // Navigator.pushNamed(context, ChatScreen.screenRoute);
+                        } else if (!isSignup &&
+                            _formkey.currentState!.validate()) {
+                          final user = await _auth.signInWithEmailAndPassword(
+                              email: email, password: password);
+                          var collection = FirebaseFirestore.instance
+                              .collection('Gym Owner');
+                          var docSnapshot = await collection.doc(email).get();
+                          if (docSnapshot.exists) {
+                            Navigator.of(context).pushNamed(OwnerHome.rounamed);
+                          } else
+                            Navigator.of(context).pushNamed(NewHome.rounamed);
+                        }
+                      } on FirebaseAuthException catch (e) {
+                        String messages = e.code;
+                        if (e.code == 'weak-password') {
+                          messages = 'The password provided is too weak.';
+                        } else if (e.code == 'email-already-in-use') {
+                          messages =
+                              'The account already exists for that email.';
+                        }
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(
+                              messages,
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontFamily: 'Roboto',
+                                  fontSize: 16),
+                            ),
+                            backgroundColor: colors.red_base,
+                          ),
+                        );
+                      } catch (e) {
+                        print(e);
+                      }
+                    }
+
+                    // If the form is valid, display a snackbar. In the real world,
+                    // you'd often call a server or save the information in a database.
+                    ,
                     child: Text(
                       isSignup ? "Sign Up" : "Login",
                       style: TextStyle(
                         color: Colors.white,
-                        fontFamily: 'Roboto',
+                        fontFamily: 'Epilogue',
                         fontSize: 18,
                       ),
                     ),
@@ -234,146 +505,6 @@ class _welcomeState extends State<welcome> {
             ),
           ),
         ],
-      ),
-    );
-  }
-
-  Container signup() {
-    return Container(
-      margin: EdgeInsets.only(top: 20),
-      child: Column(children: [
-        Form(
-          key: _formKeys['signup'],
-          child: Column(
-            children: [
-              textfield(false, true, "Your email"),
-              textfield(true, false, "Password"),
-              // textfield(true, false, "confirm password"),
-            ],
-          ),
-        ),
-        Padding(
-          padding: EdgeInsets.all(20),
-          child: Row(
-            children: [
-// is customer?
-
-              GestureDetector(
-                onTap: () {
-                  setState(() {
-                    iscustomer = true;
-                  });
-                },
-                child: Row(
-                  children: [
-                    Container(
-                      height: 30,
-                      width: 30,
-                      margin: EdgeInsets.only(right: 8),
-                      decoration: BoxDecoration(
-                        color: iscustomer ? colors.blue_base : Colors.white,
-                        border: Border.all(
-                          width: 1,
-                          color: colors.hinttext,
-                        ),
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                      child: Icon(
-                        Icons.person,
-                        color: iscustomer
-                            ? Color.fromARGB(255, 255, 255, 255)
-                            : colors.hinttext,
-                      ),
-                    ),
-                    Text(
-                      "Customer",
-                      style: TextStyle(
-                        color: iscustomer ? colors.black60 : colors.hinttext,
-                      ),
-                    )
-                  ],
-                ),
-              ),
-
-              SizedBox(
-                width: 30,
-              ),
-
-// is gym owner?
-              GestureDetector(
-                onTap: () {
-                  setState(() {
-                    iscustomer = false;
-                  });
-                },
-                child: Row(
-                  children: [
-                    Container(
-                      height: 30,
-                      width: 30,
-                      margin: EdgeInsets.only(right: 8),
-                      decoration: BoxDecoration(
-                        color: iscustomer ? Colors.white : colors.blue_base,
-                        border: Border.all(
-                          width: 1,
-                          color: colors.hinttext,
-                        ),
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                      child: Icon(
-                        Icons.person,
-                        color: iscustomer
-                            ? colors.hinttext
-                            : Color.fromARGB(255, 255, 255, 255),
-                      ),
-                    ),
-                    Text(
-                      "Gym owner",
-                      style: TextStyle(
-                        color: iscustomer ? colors.hinttext : colors.black60,
-                      ),
-                    )
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-      ]),
-    );
-  }
-
-  Widget textfield(bool ispassword, bool isemail, String hint) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 20),
-      child: TextFormField(
-        obscureText: ispassword,
-        keyboardType: isemail ? TextInputType.emailAddress : TextInputType.text,
-        decoration: InputDecoration(
-          enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Color.fromARGB(62, 99, 99, 99)),
-              borderRadius: BorderRadius.all(Radius.circular(20))),
-          focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: colors.blue_base),
-              borderRadius: BorderRadius.all(Radius.circular(20))),
-          contentPadding: EdgeInsets.all(10),
-          hintText: hint,
-          hintStyle: TextStyle(
-            color: colors.hinttext,
-          ),
-        ),
-        validator: (value) {
-          if (isemail && (value!.isEmpty || !value.contains('@'))) {
-            return 'Invalid email!';
-          }
-          if (ispassword && (value!.isEmpty || value.length < 5)) {
-            return 'Password is too short!';
-          }
-        },
-        onSaved: (value) {
-          if (isemail) _authData['email'] = value!;
-          if (ispassword) _authData['password'] = value!;
-        },
       ),
     );
   }

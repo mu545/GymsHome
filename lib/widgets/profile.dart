@@ -1,6 +1,8 @@
 import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:gymhome/widgets/imageinput.dart';
+import 'package:gymhome/widgets/welcome.dart';
 import 'package:flutter/material.dart';
 import 'package:gymhome/Styles.dart';
 import 'package:gymhome/widgets/resetpass.dart';
@@ -17,7 +19,14 @@ class Profile extends StatefulWidget {
 
 class _ProfileState extends State<Profile> {
   bool isedit = false;
-  var newName = '';
+  String newName = '';
+  //final _auth = FirebaseAuth.instance;
+  bool isNameValid = true;
+
+  TextEditingController _nameTEC = TextEditingController();
+
+  final FirebaseAuth auth = FirebaseAuth.instance;
+
   File? _imageFile;
 
   Future getImageGallery() async {
@@ -70,8 +79,9 @@ class _ProfileState extends State<Profile> {
       child: Column(
         children: <Widget>[
           Text(
-            "Choose Profile photo",
+            "Choose Profile Photo",
             style: TextStyle(
+              fontFamily: 'Epilouge',
               fontSize: 20.0,
             ),
           ),
@@ -98,6 +108,39 @@ class _ProfileState extends State<Profile> {
       ),
     );
   }
+
+  Widget iconEdit() {
+    if (isedit == false)
+      return Icon(
+        Icons.edit,
+        color: Colors.blueGrey,
+      );
+    else
+      return Icon(
+        Icons.check,
+        color: Colors.blueGrey,
+      );
+  }
+
+  var userEmail = FirebaseAuth.instance.currentUser!.email;
+
+  // Trying other way
+
+  Future getEmail() async {
+    // var userEmail = FirebaseAuth.instance.currentUser!.email;
+    var userName = FirebaseFirestore.instance
+        .collection('Customer')
+        .doc(userEmail)
+        .get()
+        .then(
+      (snapshot) {
+        snapshot.data().toString();
+      },
+    );
+  }
+  //var userName = FirebaseFirestore.instance.collection('Customer').doc(FirebaseAuth.instance.currentUser!.email).get();
+  //                     var docSnapshot = await collection.doc(auth).get();
+  //                      if (docSnapshot.exists
 
   @override
   Widget build(BuildContext context) {
@@ -190,6 +233,7 @@ class _ProfileState extends State<Profile> {
                             Expanded(
                               child: isedit
                                   ? TextFormField(
+                                      controller: _nameTEC,
                                       decoration: InputDecoration(
                                         enabledBorder: OutlineInputBorder(
                                             borderSide: BorderSide(
@@ -208,32 +252,31 @@ class _ProfileState extends State<Profile> {
                                           color: colors.hinttext,
                                         ),
                                       ),
-                                      keyboardType: TextInputType.name,
-
-                                      // validator: (value) {
-                                      //   if (value!.isEmpty || !value.contains('@')) {
-                                      //     return 'Invalid email!';
-                                      //   }
-                                      // },
-                                      // onSaved: (value) {
-                                      //   _authData['email'] = value!;
-                                      // },
+                                      //          keyboardType: TextInputType.name,
+                                      //             validator: (value) {
+                                      //               if (value!.isEmpty) {
+                                      //                 return 'Invalid Name';
+                                      //                }
+                                      //               },
+                                      //               onSaved: (value) {
+                                      //                 newName = value!;
+                                      //                },
                                     )
                                   : Text(
-                                      "Abdullah",
+                                      _nameTEC.text,
                                       style: TextStyle(fontFamily: 'Epilogue'),
                                     ),
                             ),
                             IconButton(
                               onPressed: () {
                                 setState(() {
-                                  isedit = true;
+                                  if (isedit == true)
+                                    isedit = false;
+                                  else
+                                    isedit = true;
                                 });
                               },
-                              icon: Icon(
-                                Icons.edit,
-                                color: Colors.blueGrey,
-                              ),
+                              icon: iconEdit(),
                             ),
                           ],
                         ),
@@ -250,7 +293,7 @@ class _ProfileState extends State<Profile> {
                               height: 50,
                             ),
                             Expanded(
-                              child: Text("Milfy@gmail.com"),
+                              child: Text('$userEmail'),
                               /*            child: isedit
                                     ? TextFormField(
                                         decoration: InputDecoration(
@@ -396,7 +439,7 @@ class _ProfileState extends State<Profile> {
                     children: [
                       FlatButton(
                         onPressed: () {
-                          FirebaseAuth.instance.signOut();
+                          //        FirebaseAuth.instance.signOut();
                         },
                         child: Container(
                           width: 100,

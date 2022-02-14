@@ -26,10 +26,30 @@ class _ProfileState extends State<Profile> {
 
   TextEditingController _nameTEC = TextEditingController();
 
+  //read data
+  read() async {
+    StreamBuilder(
+        stream: FirebaseFirestore.instance.collection('Customer').snapshots(),
+        builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (snapshot.hasData) {
+            return ListView.builder(
+                itemCount: snapshot.data!.docs.length,
+                itemBuilder: (context, i) {
+                  QueryDocumentSnapshot x = snapshot.data!.docs[i];
+                  return Text(x['Email']);
+                });
+          }
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        });
+  }
+
   final FirebaseAuth auth = FirebaseAuth.instance;
 
   File? _imageFile;
 
+// get image method GALLERY
   Future getImageGallery() async {
     var image =
         await ImagePicker.platform.pickImage(source: ImageSource.gallery);
@@ -41,20 +61,7 @@ class _ProfileState extends State<Profile> {
     });
   }
 
-  Future upoladPic(BuildContext context) async {
-    final fileName = basename(_imageFile!.path);
-    //   StorageReference
-  }
-
-// delete later,,
-  Future<File> saveImageParmanetly(String imagePath) async {
-    final directory = await getApplicationDocumentsDirectory();
-    final name = basename(imagePath);
-    final image = File('${directory.path}/$name');
-
-    return File(imagePath).copy(image.path);
-  }
-
+// get image method CAMERA
   Future getImageCamera() async {
     final image =
         await ImagePicker.platform.pickImage(source: ImageSource.camera);
@@ -63,73 +70,6 @@ class _ProfileState extends State<Profile> {
     setState(() {
       this._imageFile = imageTemp;
     });
-  }
-
-/*  void takePhoto(ImageSource source) async {
-    final pickedFile = await ImagePicker.platform.getImage(
-      source: source,
-    ) as File;
-    setState(() {
-      _imageFile = pickedFile;
-    });
-  } */
-
-  Widget bottomSheet() {
-    return Container(
-      height: 150,
-      // width: MediaQuery.of(context).size.width,
-      margin: EdgeInsets.symmetric(
-        horizontal: 20,
-        vertical: 20,
-      ),
-      child: Column(
-        children: <Widget>[
-          Text(
-            "Choose Profile Photo",
-            style: TextStyle(
-              fontFamily: 'Epilouge',
-              fontSize: 20.0,
-            ),
-          ),
-          SizedBox(
-            height: 20,
-          ),
-          Column(
-            children: [
-              Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    FlatButton.icon(
-                      icon: Icon(Icons.camera),
-                      onPressed: () {
-                        getImageCamera();
-                      },
-                      label: Text("Camera"),
-                    ),
-                    FlatButton.icon(
-                      icon: Icon(Icons.image),
-                      onPressed: () {
-                        getImageGallery();
-                      },
-                      label: Text("Gallery"),
-                    ),
-                  ]),
-              Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    FlatButton.icon(
-                      icon: Icon(Icons.check),
-                      onPressed: () {
-                        //         uploadPic(context);
-                      },
-                      label: Text("Submit Photo"),
-                    ),
-                  ]),
-            ],
-          )
-        ],
-      ),
-    );
   }
 
   Widget iconEdit() {
@@ -147,36 +87,84 @@ class _ProfileState extends State<Profile> {
 
   var userEmail = FirebaseAuth.instance.currentUser!.email;
 
-  // Trying other way
-
-  Future getEmail() async {
-    // var userEmail = FirebaseAuth.instance.currentUser!.email;
-    var userName = FirebaseFirestore.instance
-        .collection('Customer')
-        .doc(userEmail)
-        .get()
-        .then(
-      (snapshot) {
-        snapshot.data().toString();
-      },
-    );
-  }
-
-  Future gettingName() async {
-    DocumentSnapshot name = await FirebaseFirestore.instance
-        .collection('Customer')
-        .doc('$userEmail')
-        .get();
-  }
-  //var userName = FirebaseFirestore.instance
-  //  .collection('Customer')
-  //  .doc(FirebaseAuth.instance.currentUser!.email)
-  //   .get();
-  //      var docSnapshot = await collection.doc(auth).get();
-  //      if (docSnapshot.exists
-
   @override
   Widget build(BuildContext context) {
+    // TO DATABASE
+
+    uploadPic() async {
+      FirebaseStorage storage = FirebaseStorage.instance;
+      Reference ref = storage.ref().child("image1" + DateTime.now().toString());
+      UploadTask uploadTask = ref.putFile(_imageFile!);
+      uploadTask.then((res) {
+        res.ref.getDownloadURL();
+      });
+      setState(() {
+        print("Profile Picture Uploaded");
+        Scaffold.of(context)
+            .showSnackBar(SnackBar(content: Text('Profile Picture Uploaded')));
+      });
+    }
+
+// TRY TO MAKE IT DISAPER?
+    Widget bottomSheet() {
+      return Container(
+        height: 150,
+        // width: MediaQuery.of(context).size.width,
+        margin: EdgeInsets.symmetric(
+          horizontal: 20,
+          vertical: 20,
+        ),
+        child: Column(
+          children: <Widget>[
+            Text(
+              "Choose Profile Photo",
+              style: TextStyle(
+                fontFamily: 'Epilouge',
+                fontSize: 20.0,
+              ),
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            Column(
+              children: [
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      FlatButton.icon(
+                        icon: Icon(Icons.camera),
+                        onPressed: () {
+                          getImageCamera();
+                        },
+                        label: Text("Camera"),
+                      ),
+                      FlatButton.icon(
+                        icon: Icon(Icons.image),
+                        onPressed: () {
+                          getImageGallery();
+                        },
+                        label: Text("Gallery"),
+                      ),
+                    ]),
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      FlatButton.icon(
+                        icon: Icon(Icons.check),
+                        onPressed: () {
+                          //try parametter
+                          uploadPic();
+                        },
+                        label: Text("Submit Photo"),
+                      ),
+                    ]),
+              ],
+            )
+          ],
+        ),
+      );
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -187,7 +175,7 @@ class _ProfileState extends State<Profile> {
         centerTitle: true,
       ),
       body: Builder(
-        builder: (context) => SingleChildScrollView(
+        builder: (BuildContext contextBody) => SingleChildScrollView(
           child: Column(
             children: [
               Container(
@@ -222,7 +210,7 @@ class _ProfileState extends State<Profile> {
                                   child: InkWell(
                                     onTap: () {
                                       showModalBottomSheet(
-                                        context: context,
+                                        context: contextBody,
                                         builder: ((builder) => bottomSheet()),
                                       );
                                     },

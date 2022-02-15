@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:gymhome/GymOwnerwidgets/ownerhome.dart';
 //import icons
 //import colors
+
 import 'package:gymhome/Styles.dart';
 import 'package:gymhome/widgets/newhome.dart';
 import 'package:gymhome/widgets/resetpass.dart';
@@ -437,6 +438,7 @@ class _welcomeState extends State<welcome> {
                         if (isSignup && _formkey.currentState!.validate()) {
                           await _auth.createUserWithEmailAndPassword(
                               email: email, password: password);
+
                           if (iscustomer) {
                             FirebaseFirestore.instance
                                 .collection("Customer")

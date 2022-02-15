@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:gymhome/authintactions/database.dart';
 import 'package:gymhome/widgets/imageinput.dart';
 import 'package:gymhome/widgets/welcome.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +11,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:gymhome/authintactions/database.dart';
+import 'package:provider/provider.dart';
 
 class Profile extends StatefulWidget {
   const Profile({Key? key}) : super(key: key);
@@ -20,30 +23,27 @@ class Profile extends StatefulWidget {
 
 class _ProfileState extends State<Profile> {
   bool isedit = false;
-  String newName = '';
-  //final _auth = FirebaseAuth.instance;
-  bool isNameValid = true;
 
   TextEditingController _nameTEC = TextEditingController();
 
   //read data
-  read() async {
-    StreamBuilder(
-        stream: FirebaseFirestore.instance.collection('Customer').snapshots(),
-        builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-          if (snapshot.hasData) {
-            return ListView.builder(
-                itemCount: snapshot.data!.docs.length,
-                itemBuilder: (context, i) {
-                  QueryDocumentSnapshot x = snapshot.data!.docs[i];
-                  return Text(x['Email']);
-                });
-          }
-          return Center(
-            child: CircularProgressIndicator(),
-          );
-        });
-  }
+  //read() async {
+  //  StreamBuilder(
+  //     stream: FirebaseFirestore.instance.collection('Customer').snapshots(),
+  //    builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+  //      if (snapshot.hasData) {
+  //      return ListView.builder(
+  //           itemCount: snapshot.data!.docs.length,
+  //          itemBuilder: (context, i) {
+  //           QueryDocumentSnapshot x = snapshot.data!.docs[i];
+  //            return Text(x['Email']);
+  //          });
+  //     }
+  //      return Center(
+  //        child: CircularProgressIndicator(),
+  //      );
+  //     });
+  //}
 
   final FirebaseAuth auth = FirebaseAuth.instance;
 
@@ -51,13 +51,13 @@ class _ProfileState extends State<Profile> {
 
 // get image method GALLERY
   Future getImageGallery() async {
-    var image =
+    final image =
         await ImagePicker.platform.pickImage(source: ImageSource.gallery);
     if (image == null) return;
 
-    // PREV: final imageParmenant = await saveImageParmanetly(image.path);
+    final imageTemp = File(image.path);
     setState(() {
-      _imageFile = image as File?;
+      _imageFile = imageTemp;
     });
   }
 
@@ -73,16 +73,30 @@ class _ProfileState extends State<Profile> {
   }
 
   Widget iconEdit() {
-    if (isedit == false)
+    if (isedit == false) {
+      //  readsName();
       return Icon(
         Icons.edit,
         color: Colors.blueGrey,
       );
-    else
+    } else {
+      //    readsName();
       return Icon(
         Icons.check,
         color: Colors.blueGrey,
       );
+    }
+  }
+
+  var username = '_nameTEC.text';
+
+  Future readsName() async {
+    DocumentSnapshot getName = await FirebaseFirestore.instance
+        .collection('Customer')
+        .doc(userEmail)
+        .get();
+    getName['name'].toString();
+    username = getName.toString();
   }
 
   var userEmail = FirebaseAuth.instance.currentUser!.email;
@@ -93,7 +107,9 @@ class _ProfileState extends State<Profile> {
 
     uploadPic() async {
       FirebaseStorage storage = FirebaseStorage.instance;
-      Reference ref = storage.ref().child("image1" + DateTime.now().toString());
+      Reference ref = storage
+          .ref()
+          .child("$userEmail" + " ProfilePic " + DateTime.now().toString());
       UploadTask uploadTask = ref.putFile(_imageFile!);
       uploadTask.then((res) {
         res.ref.getDownloadURL();
@@ -285,7 +301,7 @@ class _ProfileState extends State<Profile> {
                                         //                },
                                       )
                                     : Text(
-                                        _nameTEC.text,
+                                        username,
                                         style:
                                             TextStyle(fontFamily: 'Epilogue'),
                                       ),
@@ -293,10 +309,16 @@ class _ProfileState extends State<Profile> {
                               IconButton(
                                 onPressed: () {
                                   setState(() {
-                                    if (isedit == true)
+                                    if (isedit == true) {
                                       isedit = false;
-                                    else
+                                      FirebaseFirestore.instance
+                                          .collection("Customer")
+                                          .doc(userEmail)
+                                          .set({'name': _nameTEC.text});
+                                      username = _nameTEC.text;
+                                    } else {
                                       isedit = true;
+                                    }
                                   });
                                 },
                                 icon: iconEdit(),
@@ -503,7 +525,7 @@ class _ProfileState extends State<Profile> {
                           ),
                         ),
                       ],
-                    )
+                    ),
                   ],
                 ),
               ),

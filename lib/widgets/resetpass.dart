@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gymhome/Styles.dart';
-import 'package:gymhome/widgets/welcome.dart';
+
 import 'package:gymhome/models/user.dart';
 
 class resetpassword extends StatefulWidget {

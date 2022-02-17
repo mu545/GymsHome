@@ -1,12 +1,10 @@
 import 'dart:convert';
 import 'dart:async';
-
+import 'database.dart';
 import 'package:flutter/widgets.dart';
 import 'package:gymhome/authintactions/httpexe.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-
-
 
 class Auth with ChangeNotifier {
   late String _token;
@@ -37,7 +35,7 @@ class Auth with ChangeNotifier {
         'https://www.googleapis.com/identitytoolkit/v3/relyingparty/$urlSegment?key=AIzaSyCOq1-kxxMDLXqWC4fhaC651hyW48i7-OI';
     try {
       final response = await http.post(
-       Uri.parse(url) ,
+        Uri.parse(url),
         body: json.encode(
           {
             'email': email,
@@ -73,8 +71,9 @@ class Auth with ChangeNotifier {
     }
   }
 
-  Future<void> signup(String  email, String password) async {
-    return _authenticate(  email, password, 'signupNewUser');
+  Future<void> signup(String email, String password) async {
+    await DatabaseManager(uid: email).updateUserData('milfy');
+    return _authenticate(email, password, 'signupNewUser');
   }
 
   Future<void> login(String email, String password) async {

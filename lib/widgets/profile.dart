@@ -1,6 +1,11 @@
+import 'dart:convert';
 import 'dart:io';
+import 'package:gymhome/models/customer.dart';
+import 'package:flutter/src/rendering/box.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:gymhome/authintactions/database.dart';
+import 'package:gymhome/models/customer.dart';
 import 'package:gymhome/widgets/imageinput.dart';
 import 'package:gymhome/widgets/welcome.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +15,10 @@ import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:gymhome/authintactions/database.dart';
+import 'package:provider/provider.dart';
+import 'package:gymhome/widgets/customer_list.dart';
+import 'package:gymhome/models/profile_model.dart';
 
 class Profile extends StatefulWidget {
   const Profile({Key? key}) : super(key: key);
@@ -20,41 +29,51 @@ class Profile extends StatefulWidget {
 
 class _ProfileState extends State<Profile> {
   bool isedit = false;
-  String newName = '';
-  //final _auth = FirebaseAuth.instance;
-  bool isNameValid = true;
 
   TextEditingController _nameTEC = TextEditingController();
+
+  //read data
+  //read() async {
+  //  StreamBuilder(
+  //     stream: FirebaseFirestore.instance.collection('Customer').snapshots(),
+  //    builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+  //      if (snapshot.hasData) {
+  //      return ListView.builder(
+  //           itemCount: snapshot.data!.docs.length,
+  //          itemBuilder: (context, i) {
+  //           QueryDocumentSnapshot x = snapshot.data!.docs[i];
+  //            return Text(x['Email']);
+  //          });
+  //     }
+  //      return Center(
+  //        child: CircularProgressIndicator(),
+  //      );
+  //     });
+  //}
 
   final FirebaseAuth auth = FirebaseAuth.instance;
 
   File? _imageFile;
 
+// get image method GALLERY
   Future getImageGallery() async {
-    var image =
+    final image =
         await ImagePicker.platform.pickImage(source: ImageSource.gallery);
     if (image == null) return;
 
-    // PREV: final imageParmenant = await saveImageParmanetly(image.path);
+    final imageTemp = File(image.path);
     setState(() {
-      _imageFile = image as File?;
+      _imageFile = imageTemp;
     });
   }
 
-  Future upoladPic(BuildContext context) async {
-    final fileName = basename(_imageFile!.path);
-    //   StorageReference
-  }
+  // void initState() {
+//    setState(() {
+  //     username = readsName() as String?;
+//    });
+  // }
 
-// delete later,,
-  Future<File> saveImageParmanetly(String imagePath) async {
-    final directory = await getApplicationDocumentsDirectory();
-    final name = basename(imagePath);
-    final image = File('${directory.path}/$name');
-
-    return File(imagePath).copy(image.path);
-  }
-
+// get image method CAMERA
   Future getImageCamera() async {
     final image =
         await ImagePicker.platform.pickImage(source: ImageSource.camera);
@@ -65,118 +84,112 @@ class _ProfileState extends State<Profile> {
     });
   }
 
-/*  void takePhoto(ImageSource source) async {
-    final pickedFile = await ImagePicker.platform.getImage(
-      source: source,
-    ) as File;
-    setState(() {
-      _imageFile = pickedFile;
-    });
-  } */
-
-  Widget bottomSheet() {
-    return Container(
-      height: 150,
-      // width: MediaQuery.of(context).size.width,
-      margin: EdgeInsets.symmetric(
-        horizontal: 20,
-        vertical: 20,
-      ),
-      child: Column(
-        children: <Widget>[
-          Text(
-            "Choose Profile Photo",
-            style: TextStyle(
-              fontFamily: 'Epilouge',
-              fontSize: 20.0,
-            ),
-          ),
-          SizedBox(
-            height: 20,
-          ),
-          Column(
-            children: [
-              Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    FlatButton.icon(
-                      icon: Icon(Icons.camera),
-                      onPressed: () {
-                        getImageCamera();
-                      },
-                      label: Text("Camera"),
-                    ),
-                    FlatButton.icon(
-                      icon: Icon(Icons.image),
-                      onPressed: () {
-                        getImageGallery();
-                      },
-                      label: Text("Gallery"),
-                    ),
-                  ]),
-              Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    FlatButton.icon(
-                      icon: Icon(Icons.check),
-                      onPressed: () {
-                        //         uploadPic(context);
-                      },
-                      label: Text("Submit Photo"),
-                    ),
-                  ]),
-            ],
-          )
-        ],
-      ),
-    );
-  }
-
   Widget iconEdit() {
-    if (isedit == false)
+    if (isedit == false) {
+      //  readsName();
       return Icon(
         Icons.edit,
         color: Colors.blueGrey,
       );
-    else
+    } else {
+      //    readsName();
       return Icon(
         Icons.check,
         color: Colors.blueGrey,
       );
+    }
   }
 
+  final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
   var userEmail = FirebaseAuth.instance.currentUser!.email;
-
-  // Trying other way
-
-  Future getEmail() async {
-    // var userEmail = FirebaseAuth.instance.currentUser!.email;
-    var userName = FirebaseFirestore.instance
-        .collection('Customer')
-        .doc(userEmail)
-        .get()
-        .then(
-      (snapshot) {
-        snapshot.data().toString();
-      },
-    );
-  }
-
-  Future gettingName() async {
-    DocumentSnapshot name = await FirebaseFirestore.instance
-        .collection('Customer')
-        .doc('$userEmail')
-        .get();
-  }
-  //var userName = FirebaseFirestore.instance
-  //  .collection('Customer')
-  //  .doc(FirebaseAuth.instance.currentUser!.email)
-  //   .get();
-  //      var docSnapshot = await collection.doc(auth).get();
-  //      if (docSnapshot.exists
+  ProfileModel _userProfile = ProfileModel('');
+  Future? _getData() => _fireStore.collection('Customer').doc(userEmail).get();
 
   @override
   Widget build(BuildContext context) {
+    // TO DATABASE
+
+    uploadPic() async {
+      FirebaseStorage storage = FirebaseStorage.instance;
+      Reference ref = storage
+          .ref()
+          .child("$userEmail" + " ProfilePic " + DateTime.now().toString());
+      UploadTask uploadTask = ref.putFile(_imageFile!);
+      uploadTask.then((res) {
+        res.ref.getDownloadURL();
+      });
+      setState(() {
+        print("Profile Picture Uploaded");
+        Scaffold.of(context)
+            .showSnackBar(SnackBar(content: Text('Profile Picture Uploaded')));
+      });
+    }
+
+// TRY TO MAKE IT DISAPER?
+    Widget bottomSheet() {
+      return Container(
+        height: 150,
+        // width: MediaQuery.of(context).size.width,
+        margin: EdgeInsets.symmetric(
+          horizontal: 20,
+          vertical: 20,
+        ),
+        child: Column(
+          children: <Widget>[
+            Text(
+              "Choose Profile Photo",
+              style: TextStyle(
+                fontFamily: 'Epilouge',
+                fontSize: 20.0,
+              ),
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            Column(
+              children: [
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      FlatButton.icon(
+                        icon: Icon(Icons.camera),
+                        onPressed: () {
+                          getImageCamera();
+                        },
+                        label: Text("Camera"),
+                      ),
+                      FlatButton.icon(
+                        icon: Icon(Icons.image),
+                        onPressed: () {
+                          getImageGallery();
+                        },
+                        label: Text("Gallery"),
+                      ),
+                      FlatButton.icon(
+                        icon: Icon(Icons.abc),
+                        onPressed: () {},
+                        label: Text("Camera"),
+                      ),
+                    ]),
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      FlatButton.icon(
+                        icon: Icon(Icons.check),
+                        onPressed: () {
+                          //try parametter
+                          uploadPic();
+                        },
+                        label: Text("Submit Photo"),
+                      ),
+                    ]),
+              ],
+            )
+          ],
+        ),
+      );
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -187,7 +200,7 @@ class _ProfileState extends State<Profile> {
         centerTitle: true,
       ),
       body: Builder(
-        builder: (context) => SingleChildScrollView(
+        builder: (BuildContext contextBody) => SingleChildScrollView(
           child: Column(
             children: [
               Container(
@@ -222,7 +235,7 @@ class _ProfileState extends State<Profile> {
                                   child: InkWell(
                                     onTap: () {
                                       showModalBottomSheet(
-                                        context: context,
+                                        context: contextBody,
                                         builder: ((builder) => bottomSheet()),
                                       );
                                     },
@@ -296,19 +309,35 @@ class _ProfileState extends State<Profile> {
                                         //                 newName = value!;
                                         //                },
                                       )
-                                    : Text(
-                                        _nameTEC.text,
-                                        style:
-                                            TextStyle(fontFamily: 'Epilogue'),
-                                      ),
+                                    : FutureBuilder(
+                                        future: _getData(),
+                                        builder: (BuildContext context,
+                                            AsyncSnapshot<dynamic> snapshot) {
+                                          if (snapshot.hasData) {
+                                            Map<String, dynamic> _data =
+                                                snapshot.data.data()
+                                                    as Map<String, dynamic>;
+                                            _userProfile =
+                                                ProfileModel.fromJson(_data);
+                                            return Text(
+                                                '${_userProfile.userName}');
+                                          } else
+                                            return Text('....');
+                                        }),
                               ),
                               IconButton(
                                 onPressed: () {
                                   setState(() {
-                                    if (isedit == true)
+                                    if (isedit == true) {
                                       isedit = false;
-                                    else
+                                      FirebaseFirestore.instance
+                                          .collection("Customer")
+                                          .doc(userEmail)
+                                          .set({'name': _nameTEC.text});
+                                      //     username = _nameTEC.text;
+                                    } else {
                                       isedit = true;
+                                    }
                                   });
                                 },
                                 icon: iconEdit(),
@@ -330,84 +359,85 @@ class _ProfileState extends State<Profile> {
                               Expanded(
                                 child: Text('$userEmail'),
                                 /*            child: isedit
-                                      ? TextFormField(
-                                          decoration: InputDecoration(
-                                            enabledBorder: OutlineInputBorder(
-                                                borderSide: BorderSide(
-                                                    color: Color.fromARGB(
-                                                        62, 99, 99, 99)),
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(20))),
-                                            focusedBorder: OutlineInputBorder(
-                                                borderSide: BorderSide(
-                                                    color: colors.blue_base),
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(20))),
-                                            contentPadding: EdgeInsets.all(10),
-                                            hintText: "Enter your email",
-                                            hintStyle: TextStyle(
-                                              color: colors.hinttext,
-                                            ),
-                                          ),
-                                          keyboardType:
-                                              TextInputType.emailAddress,
-                                          // validator: (value) {
-                                          //   if (value!.isEmpty || !value.contains('@')) {
-                                          //     return 'Invalid email!';
-                                          //   }
-                                          // },
-                                          // onSaved: (value) {
-                                          //   _authData['email'] = value!;
-                                          // },
-                                        )
-                                      : */
+                                          ? TextFormField(
+                                              decoration: InputDecoration(
+                                                enabledBorder: OutlineInputBorder(
+                                                    borderSide: BorderSide(
+                                                        color: Color.fromARGB(
+                                                            62, 99, 99, 99)),
+                                                    borderRadius: BorderRadius.all(
+                                                        Radius.circular(20))),
+                                                focusedBorder: OutlineInputBorder(
+                                                    borderSide: BorderSide(
+                                                        color: colors.blue_base),
+                                                    borderRadius: BorderRadius.all(
+                                                        Radius.circular(20))),
+                                                contentPadding: EdgeInsets.all(10),
+                                                hintText: "Enter your email",
+                                                hintStyle: TextStyle(
+                                                  color: colors.hinttext,
+                                                ),
+                                              ),
+                                              keyboardType:
+                                                  TextInputType.emailAddress,
+                                              // validator: (value) {
+                                              //   if (value!.isEmpty || !value.contains('@')) {
+                                              //     return 'Invalid email!';
+                                              //   }
+                                              // },
+                                              // onSaved: (value) {
+                                              //   _authData['email'] = value!;
+                                              // },
+                                            )
+                                          : */
                               ),
                             ],
                           ),
                           /*  Row(
-                            children: [
-                              Container(
-                                  margin: EdgeInsets.symmetric(horizontal: 10),
-                                  child: Text('Password')),
-                              SizedBox(
-                                width: 2,
-                              ),
-                                 Expanded(
-                                    child: Text("***********"),
-                                   )
-                                                   child: isedit
-                                      ? TextFormField(
-                                          decoration: InputDecoration(
-                                            enabledBorder: OutlineInputBorder(
-                                                borderSide: BorderSide(
-                                                    color: Color.fromARGB(
-                                                        62, 99, 99, 99)),
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(20))),
-                                            focusedBorder: OutlineInputBorder(
-                                                borderSide: BorderSide(
-                                                    color: colors.blue_base),
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(20))),
-                                            contentPadding: EdgeInsets.all(10),
-                                            hintText: "Enter password",
-                                            hintStyle: TextStyle(
-                                              color: colors.hinttext,
-                                            ),
-                                          ),
-                                          keyboardType: TextInputType.text,
-                                          // validator: (value) {
-                                          //   if (value!.isEmpty || !value.contains('@')) {
-                                          //     return 'Invalid email!';
-                                          //   }
-                                          // },
-                                          // onSaved: (value) {
-                                          //   _authData['email'] = value!;
-                                          // },
-                                        )
-                                      : 
-                            ],
-                          ),*/
+                                children: [
+                                  Container(
+                                      margin: EdgeInsets.symmetric(horizontal: 10),
+                                      child: Text('Password')),
+                                  SizedBox(
+                                    width: 2,
+                                  ),
+                                     Expanded(
+                                        child: Text("***********"),
+                                       )
+                                                       child: isedit
+                                          ? TextFormField(
+                                              decoration: InputDecoration(
+                                                enabledBorder: OutlineInputBorder(
+                                                    borderSide: BorderSide(
+                                                        color: Color.fromARGB(
+                                                            62, 99, 99, 99)),
+                                                    borderRadius: BorderRadius.all(
+                                                        Radius.circular(20))),
+                                                focusedBorder: OutlineInputBorder(
+                                                    borderSide: BorderSide(
+                                                        color: colors.blue_base),
+                                                    borderRadius: BorderRadius.all(
+                                                        Radius.circular(20))),
+                                                contentPadding: EdgeInsets.all(10),
+                                                hintText: "Enter password",
+                                                hintStyle: TextStyle(
+                                                  color: colors.hinttext,
+                                                ),
+                                              ),
+                                              keyboardType: TextInputType.text,
+                                              // validator: (value) {
+                                              //   if (value!.isEmpty || !value.contains('@')) {
+                                              //     return 'Invalid email!';
+                                              //   }
+                                              // },
+                                              // onSaved: (value) {
+                                              //   _authData['email'] = value!;
+                                              // },
+                                            )
+                                          : 
+                                ],
+                              ),*/
+                          //      CustomerList(),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
@@ -467,6 +497,7 @@ class _ProfileState extends State<Profile> {
                         ],
                       ),
                     ),
+                    //  CustomerList(),
                     SizedBox(
                       height: 20,
                     ),
@@ -515,7 +546,7 @@ class _ProfileState extends State<Profile> {
                           ),
                         ),
                       ],
-                    )
+                    ),
                   ],
                 ),
               ),
@@ -523,6 +554,7 @@ class _ProfileState extends State<Profile> {
           ),
         ),
       ),
+      //  ),
     );
   }
 }

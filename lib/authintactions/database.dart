@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 //import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'dart:io';
+
+import 'package:gymhome/models/customer.dart';
 //import 'package:path/path.dart';
 
 class DatabaseManager {
@@ -18,8 +20,15 @@ class DatabaseManager {
     });
   }
 
+  //customer list from snapshot
+  List<Customer> _customerListFromSnapshot(QuerySnapshot snapshot) {
+    return snapshot.docs.map((doc) {
+      return Customer(name: doc.get('name') ?? '');
+    }).toList();
+  }
+
   // get customers stream. to keep data updated
-  Stream<QuerySnapshot> get customers {
-    return customerCollection.snapshots();
+  Stream<List<Customer>> get customers {
+    return customerCollection.snapshots().map(_customerListFromSnapshot);
   }
 }

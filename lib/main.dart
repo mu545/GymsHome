@@ -3,6 +3,7 @@
 // found in the LICENSE file.
 
 import 'package:firebase_core/firebase_core.dart';
+
 import 'package:flutter/material.dart';
 import 'package:gymhome/GymOwnerwidgets/addgym.dart';
 import 'package:gymhome/GymOwnerwidgets/facilities.dart';
@@ -10,15 +11,17 @@ import 'package:gymhome/GymOwnerwidgets/gymprice.dart';
 import 'package:gymhome/GymOwnerwidgets/location.dart';
 import 'package:gymhome/GymOwnerwidgets/ownerhome.dart';
 import 'package:gymhome/authintactions/auth.dart';
+import 'package:gymhome/models/customer.dart';
 import 'package:gymhome/models/favorite.dart';
 import 'package:gymhome/models/gyms.dart';
 import 'package:gymhome/provider/gymsitems.dart';
 import 'package:gymhome/provider/womengymitems.dart';
+import 'package:gymhome/widgets/customer_list.dart';
 import 'package:gymhome/widgets/edit.dart';
 
 import 'package:gymhome/widgets/gymdescrption.dart';
 import 'package:gymhome/widgets/help.dart';
-
+import 'package:gymhome/widgets/profile.dart';
 import 'package:gymhome/widgets/newhome.dart';
 import 'package:gymhome/widgets/onerdescrption.dart';
 import 'package:gymhome/widgets/pic.dart';
@@ -48,6 +51,9 @@ class MyApp extends StatelessWidget {
         providers: [
           ChangeNotifierProvider.value(
             value: Gymsitems(),
+          ),
+          ChangeNotifierProvider.value(
+            value: Customer(name: ''),
           ),
           ChangeNotifierProvider.value(
             value: Gyms(

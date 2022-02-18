@@ -443,7 +443,11 @@ class _welcomeState extends State<welcome> {
                             FirebaseFirestore.instance
                                 .collection("Customer")
                                 .doc(email)
-                                .set({});
+                                .set({
+                              'name': 'defult',
+                              'url':
+                                  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSDq2REE_qNK1VtPuYlIy6orJZSsZoo6p8kTQ&usqp=CAU'
+                            });
                             Navigator.of(context).pushNamed(NewHome.rounamed);
                           } else {
                             FirebaseFirestore.instance

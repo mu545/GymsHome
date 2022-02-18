@@ -102,8 +102,22 @@ class _ProfileState extends State<Profile> {
 
   final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
   var userEmail = FirebaseAuth.instance.currentUser!.email;
-  ProfileModel _userProfile = ProfileModel('');
+  ProfileModel _userProfile = ProfileModel('', '');
   Future? _getData() => _fireStore.collection('Customer').doc(userEmail).get();
+
+  void initState() {
+    _getData2();
+    super.initState();
+  }
+
+  void _getData2() {
+    _fireStore.collection('users').doc(userEmail).get().then((value) {
+      Map<String, dynamic> _data = value.data() as Map<String, dynamic>;
+      _userProfile = ProfileModel.fromJson(_data);
+      //  _isLoading=false;
+      setState(() {});
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -114,10 +128,13 @@ class _ProfileState extends State<Profile> {
       Reference ref = storage
           .ref()
           .child("$userEmail" + " ProfilePic " + DateTime.now().toString());
-      UploadTask uploadTask = ref.putFile(_imageFile!);
-      uploadTask.then((res) {
-        res.ref.getDownloadURL();
-      });
+      await ref.putFile(_imageFile!);
+      String imageurl = await ref.getDownloadURL();
+      FirebaseFirestore.instance
+          .collection('Customer')
+          .doc(userEmail)
+          .update({'url': imageurl});
+
       setState(() {
         print("Profile Picture Uploaded");
         Scaffold.of(context)
@@ -165,11 +182,6 @@ class _ProfileState extends State<Profile> {
                         },
                         label: Text("Gallery"),
                       ),
-                      FlatButton.icon(
-                        icon: Icon(Icons.abc),
-                        onPressed: () {},
-                        label: Text("Camera"),
-                      ),
                     ]),
                 Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -215,20 +227,28 @@ class _ProfileState extends State<Profile> {
                           Container(
                             child: Stack(
                               children: <Widget>[
-                                _imageFile != null
-                                    ? ClipOval(
-                                        child: Image.file(
-                                          _imageFile!,
-                                          width: 160,
-                                          height: 160,
-                                          fit: BoxFit.fill,
-                                        ),
-                                      )
-                                    : CircleAvatar(
-                                        radius: 80.0,
-                                        backgroundImage: NetworkImage(
-                                            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSDq2REE_qNK1VtPuYlIy6orJZSsZoo6p8kTQ&usqp=CAU'),
-                                      ),
+                                FutureBuilder(
+                                    future: _getData(),
+                                    builder: (BuildContext context,
+                                        AsyncSnapshot<dynamic> snapshot) {
+                                      if (snapshot.hasData) {
+                                        Map<String, dynamic> _data =
+                                            snapshot.data.data()
+                                                as Map<String, dynamic>;
+                                        _userProfile =
+                                            ProfileModel.fromJson(_data);
+                                        return CircleAvatar(
+                                          radius: 80.0,
+                                          backgroundImage: NetworkImage(
+                                              _userProfile.userImage ?? ''),
+                                        );
+                                      } else
+                                        return CircleAvatar(
+                                          radius: 80.0,
+                                          backgroundImage: NetworkImage(
+                                              'https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.personality-insights.com%2Fdefault-profile-pic%2F&psig=AOvVaw1J5McNAj-bVss3l3ibFwYm&ust=1645306761604000&source=images&cd=vfe&ved=0CAsQjRxqFwoTCKiKp7qbivYCFQAAAAAdAAAAABAD'),
+                                        );
+                                    }),
                                 Positioned(
                                   bottom: 20,
                                   right: 20,
@@ -333,7 +353,7 @@ class _ProfileState extends State<Profile> {
                                       FirebaseFirestore.instance
                                           .collection("Customer")
                                           .doc(userEmail)
-                                          .set({'name': _nameTEC.text});
+                                          .update({'name': _nameTEC.text});
                                       //     username = _nameTEC.text;
                                     } else {
                                       isedit = true;

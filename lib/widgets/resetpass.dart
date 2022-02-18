@@ -1,8 +1,7 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:gymhome/Styles.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:gymhome/widgets/welcome.dart';
+
+import 'package:gymhome/models/user.dart';
 
 class resetpassword extends StatefulWidget {
   const resetpassword({Key? key}) : super(key: key);
@@ -105,12 +104,7 @@ class _resetpasswordState extends State<resetpassword> {
                       onPrimary: colors.blue_smooth,
                       minimumSize: Size(250, 40)),
                   onPressed: () {
-                    // Validate returns true if the form is valid, or false otherwise.
-
-                    resetpass();
-
-                    // If the form is valid, display a snackbar. In the real world,
-                    // you'd often call a server or save the information in a database.
+                    User.resetpass(email, context);
                   },
                   child: Text(
                     "Send",
@@ -125,33 +119,6 @@ class _resetpasswordState extends State<resetpassword> {
             ],
           ),
         ),
-      ),
-    );
-  }
-
-  Future resetpass() async {
-    try {
-      await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
-      message = 'Check your email';
-    } on FirebaseAuthException catch (e) {
-      message = e.code;
-      if (message == 'unknown') message = 'enter correct email';
-    }
-
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(
-          message,
-          style: TextStyle(
-              color: message == 'Check your email'
-                  ? colors.red_base
-                  : Colors.white,
-              fontFamily: 'Roboto',
-              fontSize: 16),
-        ),
-        backgroundColor: message == 'Check your email'
-            ? colors.blue_smooth
-            : colors.red_base,
       ),
     );
   }

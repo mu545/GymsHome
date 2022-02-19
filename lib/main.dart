@@ -53,6 +53,9 @@ class MyApp extends StatelessWidget {
             value: Gymsitems(),
           ),
           ChangeNotifierProvider.value(
+            value: Auth(),
+          ),
+          ChangeNotifierProvider.value(
             value: Customer(name: ''),
           ),
           ChangeNotifierProvider.value(
@@ -81,7 +84,7 @@ class MyApp extends StatelessWidget {
         child: Consumer<Gymsitems>(
             builder: (ctx, auth, _) => MaterialApp(
                   debugShowCheckedModeBanner: false,
-                  home: welcome(),
+                  home: Location(),
                   routes: {
                     NewHome.rounamed: (ctx) => NewHome(),
                     OwnerHome.rounamed: (ctx) => OwnerHome(),

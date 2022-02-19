@@ -99,19 +99,19 @@ class Auth with ChangeNotifier {
   //   return true;
   // }
 
-  // Future<void> logout() async {
-  //   _token = null;
-  //   _userId = null;
-  //   _expiryDate = null;
-  //   if (_authTimer != null) {
-  //     _authTimer.cancel();
-  //     _authTimer = null;
-  //   }
-  //   notifyListeners();
-  //   final prefs = await SharedPreferences.getInstance();
-  //   // prefs.remove('userData');
-  //   prefs.clear();
-  // }
+  Future<void> logout() async {
+    _token = 'null';
+    _userId = 'null';
+    _expiryDate = 'null' as DateTime;
+    if (_authTimer != 'null') {
+      _authTimer.cancel();
+      _authTimer = 'null' as Timer;
+    }
+    notifyListeners();
+    final prefs = await SharedPreferences.getInstance();
+    // prefs.remove('userData');
+    prefs.clear();
+  }
 
   // void _autoLogout() {
   //   if (_authTimer != null) {

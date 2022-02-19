@@ -1,5 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:gymhome/GymOwnerwidgets/facilities.dart';
+import 'package:gymhome/authintactions/auth.dart';
 import 'package:gymhome/models/customer.dart';
 import 'package:flutter/src/rendering/box.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -104,20 +106,6 @@ class _ProfileState extends State<Profile> {
   var userEmail = FirebaseAuth.instance.currentUser!.email;
   ProfileModel _userProfile = ProfileModel('', '');
   Future? _getData() => _fireStore.collection('Customer').doc(userEmail).get();
-
-  void initState() {
-    _getData2();
-    super.initState();
-  }
-
-  void _getData2() {
-    _fireStore.collection('users').doc(userEmail).get().then((value) {
-      Map<String, dynamic> _data = value.data() as Map<String, dynamic>;
-      _userProfile = ProfileModel.fromJson(_data);
-      //  _isLoading=false;
-      setState(() {});
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -245,8 +233,7 @@ class _ProfileState extends State<Profile> {
                                       } else
                                         return CircleAvatar(
                                           radius: 80.0,
-                                          backgroundImage: NetworkImage(
-                                              'https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.personality-insights.com%2Fdefault-profile-pic%2F&psig=AOvVaw1J5McNAj-bVss3l3ibFwYm&ust=1645306761604000&source=images&cd=vfe&ved=0CAsQjRxqFwoTCKiKp7qbivYCFQAAAAAdAAAAABAD'),
+                                          backgroundImage: NetworkImage(''),
                                         );
                                     }),
                                 Positioned(
@@ -526,7 +513,8 @@ class _ProfileState extends State<Profile> {
                       children: [
                         FlatButton(
                           onPressed: () {
-                            //        FirebaseAuth.instance.signOut();
+                            Provider.of<Auth>(context, listen: false).logout();
+                            Navigator.of(context).pop();
                           },
                           child: Container(
                             width: 100,

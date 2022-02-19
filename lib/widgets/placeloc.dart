@@ -7,7 +7,7 @@ class PlaceLocation extends StatefulWidget {
 }
 
 class _PlaceLocationState extends State<PlaceLocation> {
-      //  String ?  _previewImageUrl  ;
+  //  String ?  _previewImageUrl  ;
   Future<void> getlocation() async {
     final locdata = await Location().getLocation();
 
@@ -26,7 +26,7 @@ class _PlaceLocationState extends State<PlaceLocation> {
           decoration:
               BoxDecoration(border: Border.all(width: 1, color: Colors.grey)),
           child: Image.network(
-             '' ,
+            '',
             fit: BoxFit.cover,
             width: double.infinity,
           ),
@@ -51,6 +51,4 @@ class _PlaceLocationState extends State<PlaceLocation> {
       ],
     );
   }
- 
-
 }

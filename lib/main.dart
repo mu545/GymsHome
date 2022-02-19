@@ -84,7 +84,7 @@ class MyApp extends StatelessWidget {
         child: Consumer<Gymsitems>(
             builder: (ctx, auth, _) => MaterialApp(
                   debugShowCheckedModeBanner: false,
-                  home: Location(),
+                  home: Editadd(),
                   routes: {
                     NewHome.rounamed: (ctx) => NewHome(),
                     OwnerHome.rounamed: (ctx) => OwnerHome(),

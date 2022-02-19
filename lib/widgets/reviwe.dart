@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:provider/provider.dart';
 
 class Reviwes extends StatefulWidget {
   static const routeNamed = '/reviwes';
@@ -9,7 +11,7 @@ class Reviwes extends StatefulWidget {
 
 class _ReviwesState extends State<Reviwes> {
   @override
-  var _editfor = Reviewproviser(title: '', description: '');
+  // var _editfor = Reviewproviser(title: '', description: '');
   int selectedValue1 = 0;
   void onChange1(int value) {
     setState(() {
@@ -68,7 +70,7 @@ class _ReviwesState extends State<Reviwes> {
   }
 
   Widget build(BuildContext context) {
-    final productdata = Provider.of<Comentss>(context);
+    // final productdata = Provider.of<Comentss>(context);
     return Scaffold(
       appBar: AppBar(
         title: Text('Reviews'),
@@ -82,6 +84,85 @@ class _ReviwesState extends State<Reviwes> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
+                Text(
+                  'Add a written review',
+                  style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+                ),
+                Center(
+                  child: Container(
+                    margin: EdgeInsets.symmetric(vertical: 10),
+                    height: 200,
+                    width: 400,
+                    decoration: BoxDecoration(
+                        boxShadow: [
+                          BoxShadow(
+                            spreadRadius: 1,
+
+                            // changes position of shadow
+                          ),
+                        ],
+                        borderRadius: BorderRadius.circular(10),
+                        color: Colors.white),
+                    child: Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: TextFormField(
+                        key: ValueKey('reviews'),
+                        onSaved: (value) {
+                          _authData['reviews'] = value!;
+                        },
+                        validator: (val) {
+                          if (val!.isEmpty) {
+                            return 'Please write a descrption';
+                          }
+                          return null;
+                        },
+                        showCursor: false,
+                        decoration: InputDecoration(
+                            border: InputBorder.none,
+                            hintText: 'what did you like or dislike ? '),
+                      ),
+                    ),
+                  ),
+                ),
+                Divider(),
+                Text('Add a title',
+                    style:
+                        TextStyle(fontSize: 25, fontWeight: FontWeight.bold)),
+                Container(
+                  margin: EdgeInsets.symmetric(vertical: 10),
+                  height: 60,
+                  width: 400,
+                  decoration: BoxDecoration(
+                      boxShadow: [
+                        BoxShadow(
+                          spreadRadius: 1,
+
+                          // changes position of shadow
+                        ),
+                      ],
+                      borderRadius: BorderRadius.circular(10),
+                      color: Colors.white),
+                  child: Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: TextFormField(
+                      key: _formKey,
+                      validator: (val) {
+                        if (val!.isEmpty) {
+                          return 'Please write a title';
+                        }
+                        return null;
+                      },
+                      controller: _reviewController,
+                      showCursor: false,
+                      onSaved: (value) {
+                        _authData['title'] = value!;
+                      },
+                      decoration: InputDecoration(
+                          border: InputBorder.none,
+                          hintText: 'what is the most important to know ? '),
+                    ),
+                  ),
+                ),
                 Padding(
                   padding: const EdgeInsets.all(8),
                   child: Text(
@@ -98,9 +179,9 @@ class _ReviwesState extends State<Reviwes> {
                     initialRating: 0,
                     minRating: 1,
                     direction: Axis.horizontal,
-                    allowHalfRating: true,
+                    allowHalfRating: false,
                     itemCount: 5,
-                    itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+                    itemPadding: EdgeInsets.symmetric(horizontal: 2.0),
                     itemBuilder: (context, _) => Icon(
                       Icons.star,
                       color: Colors.amber,
@@ -113,82 +194,6 @@ class _ReviwesState extends State<Reviwes> {
               ],
             ),
             SizedBox(height: 20),
-            // Text(
-            //   'Add a written review',
-            //   style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-            // ),
-            // Center(
-            //   child: Container(
-            //     margin: EdgeInsets.symmetric(vertical: 10),
-            //     height: 200,
-            //     width: 400,
-            //     decoration: BoxDecoration(
-            //         boxShadow: [
-            //           BoxShadow(
-            //             spreadRadius: 1,
-            //
-            //             // changes position of shadow
-            //           ),
-            //         ],
-            //         borderRadius: BorderRadius.circular(10),
-            //         color: Colors.white),
-            //     child: Padding(
-            //       padding: EdgeInsets.all(8.0),
-            //       child: TextFormField(
-            //         key: ValueKey('reviews'),
-            //         onSaved: (value) {
-            //           _authData['reviews'] = value!;
-            //         },
-            //         validator: (val) {
-            //           if (val!.isEmpty) {
-            //             return 'Please write a descrption';
-            //           }
-            //           return null;
-            //         },
-            //         showCursor: false,
-            //         decoration: InputDecoration(
-            //             border: InputBorder.none,
-            //             hintText: 'what did you like or dislike ? '),
-            //       ),
-            //     ),
-            //   ),
-            // ),
-            // ),
-            // Divider(),
-            // Text('Add a title',
-            //     style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold)),
-            // Container(
-            //   margin: EdgeInsets.symmetric(vertical: 10),
-            //   height: 60,
-            //   width: 400,
-            //   decoration: BoxDecoration(boxShadow: [
-            //     BoxShadow(
-            //       spreadRadius: 1,
-            //
-            //       // changes position of shadow
-            //     ),
-            //   ], borderRadius: BorderRadius.circular(10), color: Colors.white),
-            //   child: Padding(
-            //     padding: EdgeInsets.all(8.0),
-            //     child: TextFormField(
-            //       key: _formKey,
-            //       validator: (val) {
-            //         if (val.isEmpty) {
-            //           return 'Please write a title';
-            //         }
-            //         return null;
-            //       },
-            //       controller: _reviewController,
-            //       showCursor: false,
-            //       onSaved: (value) {
-            //         _authData['title'] = value;
-            //       },
-            //       decoration: InputDecoration(
-            //           border: InputBorder.none,
-            //           hintText: 'what is the most important to know ? '),
-            //     ),
-            //   ),
-            // ),
             Divider(
               height: 100,
             ),

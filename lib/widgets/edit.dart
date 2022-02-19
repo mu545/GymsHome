@@ -1,4 +1,5 @@
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gymhome/GymOwnerwidgets/facilities.dart';
@@ -8,6 +9,7 @@ import 'package:gymhome/GymOwnerwidgets/ownerhome.dart';
 import 'package:gymhome/models/gyms.dart';
 import 'package:gymhome/provider/gymsitems.dart';
 import 'package:gymhome/widgets/checkbox.dart';
+import 'package:gymhome/widgets/imageinput.dart';
 import 'package:gymhome/widgets/newhome.dart';
 
 
@@ -21,6 +23,7 @@ class Editadd extends StatefulWidget {
 }
 
 class _EditaddState extends State<Editadd> {
+  
   final _priceFocusNode = FocusNode();
   final _descriptionFocusNode = FocusNode();
   final _imageUrlFocusNode = FocusNode();
@@ -31,7 +34,7 @@ class _EditaddState extends State<Editadd> {
     title: '',
     price: 0,
     description: '',
-    imageUrl: '',  location: '' , facilites:  '' , hours: ''
+    imageUrl: '',  location: '' , facilites:  '', hours: '' 
   );
 
   var _initValues = {
@@ -92,14 +95,24 @@ class _EditaddState extends State<Editadd> {
       setState(() {});
     }
   }
+// _sendmessages() async {
+//     FocusScope.of(context).unfocus();
+//     // final user = FirebaseAuth.instance.currentUser;
+//     final userdata = await FirebaseFirestore.instance
+//         .collection('Gyms')
+      
+//         .get();
 
-  void _Saved() {
+   
+//   }
+  void _Saved() async {
     final Validate = _form.currentState!.validate();
     // if (!Validate) {
     //   return;
     // }
     _form.currentState!.save();
     Provider.of<Gymsitems>(context, listen: false).addProduct(_editedProduct);
+    
     Navigator.of(context).pushNamed(OwnerHome.rounamed) ;
   //  Navigator.of(context).pushNamed(Location.routenamed);
     // if(_editfor.id != null){
@@ -140,39 +153,48 @@ class _EditaddState extends State<Editadd> {
                             children: [
                               Text('Gym Information', style: TextStyle(fontSize: 30, color: Colors.blue),),
                               SizedBox(height: 20,),
-                            TextFormField(
-                            initialValue: _initValues['title'],
-                            decoration: InputDecoration(
-                              labelText: 'Name',
-                            ),
-                            textInputAction: TextInputAction.next,
-                            onFieldSubmitted: (_) {
-                              FocusScope.of(context).requestFocus(_priceFocusNode);
-                            },
-                            validator: (value) {
-                              if (value!.isEmpty) {
-                                return 'Please provide a value.';
-                              }
-                              return null;
-                            },
-                            onSaved: (value) {
-                              _editedProduct = Gyms(
-                                title: value!,
-                                price: _editedProduct.price,
-                                description: _editedProduct.description,
-                                imageUrl: _editedProduct.imageUrl,
-                                id: _editedProduct.id,
-                                isFavorite: _editedProduct.isFavorite,
-                                 location: _editedProduct.location, 
-                                      facilites: _editedProduct.facilites , 
-                                      hours: _editedProduct.hours
-                              );
-                            },
+                            Container(
+                            
+                              child: TextFormField(
+                              initialValue: _initValues['title'],
+                              decoration: InputDecoration(
+
+                                
+                              hintText: 'Name' ,
+                                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(10),borderSide: BorderSide(color: Colors.blue), ),
+                              ),
+                          
+                              textInputAction: TextInputAction.next,
+                              onFieldSubmitted: (_) {
+                                FocusScope.of(context).requestFocus(_priceFocusNode);
+                              },
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return 'Please provide a value.';
+                                }
+                                return null;
+                              },
+                              onSaved: (value) {
+                                _editedProduct = Gyms(
+                                  title: value!,
+                                  price: _editedProduct.price,
+                                  description: _editedProduct.description,
+                                  imageUrl: _editedProduct.imageUrl,
+                                  id: _editedProduct.id,
+                                  isFavorite: _editedProduct.isFavorite,
+                                   location: _editedProduct.location, 
+                                        facilites: _editedProduct.facilites, hours: '' , 
+                                    
+                                );
+                              },
                           ),
+                            ),
+                            SizedBox(height: 20,), 
                           TextFormField(
                             initialValue: _initValues['price'],
                             decoration: InputDecoration(
                               labelText: 'Price',
+                                                                border: OutlineInputBorder(borderRadius: BorderRadius.circular(10),borderSide: BorderSide(color: Colors.blue), ),
                             ),
                             textInputAction: TextInputAction.next,
                             keyboardType: TextInputType.number,
@@ -191,17 +213,21 @@ class _EditaddState extends State<Editadd> {
                                 id: _editedProduct.id,
                                 isFavorite: _editedProduct.isFavorite,
                                  location: _editedProduct.location, 
-                                      facilites: _editedProduct.facilites , 
-                                      hours: _editedProduct.hours
+                                      facilites: _editedProduct.facilites, hours: '' , 
+                                    
                               );
                             },
                           ),
+                          SizedBox(height: 20,) ,
                           TextFormField(
                             initialValue: _initValues['description'],
                             decoration: InputDecoration(
-                              labelText: 'Description',
+                              hintText: 'Description' ,
+                           
+                                border: OutlineInputBorder(),
                             ),
-                            maxLines: 3,
+                            
+                            maxLines: 7,
                             focusNode: _descriptionFocusNode,
                             keyboardType: TextInputType.multiline,
                          
@@ -214,8 +240,8 @@ class _EditaddState extends State<Editadd> {
                                 id: _editedProduct.id,
                                 isFavorite: _editedProduct.isFavorite,
                                  location: _editedProduct.location, 
-                                      facilites: _editedProduct.facilites , 
-                                      hours: _editedProduct.hours
+                                      facilites: _editedProduct.facilites, hours: '' , 
+                                    
                               );
                             },
                           ),
@@ -266,8 +292,8 @@ class _EditaddState extends State<Editadd> {
                                       id: _editedProduct.id,
                                       isFavorite: _editedProduct.isFavorite,
                                       location: _editedProduct.location, 
-                                      facilites: _editedProduct.facilites , 
-                                      hours: _editedProduct.hours
+                                      facilites: _editedProduct.facilites, hours: '' , 
+                                     
                                     );
                                   },
                                 ),
@@ -276,30 +302,30 @@ class _EditaddState extends State<Editadd> {
                               ),
                                Column(
                                  children: [
-                                   Row(
-                                     children: [
-                                        Container(
-                                    width: 60,
-                                    height: 25,
-                                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(10) , color: Colors.blue),
-                                    child: FlatButton( 
+            //                        Row(
+            //                          children: [
+            //                             Container(
+            //                         width: 60,
+            //                         height: 25,
+            //                         decoration: BoxDecoration(borderRadius: BorderRadius.circular(10) , color: Colors.blue),
+            //                         child: FlatButton( 
                                     
-                                      child: Text('Pool',style: TextStyle(color: Colors.blue , fontSize: 13),),  
-                                      color: Colors.white,  
-                                      onPressed: () => Gym.poolstatus(),  
+            //                           child: Text('Pool',style: TextStyle(color: Colors.blue , fontSize: 13),),  
+            //                           color: Colors.white,  
+            //                           onPressed: () {},
 
                                       
-                                      shape: RoundedRectangleBorder(side: BorderSide(
-              color: Colors.blue,
-              width: 1,
-              style: BorderStyle.solid
-            ),
-                                    ),
-                                  ), 
+            //                           shape: RoundedRectangleBorder(side: BorderSide(
+            //   color: Colors.blue,
+            //   width: 1,
+            //   style: BorderStyle.solid
+            // ),
+            //                         ),
+            //                       ), 
                                  
-                                   ), 
-                                     ],
-                                   ),
+            //                        ), 
+            //                          ],
+            //                        ),
                                     // Row(
                                     //   children: [
                                     //     Text('Squash'),
@@ -321,7 +347,7 @@ class _EditaddState extends State<Editadd> {
                                             child: FlatButton(
                                   child: Text(
                                       'Next', style: TextStyle(color: Colors.white),),
-                                  onPressed: _Saved ,
+                                  onPressed:_Saved,
                                   padding: EdgeInsets.symmetric(horizontal: 30.0, vertical: 4),
                                   materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                                   textColor: Theme.of(context).primaryColor,

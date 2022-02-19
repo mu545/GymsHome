@@ -28,6 +28,7 @@ import 'package:gymhome/widgets/pic.dart';
 import 'package:gymhome/widgets/placess.dart';
 import 'package:gymhome/widgets/profile.dart';
 import 'package:gymhome/widgets/resetpass.dart';
+import 'package:gymhome/widgets/reviwe.dart';
 import 'package:gymhome/widgets/signup.dart';
 import 'package:gymhome/widgets/ssss.dart';
 import 'package:gymhome/widgets/welcome.dart';
@@ -84,7 +85,7 @@ class MyApp extends StatelessWidget {
         child: Consumer<Gymsitems>(
             builder: (ctx, auth, _) => MaterialApp(
                   debugShowCheckedModeBanner: false,
-                  home: Location(),
+                  home: Reviwes(),
                   routes: {
                     NewHome.rounamed: (ctx) => NewHome(),
                     OwnerHome.rounamed: (ctx) => OwnerHome(),

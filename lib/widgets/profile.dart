@@ -8,6 +8,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:gymhome/authintactions/database.dart';
 import 'package:gymhome/models/customer.dart';
+import 'package:gymhome/models/user.dart';
 import 'package:gymhome/widgets/imageinput.dart';
 import 'package:gymhome/widgets/welcome.dart';
 import 'package:flutter/material.dart';
@@ -34,57 +35,7 @@ class _ProfileState extends State<Profile> {
 
   TextEditingController _nameTEC = TextEditingController();
 
-  //read data
-  //read() async {
-  //  StreamBuilder(
-  //     stream: FirebaseFirestore.instance.collection('Customer').snapshots(),
-  //    builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-  //      if (snapshot.hasData) {
-  //      return ListView.builder(
-  //           itemCount: snapshot.data!.docs.length,
-  //          itemBuilder: (context, i) {
-  //           QueryDocumentSnapshot x = snapshot.data!.docs[i];
-  //            return Text(x['Email']);
-  //          });
-  //     }
-  //      return Center(
-  //        child: CircularProgressIndicator(),
-  //      );
-  //     });
-  //}
-
   final FirebaseAuth auth = FirebaseAuth.instance;
-
-  File? _imageFile;
-
-// get image method GALLERY
-  Future getImageGallery() async {
-    final image =
-        await ImagePicker.platform.pickImage(source: ImageSource.gallery);
-    if (image == null) return;
-
-    final imageTemp = File(image.path);
-    setState(() {
-      _imageFile = imageTemp;
-    });
-  }
-
-  // void initState() {
-//    setState(() {
-  //     username = readsName() as String?;
-//    });
-  // }
-
-// get image method CAMERA
-  Future getImageCamera() async {
-    final image =
-        await ImagePicker.platform.pickImage(source: ImageSource.camera);
-    if (image == null) return;
-    final imageTemp = File(image.path);
-    setState(() {
-      this._imageFile = imageTemp;
-    });
-  }
 
   Widget iconEdit() {
     if (isedit == false) {
@@ -102,6 +53,7 @@ class _ProfileState extends State<Profile> {
     }
   }
 
+  @override
   final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
   var userEmail = FirebaseAuth.instance.currentUser!.email;
   ProfileModel _userProfile = ProfileModel('', '');
@@ -109,32 +61,9 @@ class _ProfileState extends State<Profile> {
 
   @override
   Widget build(BuildContext context) {
-    // TO DATABASE
-
-    uploadPic() async {
-      FirebaseStorage storage = FirebaseStorage.instance;
-      Reference ref = storage
-          .ref()
-          .child("$userEmail" + " ProfilePic " + DateTime.now().toString());
-      await ref.putFile(_imageFile!);
-      String imageurl = await ref.getDownloadURL();
-      FirebaseFirestore.instance
-          .collection('Customer')
-          .doc(userEmail)
-          .update({'url': imageurl});
-
-      setState(() {
-        print("Profile Picture Uploaded");
-        Scaffold.of(context)
-            .showSnackBar(SnackBar(content: Text('Profile Picture Uploaded')));
-      });
-    }
-
-// TRY TO MAKE IT DISAPER?
     Widget bottomSheet() {
       return Container(
         height: 150,
-        // width: MediaQuery.of(context).size.width,
         margin: EdgeInsets.symmetric(
           horizontal: 20,
           vertical: 20,
@@ -178,7 +107,16 @@ class _ProfileState extends State<Profile> {
                         icon: Icon(Icons.check),
                         onPressed: () {
                           //try parametter
-                          uploadPic();
+                          uploadPicForUserProfile();
+
+                          Navigator.pop(context);
+                          // setState(() {
+                          //   print("Profile Picture Uploaded");
+                          //   Scaffold.of(context).showSnackBar(SnackBar(
+                          //     content: Text('Profile Picture Uploaded'),
+                          //     backgroundColor: colors.green_base,
+                          //   ));
+                          // });
                         },
                         label: Text("Submit Photo"),
                       ),
@@ -205,14 +143,17 @@ class _ProfileState extends State<Profile> {
             children: [
               Container(
                 margin: EdgeInsets.symmetric(horizontal: 20, vertical: 80),
-                decoration:
-                    BoxDecoration(borderRadius: BorderRadius.circular(50)),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(50),
+                ),
                 child: Column(
                   children: [
                     Card(
+                      shadowColor: colors.blue_base,
                       child: Column(
                         children: [
                           Container(
+                            margin: EdgeInsets.only(top: 10),
                             child: Stack(
                               children: <Widget>[
                                 FutureBuilder(
@@ -233,7 +174,10 @@ class _ProfileState extends State<Profile> {
                                       } else
                                         return CircleAvatar(
                                           radius: 80.0,
-                                          backgroundImage: NetworkImage(''),
+                                          backgroundColor: colors.blue_smooth,
+                                          child: Center(
+                                              child:
+                                                  CircularProgressIndicator()),
                                         );
                                     }),
                                 Positioned(
@@ -256,19 +200,6 @@ class _ProfileState extends State<Profile> {
                               ],
                             ),
                           ),
-
-                          //      Row(
-                          //        mainAxisAlignment: MainAxisAlignment.end,
-                          //       children: [
-                          //         IconButton(
-                          //              onPressed: () {
-                          //                setState(() {
-                          //                 isedit = true;
-                          //               });
-                          //             },
-                          //             icon: Icon(Icons.edit)),
-                          //       ],
-                          //     ),
                           SizedBox(
                             height: 30,
                           ),
@@ -306,15 +237,6 @@ class _ProfileState extends State<Profile> {
                                             color: colors.hinttext,
                                           ),
                                         ),
-                                        //          keyboardType: TextInputType.name,
-                                        //             validator: (value) {
-                                        //               if (value!.isEmpty) {
-                                        //                 return 'Invalid Name';
-                                        //                }
-                                        //               },
-                                        //               onSaved: (value) {
-                                        //                 newName = value!;
-                                        //                },
                                       )
                                     : FutureBuilder(
                                         future: _getData(),
@@ -329,7 +251,7 @@ class _ProfileState extends State<Profile> {
                                             return Text(
                                                 '${_userProfile.userName}');
                                           } else
-                                            return Text('....');
+                                            return Text('........');
                                         }),
                               ),
                               IconButton(
@@ -365,86 +287,9 @@ class _ProfileState extends State<Profile> {
                               ),
                               Expanded(
                                 child: Text('$userEmail'),
-                                /*            child: isedit
-                                          ? TextFormField(
-                                              decoration: InputDecoration(
-                                                enabledBorder: OutlineInputBorder(
-                                                    borderSide: BorderSide(
-                                                        color: Color.fromARGB(
-                                                            62, 99, 99, 99)),
-                                                    borderRadius: BorderRadius.all(
-                                                        Radius.circular(20))),
-                                                focusedBorder: OutlineInputBorder(
-                                                    borderSide: BorderSide(
-                                                        color: colors.blue_base),
-                                                    borderRadius: BorderRadius.all(
-                                                        Radius.circular(20))),
-                                                contentPadding: EdgeInsets.all(10),
-                                                hintText: "Enter your email",
-                                                hintStyle: TextStyle(
-                                                  color: colors.hinttext,
-                                                ),
-                                              ),
-                                              keyboardType:
-                                                  TextInputType.emailAddress,
-                                              // validator: (value) {
-                                              //   if (value!.isEmpty || !value.contains('@')) {
-                                              //     return 'Invalid email!';
-                                              //   }
-                                              // },
-                                              // onSaved: (value) {
-                                              //   _authData['email'] = value!;
-                                              // },
-                                            )
-                                          : */
                               ),
                             ],
                           ),
-                          /*  Row(
-                                children: [
-                                  Container(
-                                      margin: EdgeInsets.symmetric(horizontal: 10),
-                                      child: Text('Password')),
-                                  SizedBox(
-                                    width: 2,
-                                  ),
-                                     Expanded(
-                                        child: Text("***********"),
-                                       )
-                                                       child: isedit
-                                          ? TextFormField(
-                                              decoration: InputDecoration(
-                                                enabledBorder: OutlineInputBorder(
-                                                    borderSide: BorderSide(
-                                                        color: Color.fromARGB(
-                                                            62, 99, 99, 99)),
-                                                    borderRadius: BorderRadius.all(
-                                                        Radius.circular(20))),
-                                                focusedBorder: OutlineInputBorder(
-                                                    borderSide: BorderSide(
-                                                        color: colors.blue_base),
-                                                    borderRadius: BorderRadius.all(
-                                                        Radius.circular(20))),
-                                                contentPadding: EdgeInsets.all(10),
-                                                hintText: "Enter password",
-                                                hintStyle: TextStyle(
-                                                  color: colors.hinttext,
-                                                ),
-                                              ),
-                                              keyboardType: TextInputType.text,
-                                              // validator: (value) {
-                                              //   if (value!.isEmpty || !value.contains('@')) {
-                                              //     return 'Invalid email!';
-                                              //   }
-                                              // },
-                                              // onSaved: (value) {
-                                              //   _authData['email'] = value!;
-                                              // },
-                                            )
-                                          : 
-                                ],
-                              ),*/
-                          //      CustomerList(),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
@@ -504,7 +349,6 @@ class _ProfileState extends State<Profile> {
                         ],
                       ),
                     ),
-                    //  CustomerList(),
                     SizedBox(
                       height: 20,
                     ),
@@ -562,7 +406,6 @@ class _ProfileState extends State<Profile> {
           ),
         ),
       ),
-      //  ),
     );
   }
 }

@@ -18,7 +18,7 @@ import 'package:gymhome/provider/gymsitems.dart';
 import 'package:gymhome/provider/womengymitems.dart';
 import 'package:gymhome/widgets/customer_list.dart';
 import 'package:gymhome/widgets/edit.dart';
-
+import 'package:gymhome/widgets/reviwe.dart';
 import 'package:gymhome/widgets/gymdescrption.dart';
 import 'package:gymhome/widgets/help.dart';
 import 'package:gymhome/widgets/profile.dart';
@@ -86,7 +86,7 @@ class MyApp extends StatelessWidget {
         child: Consumer<Gymsitems>(
             builder: (ctx, auth, _) => MaterialApp(
                   debugShowCheckedModeBanner: false,
-                  home: Reviwes(),
+                  home: welcome(),
                   routes: {
                     NewHome.rounamed: (ctx) => NewHome(),
                     OwnerHome.rounamed: (ctx) => OwnerHome(),

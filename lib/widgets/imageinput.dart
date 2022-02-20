@@ -12,11 +12,10 @@ class ImageInput extends StatefulWidget {
 }
 
 class _ImageInputState extends State<ImageInput> {
-   File ? _saveimage   ;
+  File? _saveimage;
   @override
   Future<void> _takedpicture() async {
-    File Imagefile =
-        await ImagePicker.platform.getImage(
+    File Imagefile = await ImagePicker.platform.getImage(
       source: ImageSource.camera,
       maxWidth: 600,
       maxHeight: null,
@@ -34,14 +33,12 @@ class _ImageInputState extends State<ImageInput> {
     final savedimagess = await Imagefile.copy('${appdur.path} /$filename');
     widget.onselectimage(savedimagess);
   }
-   
 
   Widget build(BuildContext context) {
     return Column(
       children: [
         Row(
           children: [
-           
             FlatButton.icon(
               onPressed: _takedpicture,
               icon: Icon(
@@ -52,14 +49,14 @@ class _ImageInputState extends State<ImageInput> {
             )
           ],
         ),
-         Container(
+        Container(
           height: 150,
           width: 350,
           decoration:
               BoxDecoration(border: Border.all(width: 1, color: Colors.grey)),
           child: _saveimage != null
               ? Image.file(
-                  _saveimage! ,
+                  _saveimage!,
                   fit: BoxFit.cover,
                   width: double.infinity,
                 )

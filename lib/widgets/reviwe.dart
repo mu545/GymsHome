@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:gymhome/Styles.dart';
+import 'package:gymhome/models/customer.dart';
+import 'package:gymhome/models/user.dart';
 
 //hla milfy
 class Reviwes extends StatefulWidget {
@@ -12,154 +14,154 @@ class Reviwes extends StatefulWidget {
 
 class _ReviwesState extends State<Reviwes> {
   @override
-  // var _editfor = Reviewproviser(title: '', description: '');
-  int rate = 0;
-
-  final _reviewController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey();
-  Map<String, dynamic> _authData = {
+  Map<String, dynamic> _reviwe = {
     'reviews': '',
-    'rate': 0,
+    'rate': 0.0,
   };
-
-  // void _ShowDialog(String message) {
-  //   showDialog(
-  //       context: context,
-  //       builder: (ctx) => AlertDialog(
-  //             title: Text('Add review'),
-  //             content: Text(message),
-  //             actions: [
-  //               // FlatButton(
-  //               //     onPressed: () {
-  //               //       Navigator.of(ctx).pop();
-  //               //     },
-  //               //     child: Text('OK'))
-  //             ],
-  //           ));
-  // }
 
   show() {
     showDialog(
         context: context,
-        builder: (BuildContext context) {
-          return SingleChildScrollView(
-            child: AlertDialog(
-              content: Container(
-                width: MediaQuery.of(context).size.width,
-                height: 350,
-                child: Column(children: [
-                  Form(
-                    key: _formKey,
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Text(
-                                "Write a review",
-                                style: TextStyle(
-                                    fontFamily: 'Epilogue',
-                                    fontSize: 18,
-                                    color: colors.blue_base),
-                              )
-                            ]),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        RatingBar.builder(
-                          initialRating: 0,
-                          minRating: 1,
-                          direction: Axis.horizontal,
-                          allowHalfRating: false,
-                          itemCount: 5,
-                          itemPadding: EdgeInsets.symmetric(horizontal: 2.0),
-                          itemBuilder: (context, _) => Icon(
-                            Icons.star,
-                            color: Colors.amber,
-                          ),
-                          onRatingUpdate: (rating) {
-                            print(rating);
-                          },
-                        ),
-                        Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: TextFormField(
-                              maxLines: null,
-                              obscureText: false,
-                              keyboardType: TextInputType.emailAddress,
-                              decoration: InputDecoration(
-                                // enabledBorder: OutlineInputBorder(
-                                //     //     borderSide: BorderSide(
-                                //     //         color: Color.fromARGB(62, 99, 99, 99)),
-                                //     //     borderRadius:
-                                //     //         BorderRadius.all(Radius.circular(5))),
-                                //     // focusedBorder: OutlineInputBorder(
-                                //     //     borderSide:
-                                //     //         BorderSide(color: colors.blue_base),
-                                //     borderRadius:
-                                //         BorderRadius.all(Radius.circular(5))),
-                                contentPadding: EdgeInsets.all(10),
-                                hintText: "review (optional)",
-                                hintStyle: TextStyle(
-                                  color: colors.hinttext,
+        builder: (BuildContext cxt) {
+          return Center(
+            child: SingleChildScrollView(
+              child: AlertDialog(
+                content: Container(
+                  width: MediaQuery.of(context).size.width,
+                  child: Column(children: [
+                    Form(
+                      key: _formKey,
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          Row(
+                              // mainAxisAlignment: MainAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  "Write a review",
+                                  style: TextStyle(
+                                      fontFamily: 'Epilogue',
+                                      fontSize: 18,
+                                      color: colors.blue_base),
                                 ),
-                              ),
-                              validator: (value) {
-                                if (value!.isEmpty || !value.contains('@'))
-                                  return 'Invalid email!';
-                              },
-                              onChanged: (value) {
-                                // email = value;
-                              }),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: RaisedButton(
-                            child: Text("Submitß"),
-                            onPressed: () {
-                              if (_formKey.currentState!.validate()) {
-                                _formKey.currentState!.save();
-                              }
+                                GestureDetector(
+                                  onTap: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: Icon(
+                                    Icons.cancel_outlined,
+                                    color: colors.iconscolor,
+                                    size: 25,
+                                  ),
+                                ),
+                              ]),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          RatingBar.builder(
+                            initialRating: 0,
+                            minRating: 0,
+                            direction: Axis.horizontal,
+                            allowHalfRating: false,
+                            itemCount: 5,
+                            itemPadding: EdgeInsets.symmetric(horizontal: 2.0),
+                            itemBuilder: (context, _) => Icon(
+                              Icons.star,
+                              size: 6,
+                              color: colors.yellow_base,
+                            ),
+                            onRatingUpdate: (rating) {
+                              _reviwe['rate'] = rating;
                             },
                           ),
-                        )
-                      ],
+                          SizedBox(
+                            height: 20,
+                          ),
+                          Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: TextFormField(
+                                maxLines: null,
+                                obscureText: false,
+                                keyboardType: TextInputType.emailAddress,
+                                decoration: InputDecoration(
+                                  contentPadding: EdgeInsets.all(10),
+                                  hintText: "review (optional)",
+                                  hintStyle: TextStyle(
+                                    color: colors.hinttext,
+                                  ),
+                                ),
+                                validator: (value) {
+                                  if (_reviwe['rate'] == 0.0) {
+                                    // error message
+                                    showDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          return SimpleDialog(
+                                            children: <Widget>[
+                                              Center(
+                                                child: Container(
+                                                  child: Text(
+                                                    'please add rate',
+                                                    style: TextStyle(
+                                                        color: colors.red_base,
+                                                        fontSize: 18),
+                                                  ),
+                                                ),
+                                              )
+                                            ],
+                                          );
+                                        });
+                                  }
+                                },
+                                onChanged: (value) {
+                                  _reviwe['reviews'] = value;
+                                }),
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              if (_formKey.currentState!.validate() &&
+                                  _reviwe['rate'] != 0.0) {
+                                Customer c1 = Customer(name: '');
+                                if (_reviwe['reviews'] == '')
+                                  c1.addrate(
+                                      'EE6yUxZMs3OK8OotZ0t5', _reviwe['rate']);
+                                else
+                                  c1.addReviwe('EE6yUxZMs3OK8OotZ0t5',
+                                      _reviwe['rate'], _reviwe['reviews']);
+
+                                _reviwe['rate'] = 0.0;
+                                _reviwe['reviews'] = '';
+                                Navigator.of(context).pop();
+                                User.message(context, true, 'Thank you!');
+                              }
+                            },
+                            child: Align(
+                              alignment: Alignment.bottomRight,
+                              child: Text(
+                                "Send",
+                                style: TextStyle(
+                                  color: colors.blue_base,
+                                  fontFamily: 'Roboto',
+                                  fontSize: 18,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                ]),
+                  ]),
+                ),
               ),
             ),
           );
         });
   }
-
-  // Future<void> _showMyDialog() async {
-  //   return showDialog<void>(
-  //     context: context,
-  //     barrierDismissible: false, // user must tap button!
-  //     builder: (BuildContext context) {
-  //       return AlertDialog(
-  //         title: Text('Review submitted'),
-  //         content: SingleChildScrollView(
-  //           child: ListBody(
-  //             children: <Widget>[
-  //               Text('Thanks for your time!'),
-  //             ],
-  //           ),
-  //         ),
-  //         actions: <Widget>[
-  //           TextButton(
-  //             child: Text('Ok'),
-  //             onPressed: () {
-  //               Navigator.of(context).pushNamed('/');
-  //             },
-  //           ),
-  //         ],
-  //       );
-  //     },
-  //   );
-  // }
 
   Widget build(BuildContext context) {
     // final productdata = Provider.of<Comentss>(context);

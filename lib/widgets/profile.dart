@@ -108,7 +108,6 @@ class _ProfileState extends State<Profile> {
                         onPressed: () {
                           //try parametter
                           uploadPicForUserProfile();
-                          setState(() {});
 
                           Navigator.pop(context);
                           // setState(() {

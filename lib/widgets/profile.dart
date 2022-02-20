@@ -106,9 +106,9 @@ class _ProfileState extends State<Profile> {
                       FlatButton.icon(
                         icon: Icon(Icons.check),
                         onPressed: () {
-                          setState(() {});
                           //try parametter
                           uploadPicForUserProfile();
+                          setState(() {});
 
                           Navigator.pop(context);
                           // setState(() {

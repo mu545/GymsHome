@@ -18,7 +18,7 @@ import 'package:gymhome/provider/gymsitems.dart';
 import 'package:gymhome/provider/womengymitems.dart';
 import 'package:gymhome/widgets/customer_list.dart';
 import 'package:gymhome/widgets/edit.dart';
-
+import 'package:gymhome/widgets/reviwe.dart';
 import 'package:gymhome/widgets/gymdescrption.dart';
 import 'package:gymhome/widgets/help.dart';
 import 'package:gymhome/widgets/profile.dart';

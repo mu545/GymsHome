@@ -37,11 +37,11 @@ class _WidgtessState extends State<Widgtess> {
                                 Container( margin: EdgeInsets.symmetric(horizontal: 8, vertical: 5), height: 40, width: 40, decoration: BoxDecoration(borderRadius: BorderRadius.circular(30), color: Colors.white),  child:  Consumer<Gyms>(
               builder: (ctx, prod, _) => IconButton(
                 onPressed: () {
-                  Gym.FavoiritStatus();
+                  // Gym.FavoiritStatus();
             
                 },
                 icon: Icon(
-                  Gym.isFavorite ? Icons.favorite : Icons.favorite_border,
+                Icons.favorite_border,
                   color: Colors.red,
                 ),
               ),
@@ -49,7 +49,7 @@ class _WidgtessState extends State<Widgtess> {
             // heart(Gym: Gym),
             
                               SizedBox(width: 220,),Container( height: 40, width: 40, decoration: BoxDecoration(borderRadius: BorderRadius.circular(30), color: Colors.white),  child:Consumer<Gyms>(
-              builder: (ctx, prod, _) => IconButton(onPressed: (){ Gym.CompareStatus();}, icon: Icon(  Gym.iscompared ? Icons.compare_outlined : Icons.compare_arrows))) )],
+              builder: (ctx, prod, _) => IconButton(onPressed: (){ }, icon: Icon(  Icons.compare_arrows))) )],
                             ),Column(mainAxisAlignment:MainAxisAlignment.end,
                               children: [
                                 // Center(child: GridTileBar(   backgroundColor: Colors.black87,title:  Text('Fitness Time'),)),

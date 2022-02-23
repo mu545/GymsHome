@@ -21,7 +21,7 @@ class ProductGrid extends StatelessWidget {
   Widget build(BuildContext context) {
     final prodactDate = Provider.of<Gymsitems>(context);
    
-     final prodctitem = shoefav ? prodactDate.favoriteitem : prodactDate.items;
+     final prodctitem =  prodactDate.items;
     
        
     return  ListView.builder(

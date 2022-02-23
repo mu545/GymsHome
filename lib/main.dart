@@ -67,10 +67,10 @@ class MyApp extends StatelessWidget {
               price: 0,
               description: '',
               imageUrl: '',
-              isFavorite: false,
+         
               location: '',
               facilites: '',
-              hours: '',
+            
             ),
           ),
           ChangeNotifierProvider(

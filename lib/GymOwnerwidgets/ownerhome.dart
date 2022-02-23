@@ -22,7 +22,7 @@ class _WidgtessState extends State<OwnerHome> {
   @override
   Widget build(BuildContext context) {
      final Gym = Provider.of<Gyms>(context);
-    final gymsdata =  Provider.of<Gymsitems>(context, listen: false).fetchAndSetProducts();
+
        final prodactDate = Provider.of<Gymsitems>(context);
     return Scaffold(
       appBar: AppBar(title: Center(child: Text('HOME', style: TextStyle(color: Colors.black),)),backgroundColor: Colors.white, elevation: 0,actions: <Widget>[ IconButton(onPressed: (){}, icon: Icon(Icons.more_vert,color: Colors.black,),)], ),

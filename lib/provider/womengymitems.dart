@@ -9,42 +9,42 @@ import 'dart:convert';
 
 class WomenGymsitems with ChangeNotifier {
   List<Gyms> _items = [
-    Gyms(   id: 'p1',
-        title: 'Fitness Time',
-        description:
-            ' ',
-        price: 200,
-        imageUrl:
-            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQbo3IFVDJZKd9jumdJ71z7oO1fxsGPqQkhYg&usqp=CAU',
-            isFavorite: false ,
-              location: '' , 
-            facilites: '' ,
-            hours: '' 
-    ),
-     Gyms(   id: 'p2',
-        title: 'Fitness Time',
-        description:
-            ' ',
-        price: 200,
-        imageUrl:
-            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTYdK-lU-JxF6Czh43PSD8kF6LlF0ge9c4jxQ&usqp=CAU',
-            isFavorite: false ,
-              location: '' , 
-            facilites: '' ,
-            hours: '' 
-    ),
-     Gyms(   id: 'p2',
-        title: 'Fitness Time',
-        description:
-            ' ',
-        price: 200,
-        imageUrl:
-            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTYdK-lU-JxF6Czh43PSD8kF6LlF0ge9c4jxQ&usqp=CAU',
-            isFavorite: false ,
-              location: '' , 
-            facilites: '' ,
-            hours: '' 
-    )
+    // Gyms(   id: 'p1',
+    //     title: 'Fitness Time',
+    //     description:
+    //         ' ',
+    //     price: 200,
+    //     imageUrl:
+    //         'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQbo3IFVDJZKd9jumdJ71z7oO1fxsGPqQkhYg&usqp=CAU',
+    //         isFavorite: false ,
+    //           location: '' , 
+    //         facilites: '' ,
+    //         hours: '' 
+    // ),
+    //  Gyms(   id: 'p2',
+    //     title: 'Fitness Time',
+    //     description:
+    //         ' ',
+    //     price: 200,
+    //     imageUrl:
+    //         'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTYdK-lU-JxF6Czh43PSD8kF6LlF0ge9c4jxQ&usqp=CAU',
+    //         isFavorite: false ,
+    //           location: '' , 
+    //         facilites: '' ,
+    //         hours: '' 
+    // ),
+    //  Gyms(   id: 'p2',
+    //     title: 'Fitness Time',
+    //     description:
+    //         ' ',
+    //     price: 200,
+    //     imageUrl:
+    //         'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTYdK-lU-JxF6Czh43PSD8kF6LlF0ge9c4jxQ&usqp=CAU',
+    //         isFavorite: false ,
+    //           location: '' , 
+    //         facilites: '' ,
+    //         hours: '' 
+    // )
   ];
 
   List<Gyms> get items {
@@ -56,15 +56,15 @@ class WomenGymsitems with ChangeNotifier {
     return _items.firstWhere((gym) => gym.id == id);
   }
 
-  List<Gyms> get favoriteitem {
-    return _items.where((element) => element.isFavorite).toList();
-  }
-   List<Gyms> get compareitems {
-    return _items.where((element) => element.iscompared).toList();
-  }
-List<Gyms> get favoriteproduct {
-    return _items.where((element) => element.isadd).toList();
-  }
+//   List<Gyms> get favoriteitem {
+//     return _items.where((element) => element.isFavorite).toList();
+//   }
+//    List<Gyms> get compareitems {
+//     return _items.where((element) => element.iscompared).toList();
+//   }
+// List<Gyms> get favoriteproduct {
+//     return _items.where((element) => element.isadd).toList();
+//   }
   // Product FindbyId(String id) {
   //   print(id + 'Muhammed');
   //   return _items.firstWhere((proud) => proud.id == id);

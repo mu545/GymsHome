@@ -24,7 +24,7 @@ class CompareGrid extends StatelessWidget {
       context,
     );
     final prodctitem =
-        shoecompare ? prodactDate.compareitems : prodactDate.items;
+       prodactDate.items;
 
     return Scaffold(
         appBar: AppBar(

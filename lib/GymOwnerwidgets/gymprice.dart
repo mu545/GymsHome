@@ -23,7 +23,7 @@ class _AddGymState extends State<GymPrice> {
     title: '',
     price: 0,
     description: '',
-    imageUrl: '',  location: '' , facilites:  '' , hours: ''
+    imageUrl: '',  location: '' , facilites:  '' ,
   );
 
   var _initValues = {
@@ -91,7 +91,7 @@ class _AddGymState extends State<GymPrice> {
     //   return;
     // }
     _form.currentState!.save();
-    Provider.of<Gymsitems>(context, listen: false).addProduct(_editedProduct);
+    Provider.of<Gymsitems>(context, listen: false).addGyms(_editedProduct);
   //  Navigator.of(context).pushNamed(Location.routenamed);
     // if(_editfor.id != null){
 
@@ -178,10 +178,10 @@ class _AddGymState extends State<GymPrice> {
                           description: _editedProduct.description,
                           imageUrl: _editedProduct.imageUrl,
                           id: _editedProduct.id,
-                          isFavorite: _editedProduct.isFavorite,
+                        
                            location: _editedProduct.location, 
                                 facilites: _editedProduct.facilites , 
-                                hours: _editedProduct.hours
+                            
                         );
                       },
                     ),

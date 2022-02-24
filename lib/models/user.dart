@@ -82,11 +82,11 @@ class User {
     }
   }
 
-  static void message(BuildContext cxt, bool iserror, String message) {
+  static message(BuildContext cxt, bool iserror, String message) {
     ScaffoldMessenger.of(cxt).showSnackBar(
       SnackBar(
         content: Text(
-          messages,
+          message,
           style: TextStyle(
               color: iserror ? colors.green_base : Colors.white,
               fontFamily: 'Roboto',

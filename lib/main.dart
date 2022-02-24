@@ -34,6 +34,7 @@ import 'package:gymhome/widgets/resetpass.dart';
 import 'package:gymhome/widgets/reviwe.dart';
 import 'package:gymhome/widgets/signup.dart';
 import 'package:gymhome/widgets/ssss.dart';
+import 'package:gymhome/widgets/stack.dart';
 import 'package:gymhome/widgets/welcome.dart';
 import 'package:gymhome/widgets/womengym.dart';
 import 'package:provider/provider.dart';
@@ -69,10 +70,10 @@ class MyApp extends StatelessWidget {
               price: 0,
               description: '',
               imageUrl: '',
-              isFavorite: false,
+         
               location: '',
               facilites: '',
-              hours: '',
+            
             ),
           ),
           ChangeNotifierProvider(
@@ -88,7 +89,7 @@ class MyApp extends StatelessWidget {
         child: Consumer<Gymsitems>(
             builder: (ctx, auth, _) => MaterialApp(
                   debugShowCheckedModeBanner: false,
-                  home: welcome(),
+                  home: Reviwes(),
                   routes: {
                     NewHome.rounamed: (ctx) => NewHome(),
                     OwnerHome.rounamed: (ctx) => OwnerHome(),

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:gymhome/models/gyms.dart';
 
@@ -56,103 +57,104 @@ class Gymsitems with ChangeNotifier {
     return _items.firstWhere((gym) => gym.id == id);
   }
 
-  List<Gyms> get favoriteitem {
-    return _items.where((element) => element.isFavorite).toList();
-  }
-   List<Gyms> get compareitems {
-    return _items.where((element) => element.iscompared).toList();
-  }
-List<Gyms> get favoriteproduct {
-    return _items.where((element) => element.isadd).toList();
-  }Future<void> Fetch() async {
-    const url =
-        'https://gymshome-ce96b-default-rtdb.firebaseio.com/gyms.json';
+//   List<Gyms> get favoriteitem {
+//     return _items.where((element) => element.isFavorite).toList();
+//   }
+//    List<Gyms> get compareitems {
+//     return _items.where((element) => element.iscompared).toList();
+//   }
+// List<Gyms> get favoriteproduct {
+//     return _items.where((element) => element.isadd).toList();
+//   }  
+  // Future<void> Fetch() async {
+  //   const url =
+  //       'https://gymshome-ce96b-default-rtdb.firebaseio.com/gyms.json';
 
-    final List<Gyms> Loadeproducts = [];
+  //   final List<Gyms> Loadeproducts = [];
 
-    Loadeproducts.add(Gyms(
-      id: '',
-      imageUrl: '',
-      description: '',
-      isFavorite: true,
-      price: 10,
-      title: '',
-      location: '' , 
-      facilites: '' , 
-      hours: '' ,
-    ));
+  //   Loadeproducts.add(Gyms(
+  //     id: '',
+  //     imageUrl: '',
+  //     description: '',
+  //     isFavorite: true,
+  //     price: 10,
+  //     title: '',
+  //     location: '' , 
+  //     facilites: '' , 
+  //     hours: '' ,
+  //   ));
 
-    _items = Loadeproducts;
-    notifyListeners();
-  }
-   void remove(String id) async {
-    final url = 'https://gymshome-ce96b-default-rtdb.firebaseio.com/gym/$id';
-    final existindpro = _items.indexWhere((element) => element.id == id);
-    var existproduct = _items[existindpro];
-    _items.removeAt(existindpro);
-    notifyListeners();
-    final response = await http.delete(Uri.parse(url));
+  //   _items = Loadeproducts;
+  //   notifyListeners();
+  // }
+  //  void remove(String id) async {
+  //   final url = 'https://gymshome-ce96b-default-rtdb.firebaseio.com/gym/$id';
+  //   final existindpro = _items.indexWhere((element) => element.id == id);
+  //   var existproduct = _items[existindpro];
+  //   _items.removeAt(existindpro);
+  //   notifyListeners();
+  //   final response = await http.delete(Uri.parse(url));
 
-    if (response.statusCode >= 400) {
-      _items.insert(existindpro, existproduct);
-      notifyListeners();
-      throw HttpException('could not delet gym.');
-    }
-    existproduct == null;
-  }
-   void Update(String id, Gyms newpro) {
-    final proind = _items.indexWhere((prod) => prod.id == id);
-    final url =
-        'https://gymshome-ce96b-default-rtdb.firebaseio.com/gym/$id';
-    http.patch(Uri.parse(url),
-        body: json.encode({
-          'title': newpro.title,
-          'descreption': newpro.description,
-          'Imageurl': newpro.imageUrl,
-          'price': newpro.price
-        }));
-    if (proind >= 0) {
-      _items[proind] = newpro;
-      notifyListeners();
-    } else {
-      print('');
-    }
-  }
-    Future<void> fetchAndSetProducts() async {
-    // final filterString = filterByUser ? 'orderBy="creatorId"&equalTo="$userId"' : '';
-    var url =
-        'https://gymshome-ce96b-default-rtdb.firebaseio.com/gyms.json';
-    try {
-      final response = await http.get(Uri.parse(url));
-      final extractedData = json.decode(response.body) as Map<String, dynamic>;
-      if (extractedData == null) {
-        return;
-      }
-      // url =
-      //     'https://fluttershop-app.firebaseio.com/userFavorites/$userId.json?auth=$authToken';
-      final favoriteResponse = await http.get(Uri.parse(url));
-      final favoriteData = json.decode(favoriteResponse.body);
-      final List<Gyms> loadedProducts = [];
-      extractedData.forEach((prodId, prodData) {
-        loadedProducts.add(Gyms(
-          id: prodId,
-          title: prodData['title'],
-          description: prodData['description'],
-          price: prodData['price'],
-          isFavorite:
-              favoriteData == null ? false : favoriteData[prodId] ?? false,
-          imageUrl: prodData['imageUrl'],
-          location: prodData['location'],
-          facilites: prodData['facil'],
-          hours: prodData['hour'],
-        ));
-      });
-      _items = loadedProducts;
-      notifyListeners();
-    } catch (error) {
-      throw (error);
-    }
-  }
+  //   if (response.statusCode >= 400) {
+  //     _items.insert(existindpro, existproduct);
+  //     notifyListeners();
+  //     throw HttpException('could not delet gym.');
+  //   }
+  //   existproduct == null;
+  // }
+  //  void Update(String id, Gyms newpro) {
+  //   final proind = _items.indexWhere((prod) => prod.id == id);
+  //   final url =
+  //       'https://gymshome-ce96b-default-rtdb.firebaseio.com/gym/$id';
+  //   http.patch(Uri.parse(url),
+  //       body: json.encode({
+  //         'title': newpro.title,
+  //         'descreption': newpro.description,
+  //         'Imageurl': newpro.imageUrl,
+  //         'price': newpro.price
+  //       }));
+  //   if (proind >= 0) {
+  //     _items[proind] = newpro;
+  //     notifyListeners();
+  //   } else {
+  //     print('');
+  //   }
+  // }
+  //   Future<void> fetchAndSetProducts() async {
+  //   // final filterString = filterByUser ? 'orderBy="creatorId"&equalTo="$userId"' : '';
+  //   var url =
+  //       'https://gymshome-ce96b-default-rtdb.firebaseio.com/gyms.json';
+  //   try {
+  //     final response = await http.get(Uri.parse(url));
+  //     final extractedData = json.decode(response.body) as Map<String, dynamic>;
+  //     if (extractedData == null) {
+  //       return;
+  //     }
+  //     // url =
+  //     //     'https://fluttershop-app.firebaseio.com/userFavorites/$userId.json?auth=$authToken';
+  //     final favoriteResponse = await http.get(Uri.parse(url));
+  //     final favoriteData = json.decode(favoriteResponse.body);
+  //     final List<Gyms> loadedProducts = [];
+  //     extractedData.forEach((prodId, prodData) {
+  //       loadedProducts.add(Gyms(
+  //         id: prodId,
+  //         title: prodData['title'],
+  //         description: prodData['description'],
+  //         price: prodData['price'],
+  //         isFavorite:
+  //             favoriteData == null ? false : favoriteData[prodId] ?? false,
+  //         imageUrl: prodData['imageUrl'],
+  //         location: prodData['location'],
+  //         facilites: prodData['facil'],
+  //         hours: prodData['hour'],
+  //       ));
+  //     });
+  //     _items = loadedProducts;
+  //     notifyListeners();
+  //   } catch (error) {
+  //     throw (error);
+  //   }
+  // }
 //   Future <void>addpro(Gyms product ) async {
 //     const url =
 //         'https://gymshome-ce96b-default-rtdb.firebaseio.com/gyms.json' ;
@@ -189,62 +191,85 @@ List<Gyms> get favoriteproduct {
 //       // print(json.decode(response.body));
     
 //   }
-  Future<void> addProduct(Gyms product) async {
-    final url = 'https://gymshome-ce96b-default-rtdb.firebaseio.com/gyms.json';
+  // Future<void> addProduct(Gyms product) async {
+  //   final url = 'https://gymshome-ce96b-default-rtdb.firebaseio.com/gyms.json';
     
-    try {
-      final response = await http.post(
-        Uri.parse(url ), body: json.encode({
-            'title': product.title,
-          'descrption': product.description,
-          'ImageURL': product.imageUrl,
-          'price': product.price,
-          'isFavorite': product.isFavorite,
-          'Location' : product.location, 
-          'faciltrs' : product.facilites , 
-          'Sauna' : product.facilites , 
-          'Pool' : product.facilites , 
-          'Rowing' : product.facilites , 
-          'Squash' : product.squash,
-          'hpurs' : product.hours
-        }),
-      );
+  //   try {
+  //     final response = await http.post(
+  //       Uri.parse(url ), body: json.encode({
+  //           'title': product.title,
+  //         'descrption': product.description,
+  //         'ImageURL': product.imageUrl,
+  //         'price': product.price,
+  //         'isFavorite': product.isFavorite,
+  //         'Location' : product.location, 
+  //         'faciltrs' : product.facilites , 
+  //         'Sauna' : product.facilites , 
+  //         'Pool' : product.facilites , 
+  //         'Rowing' : product.facilites , 
+  //         'Squash' : product.squash,
+  //         'hpurs' : product.hours
+  //       }),
+  //     );
 
-      final newProduct = Gyms(
-        title: product.title,
-        description: product.description,
-        price: product.price,
-        imageUrl: product.imageUrl,
-        id: json.decode(response.body)['name'],
-          location: product.location , 
-        facilites: product.facilites , 
-        pool: product.pool , 
-        sauna : product.sauna , 
-        rowing: product.rowing ,
-        squash: product.squash,
+  //     final newProduct = Gyms(
+  //       title: product.title,
+  //       description: product.description,
+  //       price: product.price,
+  //       imageUrl: product.imageUrl,
+  //       id: json.decode(response.body)['name'],
+  //         location: product.location , 
+  //       facilites: product.facilites , 
+     
+  //     );
 
-        hours: product.hours, 
-      );
+  //     _items.add(newProduct);
+  //     notifyListeners();
 
-      _items.add(newProduct);
-      notifyListeners();
-
-    } catch (error) {
-      throw error;
-    }
-      // print(json.decode(response.body));
+  //   } catch (error) {
+  //     throw error;
+  //   }
+  //     // print(json.decode(response.body));
     
-  }
+  // }
+   Future<void> addGyms(Gyms gym) async {
+  FirebaseFirestore.instance
+                          .collection("Gyms")
+                                  .doc()
+                                  .set({ 
+                                  'name': gym.title,
+          'descrption': gym.description,
+          'ImageURL': gym.imageUrl,
+          'price': gym.price,
+       
+          'Location' : gym.location, 
+          'faciltrs' : gym.facilites , });
+          final gymdata = await FirebaseFirestore.instance
+        .collection('Gyms')
+      
+        .get();
+          
+             final  newProduct  = Gyms(
+        title: gym.title,
+        description: gym.description,
+        price: gym.price,
+        imageUrl: gym.imageUrl,
+        id: gym.id,
+          location: gym.location , 
+        facilites: gym.facilites );
+         }
+
+      
     
+
+
+
+
+
+
+
+
 }
-
-
- 
-
-
-
-
- 
  
 
   

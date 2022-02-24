@@ -42,7 +42,7 @@ class _ViewGymImagesState extends State<ViewGymImages> {
               if (_gymProfile.images!.isEmpty) {
                 return Center(
                   child: Text(
-                    'There are no images uploaded yet, try adding some images of your gym and its facilities by clicking the add button down :) ',
+                    'There are no images uploaded yet, try adding some images of your gym and its facilities by clicking the add button below',
                     textAlign: TextAlign.center,
                   ),
                 );
@@ -51,7 +51,10 @@ class _ViewGymImagesState extends State<ViewGymImages> {
                 child: GridView.builder(
                     itemCount: _gymProfile.images!.length,
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 3),
+                        crossAxisCount: 3,
+                        childAspectRatio: 1,
+                        crossAxisSpacing: 5,
+                        mainAxisSpacing: 5),
                     itemBuilder: (context, index) {
                       return Container(
                         margin: EdgeInsets.all(3),

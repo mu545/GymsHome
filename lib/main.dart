@@ -70,10 +70,8 @@ class MyApp extends StatelessWidget {
               price: 0,
               description: '',
               imageUrl: '',
-         
               location: '',
               facilites: '',
-            
             ),
           ),
           ChangeNotifierProvider(
@@ -89,16 +87,17 @@ class MyApp extends StatelessWidget {
         child: Consumer<Gymsitems>(
             builder: (ctx, auth, _) => MaterialApp(
                   debugShowCheckedModeBanner: false,
-                  home: Reviwes(),
+                  home: OwnerHome(),
                   routes: {
                     NewHome.rounamed: (ctx) => NewHome(),
+                    ImageInput.routenamed: (ctx) => ImageInput(),
                     OwnerHome.rounamed: (ctx) => OwnerHome(),
                     GymPrice.routenames: (ctx) => GymPrice(),
                     // Comparepage.routeName: (ctx) => Comparepage(),
                     GymDescrption.routeName: (ctx) => GymDescrption(),
                     OwnerDescrption.routeName: (ctx) => OwnerDescrption(),
                     Location.routenamed: (ctx) => Location(),
-                    Editadd.routeName: (ctx) => Editadd(),
+                    AddGymInfo.routeName: (ctx) => AddGymInfo(),
                     Facilites.routenames: (ctx) => Facilites(),
                     Addplace.routeName: (ctx) => Addplace(),
 

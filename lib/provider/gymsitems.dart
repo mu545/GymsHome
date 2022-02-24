@@ -18,9 +18,9 @@ class Gymsitems with ChangeNotifier {
     //     imageUrl:
     //         'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTYdK-lU-JxF6Czh43PSD8kF6LlF0ge9c4jxQ&usqp=CAU',
     //         isFavorite: false ,
-    //         location: '' , 
+    //         location: '' ,
     //         facilites: '' ,
-    //         hours: '' 
+    //         hours: ''
     // ),
     //  Gyms(   id: 'p2',
     //     title: 'Fitness Time',
@@ -30,9 +30,9 @@ class Gymsitems with ChangeNotifier {
     //     imageUrl:
     //         'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTYdK-lU-JxF6Czh43PSD8kF6LlF0ge9c4jxQ&usqp=CAU',
     //         isFavorite: false ,
-    //             location: '' , 
+    //             location: '' ,
     //         facilites: '' ,
-    //         hours: '' 
+    //         hours: ''
     // ),
     //  Gyms(   id: 'p2',
     //     title: 'Fitness Time',
@@ -42,9 +42,9 @@ class Gymsitems with ChangeNotifier {
     //     imageUrl:
     //         'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTYdK-lU-JxF6Czh43PSD8kF6LlF0ge9c4jxQ&usqp=CAU',
     //         isFavorite: false ,
-    //             location: '' , 
+    //             location: '' ,
     //         facilites: '' ,
-    //         hours: '' 
+    //         hours: ''
     // )
   ];
 
@@ -52,7 +52,7 @@ class Gymsitems with ChangeNotifier {
     return [..._items];
   }
 
-   Gyms FindbyId(String id) {
+  Gyms FindbyId(String id) {
     print(id + 'p1');
     return _items.firstWhere((gym) => gym.id == id);
   }
@@ -65,7 +65,7 @@ class Gymsitems with ChangeNotifier {
 //   }
 // List<Gyms> get favoriteproduct {
 //     return _items.where((element) => element.isadd).toList();
-//   }  
+//   }
   // Future<void> Fetch() async {
   //   const url =
   //       'https://gymshome-ce96b-default-rtdb.firebaseio.com/gyms.json';
@@ -79,8 +79,8 @@ class Gymsitems with ChangeNotifier {
   //     isFavorite: true,
   //     price: 10,
   //     title: '',
-  //     location: '' , 
-  //     facilites: '' , 
+  //     location: '' ,
+  //     facilites: '' ,
   //     hours: '' ,
   //   ));
 
@@ -168,8 +168,8 @@ class Gymsitems with ChangeNotifier {
 //           'ImageURL': product.imageUrl,
 //           'price': product.price,
 //           'isFavorite': product.isFavorite,
-//           'Location' : product.location, 
-//           'faciltrs' : product.facilites , 
+//           'Location' : product.location,
+//           'faciltrs' : product.facilites ,
 //           'hpurs' : product.hours
 //         },)
 //       );
@@ -179,21 +179,21 @@ class Gymsitems with ChangeNotifier {
 //         description: product.description,
 //         price: product.price,
 //         imageUrl: product.imageUrl,
-//         location: product.location , 
-//         facilites: product.facilites , 
+//         location: product.location ,
+//         facilites: product.facilites ,
 //         hours: product.hours
 //         );  _items.add(newpro);
 //     notifyListeners();
-   
+
 //      } catch (error) {
 //       throw error;
 //     }
 //       // print(json.decode(response.body));
-    
+
 //   }
   // Future<void> addProduct(Gyms product) async {
   //   final url = 'https://gymshome-ce96b-default-rtdb.firebaseio.com/gyms.json';
-    
+
   //   try {
   //     final response = await http.post(
   //       Uri.parse(url ), body: json.encode({
@@ -202,11 +202,11 @@ class Gymsitems with ChangeNotifier {
   //         'ImageURL': product.imageUrl,
   //         'price': product.price,
   //         'isFavorite': product.isFavorite,
-  //         'Location' : product.location, 
-  //         'faciltrs' : product.facilites , 
-  //         'Sauna' : product.facilites , 
-  //         'Pool' : product.facilites , 
-  //         'Rowing' : product.facilites , 
+  //         'Location' : product.location,
+  //         'faciltrs' : product.facilites ,
+  //         'Sauna' : product.facilites ,
+  //         'Pool' : product.facilites ,
+  //         'Rowing' : product.facilites ,
   //         'Squash' : product.squash,
   //         'hpurs' : product.hours
   //       }),
@@ -218,9 +218,9 @@ class Gymsitems with ChangeNotifier {
   //       price: product.price,
   //       imageUrl: product.imageUrl,
   //       id: json.decode(response.body)['name'],
-  //         location: product.location , 
-  //       facilites: product.facilites , 
-     
+  //         location: product.location ,
+  //       facilites: product.facilites ,
+
   //     );
 
   //     _items.add(newProduct);
@@ -230,46 +230,26 @@ class Gymsitems with ChangeNotifier {
   //     throw error;
   //   }
   //     // print(json.decode(response.body));
-    
+
   // }
-   Future<void> addGyms(Gyms gym) async {
-  FirebaseFirestore.instance
-                          .collection("Gyms")
-                                  .doc()
-                                  .set({ 
-                                  'name': gym.title,
-          'descrption': gym.description,
-          'ImageURL': gym.imageUrl,
-          'price': gym.price,
-       
-          'Location' : gym.location, 
-          'faciltrs' : gym.facilites , });
-          final gymdata = await FirebaseFirestore.instance
-        .collection('Gyms')
-      
-        .get();
-          
-             final  newProduct  = Gyms(
+  Future<void> addGyms(Gyms gym) async {
+    FirebaseFirestore.instance.collection("Gyms").doc().set({
+      'name': gym.title,
+      'descrption': gym.description,
+      'ImageURL': gym.imageUrl,
+      'price': gym.price,
+      'Location': gym.location,
+      'faciltrs': gym.facilites,
+    });
+    final gymdata = await FirebaseFirestore.instance.collection('Gyms').get();
+
+    final newProduct = Gyms(
         title: gym.title,
         description: gym.description,
         price: gym.price,
         imageUrl: gym.imageUrl,
         id: gym.id,
-          location: gym.location , 
-        facilites: gym.facilites );
-         }
-
-      
-    
-
-
-
-
-
-
-
-
+        location: gym.location,
+        facilites: gym.facilites);
+  }
 }
- 
-
-  

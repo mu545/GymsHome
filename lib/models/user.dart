@@ -122,7 +122,7 @@ Future getImageCamera() async {
 }
 
 var userEmail = FirebaseAuth.instance.currentUser!.email;
-uploadPicForUserProfile() async {
+Future uploadPicForUserProfile() async {
   FirebaseStorage storage = FirebaseStorage.instance;
   Reference ref = storage
       .ref()

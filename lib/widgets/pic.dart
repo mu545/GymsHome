@@ -16,7 +16,7 @@ class Addplace extends StatefulWidget {
 class _AddplaceState extends State<Addplace> {
   final _textcon = TextEditingController();
 
-  File ? _imagesave;
+  File? _imagesave;
 
   void _selectedimage(File Imagefile) {
     _imagesave = Imagefile;
@@ -47,7 +47,7 @@ class _AddplaceState extends State<Addplace> {
                       controller: _textcon,
                     ),
                   ),
-                  ImageInput(_selectedimage),
+                  //             ImageInput(_selectedimage),
                   SizedBox(
                     height: 10,
                   ),

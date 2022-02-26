@@ -5,7 +5,7 @@ import 'package:gymhome/models/gyms.dart';
 import 'package:http/http.dart' as http;
 import '../authintactions/httpexe.dart';
 import 'dart:convert';
-
+import 'package:gymhome/GymOwnerwidgets/ownerhome.dart';
 // import 'package:onlinestore_example/Models/httpexe.dart';
 
 class Gymsitems with ChangeNotifier {
@@ -233,7 +233,7 @@ class Gymsitems with ChangeNotifier {
 
   // }
   Future<void> addGyms(Gyms gym) async {
-    FirebaseFirestore.instance.collection("Gyms").doc().set({
+    FirebaseFirestore.instance.collection("waiting").doc().set({
       'name': gym.title,
       'descrption': gym.description,
       'ImageURL': gym.imageUrl,

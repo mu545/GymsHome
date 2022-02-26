@@ -28,7 +28,8 @@ class _ImageInputState extends State<ImageInput> {
   File? _imageFile;
   final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
   final String userId = "95fFRxumpsU3TI6jXi1K";
-  GymProfile _gymProfile = GymProfile('', '', 0, '', '', '', false, []);
+  GymProfile _gymProfile =
+      GymProfile('', '', '', 0, '', '', '', false, [], true);
 
   Future? _getData() => _fireStore.collection('Gyms').doc(userId).get();
 
@@ -154,7 +155,7 @@ class _ImageInputState extends State<ImageInput> {
                                   color: Colors.white),
                               onPressed: () {
                                 Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) => ViewGymImages()));
+                                    builder: (context) => AddImage()));
                                 //              getImageCamera();
                               },
                               label: Text(

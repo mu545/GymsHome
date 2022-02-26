@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:gymhome/Styles.dart';
 import 'package:gymhome/widgets/imageinput.dart';
 import 'package:transparent_image/transparent_image.dart';
-
+import 'package:gymhome/widgets/AddGym.dart';
 import '../models/Gymprofile.dart';
 import 'add_image.dart';
 
@@ -15,7 +15,8 @@ class ViewGymImages extends StatefulWidget {
 class _ViewGymImagesState extends State<ViewGymImages> {
   final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
   final String userId = "95fFRxumpsU3TI6jXi1K";
-  GymProfile _gymProfile = GymProfile('', '', 0, '', '', '', false, []);
+  GymProfile _gymProfile =
+      GymProfile('', '', '', 0, '', '', '', false, [], true);
 
   Future? _getData() => _fireStore.collection('Gyms').doc(userId).get();
   @override

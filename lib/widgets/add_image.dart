@@ -3,11 +3,12 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:gymhome/Styles.dart';
+import 'package:gymhome/widgets/AddGym.dart';
 import 'package:gymhome/widgets/imageinput.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:path/path.dart' as Path;
-
+import 'package:provider/provider.dart';
 import '../GymOwnerwidgets/gymprice.dart';
 
 class AddImage extends StatefulWidget {
@@ -39,8 +40,11 @@ class _AddImageState extends State<AddImage> {
                   setState(() {
                     uploading = true;
                   });
-                  uploadFile().whenComplete(() => Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) => ImageInput())));
+                  Provider.of<AddGymMethods>(context, listen: false)
+                      .uploadFiles(_image)
+                      .whenComplete(() => Navigator.of(context).push(
+                          MaterialPageRoute(
+                              builder: (context) => ImageInput())));
                 },
                 child: Text(
                   'Upload',
@@ -121,27 +125,27 @@ class _AddImageState extends State<AddImage> {
     }
   }
 
-  Future uploadFile() async {
-    int i = 1;
+  // Future uploadFile() async {
+  //   int i = 1;
 
-    for (var img in _image) {
-      setState(() {
-        val = i / _image.length;
-      });
-      ref = firebase_storage.FirebaseStorage.instance
-          .ref()
-          .child('images/${Path.basename(img.path)}');
-      await ref.putFile(img).whenComplete(() async {
-        await ref.getDownloadURL().then((value) {
-          FirebaseFirestore.instance
-              .collection('Gyms')
-              .doc('95fFRxumpsU3TI6jXi1K')
-              .update({
-            'images': FieldValue.arrayUnion([value])
-          });
-          i++;
-        });
-      });
-    }
-  }
+  //   for (var img in _image) {
+  //     setState(() {
+  //       val = i / _image.length;
+  //     });
+  //     ref = firebase_storage.FirebaseStorage.instance
+  //         .ref()
+  //         .child('images/${Path.basename(img.path)}');
+  //     await ref.putFile(img).whenComplete(() async {
+  //       await ref.getDownloadURL().then((value) {
+  //         FirebaseFirestore.instance
+  //             .collection('Gyms')
+  //             .doc('95fFRxumpsU3TI6jXi1K')
+  //             .update({
+  //           'images': FieldValue.arrayUnion([value])
+  //         });
+  //         i++;
+  //       });
+  //     });
+  //   }
+  // }
 }

@@ -16,6 +16,7 @@ import 'package:gymhome/models/favorite.dart';
 import 'package:gymhome/models/gyms.dart';
 import 'package:gymhome/provider/gymsitems.dart';
 import 'package:gymhome/provider/womengymitems.dart';
+import 'package:gymhome/widgets/AddGym.dart';
 import 'package:gymhome/widgets/add_image.dart';
 import 'package:gymhome/widgets/addimages.dart';
 import 'package:gymhome/widgets/customer_list.dart';
@@ -56,6 +57,9 @@ class MyApp extends StatelessWidget {
         providers: [
           ChangeNotifierProvider.value(
             value: Gymsitems(),
+          ),
+          ChangeNotifierProvider.value(
+            value: AddGymMethods(),
           ),
           ChangeNotifierProvider.value(
             value: Auth(),

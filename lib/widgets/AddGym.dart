@@ -76,7 +76,7 @@ class AddGymMethods with ChangeNotifier {
           'https://firebasestorage.googleapis.com/v0/b/gymshome-ce96b.appspot.com/o/4hUQVJyfW6X2BeiXwBNI%20MainGymPic%202022-02-26%2004%3A13%3A38.678156?alt=media&token=fe183255-3fae-4412-aacc-6b420d846d19',
       'Location': '7KM',
       'descrption': 'gym.description',
-      'faciltrs': 'gym.facilites',
+      'faciltrs': [],
       'name': 'gym.title',
       'isFavorite': false,
       'One Day': 0,

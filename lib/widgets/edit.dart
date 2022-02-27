@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +16,7 @@ import 'package:gymhome/widgets/checkbox.dart';
 import 'package:gymhome/widgets/imageinput.dart';
 import 'package:gymhome/widgets/newhome.dart';
 import 'package:gymhome/widgets/AddGym.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 class AddGymInfo extends StatefulWidget {
@@ -25,6 +28,19 @@ class AddGymInfo extends StatefulWidget {
 
 class _AddGymInfoState extends State<AddGymInfo> {
   var uid = FirebaseAuth.instance.currentUser!.uid;
+  File? _imageFile;
+  Future image() async {
+    final image =
+        await ImagePicker.platform.pickImage(source: ImageSource.gallery);
+    if (image == null) return;
+
+    final imageTemp = File(image.path);
+    setState(() {
+      _imageFile = imageTemp;
+    });
+    Provider.of<AddGymMethods>(context, listen: false)
+        .getImageGallery(_imageFile);
+  }
 
   final _priceFocusNode = FocusNode();
   final _descriptionFocusNode = FocusNode();
@@ -50,7 +66,7 @@ class _AddGymInfoState extends State<AddGymInfo> {
     'imageUrl': '',
   };
   var _isInit = true;
-  bool _isLoading = false;
+  bool _imageDone = false;
 
   @override
   @override
@@ -96,7 +112,7 @@ class _AddGymInfoState extends State<AddGymInfo> {
         child: Column(
           children: [
             Container(
-              height: 500,
+              height: 700,
               width: 390,
               margin: EdgeInsets.symmetric(horizontal: 20),
               child: Card(
@@ -189,9 +205,12 @@ class _AddGymInfoState extends State<AddGymInfo> {
                                   icon: Icon(Icons.camera_alt_rounded,
                                       color: Colors.white),
                                   onPressed: () {
-                                    Provider.of<AddGymMethods>(context,
-                                            listen: false)
-                                        .getImageGallery();
+                                    image().whenComplete(() {
+                                      setState(() {
+                                        _imageDone = true;
+                                      });
+                                    });
+
                                     //       Provider.of<AddGymMethods>(context,
                                     //         listen: false)
                                     //     .uploadPicForGym()
@@ -216,6 +235,21 @@ class _AddGymInfoState extends State<AddGymInfo> {
                                 ),
                               ),
                             ),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            Container(
+                              width: 300,
+                              height: 300,
+                              child: _imageFile != null
+                                  ? Image.file(
+                                      _imageFile!,
+                                      fit: BoxFit.cover,
+                                    )
+                                  : Image.asset(
+                                      "assets/images/gyms_home_logo.png",
+                                      fit: BoxFit.contain),
+                            )
                           ],
                         ),
                       ],
@@ -225,7 +259,7 @@ class _AddGymInfoState extends State<AddGymInfo> {
               ),
             ),
             SizedBox(
-              height: 70,
+              height: 30,
             ),
             Container(
               width: 250,
@@ -283,7 +317,10 @@ class _AddGymInfoState extends State<AddGymInfo> {
                         style: BorderStyle.solid),
                     borderRadius: BorderRadius.circular(50)),
               ),
-            )
+            ),
+            SizedBox(
+              height: 20,
+            ),
           ],
         ),
       ),

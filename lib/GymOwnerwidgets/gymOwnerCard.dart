@@ -4,18 +4,17 @@ import 'package:flutter/material.dart';
 class GymCard extends StatelessWidget {
   const GymCard({
     Key? key,
-    required this.isFavorite,
+    //  required this.isFavorite,
     required this.name,
     required this.imageURL,
-    this.onfavoriteTap,
-    //  this.price
+    //this.onfavoriteTap,
   }) : super(key: key);
 
-  final bool isFavorite;
+  //final bool isFavorite;
   final String name;
   final String imageURL;
-  final VoidCallback? onfavoriteTap;
-  //final String? price;
+  //final VoidCallback? onfavoriteTap;
+  // final String? price;
 
   @override
   Widget build(BuildContext context) {
@@ -52,18 +51,18 @@ class GymCard extends StatelessWidget {
                             topRight: Radius.circular(15)),
                         child: Image.network(imageURL, fit: BoxFit.cover)),
                   ),
-                  Positioned(
-                    left: 15,
-                    top: 20,
-                    child: InkWell(
-                      onTap: onfavoriteTap,
-                      child: Icon(
-                        isFavorite ? Icons.favorite : Icons.favorite_border,
-                        size: 42,
-                        color: isFavorite ? Colors.red : Colors.grey,
-                      ),
-                    ),
-                  ),
+                  // Positioned(
+                  //   left: 15,
+                  //   top: 20,
+                  //   child: InkWell(
+                  //     onTap: onfavoriteTap,
+                  //     child: Icon(
+                  //       isFavorite ? Icons.favorite : Icons.favorite_border,
+                  //       size: 42,
+                  //       color: isFavorite ? Colors.red : Colors.grey,
+                  //     ),
+                  //   ),
+                  // ),
                   Positioned(
                     bottom: 0,
                     right: 0,
@@ -100,8 +99,8 @@ class GymCard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        's',
-                        //  price ?? "",
+                        //    price ??
+                        "1",
                         style: TextStyle(fontSize: 20, color: Colors.white),
                       ),
                       Text(

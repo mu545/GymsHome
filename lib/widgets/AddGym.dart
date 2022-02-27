@@ -12,11 +12,11 @@ import '../models/gyms.dart';
 
 class AddGymMethods with ChangeNotifier {
   String? gymId;
-  GymProfile _gymProfile =
-      GymProfile('', '', '', 0, '', '', '', false, [], true);
+  // GymProfile _gymProfile =
+  //     GymProfile('', '', '', 0, '', '', '', false, [], true);
 
   Future updateNameAndDes(Gyms gym) async {
-    FirebaseFirestore.instance.collection("Gyms").doc(gymId).update({
+    FirebaseFirestore.instance.collection("gyms").doc(gymId).update({
       'name': gym.title,
       'descrption': gym.description,
     });
@@ -25,19 +25,10 @@ class AddGymMethods with ChangeNotifier {
   var userId = FirebaseAuth.instance.currentUser!.uid;
 
   final FirebaseFirestore _1fireStore = FirebaseFirestore.instance;
-  Future getGymData() async => _1fireStore.collection('Gyms').doc(gymId).get();
-
-  File? _imageFile;
+  Future getGymData() async => _1fireStore.collection('gyms').doc(gymId).get();
 
 // get image method GALLERY
-  Future getImageGallery() async {
-    final image =
-        await ImagePicker.platform.pickImage(source: ImageSource.gallery);
-    if (image == null) return;
-
-    final imageTemp = File(image.path);
-
-    _imageFile = imageTemp;
+  Future getImageGallery(File? _imageFile) async {
     FirebaseStorage storage = FirebaseStorage.instance;
     Reference ref = storage
         .ref()
@@ -45,9 +36,9 @@ class AddGymMethods with ChangeNotifier {
     await ref.putFile(_imageFile!);
     String imageurl = await ref.getDownloadURL();
     FirebaseFirestore.instance
-        .collection('Gyms')
+        .collection('gyms')
         .doc(gymId)
-        .update({'ImageURL': imageurl});
+        .update({'imageURL': imageurl});
   }
 
   Future uploadFiles(arrayImage) async {
@@ -57,7 +48,7 @@ class AddGymMethods with ChangeNotifier {
       Reference ref = storage.ref().child('images/${Path.basename(img.path)}');
       await ref.putFile(img).whenComplete(() async {
         await ref.getDownloadURL().then((value) {
-          FirebaseFirestore.instance.collection('Gyms').doc(gymId).update({
+          FirebaseFirestore.instance.collection('gyms').doc(gymId).update({
             'images': FieldValue.arrayUnion([value])
           });
         });
@@ -65,19 +56,42 @@ class AddGymMethods with ChangeNotifier {
     }
   }
 
+  Future addPrices(oneD, oneM, threeM, sixM, oneY) async {
+    FirebaseFirestore.instance.collection("gyms").doc(gymId).update({
+      'One Day': oneD,
+      'One Month': oneM,
+      'Three Months': threeM,
+      'Six Months': sixM,
+      'One Year': oneY,
+    });
+  }
+
   Future addGym() async {
-    var gym = FirebaseFirestore.instance.collection('Gyms').doc();
+    var gym = FirebaseFirestore.instance.collection('gyms').doc();
     gym.set({
-      'Gym id': userId,
+      'gymId': 'gymId',
+      'ownerId': userId,
       'images': [],
-      'ImageURL': 'NO PIC',
-      'Location': 'gym.location',
+      'imageURL':
+          'https://firebasestorage.googleapis.com/v0/b/gymshome-ce96b.appspot.com/o/4hUQVJyfW6X2BeiXwBNI%20MainGymPic%202022-02-26%2004%3A13%3A38.678156?alt=media&token=fe183255-3fae-4412-aacc-6b420d846d19',
+      'Location': '7KM',
       'descrption': 'gym.description',
       'faciltrs': 'gym.facilites',
       'name': 'gym.title',
       'isFavorite': false,
-      'price': 'gym.price',
+      'One Day': 0,
+      'One Month': 0,
+      'Three Months': 0,
+      'Six Months': 0,
+      'One Year': 0,
       'isWaiting': true,
-    }).whenComplete(() => gymId = gym.id);
+      'isComplete': false,
+    }).whenComplete(() {
+      gymId = gym.id;
+      FirebaseFirestore.instance
+          .collection('gyms')
+          .doc(gymId)
+          .update({'gymId': gymId});
+    });
   }
 }

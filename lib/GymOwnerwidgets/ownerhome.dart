@@ -71,37 +71,39 @@ class _WidgtessState extends State<OwnerHome> {
         backgroundColor: colors.blue_base,
         elevation: 0,
       ),
-      body: SafeArea(
-        child: FutureBuilder(
-          future: _getData(),
-          builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-            if (snapshot.hasData) {
-              _gymsList.clear();
-              snapshot.data.docs.forEach((element) {
-                _gymsList.add(GymModel.fromJson(element.data()));
-              });
-              return Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  children: [
-                    ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: _gymsList.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return GymCard(
-                          isFavorite: _gymsList[index].isFavorite ?? false,
-                          name: _gymsList[index].name ?? '',
-                          imageURL: _gymsList[index].imageURL ?? '',
-                          //  price: _gymsList[index].price.toString(),
-                        );
-                      },
-                    )
-                  ],
-                ),
-              );
-            } else
-              return Center(child: CircularProgressIndicator());
-          },
+      body: SingleChildScrollView(
+        child: SafeArea(
+          child: FutureBuilder(
+            future: _getData(),
+            builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+              if (snapshot.hasData) {
+                _gymsList.clear();
+                snapshot.data.docs.forEach((element) {
+                  _gymsList.add(GymModel.fromJson(element.data()));
+                });
+                return Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    children: [
+                      ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: _gymsList.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return GymCard(
+                            //  isFavorite: _gymsList[index].isFavorite ?? false,
+                            name: _gymsList[index].name ?? '',
+                            imageURL: _gymsList[index].imageURL ?? '',
+                            //  price: _gymsList[index].price.toString(),
+                          );
+                        },
+                      )
+                    ],
+                  ),
+                );
+              } else
+                return Center(child: CircularProgressIndicator());
+            },
+          ),
         ),
       ),
       floatingActionButton: FloatingActionButton(

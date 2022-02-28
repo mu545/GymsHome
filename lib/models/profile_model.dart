@@ -9,6 +9,6 @@ class ProfileModel {
 
   ProfileModel.fromJson(Map<String, dynamic> json) {
     userName = json['name'];
-    userImage = json['url'];
+    userImage = json['profilePicture'];
   }
 }

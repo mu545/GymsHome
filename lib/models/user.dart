@@ -7,6 +7,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 
 import 'package:gymhome/Styles.dart';
+import 'package:gymhome/widgets/review.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../GymOwnerwidgets/ownerhome.dart';
@@ -28,17 +29,18 @@ class User {
     try {
       await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
+      String userid = FirebaseAuth.instance.currentUser!.uid;
       if (customer) {
-        FirebaseFirestore.instance.collection("Customer").doc(email).set({
+        FirebaseFirestore.instance.collection("Customer").doc(userid).set({
           'name': name,
-          'url':
+          'profilePicture':
               'https://firebasestorage.googleapis.com/v0/b/gymshome-ce96b.appspot.com/o/DefaultProfilePic.jpg?alt=media&token=e175c7f8-55f2-4575-8315-9bc5a527fd9b'
         });
         Navigator.of(cxt).pushNamed(NewHome.rounamed);
       } else {
         FirebaseFirestore.instance
             .collection("Gym Owner")
-            .doc(email)
+            .doc(userid)
             .set({'name': name});
         Navigator.of(cxt).pushNamed(OwnerHome.rounamed);
       }
@@ -82,17 +84,50 @@ class User {
     }
   }
 
+  static bool areYousure(
+      BuildContext cxt, String title, String messame, Function? function) {
+    bool sure;
+
+    showDialog<bool>(
+      context: cxt,
+      builder: (BuildContext context) => AlertDialog(
+        title: Text(title, style: TextStyle(color: colors.blue_base)),
+        content: Text(messame, style: TextStyle(color: colors.black60)),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child:
+                const Text('Cancel', style: TextStyle(color: colors.red_base)),
+          ),
+          TextButton(
+            onPressed: () {
+              function;
+              Navigator.pop(context, true);
+            },
+            child: const Text(
+              'yes',
+              style: TextStyle(color: colors.blue_base),
+            ),
+          ),
+        ],
+      ),
+    ).then((value) {
+      return value;
+    });
+    return false;
+  }
+
   static message(BuildContext cxt, bool iserror, String message) {
     ScaffoldMessenger.of(cxt).showSnackBar(
       SnackBar(
         content: Text(
           message,
           style: TextStyle(
-              color: iserror ? colors.green_base : Colors.white,
+              color: iserror ? colors.green_base : colors.red_base,
               fontFamily: 'Roboto',
               fontSize: 16),
         ),
-        backgroundColor: iserror ? colors.blue_smooth : colors.red_base,
+        backgroundColor: iserror ? colors.green_smooth : colors.red_smooth,
       ),
     );
   }
@@ -132,5 +167,5 @@ uploadPicForUserProfile() async {
   FirebaseFirestore.instance
       .collection('Customer')
       .doc(userEmail)
-      .update({'url': imageurl});
+      .update({'profilePicture': imageurl});
 }

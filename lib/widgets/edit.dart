@@ -112,7 +112,7 @@ class _AddGymInfoState extends State<AddGymInfo> {
         child: Column(
           children: [
             Container(
-              height: 700,
+              height: 480,
               width: 390,
               margin: EdgeInsets.symmetric(horizontal: 20),
               child: Card(
@@ -132,6 +132,7 @@ class _AddGymInfoState extends State<AddGymInfo> {
                           height: 20,
                         ),
                         Container(
+                          height: 45,
                           child: TextFormField(
                             controller: _nameTEC,
                             //         initialValue: _initValues['title'],
@@ -174,9 +175,10 @@ class _AddGymInfoState extends State<AddGymInfo> {
                           //          initialValue: _initValues['description'],
                           decoration: InputDecoration(
                             hintText: 'Description',
-                            border: OutlineInputBorder(),
+                            border: OutlineInputBorder(  borderRadius: BorderRadius.circular(10),
+                                borderSide: BorderSide(color: colors.black100),),
                           ),
-                          maxLines: 7,
+                          maxLines: 3,
                           focusNode: _descriptionFocusNode,
                           keyboardType: TextInputType.multiline,
                           onSaved: (value) {
@@ -240,7 +242,7 @@ class _AddGymInfoState extends State<AddGymInfo> {
                             ),
                             Container(
                               width: 300,
-                              height: 300,
+                              height: 150,
                               child: _imageFile != null
                                   ? Image.file(
                                       _imageFile!,
@@ -259,7 +261,7 @@ class _AddGymInfoState extends State<AddGymInfo> {
               ),
             ),
             SizedBox(
-              height: 30,
+              height: 10,
             ),
             Container(
               width: 250,

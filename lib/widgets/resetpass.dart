@@ -42,7 +42,7 @@ class _resetpasswordState extends State<resetpassword> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "Reset password",
+                    "Reset assword",
                     style: TextStyle(
                         fontFamily: 'Epilogue',
                         fontSize: 18,

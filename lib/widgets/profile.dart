@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:flutter/widgets.dart';
 import 'package:gymhome/GymOwnerwidgets/facilities.dart';
 import 'package:gymhome/authintactions/auth.dart';
 import 'package:gymhome/models/customer.dart';
@@ -32,7 +33,7 @@ class Profile extends StatefulWidget {
 
 class _ProfileState extends State<Profile> {
   bool isedit = false;
-
+  bool uploading = false;
   TextEditingController _nameTEC = TextEditingController();
 
   final FirebaseAuth auth = FirebaseAuth.instance;
@@ -106,15 +107,25 @@ class _ProfileState extends State<Profile> {
                       FlatButton.icon(
                         icon: Icon(Icons.check),
                         onPressed: () {
-                          //try parametter
-                          uploadPicForUserProfile();
+                          setState(() {
+                            uploading = true;
+                          });
+                          Navigator.of(context).pop();
+                          uploadPicForUserProfile().whenComplete(() {
+                            setState(() {
+                              uploading = false;
+                              Scaffold.of(context).showSnackBar(SnackBar(
+                                content: Text('Profile Picture Uploaded'),
+                                backgroundColor: colors.green_base,
+                              ));
+                            });
+                          });
 
-                          Navigator.pop(context);
                           // setState(() {
                           //   print("Profile Picture Uploaded");
-                          //   Scaffold.of(context).showSnackBar(SnackBar(
-                          //     content: Text('Profile Picture Uploaded'),
-                          //     backgroundColor: colors.green_base,
+                          //  Scaffold.of(context).showSnackBar(SnackBar(
+                          //  content: Text('Profile Picture Uploaded'),
+                          //    backgroundColor: colors.green_base,
                           //   ));
                           // });
                         },
@@ -130,6 +141,7 @@ class _ProfileState extends State<Profile> {
 
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: colors.blue_base,
         title: Text(
           'My Account',
           textAlign: TextAlign.center,
@@ -160,7 +172,8 @@ class _ProfileState extends State<Profile> {
                                     future: _getData(),
                                     builder: (BuildContext context,
                                         AsyncSnapshot<dynamic> snapshot) {
-                                      if (snapshot.hasData) {
+                                      if (snapshot.hasData &&
+                                          uploading != true) {
                                         Map<String, dynamic> _data =
                                             snapshot.data.data()
                                                 as Map<String, dynamic>;
@@ -249,7 +262,11 @@ class _ProfileState extends State<Profile> {
                                             _userProfile =
                                                 ProfileModel.fromJson(_data);
                                             return Text(
-                                                '${_userProfile.userName}');
+                                              '${_userProfile.userName}',
+                                              style: TextStyle(
+                                                fontFamily: 'Roboto',
+                                              ),
+                                            );
                                           } else
                                             return Text('........');
                                         }),
@@ -357,7 +374,7 @@ class _ProfileState extends State<Profile> {
                       children: [
                         FlatButton(
                           onPressed: () {
-                            Provider.of<Auth>(context, listen: false).logout();
+                            // Provider.of<Auth>(context, listen: false).logout();
                             Navigator.of(context).pop();
                           },
                           child: Container(

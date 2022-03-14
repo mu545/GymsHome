@@ -84,6 +84,20 @@ class User {
     }
   }
 
+//  static Future<void> logout() async {
+//     _token = 'null';
+//     _userId = 'null';
+//     _expiryDate = 'null' as DateTime;
+//     if (_authTimer != 'null') {
+//       _authTimer.cancel();
+//       _authTimer = 'null' as Timer;
+//     }
+//     notifyListeners();
+//     final prefs = await SharedPreferences.getInstance();
+//     // prefs.remove('userData');
+//     prefs.clear();
+//   }
+
   static bool areYousure(
       BuildContext cxt, String title, String messame, Function? function) {
     bool sure;
@@ -157,7 +171,7 @@ Future getImageCamera() async {
 }
 
 var userEmail = FirebaseAuth.instance.currentUser!.email;
-uploadPicForUserProfile() async {
+Future uploadPicForUserProfile() async {
   FirebaseStorage storage = FirebaseStorage.instance;
   Reference ref = storage
       .ref()

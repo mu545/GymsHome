@@ -1,69 +1,284 @@
 import 'dart:io';
+import 'package:gymhome/Styles.dart';
+import 'package:gymhome/models/Gymprofile.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:gymhome/GymOwnerwidgets/gymprice.dart';
+import 'package:gymhome/widgets/addimages.dart';
+import 'package:gymhome/widgets/gymdescrption.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart' as path;
+import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart' as syspath;
+import 'package:transparent_image/transparent_image.dart';
+import 'package:flutter/src/rendering/box.dart';
+
+import 'add_image.dart';
 
 class ImageInput extends StatefulWidget {
+  static const routenamed = '/locaaaa';
+
   @override
-  Function onselectimage;
-  ImageInput(this.onselectimage);
+  // Function onselectimage;
+  ImageInput();
   _ImageInputState createState() => _ImageInputState();
 }
 
 class _ImageInputState extends State<ImageInput> {
-  File? _saveimage;
-  @override
-  Future<void> _takedpicture() async {
-    File Imagefile = await ImagePicker.platform.getImage(
-      source: ImageSource.camera,
-      maxWidth: 600,
-      maxHeight: null,
-      imageQuality: null,
-      preferredCameraDevice: CameraDevice.rear,
-    ) as File;
+  File? _imageFile;
+  final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
+  final String userId = "95fFRxumpsU3TI6jXi1K";
+  GymProfile _gymProfile =
+      GymProfile('', '', '', 0, '', '', '', false, [], true);
 
-    setState(() {
-      _saveimage = Imagefile;
-    });
+  Future? _getData() => _fireStore.collection('Gyms').doc(userId).get();
 
-    final appdur =
-        await syspath.getApplicationDocumentsDirectory(); //to save Image local
-    final filename = path.basename(Imagefile.path);
-    final savedimagess = await Imagefile.copy('${appdur.path} /$filename');
-    widget.onselectimage(savedimagess);
+  Widget bottomSheet() {
+    return Container(
+      height: 100.0,
+      // width: MediaQuery.of(context).size.width,
+      margin: EdgeInsets.symmetric(
+        horizontal: 20,
+        vertical: 20,
+      ),
+      child: Column(
+        children: <Widget>[
+          // Text(
+          //   "Choose Profile photo",
+          //   style: TextStyle(
+          //     fontSize: 20.0,
+          //   ),
+          // ),
+          // SizedBox(
+          //   height: 20,
+          // ),
+          Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[])
+        ],
+      ),
+    );
   }
 
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Row(
-          children: [
-            FlatButton.icon(
-              onPressed: _takedpicture,
-              icon: Icon(
-                Icons.camera,
-                color: Colors.blue,
+    return Scaffold(
+      appBar: AppBar(
+        title: Center(
+          child: Text(
+            'Add Gym ',
+            style: TextStyle(color: Colors.white, fontFamily: 'Epilogue'),
+          ),
+        ),
+        backgroundColor: colors.blue_base,
+        elevation: 0,
+        // actions: <Widget>[
+        //   IconButton(
+        //     onPressed: () {
+        //       bottomSheet();
+        //     },
+        //     icon: Icon(
+        //       Icons.more_vert,
+        //       color: Colors.black,
+        //     ),
+        //   )
+        // ],
+      ),
+      body: Column(
+        children: [
+          Container(
+            margin: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+            height: 350,
+            width: 390,
+            child: Card(
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      Container(
+                          margin: EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 10),
+                          child: Text(
+                            'Facilites',
+                            style: TextStyle(
+                                fontFamily: 'Epilogue',
+                                fontSize: 30,
+                                color: colors.blue_base),
+                          )),
+                    ],
+                  ),
+                  Column(
+                    children: [
+                      Container(
+                        margin: EdgeInsets.symmetric(horizontal: 10),
+                        child: Row(
+                          children: [
+                            // Text('Pool'),  MyStatefulWidget() ,   Text('Sauna'),    MyStatefulWidget() ,    Text('Rowing'),   MyStatefulWidget() ,   Text('Squash'),    MyStatefulWidget() ,
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        width: 8,
+                        height: 4,
+                      ),
+                      Row(
+                        children: [
+                          // Text('Lockers'),    MyStatefulWidget() ,
+                          //                  Text('Steam Bord'),    MyStatefulWidget() ,
+                          //                             Container(
+                          //                   margin: EdgeInsets.symmetric(horizontal: 8),
+                          //                             width: 100,
+                          //                             height: 25,
+                          //                             decoration: BoxDecoration(borderRadius: BorderRadius.circular(10) , color: Colors.blue),
+                          //                             child: FlatButton(
+
+                          //                               child: Text('Steam Bath',style: TextStyle(color: Colors.blue, fontSize: 13),),
+                          //                               color: Colors.white,
+                          //                               onPressed: () {/** */},
+                          //                               shape: RoundedRectangleBorder(side: BorderSide(
+                          //   color: Colors.blue,
+                          //   width: 1,
+                          //   style: BorderStyle.solid
+                          // ),
+                          //                             ),
+                          //                           ),
+
+                          //                            ),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          Container(
+                            margin: EdgeInsets.only(left: 80),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20),
+                                color: colors.blue_base),
+                            child: FlatButton.icon(
+                              icon: Icon(Icons.camera_alt_rounded,
+                                  color: Colors.white),
+                              onPressed: () {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) => AddImage()));
+                                //              getImageCamera();
+                              },
+                              label: Text(
+                                "View & Upload Pictures",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontFamily: 'Roboto',
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                    ],
+                  ),
+                ],
               ),
-              label: Text('Take picture'),
-            )
-          ],
-        ),
-        Container(
-          height: 150,
-          width: 350,
-          decoration:
-              BoxDecoration(border: Border.all(width: 1, color: Colors.grey)),
-          child: _saveimage != null
-              ? Image.file(
-                  _saveimage!,
-                  fit: BoxFit.cover,
-                  width: double.infinity,
-                )
-              : Text('H'),
-          alignment: Alignment.center,
-        ),
-      ],
+            ),
+          ),
+          SizedBox(
+            height: 30,
+          ),
+          Container(
+            width: 250,
+            height: 40,
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                color: colors.blue_base),
+            child: FlatButton(
+              child: Text(
+                'Next',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontFamily: 'Roboto',
+                ),
+              ),
+              onPressed: () {
+                Navigator.of(context).pushNamed(GymPrice.routenames);
+              },
+              padding: EdgeInsets.symmetric(horizontal: 30.0, vertical: 4),
+              materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+              textColor: Theme.of(context).primaryColor,
+            ),
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          Container(
+            width: 250,
+            height: 40,
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20), color: Colors.white),
+            child: FlatButton(
+              child: Text(
+                'Cancel',
+                style: TextStyle(
+                  color: colors.blue_base,
+                  fontFamily: 'Roboto',
+                ),
+              ),
+              onPressed: () {},
+              padding: EdgeInsets.symmetric(horizontal: 30.0, vertical: 4),
+              materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+              textColor: Theme.of(context).primaryColor,
+              shape: RoundedRectangleBorder(
+                  side: BorderSide(
+                      color: colors.blue_base,
+                      width: 1,
+                      style: BorderStyle.solid),
+                  borderRadius: BorderRadius.circular(50)),
+            ),
+          )
+        ],
+      ),
     );
   }
+
+  getApplicationDocumentsDirectory() {}
 }
+//     Scaffold(
+
+//       body: Column(
+//         mainAxisAlignment: MainAxisAlignment.center ,
+//         children: [
+//           Row(
+//             children: [
+
+//            InkWell(
+//                                   onTap: () {
+//                                     showModalBottomSheet(
+//                                       context: context,
+//                                       builder: ((builder) => bottomSheet()),
+//                                     );
+//                                   },
+//                                   child: Icon(
+//                                     Icons.camera_alt,
+//                                     // color: colors.blue_base,
+//                                     size: 24,
+//                                   ),
+//                                 ),
+//             ],
+//           ),
+//           //  Container(
+//           //   height: 150,
+//           //   width: 350,
+//           //   decoration:
+//           //       BoxDecoration(border: Border.all(width: 1, color: Colors.grey)),
+//           //   child: _saveimage != null
+//           //       ? Image.file(
+//           //           _saveimage! ,
+//           //           fit: BoxFit.cover,
+//           //           width: double.infinity,
+//           //         )
+//           //       : Text('H'),
+//           //   alignment: Alignment.center,
+//           // ),
+//         ],
+//       ),
+//     );
+//   }
+
+//   getApplicationDocumentsDirectory() {}
+// }

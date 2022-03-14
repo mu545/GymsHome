@@ -16,9 +16,13 @@ import 'package:gymhome/models/favorite.dart';
 import 'package:gymhome/models/gyms.dart';
 import 'package:gymhome/provider/gymsitems.dart';
 import 'package:gymhome/provider/womengymitems.dart';
-
+import 'package:gymhome/widgets/AddGym.dart';
+import 'package:gymhome/widgets/add_image.dart';
+import 'package:gymhome/widgets/addimages.dart';
+// import 'package:gymhome/widgets/customer_list.dart';
 import 'package:gymhome/widgets/edit.dart';
-import 'package:gymhome/widgets/review.dart';
+import 'package:gymhome/widgets/imageinput.dart';
+// import 'package:gymhome/widgets/reviwe.dart';
 import 'package:gymhome/widgets/gymdescrption.dart';
 import 'package:gymhome/widgets/help.dart';
 import 'package:gymhome/widgets/profile.dart';
@@ -58,8 +62,14 @@ class MyApp extends StatelessWidget {
           //   value: Auth(),
           // ),
           ChangeNotifierProvider.value(
-            value: Customer(),
+            value: AddGymMethods(),
           ),
+          // ChangeNotifierProvider.value(
+          //   value: Auth(),
+          // ),
+          // ChangeNotifierProvider.value(
+          //   value: Customer(name: ''),
+          // ),
           ChangeNotifierProvider.value(
             value: Gyms(
               id: '',
@@ -67,10 +77,8 @@ class MyApp extends StatelessWidget {
               price: 0,
               description: '',
               imageUrl: '',
-              isFavorite: false,
               location: '',
               facilites: '',
-              hours: '',
             ),
           ),
           ChangeNotifierProvider(
@@ -89,13 +97,14 @@ class MyApp extends StatelessWidget {
                   home: GymDescrption(),
                   routes: {
                     NewHome.rounamed: (ctx) => NewHome(),
+                    ImageInput.routenamed: (ctx) => ImageInput(),
                     OwnerHome.rounamed: (ctx) => OwnerHome(),
                     GymPrice.routenames: (ctx) => GymPrice(),
                     // Comparepage.routeName: (ctx) => Comparepage(),
                     GymDescrption.routeName: (ctx) => GymDescrption(),
                     OwnerDescrption.routeName: (ctx) => OwnerDescrption(),
                     Location.routenamed: (ctx) => Location(),
-                    Editadd.routeName: (ctx) => Editadd(),
+                    AddGymInfo.routeName: (ctx) => AddGymInfo(),
                     Facilites.routenames: (ctx) => Facilites(),
                     Addplace.routeName: (ctx) => Addplace(),
 

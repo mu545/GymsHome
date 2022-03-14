@@ -52,7 +52,7 @@ class _AddGymState extends State<GymPrice> {
           children: [
             Container(
               margin: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-              height: 500,
+              height: 400,
               width: 390,
               child: Card(
                 child: Column(
@@ -74,126 +74,176 @@ class _AddGymState extends State<GymPrice> {
                     SizedBox(
                       height: 20,
                     ),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: TextFormField(
-                            controller: _dayTEC,
-                            decoration: InputDecoration(
-                              labelText: 'Price for One Day (Optional)',
-                            ),
-                            textInputAction: TextInputAction.next,
-                            keyboardType: TextInputType.number,
-                            onSaved: (value) {
-                              //  oneDay = _dayTEC as double;
-                            },
+                   Row(
+                     mainAxisAlignment: MainAxisAlignment.center,
+                   
+                     children: [
+                       Container(
+                          height: 45,
+                          width: 200,
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: TextFormField(
+                                  controller: _dayTEC,
+                                  decoration: InputDecoration(
+                                    hintText: 'Price for one Day',
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                      borderSide: BorderSide(color: colors.black100),
+                                    ),
+                                  ),
+                                  textInputAction: TextInputAction.next,
+                                  keyboardType: TextInputType.number,
+                                  onSaved: (value) {
+                                    //   oneMonth = _monthTEC as double;
+                                  },
+                                ),
+                              ),
+                          
+                            ],
                           ),
                         ),
-                        SizedBox(
-                          width: 10,
+                     ],
+                   ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          height: 45,
+                          width: 200,
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: TextFormField(
+                                  controller: _monthTEC,
+                                  decoration: InputDecoration(
+                                    hintText: 'Price for one Month',
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                      borderSide: BorderSide(color: colors.black100),
+                                    ),
+                                  ),
+                                  textInputAction: TextInputAction.next,
+                                  keyboardType: TextInputType.number,
+                                  onSaved: (value) {
+                                    //   oneMonth = _monthTEC as double;
+                                  },
+                                ),
+                              ),
+                           
+                            ],
+                          ),
                         ),
-                        Text('SAR')
                       ],
                     ),
                     SizedBox(
                       height: 10,
                     ),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: TextFormField(
-                            controller: _monthTEC,
-                            decoration: InputDecoration(
-                              labelText: 'Price for One Month (Optional)',
-                            ),
-                            textInputAction: TextInputAction.next,
-                            keyboardType: TextInputType.number,
-                            onSaved: (value) {
-                              //   oneMonth = _monthTEC as double;
-                            },
+                       Row(
+                       mainAxisAlignment: MainAxisAlignment.center,
+                     children: [
+                       Container(
+                          height: 45,
+                          width: 200,
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: TextFormField(
+                                  controller: _3monthTEC,
+                                  decoration: InputDecoration(
+                                    hintText: 'Price for Three Months',
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                      borderSide: BorderSide(color: colors.black100),
+                                    ),
+                                  ),
+                                  textInputAction: TextInputAction.next,
+                                  keyboardType: TextInputType.number,
+                                  onSaved: (value) {
+                                    //   oneMonth = _monthTEC as double;
+                                  },
+                                ),
+                              ),
+                           
+                            ],
                           ),
                         ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Text('SAR')
-                      ],
-                    ),
+                     ],
+                   ),
                     SizedBox(
                       height: 10,
                     ),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: TextFormField(
-                            controller: _3monthTEC,
-                            decoration: InputDecoration(
-                              labelText: 'Price for Three Months',
-                            ),
-                            textInputAction: TextInputAction.next,
-                            keyboardType: TextInputType.number,
-                            onSaved: (value) {
-                              //   threeMonths = _3monthTEC as double;
-                            },
+                       Row(
+                       mainAxisAlignment: MainAxisAlignment.center,
+                     children: [
+                       Container(
+                          height: 45,
+                          width: 200,
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: TextFormField(
+                                  controller: _6monthTEC,
+                                  decoration: InputDecoration(
+                                    hintText: 'Price for Six Months',
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                      borderSide: BorderSide(color: colors.black100),
+                                    ),
+                                  ),
+                                  textInputAction: TextInputAction.next,
+                                  keyboardType: TextInputType.number,
+                                  onSaved: (value) {
+                                    //   oneMonth = _monthTEC as double;
+                                  },
+                                ),
+                              ),
+                            
+                            ],
                           ),
                         ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Text('SAR')
-                      ],
-                    ),
+                     ],
+                   ),
                     SizedBox(
                       height: 10,
                     ),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: TextFormField(
-                            controller: _6monthTEC,
-                            decoration: InputDecoration(
-                              labelText: 'Price for Six Months (Optional)',
-                            ),
-                            textInputAction: TextInputAction.next,
-                            keyboardType: TextInputType.number,
-                            onSaved: (value) {
-                              //   sixMonths = _6monthTEC as double;
-                            },
+                     Row(
+                     mainAxisAlignment: MainAxisAlignment.center,
+                     children: [
+                       Container(
+                          height: 45,
+                          width: 200,
+                          child: Row(
+                              
+                            children: [
+                              Expanded(
+                                child: TextFormField(
+                                  controller: _yearTEC,
+                                  decoration: InputDecoration(
+                                    hintText: 'Price for one Year',
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                      borderSide: BorderSide(color: colors.black100),
+                                    ),
+                                  ),
+                                  textInputAction: TextInputAction.next,
+                                  keyboardType: TextInputType.number,
+                                  onSaved: (value) {
+                                    //   oneMonth = _monthTEC as double;
+                                  },
+                                ),
+                              ),
+                            
+                            ],
                           ),
                         ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Text('SAR')
-                      ],
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: TextFormField(
-                            controller: _yearTEC,
-                            decoration: InputDecoration(
-                              labelText: 'Price for One Year',
-                            ),
-                            textInputAction: TextInputAction.next,
-                            keyboardType: TextInputType.number,
-                            onSaved: (value) {
-                              //    oneYear = _yearTEC as double;
-                            },
-                          ),
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Text('SAR')
-                      ],
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
+                    ],
+                   ),
+                    
                   ],
                 ),
               ),
@@ -202,7 +252,7 @@ class _AddGymState extends State<GymPrice> {
               width: 250,
               height: 40,
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20), color: Colors.blue),
+                  borderRadius: BorderRadius.circular(20), color: colors.blue_base),
               child: FlatButton(
                 child: Text(
                   'Send',
@@ -234,7 +284,7 @@ class _AddGymState extends State<GymPrice> {
               child: FlatButton(
                 child: Text(
                   'Cancel',
-                  style: TextStyle(color: Colors.blue),
+                  style: TextStyle(color:colors.blue_base,),
                 ),
                 onPressed: () {
                   Navigator.of(context).pushNamed('/');
@@ -244,7 +294,7 @@ class _AddGymState extends State<GymPrice> {
                 textColor: Theme.of(context).primaryColor,
                 shape: RoundedRectangleBorder(
                     side: BorderSide(
-                        color: Colors.blue, width: 1, style: BorderStyle.solid),
+                        color:colors.blue_base, width: 1, style: BorderStyle.solid),
                     borderRadius: BorderRadius.circular(50)),
               ),
             ),

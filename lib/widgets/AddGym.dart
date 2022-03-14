@@ -22,7 +22,7 @@ class AddGymMethods with ChangeNotifier {
     });
   }
 
-  var userId = FirebaseAuth.instance.currentUser!.uid;
+  var userId = FirebaseAuth.instance.currentUser?.uid;
 
   final FirebaseFirestore _1fireStore = FirebaseFirestore.instance;
   Future getGymData() async => _1fireStore.collection('gyms').doc(gymId).get();

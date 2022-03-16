@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:gymhome/Styles.dart';
+import 'package:gymhome/models/GymModel.dart';
 import 'package:gymhome/models/Gymprofile.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -28,8 +29,8 @@ class _ImageInputState extends State<ImageInput> {
   File? _imageFile;
   final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
   final String userId = "95fFRxumpsU3TI6jXi1K";
-  GymProfile _gymProfile =
-      GymProfile('', '', '', 0, '', '', '', false, [], true);
+  GymModel _gymProfile =
+      GymModel([], [], 0, 0, 0, 0, 0, '', '', '', '', '', '', false, true);
 
   Future? _getData() => _fireStore.collection('Gyms').doc(userId).get();
 
@@ -93,15 +94,16 @@ class _ImageInputState extends State<ImageInput> {
                   Row(
                     children: [
                       Container(
-                          margin: EdgeInsets.symmetric(
-                              horizontal: 20, vertical: 10),
-                          child: Text(
-                            'Facilites',
-                            style: TextStyle(
-                                fontFamily: 'Epilogue',
-                                fontSize: 30,
-                                color: colors.blue_base),
-                          )),
+                        margin:
+                            EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                        child: Text(
+                          'Facilites',
+                          style: TextStyle(
+                              fontFamily: 'Epilogue',
+                              fontSize: 30,
+                              color: colors.blue_base),
+                        ),
+                      ),
                     ],
                   ),
                   Column(
@@ -117,31 +119,6 @@ class _ImageInputState extends State<ImageInput> {
                       SizedBox(
                         width: 8,
                         height: 4,
-                      ),
-                      Row(
-                        children: [
-                          // Text('Lockers'),    MyStatefulWidget() ,
-                          //                  Text('Steam Bord'),    MyStatefulWidget() ,
-                          //                             Container(
-                          //                   margin: EdgeInsets.symmetric(horizontal: 8),
-                          //                             width: 100,
-                          //                             height: 25,
-                          //                             decoration: BoxDecoration(borderRadius: BorderRadius.circular(10) , color: Colors.blue),
-                          //                             child: FlatButton(
-
-                          //                               child: Text('Steam Bath',style: TextStyle(color: Colors.blue, fontSize: 13),),
-                          //                               color: Colors.white,
-                          //                               onPressed: () {/** */},
-                          //                               shape: RoundedRectangleBorder(side: BorderSide(
-                          //   color: Colors.blue,
-                          //   width: 1,
-                          //   style: BorderStyle.solid
-                          // ),
-                          //                             ),
-                          //                           ),
-
-                          //                            ),
-                        ],
                       ),
                       Row(
                         children: [
@@ -238,47 +215,3 @@ class _ImageInputState extends State<ImageInput> {
 
   getApplicationDocumentsDirectory() {}
 }
-//     Scaffold(
-
-//       body: Column(
-//         mainAxisAlignment: MainAxisAlignment.center ,
-//         children: [
-//           Row(
-//             children: [
-
-//            InkWell(
-//                                   onTap: () {
-//                                     showModalBottomSheet(
-//                                       context: context,
-//                                       builder: ((builder) => bottomSheet()),
-//                                     );
-//                                   },
-//                                   child: Icon(
-//                                     Icons.camera_alt,
-//                                     // color: colors.blue_base,
-//                                     size: 24,
-//                                   ),
-//                                 ),
-//             ],
-//           ),
-//           //  Container(
-//           //   height: 150,
-//           //   width: 350,
-//           //   decoration:
-//           //       BoxDecoration(border: Border.all(width: 1, color: Colors.grey)),
-//           //   child: _saveimage != null
-//           //       ? Image.file(
-//           //           _saveimage! ,
-//           //           fit: BoxFit.cover,
-//           //           width: double.infinity,
-//           //         )
-//           //       : Text('H'),
-//           //   alignment: Alignment.center,
-//           // ),
-//         ],
-//       ),
-//     );
-//   }
-
-//   getApplicationDocumentsDirectory() {}
-// }

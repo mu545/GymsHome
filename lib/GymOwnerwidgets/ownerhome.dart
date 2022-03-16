@@ -27,7 +27,11 @@ class _WidgtessState extends State<OwnerHome> {
   final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
   List<GymModel> _gymsList = [];
 
-  Future? _getData() => _fireStore.collection("gyms").get();
+  Future? _getData() => _fireStore
+      .collection("gyms")
+      .where('ownerId', isEqualTo: 'WR3c9JaDPRSAA7RUHAIgQADmcOW2')
+      .where('isWaiting', isEqualTo: false)
+      .get();
   // Future? _getDataByID() => _fireStore
   //     .collection("Gyms")
   //     .where("Gym id", isEqualTo: uid)
@@ -90,10 +94,9 @@ class _WidgtessState extends State<OwnerHome> {
                         itemCount: _gymsList.length,
                         itemBuilder: (BuildContext context, int index) {
                           return GymCard(
-                            //  isFavorite: _gymsList[index].isFavorite ?? false,
+                            gymId: _gymsList[index].gymId ?? '',
                             name: _gymsList[index].name ?? '',
                             imageURL: _gymsList[index].imageURL ?? '',
-                            //  price: _gymsList[index].price.toString(),
                           );
                         },
                       )

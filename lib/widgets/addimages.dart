@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:gymhome/Styles.dart';
+import 'package:gymhome/models/GymModel.dart';
 import 'package:gymhome/widgets/imageinput.dart';
 import 'package:transparent_image/transparent_image.dart';
 import 'package:gymhome/widgets/AddGym.dart';
@@ -15,8 +16,8 @@ class ViewGymImages extends StatefulWidget {
 class _ViewGymImagesState extends State<ViewGymImages> {
   final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
   final String userId = "95fFRxumpsU3TI6jXi1K";
-  GymProfile _gymProfile =
-      GymProfile('', '', '', 0, '', '', '', false, [], true);
+  GymModel _gymProfile =
+      GymModel([], [], 0, 0, 0, 0, 0, '', '', '', '', '', '', false, true);
 
   Future? _getData() => _fireStore.collection('Gyms').doc(userId).get();
   @override
@@ -39,7 +40,7 @@ class _ViewGymImagesState extends State<ViewGymImages> {
             if (snapshot.hasData) {
               Map<String, dynamic> _data =
                   snapshot.data.data() as Map<String, dynamic>;
-              _gymProfile = GymProfile.fromJson(_data);
+              _gymProfile = GymModel.fromJson(_data);
               if (_gymProfile.images!.isEmpty) {
                 return Center(
                   child: Text(

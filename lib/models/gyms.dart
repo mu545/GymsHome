@@ -3,21 +3,25 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-class Gyms with ChangeNotifier  {
- final String id;
+class Gyms with ChangeNotifier {
+  final String id;
   final String title;
   final String description;
   final double price;
   final String imageUrl;
-  final String location ;
-  final String facilites ;
-     
+  final String location;
+  final String facilites;
 
-  
+  Gyms({
+    required this.id,
+    required this.title,
+    required this.description,
+    required this.price,
+    required this.imageUrl,
+    required this.location,
+    required this.facilites,
+  });
 
-
-  Gyms({  required this.id,required this.title, required this.description,required this.price,required this.imageUrl,required this.location, required this.facilites, });
-  
   Map<String, Gyms> _items = {};
   Map<String, Gyms> get items {
     return {..._items};
@@ -56,38 +60,39 @@ class Gyms with ChangeNotifier  {
   //   // isFavorite = !isFavorite;
   //   // notifyListeners();
   // }
-  
+
   // void favoriteproducts() {
   //   final oldstates = isadd;
   //   isadd = !isadd;
 
   //   notifyListeners();
   // }
-   void additem(String productId, String title, double price, String image) {
+  void additem(String productId, String title, double price, String image) {
     if (_items.containsKey(productId)) {
       _items.update(
           productId,
           (exe) => Gyms(
-              id: exe.id,
-              title: exe.title,
-              description:exe.description ,
-              price: exe.price,
-              imageUrl: exe.imageUrl, 
-              location: exe.location, 
-              facilites: exe.facilites , 
-            ));
+                id: exe.id,
+                title: exe.title,
+                description: exe.description,
+                price: exe.price,
+                imageUrl: exe.imageUrl,
+                location: exe.location,
+                facilites: exe.facilites,
+              ));
     } else {
       _items.putIfAbsent(
           productId,
           () => Gyms(
-              id: DateTime.now().toString(),
-              title: title,
-              description: description,
-              price: price,
-             
-              imageUrl: imageUrl , location: location , facilites: facilites ,));
+                id: DateTime.now().toString(),
+                title: title,
+                description: description,
+                price: price,
+                imageUrl: imageUrl,
+                location: location,
+                facilites: facilites,
+              ));
     }
     notifyListeners();
   }
-
 }

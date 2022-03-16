@@ -27,6 +27,13 @@ class ImageInput extends StatefulWidget {
 
 class _ImageInputState extends State<ImageInput> {
   File? _imageFile;
+  bool _onpresss1 = false;
+  bool _onpresss2 = false;
+  bool _onpresss3 = false;
+  bool _onpresss4 = false;
+  bool _onpresss5 = false;
+  bool _onpresss6 = false;
+  bool _onpresss7 = false;
   final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
   final String userId = "95fFRxumpsU3TI6jXi1K";
   GymModel _gymProfile =
@@ -86,7 +93,7 @@ class _ImageInputState extends State<ImageInput> {
         children: [
           Container(
             margin: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-            height: 350,
+            height: 400,
             width: 390,
             child: Card(
               child: Column(
@@ -121,6 +128,9 @@ class _ImageInputState extends State<ImageInput> {
                         height: 4,
                       ),
                       Row(
+                        children: [],
+                      ),
+                      Row(
                         children: [
                           Container(
                             margin: EdgeInsets.only(left: 80),
@@ -147,7 +157,273 @@ class _ImageInputState extends State<ImageInput> {
                         ],
                       ),
                       SizedBox(
-                        height: 10,
+                        height: 60,
+                      ),
+                      Column(
+                        children: [
+                          Container(
+                            margin: EdgeInsets.symmetric(horizontal: 10),
+                            child: Row(
+                              children: [
+                                Container(
+                                  width: 73,
+                                  height: 25,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      color: colors.blue_base),
+                                  child: FlatButton(
+                                    child: Text(
+                                      'Pool',
+                                      style: TextStyle(
+                                          color: _onpresss2
+                                              ? Colors.white
+                                              : colors.blue_base,
+                                          fontSize: 13),
+                                    ),
+                                    color: _onpresss2
+                                        ? colors.blue_base
+                                        : Colors.white,
+                                    highlightColor:
+                                        _onpresss1 ? Colors.blue : Colors.white,
+                                    onPressed: () {
+                                      setState(() {
+                                        _onpresss2 = !_onpresss2;
+                                      });
+                                    },
+                                    shape: RoundedRectangleBorder(
+                                      side: BorderSide(
+                                          color: colors.blue_base,
+                                          width: 1,
+                                          style: BorderStyle.solid),
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 8,
+                                ),
+                                Container(
+                                  width: 73,
+                                  height: 25,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      color: colors.blue_base),
+                                  child: FlatButton(
+                                    child: Text(
+                                      'Sauna',
+                                      style: TextStyle(
+                                          color: _onpresss1
+                                              ? Colors.white
+                                              : colors.blue_base,
+                                          fontSize: 13),
+                                    ),
+                                    color: _onpresss1
+                                        ? colors.blue_base
+                                        : Colors.white,
+                                    highlightColor:
+                                        _onpresss1 ? Colors.blue : Colors.white,
+                                    onPressed: () {
+                                      setState(() {
+                                        _onpresss1 = !_onpresss1;
+                                      });
+                                    },
+                                    shape: RoundedRectangleBorder(
+                                      side: BorderSide(
+                                          color: colors.blue_base,
+                                          width: 1,
+                                          style: BorderStyle.solid),
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 8,
+                                ),
+                                Container(
+                                  width: 83,
+                                  height: 25,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      color: colors.blue_base),
+                                  child: FlatButton(
+                                    child: Text(
+                                      'Rowing',
+                                      style: TextStyle(
+                                          color: _onpresss3
+                                              ? Colors.white
+                                              : colors.blue_base,
+                                          fontSize: 13),
+                                    ),
+                                    color: _onpresss3
+                                        ? colors.blue_base
+                                        : Colors.white,
+                                    highlightColor:
+                                        _onpresss3 ? Colors.blue : Colors.white,
+                                    onPressed: () {
+                                      setState(() {
+                                        _onpresss3 = !_onpresss3;
+                                      });
+                                    },
+                                    shape: RoundedRectangleBorder(
+                                      side: BorderSide(
+                                          color: colors.blue_base,
+                                          width: 1,
+                                          style: BorderStyle.solid),
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 8,
+                                ),
+                                Container(
+                                  width: 83,
+                                  height: 25,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      color: colors.blue_base),
+                                  child: FlatButton(
+                                    child: Text(
+                                      'Squach',
+                                      style: TextStyle(
+                                          color: _onpresss4
+                                              ? Colors.white
+                                              : colors.blue_base,
+                                          fontSize: 13),
+                                    ),
+                                    color: _onpresss4
+                                        ? colors.blue_base
+                                        : Colors.white,
+                                    highlightColor:
+                                        _onpresss4 ? Colors.blue : Colors.white,
+                                    onPressed: () {
+                                      setState(() {
+                                        _onpresss4 = !_onpresss4;
+                                      });
+                                    },
+                                    shape: RoundedRectangleBorder(
+                                      side: BorderSide(
+                                          color: colors.blue_base,
+                                          width: 1,
+                                          style: BorderStyle.solid),
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 8,
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(
+                            width: 8,
+                            height: 10,
+                          ),
+                          Row(
+                            children: [
+                              Container(
+                                margin: EdgeInsets.symmetric(horizontal: 10),
+                                width: 150,
+                                height: 25,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    color: colors.blue_base),
+                                child: FlatButton(
+                                  child: Text(
+                                    'Indoor Runing Track',
+                                    style: TextStyle(
+                                        color: _onpresss5
+                                            ? Colors.white
+                                            : colors.blue_base,
+                                        fontSize: 13),
+                                  ),
+                                  color: _onpresss5
+                                      ? colors.blue_base
+                                      : Colors.white,
+                                  highlightColor:
+                                      _onpresss5 ? Colors.blue : Colors.white,
+                                  onPressed: () {
+                                    setState(() {
+                                      _onpresss5 = !_onpresss5;
+                                    });
+                                  },
+                                  shape: RoundedRectangleBorder(
+                                    side: BorderSide(
+                                        color: colors.blue_base,
+                                        width: 1,
+                                        style: BorderStyle.solid),
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                width: 83,
+                                height: 25,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    color: colors.blue_base),
+                                child: FlatButton(
+                                  child: Text(
+                                    'Khijih',
+                                    style: TextStyle(
+                                        color: _onpresss7
+                                            ? Colors.white
+                                            : colors.blue_base,
+                                        fontSize: 13),
+                                  ),
+                                  color: _onpresss7
+                                      ? colors.blue_base
+                                      : Colors.white,
+                                  highlightColor:
+                                      _onpresss7 ? Colors.blue : Colors.white,
+                                  onPressed: () {
+                                    setState(() {
+                                      _onpresss7 = !_onpresss7;
+                                    });
+                                  },
+                                  shape: RoundedRectangleBorder(
+                                    side: BorderSide(
+                                        color: colors.blue_base,
+                                        width: 1,
+                                        style: BorderStyle.solid),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                width: 8,
+                              ),
+                              Container(
+                                width: 97,
+                                height: 25,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    color: colors.blue_base),
+                                child: FlatButton(
+                                  child: Text(
+                                    'Stram Bath',
+                                    style: TextStyle(
+                                        color: _onpresss6
+                                            ? Colors.white
+                                            : colors.blue_base,
+                                        fontSize: 13),
+                                  ),
+                                  color: _onpresss6
+                                      ? colors.blue_base
+                                      : Colors.white,
+                                  highlightColor:
+                                      _onpresss6 ? Colors.blue : Colors.white,
+                                  onPressed: () {
+                                    setState(() {
+                                      _onpresss6 = !_onpresss6;
+                                    });
+                                  },
+                                  shape: RoundedRectangleBorder(
+                                    side: BorderSide(
+                                        color: colors.blue_base,
+                                        width: 1,
+                                        style: BorderStyle.solid),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
                     ],
                   ),

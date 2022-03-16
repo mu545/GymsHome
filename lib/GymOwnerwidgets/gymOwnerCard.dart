@@ -1,18 +1,20 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:gymhome/GymOwnerwidgets/EditGymInfo.dart';
+import 'package:gymhome/GymOwnerwidgets/location.dart';
 
 class GymCard extends StatelessWidget {
   const GymCard({
     Key? key,
     required this.gymId,
     required this.name,
+    // required this.price,
     required this.imageURL,
     //this.onfavoriteTap,
   }) : super(key: key);
 
   //final bool isFavorite;
   final String name;
+  // final double price;
   final String imageURL;
   //final VoidCallback? onfavoriteTap;
   final String gymId;
@@ -20,7 +22,9 @@ class GymCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {},
+      onTap: () {
+        Navigator.of(context).pushNamed(Location.routenamed);
+      },
       child: Container(
           height: MediaQuery.of(context).size.height * 0.35,
           margin: EdgeInsets.only(bottom: 20),
@@ -52,7 +56,7 @@ class GymCard extends StatelessWidget {
                           borderRadius: BorderRadius.only(
                               topLeft: Radius.circular(15),
                               topRight: Radius.circular(15)),
-                          child: Image.network(imageURL, fit: BoxFit.cover)),
+                          child: Image.network('', fit: BoxFit.cover)),
                     ),
                     // Positioned(
                     //   left: 15,

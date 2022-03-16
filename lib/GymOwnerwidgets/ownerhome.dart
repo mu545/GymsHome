@@ -97,6 +97,7 @@ class _WidgtessState extends State<OwnerHome> {
                             gymId: _gymsList[index].gymId ?? '',
                             name: _gymsList[index].name ?? '',
                             imageURL: _gymsList[index].imageURL ?? '',
+                            //  price: _gymsList[index].price,
                           );
                         },
                       )

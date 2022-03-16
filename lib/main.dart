@@ -19,10 +19,10 @@ import 'package:gymhome/provider/womengymitems.dart';
 import 'package:gymhome/widgets/AddGym.dart';
 import 'package:gymhome/widgets/add_image.dart';
 import 'package:gymhome/widgets/addimages.dart';
-import 'package:gymhome/widgets/customer_list.dart';
+// import 'package:gymhome/widgets/customer_list.dart';
 import 'package:gymhome/widgets/edit.dart';
 import 'package:gymhome/widgets/imageinput.dart';
-import 'package:gymhome/widgets/reviwe.dart';
+// import 'package:gymhome/widgets/reviwe.dart';
 import 'package:gymhome/widgets/gymdescrption.dart';
 import 'package:gymhome/widgets/help.dart';
 import 'package:gymhome/widgets/profile.dart';
@@ -32,10 +32,10 @@ import 'package:gymhome/widgets/pic.dart';
 import 'package:gymhome/widgets/placess.dart';
 import 'package:gymhome/widgets/profile.dart';
 import 'package:gymhome/widgets/resetpass.dart';
-import 'package:gymhome/widgets/reviwe.dart';
+
 import 'package:gymhome/widgets/signup.dart';
 import 'package:gymhome/widgets/ssss.dart';
-import 'package:gymhome/widgets/stack.dart';
+
 import 'package:gymhome/widgets/welcome.dart';
 import 'package:gymhome/widgets/womengym.dart';
 import 'package:provider/provider.dart';
@@ -58,15 +58,18 @@ class MyApp extends StatelessWidget {
           ChangeNotifierProvider.value(
             value: Gymsitems(),
           ),
+          // ChangeNotifierProvider.value(
+          //   value: Auth(),
+          // ),
           ChangeNotifierProvider.value(
             value: AddGymMethods(),
           ),
-          ChangeNotifierProvider.value(
-            value: Auth(),
-          ),
-          ChangeNotifierProvider.value(
-            value: Customer(name: ''),
-          ),
+          // ChangeNotifierProvider.value(
+          //   value: Auth(),
+          // ),
+          // ChangeNotifierProvider.value(
+          //   value: Customer(name: ''),
+          // ),
           ChangeNotifierProvider.value(
             value: Gyms(
               id: '',
@@ -91,7 +94,7 @@ class MyApp extends StatelessWidget {
         child: Consumer<Gymsitems>(
             builder: (ctx, auth, _) => MaterialApp(
                   debugShowCheckedModeBanner: false,
-                  home: welcome(),
+                  home: GymDescrption(),
                   routes: {
                     NewHome.rounamed: (ctx) => NewHome(),
                     ImageInput.routenamed: (ctx) => ImageInput(),

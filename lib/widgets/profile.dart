@@ -21,7 +21,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:gymhome/authintactions/database.dart';
 import 'package:provider/provider.dart';
-import 'package:gymhome/widgets/customer_list.dart';
+
 import 'package:gymhome/models/profile_model.dart';
 
 class Profile extends StatefulWidget {
@@ -374,7 +374,7 @@ class _ProfileState extends State<Profile> {
                       children: [
                         FlatButton(
                           onPressed: () {
-                            Provider.of<Auth>(context, listen: false).logout();
+                            // Provider.of<Auth>(context, listen: false).logout();
                             Navigator.of(context).pop();
                           },
                           child: Container(

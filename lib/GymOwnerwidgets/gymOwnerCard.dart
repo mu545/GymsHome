@@ -1,29 +1,33 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:gymhome/GymOwnerwidgets/EditGymInfo.dart';
 import 'package:gymhome/GymOwnerwidgets/location.dart';
+import 'package:gymhome/models/GymModel.dart';
 
 class GymCard extends StatelessWidget {
   const GymCard({
     Key? key,
-    required this.gymId,
-    required this.name,
+    required this.gymInfo,
+    //required this.name,
+    // required this.priceSixMonths,
     // required this.price,
-    required this.imageURL,
+    //  required this.imageURL,
     //this.onfavoriteTap,
   }) : super(key: key);
-
+  final GymModel gymInfo;
   //final bool isFavorite;
-  final String name;
+  //final String name;
   // final double price;
-  final String imageURL;
+//  final String imageURL;
   //final VoidCallback? onfavoriteTap;
-  final String gymId;
+  // final String gymId;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Navigator.of(context).pushNamed(Location.routenamed);
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => EditGymInfo(gymId: gymInfo.gymId ?? '')));
       },
       child: Container(
           height: MediaQuery.of(context).size.height * 0.35,
@@ -56,7 +60,8 @@ class GymCard extends StatelessWidget {
                           borderRadius: BorderRadius.only(
                               topLeft: Radius.circular(15),
                               topRight: Radius.circular(15)),
-                          child: Image.network('', fit: BoxFit.cover)),
+                          child: Image.network(gymInfo.imageURL ?? '',
+                              fit: BoxFit.cover)),
                     ),
                     // Positioned(
                     //   left: 15,
@@ -81,7 +86,7 @@ class GymCard extends StatelessWidget {
                             borderRadius: BorderRadius.only(
                                 topRight: Radius.circular(50))),
                         child: Text(
-                          name,
+                          gymInfo.name ?? '',
                           style: TextStyle(
                               fontSize: 32,
                               color: Colors.white,
@@ -107,11 +112,11 @@ class GymCard extends StatelessWidget {
                       children: [
                         Text(
                           //    price ??
-                          "1",
+                          gymInfo.priceOndDay.toString() ?? '',
                           style: TextStyle(fontSize: 20, color: Colors.white),
                         ),
                         Text(
-                          "330 SAR / m",
+                          gymInfo.location ?? '',
                           style: TextStyle(fontSize: 20, color: Colors.white),
                         ),
                       ],

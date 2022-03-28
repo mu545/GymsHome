@@ -40,6 +40,7 @@ class GymModel {
     priceThreeMonts = double.parse(json['Three Months'].toString());
     priceSixMonths = double.parse(json['Six Months'].toString());
     priceOneYear = double.parse(json['One Year'].toString());
+    gymId = json['gymId'];
     imageURL = json['imageURL'];
     name = json['name'];
     description = json['description'];

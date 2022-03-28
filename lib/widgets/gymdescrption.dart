@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:gymhome/models/GymModel.dart';
 import 'package:gymhome/models/gyms.dart';
 
 import 'package:gymhome/provider/gymsitems.dart';
@@ -14,7 +15,8 @@ import '../models/user.dart';
 import 'package:intl/intl.dart';
 
 class GymDescrption extends StatefulWidget {
-  const GymDescrption({Key? key}) : super(key: key);
+  GymModel gym;
+  GymDescrption({Key? key, required this.gym}) : super(key: key);
   static const routeName = '/gym';
 
   @override
@@ -23,14 +25,13 @@ class GymDescrption extends StatefulWidget {
 
 bool readmore = false;
 Customer currentCustomer = Customer();
-String gymid = 'EE6yUxZMs3OK8OotZ0t5';
+
 // bool isReviewed = false;
 List<Review> reviews = [];
 Review? userReview = null;
 
 class _GymDescrptionState extends State<GymDescrption> {
   void getisReviewed() {}
-
   @override
   void show() {
     final GlobalKey<FormState> _formKey = GlobalKey();
@@ -190,6 +191,7 @@ class _GymDescrptionState extends State<GymDescrption> {
   }
 
   Widget build(BuildContext context) {
+    String gymid = widget.gym.gymId ?? '';
     double screenWidth = MediaQuery.of(context).size.width;
     // final productid = ModalRoute.of(context)!.settings.arguments as String;
     // final lodedproductr = Provider.of<Gymsitems>(context).FindbyId(productid);
@@ -221,7 +223,7 @@ class _GymDescrptionState extends State<GymDescrption> {
                   children: [
                     Row(
                       children: [
-                        Text('4.5',
+                        Text(widget.gym.gymId ?? '',
                             style: TextStyle(fontWeight: FontWeight.bold)),
                         SizedBox(
                           width: 8,

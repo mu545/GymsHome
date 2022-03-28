@@ -94,14 +94,14 @@ class MyApp extends StatelessWidget {
         child: Consumer<Gymsitems>(
             builder: (ctx, auth, _) => MaterialApp(
                   debugShowCheckedModeBanner: false,
-                  home: OwnerHome(),
+                  home: NewHome(),
                   routes: {
                     NewHome.rounamed: (ctx) => NewHome(),
                     ImageInput.routenamed: (ctx) => ImageInput(),
                     OwnerHome.rounamed: (ctx) => OwnerHome(),
                     GymPrice.routenames: (ctx) => GymPrice(),
                     // Comparepage.routeName: (ctx) => Comparepage(),
-                    GymDescrption.routeName: (ctx) => GymDescrption(),
+                    // GymDescrption.routeName: (ctx) => GymDescrption(),
                     OwnerDescrption.routeName: (ctx) => OwnerDescrption(),
                     Location.routenamed: (ctx) => Location(),
                     AddGymInfo.routeName: (ctx) => AddGymInfo(),

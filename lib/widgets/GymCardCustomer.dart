@@ -3,9 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:gymhome/GymOwnerwidgets/EditGymInfo.dart';
 import 'package:gymhome/GymOwnerwidgets/location.dart';
 import 'package:gymhome/models/GymModel.dart';
+import 'package:gymhome/widgets/gymdescrption.dart';
 
-class GymCard extends StatelessWidget {
-  const GymCard({
+class GymCardCustomer extends StatelessWidget {
+  const GymCardCustomer({
     Key? key,
     required this.gymInfo,
     //required this.name,
@@ -27,7 +28,7 @@ class GymCard extends StatelessWidget {
     return InkWell(
       onTap: () {
         Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => EditGymInfo(gymId: gymInfo.gymId ?? '')));
+            builder: (context) => GymDescrption(gym: gymInfo)));
       },
       child: Container(
           height: MediaQuery.of(context).size.height * 0.35,
@@ -99,7 +100,7 @@ class GymCard extends StatelessWidget {
               ),
               Container(
                 decoration: BoxDecoration(
-                    color: Color(0xff48484a),
+                    color: Colors.black12,
                     borderRadius: BorderRadius.only(
                       bottomLeft: Radius.circular(15),
                       bottomRight: Radius.circular(15),

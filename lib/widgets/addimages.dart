@@ -30,8 +30,8 @@ class _ViewGymImagesState extends State<ViewGymImages> {
           backgroundColor: colors.blue_base,
           child: Icon(Icons.add, color: Colors.white),
           onPressed: () {
-            Navigator.of(context)
-                .push(MaterialPageRoute(builder: (context) => AddImage()));
+            //   Navigator.of(context)
+            //       .push(MaterialPageRoute(builder: (context) => AddImage()));
           },
         ),
         body: FutureBuilder(

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:gymhome/GymOwnerwidgets/EditGymInfo.dart';
 import 'package:gymhome/GymOwnerwidgets/location.dart';
 import 'package:gymhome/models/GymModel.dart';
+import 'package:gymhome/widgets/edit.dart';
 
 class GymCard extends StatelessWidget {
   const GymCard({
@@ -27,7 +28,11 @@ class GymCard extends StatelessWidget {
     return InkWell(
       onTap: () {
         Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => EditGymInfo(gymId: gymInfo.gymId ?? '')));
+            builder: (context) => AddGymInfo(
+                  gym: gymInfo,
+                  imageFile: null,
+                  oldGym: true,
+                )));
       },
       child: Container(
           height: MediaQuery.of(context).size.height * 0.35,

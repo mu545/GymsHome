@@ -43,7 +43,7 @@ class GymModel {
     gymId = json['gymId'];
     imageURL = json['imageURL'];
     name = json['name'];
-    description = json['description'];
+    description = json['descrption'];
     location = json['Location'];
     isWaiting = json['isWaiting'];
     isComplete = json['isComplete'];

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -28,8 +30,8 @@ class _WidgtessState extends State<OwnerHome> {
   List<GymModel> _gymsList = [];
 
   Future? _getData() => _fireStore
-      .collection("gyms")
-      .where('ownerId', isEqualTo: 'vtwTfapn96cQt6Z65eM9VNdbD0t1')
+      .collection("Watting")
+      .where('ownerId', isEqualTo: 'WR3c9JaDPRSAA7RUHAIgQADmcOW2')
       .where('isWaiting', isEqualTo: false)
       .get();
   // Future? _getDataByID() => _fireStore
@@ -109,9 +111,14 @@ class _WidgtessState extends State<OwnerHome> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Provider.of<AddGymMethods>(context, listen: false).addGym();
-
-          Navigator.of(context).pushNamed(AddGymInfo.routeName);
+          GymModel _gym = GymModel(
+              [], [], 0, 0, 0, 0, 0, '', '', '', '', '', '', false, true);
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => AddGymInfo(
+                    gym: _gym,
+                    imageFile: null,
+                    oldGym: false,
+                  )));
         },
         backgroundColor: colors.blue_base,
         child: const Icon(Icons.add),

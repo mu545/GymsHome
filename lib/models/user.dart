@@ -13,7 +13,7 @@ import 'package:image_picker/image_picker.dart';
 import '../GymOwnerwidgets/ownerhome.dart';
 import '../widgets/newhome.dart';
 
-class User {
+class User with ChangeNotifier {
   String email = '';
   String name = '';
   static final _auth = FirebaseAuth.instance;

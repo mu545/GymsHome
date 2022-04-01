@@ -11,9 +11,11 @@ import 'package:gymhome/GymOwnerwidgets/gymprice.dart';
 import 'package:gymhome/GymOwnerwidgets/location.dart';
 import 'package:gymhome/GymOwnerwidgets/ownerhome.dart';
 import 'package:gymhome/authintactions/auth.dart';
+import 'package:gymhome/models/GymModel.dart';
 import 'package:gymhome/models/customer.dart';
 import 'package:gymhome/models/favorite.dart';
 import 'package:gymhome/models/gyms.dart';
+import 'package:gymhome/models/user.dart';
 import 'package:gymhome/provider/gymsitems.dart';
 import 'package:gymhome/provider/womengymitems.dart';
 import 'package:gymhome/widgets/AddGym.dart';
@@ -58,6 +60,7 @@ class MyApp extends StatelessWidget {
           ChangeNotifierProvider.value(
             value: Gymsitems(),
           ),
+
           // ChangeNotifierProvider.value(
           //   value: Auth(),
           // ),
@@ -81,6 +84,7 @@ class MyApp extends StatelessWidget {
               facilites: '',
             ),
           ),
+
           ChangeNotifierProvider(
             create: (ctx) => cart(),
           ),
@@ -94,17 +98,17 @@ class MyApp extends StatelessWidget {
         child: Consumer<Gymsitems>(
             builder: (ctx, auth, _) => MaterialApp(
                   debugShowCheckedModeBanner: false,
-                  home: NewHome(),
+                  home: OwnerHome(),
                   routes: {
                     NewHome.rounamed: (ctx) => NewHome(),
-                    ImageInput.routenamed: (ctx) => ImageInput(),
+                    //     ImageInput.routenamed: (ctx) => ImageInput(),
                     OwnerHome.rounamed: (ctx) => OwnerHome(),
-                    GymPrice.routenames: (ctx) => GymPrice(),
+                    //   GymPrice.routenames: (ctx) => GymPrice(),
                     // Comparepage.routeName: (ctx) => Comparepage(),
                     // GymDescrption.routeName: (ctx) => GymDescrption(),
                     OwnerDescrption.routeName: (ctx) => OwnerDescrption(),
                     Location.routenamed: (ctx) => Location(),
-                    AddGymInfo.routeName: (ctx) => AddGymInfo(),
+                    //      AddGymInfo.routeName: (ctx) => AddGymInfo(gym:),
                     Facilites.routenames: (ctx) => Facilites(),
                     Addplace.routeName: (ctx) => Addplace(),
 

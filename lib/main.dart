@@ -25,6 +25,7 @@ import 'package:gymhome/widgets/imageinput.dart';
 // import 'package:gymhome/widgets/reviwe.dart';
 import 'package:gymhome/widgets/gymdescrption.dart';
 import 'package:gymhome/widgets/help.dart';
+import 'package:gymhome/widgets/placeloc.dart';
 import 'package:gymhome/widgets/profile.dart';
 import 'package:gymhome/widgets/newhome.dart';
 import 'package:gymhome/widgets/onerdescrption.dart';
@@ -40,6 +41,7 @@ import 'package:gymhome/widgets/welcome.dart';
 import 'package:gymhome/widgets/womengym.dart';
 import 'package:provider/provider.dart';
 import 'package:gymhome/widgets/resetpass.dart';
+import 'package:gymhome/provider/user.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -55,6 +57,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
         providers: [
+          ChangeNotifierProvider.value(
+            value: User('', '', false),
+          ),
           ChangeNotifierProvider.value(
             value: Gymsitems(),
           ),
@@ -94,7 +99,7 @@ class MyApp extends StatelessWidget {
         child: Consumer<Gymsitems>(
             builder: (ctx, auth, _) => MaterialApp(
                   debugShowCheckedModeBanner: false,
-                  home: NewHome(),
+                  home: PlaceLocation(),
                   routes: {
                     NewHome.rounamed: (ctx) => NewHome(),
                     ImageInput.routenamed: (ctx) => ImageInput(),

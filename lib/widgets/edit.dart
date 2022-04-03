@@ -10,7 +10,7 @@ import 'package:gymhome/GymOwnerwidgets/location.dart';
 import 'package:gymhome/GymOwnerwidgets/ownerhome.dart';
 import 'package:gymhome/Styles.dart';
 import 'package:gymhome/models/gyms.dart';
-import 'package:gymhome/models/user.dart';
+import 'package:gymhome/provider/user.dart';
 import 'package:gymhome/provider/gymsitems.dart';
 import 'package:gymhome/widgets/checkbox.dart';
 import 'package:gymhome/widgets/imageinput.dart';
@@ -175,8 +175,10 @@ class _AddGymInfoState extends State<AddGymInfo> {
                           //          initialValue: _initValues['description'],
                           decoration: InputDecoration(
                             hintText: 'Description',
-                            border: OutlineInputBorder(  borderRadius: BorderRadius.circular(10),
-                                borderSide: BorderSide(color: colors.black100),),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              borderSide: BorderSide(color: colors.black100),
+                            ),
                           ),
                           maxLines: 3,
                           focusNode: _descriptionFocusNode,

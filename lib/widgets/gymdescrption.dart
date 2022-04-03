@@ -11,7 +11,7 @@ import 'package:provider/provider.dart';
 import 'package:gymhome/Styles.dart';
 
 import '../models/customer.dart';
-import '../models/user.dart';
+import '../provider/user.dart';
 import 'package:intl/intl.dart';
 
 class GymDescrption extends StatefulWidget {
@@ -164,7 +164,9 @@ class _GymDescrptionState extends State<GymDescrption> {
                                 _reviwe['rate'] = 0.0;
                                 _reviwe['reviews'] = '';
                                 Navigator.of(context).pop();
-                                User.message(context, true, 'Thank you!');
+                                Provider.of<User>(context, listen: false)
+                                    .message(cxt, true, 'Thank you!');
+                                //  message(context, true, 'Thank you!');
                               }
                             },
                             child: Align(
@@ -624,7 +626,7 @@ class _GymDescrptionState extends State<GymDescrption> {
                         // print(yousure);
                         if (yousure) {
                           currentCustomer.deleteReview(gymid);
-                          User.message(
+                          Provider.of<User>(context, listen: false).message(
                               context, false, 'The review has been deleted');
                           setState(() {
                             userReview = null;

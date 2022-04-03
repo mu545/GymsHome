@@ -4,8 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:gymhome/Styles.dart';
 import 'package:gymhome/models/customer.dart';
-import 'package:gymhome/models/user.dart';
+import 'package:gymhome/provider/user.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 //hla milfy
 class Review {
@@ -227,8 +228,10 @@ class Review {
                                               c1.deleteReview(gymid);
                                               _reviwe['reviews'] = '';
                                               _reviwe['rate'] = 0.0;
-                                              User.message(context, false,
-                                                  'The review has been deleted');
+                                              Provider.of<User>(context,
+                                                      listen: false)
+                                                  .message(context, false,
+                                                      'The review has been deleted');
                                               Navigator.pop(context);
                                             },
                                             child: const Text(
@@ -269,7 +272,8 @@ class Review {
                                     _reviwe['reviews'] = '';
 
                                     Navigator.of(cxt).pop();
-                                    User.message(cxt, true, 'Thank you!');
+                                    Provider.of<User>(cxt, listen: false)
+                                        .message(cxt, true, 'Thank you!');
                                   }
                                 },
                                 child: Align(

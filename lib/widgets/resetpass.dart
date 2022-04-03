@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gymhome/Styles.dart';
 
-import 'package:gymhome/models/user.dart';
+import 'package:gymhome/provider/user.dart';
+import 'package:provider/provider.dart';
 
 class resetpassword extends StatefulWidget {
   const resetpassword({Key? key}) : super(key: key);
@@ -104,7 +105,8 @@ class _resetpasswordState extends State<resetpassword> {
                       onPrimary: colors.blue_smooth,
                       minimumSize: Size(250, 40)),
                   onPressed: () {
-                    User.resetpass(email, context);
+                    Provider.of<User>(context, listen: false)
+                        .resetpass(email, context);
                   },
                   child: Text(
                     "Send",

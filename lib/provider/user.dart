@@ -13,19 +13,19 @@ import 'package:image_picker/image_picker.dart';
 import '../GymOwnerwidgets/ownerhome.dart';
 import '../widgets/newhome.dart';
 
-class User {
+class User with ChangeNotifier {
   String email = '';
   String name = '';
-  static final _auth = FirebaseAuth.instance;
+  final _auth = FirebaseAuth.instance;
   bool iscustomer = false;
-  static String messages = '';
+  String messages = '';
   User(email, name, bool customer) {
     this.email = email;
     this.name = name;
     this.iscustomer = customer;
   }
-  static Future signup(bool customer, String email, String name,
-      String password, BuildContext cxt) async {
+  Future signup(bool customer, String email, String name, String password,
+      BuildContext cxt) async {
     try {
       await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
@@ -56,7 +56,7 @@ class User {
     //end catch
   } //end signup
 
-  static Future login(String email, String password, BuildContext cxt) async {
+  Future login(String email, String password, BuildContext cxt) async {
     try {
       await _auth.signInWithEmailAndPassword(email: email, password: password);
       var collection = FirebaseFirestore.instance.collection('Gym Owner');
@@ -72,7 +72,7 @@ class User {
     }
   }
 
-  static Future resetpass(String email, BuildContext cxt) async {
+  Future resetpass(String email, BuildContext cxt) async {
     try {
       await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
       messages = 'Check your email';
@@ -131,7 +131,7 @@ class User {
     return false;
   }
 
-  static message(BuildContext cxt, bool iserror, String message) {
+  message(BuildContext cxt, bool iserror, String message) {
     ScaffoldMessenger.of(cxt).showSnackBar(
       SnackBar(
         content: Text(

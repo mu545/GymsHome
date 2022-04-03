@@ -233,6 +233,7 @@ class Review {
                                                   .message(context, false,
                                                       'The review has been deleted');
                                               Navigator.pop(context);
+                                              Navigator.pop(context);
                                             },
                                             child: const Text(
                                               'yes',
@@ -247,7 +248,7 @@ class Review {
                                   child: Align(
                                     alignment: Alignment.bottomRight,
                                     child: Text(
-                                      "Delet",
+                                      "Delete",
                                       style: TextStyle(
                                         color: colors.red_base,
                                         fontFamily: 'Roboto',

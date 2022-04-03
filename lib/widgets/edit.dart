@@ -4,11 +4,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
 import 'package:gymhome/GymOwnerwidgets/facilities.dart';
 import 'package:gymhome/GymOwnerwidgets/gymprice.dart';
 import 'package:gymhome/GymOwnerwidgets/location.dart';
 import 'package:gymhome/GymOwnerwidgets/ownerhome.dart';
 import 'package:gymhome/Styles.dart';
+import 'package:gymhome/models/GymModel.dart';
 import 'package:gymhome/models/gyms.dart';
 import 'package:gymhome/provider/user.dart';
 import 'package:gymhome/provider/gymsitems.dart';
@@ -16,19 +18,45 @@ import 'package:gymhome/widgets/checkbox.dart';
 import 'package:gymhome/widgets/imageinput.dart';
 import 'package:gymhome/widgets/newhome.dart';
 import 'package:gymhome/widgets/AddGym.dart';
+import 'package:gymhome/widgets/welcome.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
+message(BuildContext cxt, bool iserror, String message) {
+  ScaffoldMessenger.of(cxt).showSnackBar(
+    SnackBar(
+      content: Text(
+        message,
+        style: TextStyle(
+            color: iserror ? colors.green_base : colors.red_base,
+            fontFamily: 'Roboto',
+            fontSize: 16),
+      ),
+      backgroundColor: iserror ? colors.green_smooth : colors.red_smooth,
+    ),
+  );
+}
+
 class AddGymInfo extends StatefulWidget {
+  GymModel gym;
+  File? imageFile;
+  bool oldGym;
+  AddGymInfo(
+      {Key? key,
+      required this.gym,
+      required this.imageFile,
+      required this.oldGym})
+      : super(key: key);
   static const routeName = '/sawedd';
   @override
+
   // static const routeNamed = '/EditADD';
   _AddGymInfoState createState() => _AddGymInfoState();
 }
 
 class _AddGymInfoState extends State<AddGymInfo> {
   var uid = FirebaseAuth.instance.currentUser!.uid;
-  File? _imageFile;
+
   Future image() async {
     final image =
         await ImagePicker.platform.pickImage(source: ImageSource.gallery);
@@ -36,55 +64,16 @@ class _AddGymInfoState extends State<AddGymInfo> {
 
     final imageTemp = File(image.path);
     setState(() {
-      _imageFile = imageTemp;
+      widget.imageFile = imageTemp;
+      widget.oldGym = false;
     });
-    Provider.of<AddGymMethods>(context, listen: false)
-        .getImageGallery(_imageFile);
   }
 
-  final _priceFocusNode = FocusNode();
-  final _descriptionFocusNode = FocusNode();
-  final _imageUrlFocusNode = FocusNode();
-  final _imageUrlController = TextEditingController();
   final _form = GlobalKey<FormState>();
-  var _editedProduct = Gyms(
-    id: '',
-    title: '',
-    price: 0,
-    description: '',
-    imageUrl: '',
-    location: '',
-    facilites: '',
-  );
   TextEditingController _nameTEC = TextEditingController();
   TextEditingController _desTEC = TextEditingController();
 
-  var _initValues = {
-    'title': '',
-    'price': '',
-    'description': '',
-    'imageUrl': '',
-  };
   var _isInit = true;
-  bool _imageDone = false;
-
-  @override
-  @override
-  void dispose() {
-    _priceFocusNode.dispose();
-    _descriptionFocusNode.dispose();
-    _imageUrlController.dispose();
-    _imageUrlFocusNode.dispose();
-    super.dispose();
-  }
-
-  void _Saved() async {
-    final Validate = _form.currentState!.validate();
-
-    _form.currentState!.save();
-
-    Navigator.of(context).pushNamed(ImageInput.routenamed);
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -93,7 +82,7 @@ class _AddGymInfoState extends State<AddGymInfo> {
       appBar: AppBar(
         title: Center(
             child: Text(
-          'Add Gym ',
+          'Add Gym',
           style: TextStyle(color: Colors.white),
         )),
         backgroundColor: colors.blue_base,
@@ -131,69 +120,48 @@ class _AddGymInfoState extends State<AddGymInfo> {
                         SizedBox(
                           height: 20,
                         ),
-                        Container(
-                          height: 45,
-                          child: TextFormField(
-                            controller: _nameTEC,
-                            //         initialValue: _initValues['title'],
+                        TextFormField(
+                            maxLength: 20,
+                            initialValue: widget.gym.name,
                             decoration: InputDecoration(
-                              hintText: 'Name',
+                              labelText: 'Name',
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
                                 borderSide: BorderSide(color: colors.black100),
                               ),
                             ),
-                            textInputAction: TextInputAction.next,
-                            onFieldSubmitted: (_) {
-                              FocusScope.of(context)
-                                  .requestFocus(_priceFocusNode);
+                            onChanged: (value) {
+                              widget.gym.name = value;
                             },
                             validator: (value) {
-                              if (value!.isEmpty) {
-                                return 'Please provide a value.';
-                              }
-                              return null;
-                            },
-                            onSaved: (value) {
-                              _editedProduct = Gyms(
-                                title: value!,
-                                price: _editedProduct.price,
-                                description: _editedProduct.description,
-                                imageUrl: _editedProduct.imageUrl,
-                                id: _editedProduct.id,
-                                location: _editedProduct.location,
-                                facilites: _editedProduct.facilites,
-                              );
-                            },
-                          ),
-                        ),
+                              if (value!.isEmpty)
+                                return 'Please Write the Name of the Gym';
+                              if (value.length <= 2) return 'Name is Too Short';
+                            }),
                         SizedBox(
                           height: 20,
                         ),
                         TextFormField(
-                          controller: _desTEC,
-                          //          initialValue: _initValues['description'],
+                          maxLength: 256,
+                          initialValue: widget.gym.description,
                           decoration: InputDecoration(
-                            hintText: 'Description',
+                            labelText: 'Description',
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10),
                               borderSide: BorderSide(color: colors.black100),
                             ),
                           ),
                           maxLines: 3,
-                          focusNode: _descriptionFocusNode,
-                          keyboardType: TextInputType.multiline,
-                          onSaved: (value) {
-                            _editedProduct = Gyms(
-                              title: _editedProduct.title,
-                              price: _editedProduct.price,
-                              description: value!,
-                              imageUrl: _editedProduct.imageUrl,
-                              id: _editedProduct.id,
-                              location: _editedProduct.location,
-                              facilites: _editedProduct.facilites,
-                            );
+                          onChanged: (value) {
+                            widget.gym.description = value;
                           },
+                          validator: (value) {
+                            if (value!.isEmpty)
+                              return 'Please Write the Description of your Gym';
+                            if (value.length <= 10)
+                              return 'Description is Too Short';
+                          },
+                          keyboardType: TextInputType.multiline,
                         ),
                         SizedBox(
                           height: 20,
@@ -209,25 +177,7 @@ class _AddGymInfoState extends State<AddGymInfo> {
                                   icon: Icon(Icons.camera_alt_rounded,
                                       color: Colors.white),
                                   onPressed: () {
-                                    image().whenComplete(() {
-                                      setState(() {
-                                        _imageDone = true;
-                                      });
-                                    });
-
-                                    //       Provider.of<AddGymMethods>(context,
-                                    //         listen: false)
-                                    //     .uploadPicForGym()
-                                    //     .whenComplete(() {
-                                    //   setState(() {
-                                    //     Scaffold.of(context)
-                                    //         .showSnackBar(SnackBar(
-                                    //       content:
-                                    //           Text('Profile Picture Uploaded'),
-                                    //       backgroundColor: colors.green_base,
-                                    //     ));
-                                    //   });
-                                    // });
+                                    image();
                                   },
                                   label: Text(
                                     "Choose a Picture for Your Gym",
@@ -244,15 +194,26 @@ class _AddGymInfoState extends State<AddGymInfo> {
                             ),
                             Container(
                               width: 300,
-                              height: 150,
-                              child: _imageFile != null
+                              height: 300,
+                              child: widget.imageFile != null
                                   ? Image.file(
-                                      _imageFile!,
-                                      fit: BoxFit.cover,
+                                      widget.imageFile!,
+                                      fit: BoxFit.contain,
                                     )
-                                  : Image.asset(
-                                      "assets/images/gyms_home_logo.png",
-                                      fit: BoxFit.contain),
+                                  : widget.oldGym
+                                      ? Container(
+                                          width: 299.0,
+                                          height: 149.0,
+                                          decoration: BoxDecoration(
+                                              image: DecorationImage(
+                                                  image: NetworkImage(
+                                                      widget.gym.imageURL ??
+                                                          ''),
+                                                  fit: BoxFit.contain)),
+                                        )
+                                      : Image.asset(
+                                          "assets/images/gyms_home_logo.png",
+                                          fit: BoxFit.contain),
                             )
                           ],
                         ),
@@ -277,18 +238,24 @@ class _AddGymInfoState extends State<AddGymInfo> {
                   style: TextStyle(color: Colors.white),
                 ),
                 onPressed: () {
-                  _editedProduct = Gyms(
-                      price: _editedProduct.price,
-                      imageUrl: _editedProduct.imageUrl,
-                      id: _editedProduct.id,
-                      location: _editedProduct.location,
-                      facilites: _editedProduct.facilites,
-                      title: _nameTEC.text,
-                      description: _desTEC.text);
-
-                  Provider.of<AddGymMethods>(context, listen: false)
-                      .updateNameAndDes(_editedProduct);
-                  Navigator.of(context).pushNamed(ImageInput.routenamed);
+                  if (_form.currentState!.validate() &&
+                          widget.imageFile != null ||
+                      widget.gym.imageURL != '') {
+                    List<File?> imgs = [];
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => ImageInput(
+                              imagesFile: imgs,
+                              gym: widget.gym,
+                              imageFile: widget.imageFile,
+                            )));
+                    print(widget.gym.name);
+                    print(widget.gym.description);
+                    print(widget.imageFile);
+                  } else {
+                    if (widget.imageFile == null)
+                      message(context, false,
+                          "Please Choose a Picture for Your Gym");
+                  }
                 },
                 padding: EdgeInsets.symmetric(horizontal: 30.0, vertical: 4),
                 materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,

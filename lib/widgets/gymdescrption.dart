@@ -6,7 +6,7 @@ import 'package:gymhome/models/GymModel.dart';
 import 'package:gymhome/models/gyms.dart';
 
 import 'package:gymhome/provider/gymsitems.dart';
-import 'package:gymhome/widgets/review.dart';
+import 'package:gymhome/provider/review.dart';
 import 'package:provider/provider.dart';
 import 'package:gymhome/Styles.dart';
 

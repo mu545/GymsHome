@@ -9,7 +9,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 //hla milfy
-class Review {
+class Review with ChangeNotifier {
   String uid;
   String name;
   String profileimg;

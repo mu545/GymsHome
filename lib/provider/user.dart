@@ -7,7 +7,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 
 import 'package:gymhome/Styles.dart';
-import 'package:gymhome/widgets/review.dart';
+import 'package:gymhome/provider/review.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../GymOwnerwidgets/ownerhome.dart';

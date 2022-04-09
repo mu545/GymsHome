@@ -1,8 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:gymhome/Styles.dart';
+import 'package:gymhome/models/GymModel.dart';
 import 'package:gymhome/models/favorite.dart';
 import 'package:gymhome/models/gyms.dart';
 import 'package:gymhome/provider/gymsitems.dart';
-
+import 'package:gymhome/widgets/GymCardCustomer.dart';
 import 'package:gymhome/widgets/empty.dart';
 import 'package:gymhome/widgets/favorite.dart';
 import 'package:gymhome/widgets/gymdescrption.dart';
@@ -99,8 +102,13 @@ class NewWidgetHome extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Gym = Provider.of<Gyms>(context);
-    final prodactDate = Provider.of<Gymsitems>(context);
+    final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
+    List<GymModel> _gymsList = [];
+
+    Future? _getData() => _fireStore
+        .collection("gyms")
+        .where('isWaiting', isEqualTo: false)
+        .get();
 // final gymitem = shoefav ? prodactDate.favoriteitem : prodactDate.items;
     return Scaffold(
       appBar: AppBar(
@@ -142,7 +150,7 @@ class NewWidgetHome extends StatelessWidget {
           Row(
             children: [
               Container(
-                margin: EdgeInsets.symmetric(horizontal: 10),
+                margin: EdgeInsets.fromLTRB(5, 10, 0, 0),
                 height: 20,
                 width: 180,
                 decoration: BoxDecoration(
@@ -162,24 +170,16 @@ class NewWidgetHome extends StatelessWidget {
                         onPressed: () => ProductGrid(_ShowOnly),
                       ),
                     ),
-
-                    // FlatButton(
-                    //     highlightColor: Colors.blue,
-                    //     hoverColor: Colors.blue,
-
-                    //     child: Text('Women',style: TextStyle(color: Colors.black , fontSize: 13),),
-                    //     color: Colors.white,
-                    //     onPressed: () =>Womegrid(_ShowOnly),
-
-                    // ),
-
-                    // FlatButton(
-
-                    //     child: Text('Month',style: TextStyle(color: Colors.blue , fontSize: 13),),
-                    //     color: Colors.white,
-                    //     onPressed: () {/** */},
-
-                    // ),
+                    FlatButton(
+                      highlightColor: Colors.blue,
+                      hoverColor: Colors.blue,
+                      child: Text(
+                        'Women',
+                        style: TextStyle(color: Colors.black, fontSize: 13),
+                      ),
+                      color: Colors.white,
+                      onPressed: () {/** */},
+                    ),
                   ],
                 ),
               ),
@@ -191,7 +191,7 @@ class NewWidgetHome extends StatelessWidget {
           Row(
             children: [
               Container(
-                margin: EdgeInsets.symmetric(horizontal: 10),
+                margin: EdgeInsets.only(left: 5),
                 height: 20,
                 width: 390,
                 decoration: BoxDecoration(
@@ -248,7 +248,39 @@ class NewWidgetHome extends StatelessWidget {
           ),
 
           Expanded(
-            child: ProductGrid(_ShowOnly),
+            child: SingleChildScrollView(
+              child: SafeArea(
+                child: FutureBuilder(
+                  future: _getData(),
+                  builder:
+                      (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                    if (snapshot.hasData) {
+                      _gymsList.clear();
+                      snapshot.data.docs.forEach((element) {
+                        _gymsList.add(GymModel.fromJson(element.data()));
+                      });
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          children: [
+                            ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: _gymsList.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                return GymCardCustomer(
+                                  gymInfo: _gymsList[index],
+                                );
+                              },
+                            )
+                          ],
+                        ),
+                      );
+                    } else
+                      return Center(child: CircularProgressIndicator());
+                  },
+                ),
+              ),
+            ),
           ),
         ],
       ),

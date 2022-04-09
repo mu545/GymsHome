@@ -7,6 +7,8 @@ class GymModel {
   double? priceSixMonths;
   double? priceOneYear;
   String? imageURL;
+  String? gymId;
+  String? ownerId;
   String? name;
   String? description;
   String? location;
@@ -14,7 +16,7 @@ class GymModel {
   bool? isComplete;
 
   GymModel(
-      {this.images,
+      this.images,
       this.faciltrs,
       this.priceOndDay,
       this.priceOndMonth,
@@ -22,11 +24,13 @@ class GymModel {
       this.priceSixMonths,
       this.priceThreeMonts,
       this.imageURL,
+      this.gymId,
+      this.ownerId,
       this.name,
       this.description,
       this.location,
       this.isComplete,
-      this.isWaiting});
+      this.isWaiting);
 
   GymModel.fromJson(Map<String, dynamic> json) {
     images = json['images'];
@@ -36,9 +40,10 @@ class GymModel {
     priceThreeMonts = double.parse(json['Three Months'].toString());
     priceSixMonths = double.parse(json['Six Months'].toString());
     priceOneYear = double.parse(json['One Year'].toString());
+    gymId = json['gymId'];
     imageURL = json['imageURL'];
     name = json['name'];
-    description = json['description'];
+    description = json['descrption'];
     location = json['Location'];
     isWaiting = json['isWaiting'];
     isComplete = json['isComplete'];

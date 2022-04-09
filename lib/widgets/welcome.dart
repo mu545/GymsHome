@@ -8,7 +8,8 @@ import 'package:gymhome/GymOwnerwidgets/ownerhome.dart';
 import 'package:gymhome/Styles.dart';
 import 'package:gymhome/widgets/newhome.dart';
 import 'package:gymhome/widgets/resetpass.dart';
-import 'package:gymhome/models/user.dart';
+import 'package:gymhome/provider/user.dart';
+import 'package:provider/provider.dart';
 
 class welcome extends StatefulWidget {
   //const welcome({Key? key}) : super(key: key);
@@ -194,11 +195,12 @@ class _welcomeState extends State<welcome> {
                       onPressed: () async {
                         if (isSignup &&
                             _formkeys['signup']!.currentState!.validate()) {
-                          User.signup(
+                          Provider.of<User>(context, listen: false).signup(
                               iscustomer, email, name, password, context);
                         } else if (!isSignup &&
                             _formkeys['login']!.currentState!.validate()) {
-                          User.login(email, password, context);
+                          Provider.of<User>(context, listen: false)
+                              .login(email, password, context);
                         }
                       },
                       child: Text(

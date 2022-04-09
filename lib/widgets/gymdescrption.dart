@@ -2,19 +2,21 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:gymhome/models/GymModel.dart';
 import 'package:gymhome/models/gyms.dart';
 
 import 'package:gymhome/provider/gymsitems.dart';
-import 'package:gymhome/widgets/review.dart';
+import 'package:gymhome/provider/review.dart';
 import 'package:provider/provider.dart';
 import 'package:gymhome/Styles.dart';
 
 import '../models/customer.dart';
-import '../models/user.dart';
+import '../provider/user.dart';
 import 'package:intl/intl.dart';
 
 class GymDescrption extends StatefulWidget {
-  const GymDescrption({Key? key}) : super(key: key);
+  GymModel gym;
+  GymDescrption({Key? key, required this.gym}) : super(key: key);
   static const routeName = '/gym';
 
   @override
@@ -23,14 +25,13 @@ class GymDescrption extends StatefulWidget {
 
 bool readmore = false;
 Customer currentCustomer = Customer();
-String gymid = 'EE6yUxZMs3OK8OotZ0t5';
+
 // bool isReviewed = false;
 List<Review> reviews = [];
 Review? userReview = null;
 
 class _GymDescrptionState extends State<GymDescrption> {
   void getisReviewed() {}
-
   @override
   void show() {
     final GlobalKey<FormState> _formKey = GlobalKey();
@@ -163,7 +164,9 @@ class _GymDescrptionState extends State<GymDescrption> {
                                 _reviwe['rate'] = 0.0;
                                 _reviwe['reviews'] = '';
                                 Navigator.of(context).pop();
-                                User.message(context, true, 'Thank you!');
+                                Provider.of<User>(context, listen: false)
+                                    .message(cxt, true, 'Thank you!');
+                                //  message(context, true, 'Thank you!');
                               }
                             },
                             child: Align(
@@ -190,6 +193,7 @@ class _GymDescrptionState extends State<GymDescrption> {
   }
 
   Widget build(BuildContext context) {
+    String gymid = widget.gym.gymId ?? '';
     double screenWidth = MediaQuery.of(context).size.width;
     // final productid = ModalRoute.of(context)!.settings.arguments as String;
     // final lodedproductr = Provider.of<Gymsitems>(context).FindbyId(productid);
@@ -221,7 +225,7 @@ class _GymDescrptionState extends State<GymDescrption> {
                   children: [
                     Row(
                       children: [
-                        Text('4.5',
+                        Text(widget.gym.gymId ?? '',
                             style: TextStyle(fontWeight: FontWeight.bold)),
                         SizedBox(
                           width: 8,
@@ -622,7 +626,7 @@ class _GymDescrptionState extends State<GymDescrption> {
                         // print(yousure);
                         if (yousure) {
                           currentCustomer.deleteReview(gymid);
-                          User.message(
+                          Provider.of<User>(context, listen: false).message(
                               context, false, 'The review has been deleted');
                           setState(() {
                             userReview = null;

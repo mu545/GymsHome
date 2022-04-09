@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -27,7 +29,11 @@ class _WidgtessState extends State<OwnerHome> {
   final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
   List<GymModel> _gymsList = [];
 
-  Future? _getData() => _fireStore.collection("gyms").get();
+  Future? _getData() => _fireStore
+      .collection("Watting")
+      .where('ownerId', isEqualTo: 'WR3c9JaDPRSAA7RUHAIgQADmcOW2')
+      .where('isWaiting', isEqualTo: false)
+      .get();
   // Future? _getDataByID() => _fireStore
   //     .collection("Gyms")
   //     .where("Gym id", isEqualTo: uid)
@@ -44,17 +50,17 @@ class _WidgtessState extends State<OwnerHome> {
   //   });
   // }
 
-  var _editedProduct = Gyms(
-    id: '',
-    title: '',
-    price: 0,
-    description: '',
-    imageUrl: '',
-    location: '',
-    facilites: '',
-  );
-  bool _ShowOnly = false;
-  var gymId = '';
+  // var _editedProduct = Gyms(
+  //   id: '',
+  //   title: '',
+  //   price: 0,
+  //   description: '',
+  //   imageUrl: '',
+  //   location: '',
+  //   facilites: '',
+  // );
+  // bool _ShowOnly = false;
+  //var gymId = '';
   var uid = FirebaseAuth.instance.currentUser!.uid;
   @override
   Widget build(BuildContext context) {
@@ -90,10 +96,7 @@ class _WidgtessState extends State<OwnerHome> {
                         itemCount: _gymsList.length,
                         itemBuilder: (BuildContext context, int index) {
                           return GymCard(
-                            //  isFavorite: _gymsList[index].isFavorite ?? false,
-                            name: _gymsList[index].name ?? '',
-                            imageURL: _gymsList[index].imageURL ?? '',
-                            //  price: _gymsList[index].price,
+                            gymInfo: _gymsList[index],
                           );
                         },
                       )
@@ -108,9 +111,14 @@ class _WidgtessState extends State<OwnerHome> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Provider.of<AddGymMethods>(context, listen: false).addGym();
-
-          Navigator.of(context).pushNamed(AddGymInfo.routeName);
+          GymModel _gym = GymModel(
+              [], [], 0, 0, 0, 0, 0, '', '', '', '', '', '', false, true);
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => AddGymInfo(
+                    gym: _gym,
+                    imageFile: null,
+                    oldGym: false,
+                  )));
         },
         backgroundColor: colors.blue_base,
         child: const Icon(Icons.add),

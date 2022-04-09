@@ -7,40 +7,44 @@ import 'package:gymhome/widgets/empty.dart';
 import 'package:gymhome/widgets/favorite.dart';
 import 'package:gymhome/widgets/gymdescrption.dart';
 import 'package:gymhome/widgets/gymgrid.dart';
+import 'package:gymhome/widgets/newSearch.dart';
 import 'package:gymhome/widgets/profile.dart';
 import 'package:gymhome/widgets/search.dart';
 import 'package:gymhome/widgets/viewcompare.dart';
 import 'package:gymhome/widgets/womengym.dart';
 import 'package:provider/provider.dart';
+import 'package:gymhome/widgets/newSearch.dart';
 
 class NewHome extends StatefulWidget {
-  static const rounamed ='/ssssdff';
-  const NewHome({ Key? key }) : super(key: key);
+  static const rounamed = '/ssssdff';
+  const NewHome({Key? key}) : super(key: key);
 
   @override
   _NewHomeState createState() => _NewHomeState();
 }
 
 class _NewHomeState extends State<NewHome> {
-   int _selectedIndex = 0;
-   static const List<Widget> _list=[NewWidgetHome(),Viewcompare(), Empty() ,Favorite(),Profile()];
+  int _selectedIndex = 0;
+  static const List<Widget> _list = [
+    NewWidgetHome(),
+    Viewcompare(),
+    Empty(),
+    Favorite(),
+    Profile()
+  ];
   @override
-   void _onItemTapped(int index) {
+  void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
-    
-   
-     
     });
   }
+
   Widget build(BuildContext context) {
-    return 
-    Scaffold(
-    
-    body: Center(child: _list[_selectedIndex]),
-       bottomNavigationBar: Container(
-         width: 200,
-         child: BottomNavigationBar(
+    return Scaffold(
+      body: Center(child: _list[_selectedIndex]),
+      bottomNavigationBar: Container(
+        width: 200,
+        child: BottomNavigationBar(
           //  fixedColor: Colors.black,
           unselectedItemColor: Colors.grey,
           items: const <BottomNavigationBarItem>[
@@ -51,28 +55,20 @@ class _NewHomeState extends State<NewHome> {
             BottomNavigationBarItem(
               icon: Icon(Icons.compare_arrows_rounded),
               label: 'Compare',
-              
+            ),
+            BottomNavigationBarItem(icon: Icon(Icons.sort), label: 's'),
+
+            BottomNavigationBarItem(
+              icon: Icon(Icons.favorite),
+              label: 'Favorite',
+
+              // backgroundColor: Colors.pink,
             ),
             BottomNavigationBarItem(
-            
-              icon: Icon(Icons.sort
-              ),
-              label: 's'
-             
-              
+              icon: Icon(Icons.account_circle),
+              label: 'Account',
+              // backgroundColor: Colors.pink,
             ),
-            
-             BottomNavigationBarItem(
-            icon: Icon(Icons.favorite),
-            label: 'Favorite',
-            
-            // backgroundColor: Colors.pink,
-          ),
-           BottomNavigationBarItem(
-            icon: Icon(Icons.account_circle),
-            label: 'Account',
-            // backgroundColor: Colors.pink,
-          ),
             //  BottomNavigationBarItem(
             //   icon: Icon(Icons.school),
             //   label: 'School',
@@ -81,38 +77,54 @@ class _NewHomeState extends State<NewHome> {
             //   icon: Icon(Icons.school),
             //   label: 'School',
             // ),
-            
           ],
-          
 
-
-
-
-          
-            currentIndex: _selectedIndex,
-        selectedItemColor: Colors.blue,
-        onTap: _onItemTapped,
-    ),
-       ),);
+          currentIndex: _selectedIndex,
+          selectedItemColor: Colors.blue,
+          onTap: _onItemTapped,
+        ),
+      ),
+    );
   }
 }
+
 bool _ShowOnly = false;
+
 class NewWidgetHome extends StatelessWidget {
   //  bool shoefav;
-  const  NewWidgetHome({
+  const NewWidgetHome({
     // this.shoefav =false ,
     Key? key,
   }) : super(key: key);
 
   @override
-  
   Widget build(BuildContext context) {
-      final Gym = Provider.of<Gyms>(context);
-       final prodactDate = Provider.of<Gymsitems>(context);
+    final Gym = Provider.of<Gyms>(context);
+    final prodactDate = Provider.of<Gymsitems>(context);
 // final gymitem = shoefav ? prodactDate.favoriteitem : prodactDate.items;
     return Scaffold(
-appBar: AppBar(title: Center(child: Text('HOME', style: TextStyle(color: Colors.black),)),backgroundColor: Colors.white, elevation: 0,actions: <Widget>[ Searchlesss(), IconButton(onPressed: (){}, icon: Icon(Icons.more_vert,color: Colors.black,),)], 
-      ),body: Column(
+      appBar: AppBar(
+        title: Center(
+            child: Text(
+          'HOME',
+          style: TextStyle(color: Colors.black),
+        )),
+        backgroundColor: Colors.white,
+        elevation: 0,
+        actions: <Widget>[
+          Searchlesss(),
+          IconButton(
+            onPressed: () {
+              // CloudFirestoreSearch();
+            },
+            icon: Icon(
+              Icons.more_vert,
+              color: Colors.black,
+            ),
+          )
+        ],
+      ),
+      body: Column(
         children: [
           //  Container(
           //    height: 50,
@@ -127,91 +139,117 @@ appBar: AppBar(title: Center(child: Text('HOME', style: TextStyle(color: Colors.
           //     ),
           // ),
           //  ),
-        Row(
-               children: [
-                 Container(margin: EdgeInsets.symmetric(horizontal: 10), height: 20, width: 180, decoration: BoxDecoration(border: Border.all(color: Colors.grey),borderRadius: BorderRadius.circular(5)), child: Row(children: [Container(
-                   child: FlatButton( 
-                                            highlightColor: Colors.blue,
-                                            hoverColor: Colors.blue,
-
-                                              child: Text('Men',style: TextStyle(color: Colors.black , fontSize: 13),),  
-                                              color: Colors.white,  
-                                              onPressed: () =>ProductGrid(_ShowOnly),  
-               
-                                          ),
-                 ), 
-                                    
-                                        // FlatButton( 
-                                        //     highlightColor: Colors.blue,
-                                        //     hoverColor: Colors.blue,
-
-                                        //     child: Text('Women',style: TextStyle(color: Colors.black , fontSize: 13),),  
-                                        //     color: Colors.white,  
-                                        //     onPressed: () =>Womegrid(_ShowOnly),  
-               
-                                        // ), 
-                                     
-                                        // FlatButton( 
-                                          
-                                        //     child: Text('Month',style: TextStyle(color: Colors.blue , fontSize: 13),),  
-                                        //     color: Colors.white,  
-                                        //     onPressed: () {/** */},  
-               
-                                        // ), 
-                                       
-                                          ],),),
-               ],
-             ),
-             SizedBox(height: 5,),
           Row(
-               children: [
-                 Container(margin: EdgeInsets.symmetric(horizontal: 10), height: 20, width: 390, decoration: BoxDecoration(border: Border.all(color: Colors.grey),borderRadius: BorderRadius.circular(5)), child: Row(children: [Container(
-                   child: FlatButton( 
-                                            
-                                              child: Text('Day',style: TextStyle(color: Colors.grey , fontSize: 13),),  
-                                              color: Colors.white,  
-                                              onPressed: () {/** */},  
-               
-                                          ),
-                 ), 
-                                    
-                                        FlatButton( 
-                                          
-                                            child: Text('Month',style: TextStyle(color: Colors.grey , fontSize: 13),),  
-                                            color: Colors.white,  
-                                            onPressed: () {/** */},  
-               
-                                        ), 
-                                        FlatButton( 
-                                          
-                                            child: Text('3 Months',style: TextStyle(color: Colors.grey , fontSize: 13),),  
-                                            color: Colors.white,  
-                                            onPressed: () {/** */},  
-               
-                                        ), 
-                                        FlatButton( 
-                                          
-                                            child: Text('6 Months',style: TextStyle(color: Colors.grey , fontSize: 13),),  
-                                            color: Colors.white,  
-                                            onPressed: () {/** */},  
-               
-                                        ), 
-                                        // FlatButton( 
-                                          
-                                        //     child: Text('Month',style: TextStyle(color: Colors.blue , fontSize: 13),),  
-                                        //     color: Colors.white,  
-                                        //     onPressed: () {/** */},  
-               
-                                        // ), 
-                                       
-                                          ],),),
-               ],
-             ),
-            
+            children: [
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 10),
+                height: 20,
+                width: 180,
+                decoration: BoxDecoration(
+                    border: Border.all(color: Colors.grey),
+                    borderRadius: BorderRadius.circular(5)),
+                child: Row(
+                  children: [
+                    Container(
+                      child: FlatButton(
+                        highlightColor: Colors.blue,
+                        hoverColor: Colors.blue,
+                        child: Text(
+                          'Men',
+                          style: TextStyle(color: Colors.black, fontSize: 13),
+                        ),
+                        color: Colors.white,
+                        onPressed: () => ProductGrid(_ShowOnly),
+                      ),
+                    ),
+
+                    // FlatButton(
+                    //     highlightColor: Colors.blue,
+                    //     hoverColor: Colors.blue,
+
+                    //     child: Text('Women',style: TextStyle(color: Colors.black , fontSize: 13),),
+                    //     color: Colors.white,
+                    //     onPressed: () =>Womegrid(_ShowOnly),
+
+                    // ),
+
+                    // FlatButton(
+
+                    //     child: Text('Month',style: TextStyle(color: Colors.blue , fontSize: 13),),
+                    //     color: Colors.white,
+                    //     onPressed: () {/** */},
+
+                    // ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          SizedBox(
+            height: 5,
+          ),
+          Row(
+            children: [
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 10),
+                height: 20,
+                width: 390,
+                decoration: BoxDecoration(
+                    border: Border.all(color: Colors.grey),
+                    borderRadius: BorderRadius.circular(5)),
+                child: Row(
+                  children: [
+                    Container(
+                      child: FlatButton(
+                        child: Text(
+                          'Day',
+                          style: TextStyle(color: Colors.grey, fontSize: 13),
+                        ),
+                        color: Colors.white,
+                        onPressed: () {/** */},
+                      ),
+                    ),
+
+                    FlatButton(
+                      child: Text(
+                        'Month',
+                        style: TextStyle(color: Colors.grey, fontSize: 13),
+                      ),
+                      color: Colors.white,
+                      onPressed: () {/** */},
+                    ),
+                    FlatButton(
+                      child: Text(
+                        '3 Months',
+                        style: TextStyle(color: Colors.grey, fontSize: 13),
+                      ),
+                      color: Colors.white,
+                      onPressed: () {/** */},
+                    ),
+                    FlatButton(
+                      child: Text(
+                        '6 Months',
+                        style: TextStyle(color: Colors.grey, fontSize: 13),
+                      ),
+                      color: Colors.white,
+                      onPressed: () {/** */},
+                    ),
+                    // FlatButton(
+
+                    //     child: Text('Month',style: TextStyle(color: Colors.blue , fontSize: 13),),
+                    //     color: Colors.white,
+                    //     onPressed: () {/** */},
+
+                    // ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+
           Expanded(
-            child: ProductGrid(_ShowOnly) , 
-                  ),
-          
+            child: ProductGrid(_ShowOnly),
+          ),
         ],
       ),
     );
@@ -249,10 +287,10 @@ appBar: AppBar(title: Center(child: Text('HOME', style: TextStyle(color: Colors.
 //               icon: Icon(
 //                 Gym.isadd
 //                     ? Icons.shopping_cart : Icons.shopping_cart,
-                
+
 //                 color: Colors.green,
 //               ),
-             
+
 //             ));
 //   }
 // }

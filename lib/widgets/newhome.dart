@@ -12,6 +12,7 @@ import 'package:gymhome/widgets/empty.dart';
 import 'package:gymhome/widgets/favorite.dart';
 import 'package:gymhome/widgets/gymdescrption.dart';
 import 'package:gymhome/widgets/gymgrid.dart';
+import 'package:gymhome/widgets/newSearch.dart';
 import 'package:gymhome/widgets/profile.dart';
 import 'package:gymhome/widgets/search.dart';
 import 'package:gymhome/widgets/viewcompare.dart';
@@ -19,6 +20,7 @@ import 'package:gymhome/widgets/womengym.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../provider/customer.dart';
+import 'package:gymhome/widgets/newSearch.dart';
 
 class NewHome extends StatefulWidget {
   static const rounamed = '/ssssdff';
@@ -169,13 +171,22 @@ class NewWidgetHome extends StatelessWidget {
       appBar: AppBar(
         title: Center(
             child: Text(
-          'Home',
+          'HOME',
           style: TextStyle(color: Colors.black),
         )),
-        backgroundColor: colors.blue_base,
+        backgroundColor: Colors.white,
         elevation: 0,
         actions: <Widget>[
           Searchlesss(),
+          IconButton(
+            onPressed: () {
+              // CloudFirestoreSearch();
+            },
+            icon: Icon(
+              Icons.more_vert,
+              color: Colors.black,
+            ),
+          )
         ],
       ),
       body: Column(

@@ -8,7 +8,7 @@ import 'package:gymhome/GymOwnerwidgets/ownerhome.dart';
 import 'package:gymhome/Styles.dart';
 import 'package:gymhome/widgets/newhome.dart';
 import 'package:gymhome/widgets/resetpass.dart';
-import 'package:gymhome/provider/user.dart';
+import 'package:gymhome/models/user.dart';
 import 'package:provider/provider.dart';
 
 class welcome extends StatefulWidget {
@@ -30,6 +30,7 @@ bool isSignup = false;
 bool iscustomer = true;
 
 class _welcomeState extends State<welcome> {
+  bool isLoading = false;
   @override
   Widget build(BuildContext context) {
     final devicsize = MediaQuery.of(context).size;
@@ -186,31 +187,59 @@ class _welcomeState extends State<welcome> {
                     ),
 
                     //submit botton
+                    isLoading
+                        ? Container(
+                            color: null,
+                            child: const Center(
+                                child: CircularProgressIndicator(
+                              color: colors.blue_base,
+                            )),
+                          )
+                        : ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                primary: colors.blue_base,
+                                onPrimary: colors.blue_smooth,
+                                minimumSize: Size(250, 40)),
+                            onPressed: () async {
+                              FocusScope.of(context).unfocus();
 
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                          primary: colors.blue_base,
-                          onPrimary: colors.blue_smooth,
-                          minimumSize: Size(250, 40)),
-                      onPressed: () async {
-                        if (isSignup &&
-                            _formkeys['signup']!.currentState!.validate()) {
-                          Provider.of<User>(context, listen: false).signup(
-                              iscustomer, email, name, password, context);
-                        } else if (!isSignup &&
-                            _formkeys['login']!.currentState!.validate()) {
-                          Provider.of<User>(context, listen: false)
-                              .login(email, password, context);
-                        }
-                      },
-                      child: Text(
-                        isSignup ? "Sign Up" : "Login",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontFamily: 'Epilogue',
-                          fontSize: 18,
-                        ),
-                      ),
+                              if (isSignup &&
+                                  _formkeys['signup']!
+                                      .currentState!
+                                      .validate()) {
+                                setState(() {
+                                  isLoading = true;
+                                });
+                                User.signup(iscustomer, email, name, password,
+                                        context)
+                                    .whenComplete(() => setState(() {
+                                          isLoading = false;
+                                        }));
+                              } else if (!isSignup &&
+                                  _formkeys['login']!
+                                      .currentState!
+                                      .validate()) {
+                                setState(() {
+                                  isLoading = true;
+                                });
+                                User.login(email, password, context)
+                                    .whenComplete(() => setState(() {
+                                          isLoading = false;
+                                        }));
+                                ;
+                              }
+                            },
+                            child: Text(
+                              isSignup ? "Sign Up" : "Login",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontFamily: 'Epilogue',
+                                fontSize: 18,
+                              ),
+                            ),
+                          ),
+                    SizedBox(
+                      height: 20,
                     ),
                   ],
                 ),
@@ -352,35 +381,28 @@ class _welcomeState extends State<welcome> {
                     iscustomer = true;
                   });
                 },
-                child: Row(
-                  children: [
-                    Icon(
-                      Icons.person_rounded,
-                      size: 30,
-                      color: iscustomer ? colors.iconscolor : colors.hinttext,
-                    ),
-                    SizedBox(
-                      width: 5,
-                    ),
-                    Text(
-                      "Customer",
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontFamily: 'Roborto',
+                child: SizedBox(
+                  width: MediaQuery.of(context).size.width / 3,
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.person_rounded,
+                        size: 30,
                         color: iscustomer ? colors.iconscolor : colors.hinttext,
-                        fontWeight:
-                            iscustomer ? FontWeight.bold : FontWeight.normal,
                       ),
-                    ),
-                    Container(
-                      height: 40,
-                      width: 40,
-                      margin: EdgeInsets.only(right: 8),
-                      decoration: BoxDecoration(
-                        color: iscustomer ? Colors.white : Colors.white,
+                      Text(
+                        "Customer",
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontFamily: 'Roborto',
+                          color:
+                              iscustomer ? colors.iconscolor : colors.hinttext,
+                          fontWeight:
+                              iscustomer ? FontWeight.bold : FontWeight.normal,
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
 
@@ -391,27 +413,28 @@ class _welcomeState extends State<welcome> {
                     iscustomer = false;
                   });
                 },
-                child: Row(
-                  children: [
-                    Icon(
-                      Icons.business_rounded,
-                      size: 30,
-                      color: iscustomer ? colors.hinttext : colors.iconscolor,
-                    ),
-                    SizedBox(
-                      width: 5,
-                    ),
-                    Text(
-                      "Gym owner",
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontFamily: 'Roborto',
+                child: SizedBox(
+                  width: MediaQuery.of(context).size.width / 3,
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.business_rounded,
+                        size: 30,
                         color: iscustomer ? colors.hinttext : colors.iconscolor,
-                        fontWeight:
-                            iscustomer ? FontWeight.normal : FontWeight.bold,
                       ),
-                    ),
-                  ],
+                      Text(
+                        "Gym owner",
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontFamily: 'Roborto',
+                          color:
+                              iscustomer ? colors.hinttext : colors.iconscolor,
+                          fontWeight:
+                              iscustomer ? FontWeight.normal : FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ],

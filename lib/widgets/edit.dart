@@ -12,7 +12,7 @@ import 'package:gymhome/GymOwnerwidgets/ownerhome.dart';
 import 'package:gymhome/Styles.dart';
 import 'package:gymhome/models/GymModel.dart';
 import 'package:gymhome/models/gyms.dart';
-import 'package:gymhome/provider/user.dart';
+import 'package:gymhome/models/user.dart';
 import 'package:gymhome/provider/gymsitems.dart';
 import 'package:gymhome/widgets/checkbox.dart';
 import 'package:gymhome/widgets/imageinput.dart';

@@ -1,9 +1,11 @@
+import 'dart:ffi';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:gymhome/Styles.dart';
 import 'package:gymhome/models/GymModel.dart';
 import 'package:gymhome/models/favorite.dart';
 import 'package:gymhome/models/gyms.dart';
+import 'package:gymhome/models/userdata.dart';
 import 'package:gymhome/provider/gymsitems.dart';
 import 'package:gymhome/widgets/GymCardCustomer.dart';
 import 'package:gymhome/widgets/empty.dart';
@@ -15,9 +17,12 @@ import 'package:gymhome/widgets/search.dart';
 import 'package:gymhome/widgets/viewcompare.dart';
 import 'package:gymhome/widgets/womengym.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import '../provider/customer.dart';
 
 class NewHome extends StatefulWidget {
   static const rounamed = '/ssssdff';
+
   const NewHome({Key? key}) : super(key: key);
 
   @override
@@ -25,14 +30,59 @@ class NewHome extends StatefulWidget {
 }
 
 class _NewHomeState extends State<NewHome> {
+  // Customer? currentc;
+  String? _uid;
   int _selectedIndex = 0;
-  static const List<Widget> _list = [
-    NewWidgetHome(),
-    Viewcompare(),
-    Empty(),
-    Favorite(),
-    Profile()
-  ];
+  // final SharedPreferences _userdata = await SharedPreferences.getInstance();
+  // late Customer c;
+  List<Widget>? _list;
+
+  void getUid() async {
+    SharedPreferences _userdata = await SharedPreferences.getInstance();
+    // String? email = _userdata.getString('email');
+    // String? name = _userdata.getString('name');
+    // String? profilePicture = _userdata.getString('profilePicture');
+    // String? uid = _userdata.getString('uid');
+    setState(() {
+      _uid = _userdata.getString('uid');
+      // currentc = Customer(
+      //     email: email ?? '',
+      //     profilePicture: '',
+      //     uid: uid ?? '',
+      //     name: name ?? '');
+    });
+
+    getlist();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getUid();
+  }
+
+  void getlist() {
+    setState(() {
+      _list = [
+        NewWidgetHome(
+          userid: _uid ?? '',
+        ),
+        Viewcompare(
+          userid: _uid ?? '',
+        ),
+        Empty(
+          userid: _uid ?? '',
+        ),
+        Favorite(
+          userid: _uid ?? '',
+        ),
+        Profile(
+          userid: _uid ?? '',
+        ),
+      ];
+    });
+  }
+
   @override
   void _onItemTapped(int index) {
     setState(() {
@@ -41,8 +91,9 @@ class _NewHomeState extends State<NewHome> {
   }
 
   Widget build(BuildContext context) {
+    // init();
     return Scaffold(
-      body: Center(child: _list[_selectedIndex]),
+      body: Center(child: _list![_selectedIndex]),
       bottomNavigationBar: Container(
         width: 200,
         child: BottomNavigationBar(
@@ -57,7 +108,10 @@ class _NewHomeState extends State<NewHome> {
               icon: Icon(Icons.compare_arrows_rounded),
               label: 'Compare',
             ),
-            BottomNavigationBarItem(icon: Icon(Icons.sort), label: 's'),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.sort),
+              label: 'Sort',
+            ),
 
             BottomNavigationBarItem(
               icon: Icon(Icons.favorite),
@@ -81,7 +135,7 @@ class _NewHomeState extends State<NewHome> {
           ],
 
           currentIndex: _selectedIndex,
-          selectedItemColor: Colors.blue,
+          selectedItemColor: colors.blue_base,
           onTap: _onItemTapped,
         ),
       ),
@@ -93,10 +147,13 @@ bool _ShowOnly = false;
 
 class NewWidgetHome extends StatelessWidget {
   //  bool shoefav;
-  const NewWidgetHome({
-    // this.shoefav =false ,
+  // Customer? customer;
+  final String userid;
+  NewWidgetHome({
+    required this.userid,
     Key? key,
   }) : super(key: key);
+  // NewWidgetHome.e(this.c);
 
   @override
   Widget build(BuildContext context) {
@@ -258,6 +315,7 @@ class NewWidgetHome extends StatelessWidget {
                               itemBuilder: (BuildContext context, int index) {
                                 return GymCardCustomer(
                                   gymInfo: _gymsList[index],
+                                  userid: userid,
                                 );
                               },
                             )

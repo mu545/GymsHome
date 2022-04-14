@@ -26,17 +26,22 @@ class GymPrice extends StatefulWidget {
 }
 
 class _AddGymState extends State<GymPrice> {
-  RegExp numbers = RegExp(r'^[0-9]+\.?[0-9]+$');
+  RegExp numbers = RegExp(r'^[0-9]+\.?[0-9]*$');
   final _form = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Center(
-            child: Text(
-          'Add Gym ',
-          style: TextStyle(color: Colors.white),
-        )),
+            child: widget.gym.gymId == ''
+                ? Text(
+                    'Add Gym ',
+                    style: TextStyle(color: Colors.white),
+                  )
+                : Text(
+                    'Edit Gym ',
+                    style: TextStyle(color: Colors.white),
+                  )),
         backgroundColor: colors.blue_base,
         elevation: 0,
         actions: <Widget>[
@@ -88,9 +93,11 @@ class _AddGymState extends State<GymPrice> {
                               children: [
                                 Expanded(
                                   child: TextFormField(
-                                    initialValue: widget.gym.gymId!.isNotEmpty
-                                        ? widget.gym.priceOndDay.toString()
-                                        : "",
+                                    initialValue:
+                                        widget.gym.gymId!.isNotEmpty &&
+                                                widget.gym.priceOndDay != 0
+                                            ? widget.gym.priceOndDay.toString()
+                                            : "",
                                     decoration: InputDecoration(
                                       labelText: 'Price for one Day',
                                       border: OutlineInputBorder(
@@ -102,11 +109,16 @@ class _AddGymState extends State<GymPrice> {
                                     textInputAction: TextInputAction.next,
                                     keyboardType: TextInputType.number,
                                     onChanged: (value) {
-                                      widget.gym.priceOndDay =
-                                          double.parse(value);
+                                      if (value.isNotEmpty) {
+                                        widget.gym.priceSixMonths =
+                                            double.parse(value);
+                                      } else {
+                                        widget.gym.priceSixMonths = 0;
+                                      }
                                     },
                                     validator: (value) {
-                                      if (!numbers.hasMatch(value.toString())) {
+                                      if (!numbers.hasMatch(value.toString()) &&
+                                          value.toString() != '') {
                                         return 'please enter digits only';
                                       }
                                     },
@@ -130,7 +142,9 @@ class _AddGymState extends State<GymPrice> {
                               children: [
                                 Expanded(
                                   child: TextFormField(
-                                    initialValue: widget.gym.gymId!.isNotEmpty
+                                    initialValue: widget
+                                                .gym.gymId!.isNotEmpty &&
+                                            widget.gym.priceOndMonth != 0
                                         ? widget.gym.priceOndMonth.toString()
                                         : "",
                                     decoration: InputDecoration(
@@ -144,11 +158,16 @@ class _AddGymState extends State<GymPrice> {
                                     textInputAction: TextInputAction.next,
                                     keyboardType: TextInputType.number,
                                     onChanged: (value) {
-                                      widget.gym.priceOndMonth =
-                                          double.parse(value);
+                                      if (value.isNotEmpty) {
+                                        widget.gym.priceOndMonth =
+                                            double.parse(value);
+                                      } else {
+                                        widget.gym.priceOndMonth = 0;
+                                      }
                                     },
                                     validator: (value) {
-                                      if (!numbers.hasMatch(value.toString())) {
+                                      if (!numbers.hasMatch(value.toString()) &&
+                                          value.toString() != '') {
                                         return 'please enter digits only';
                                       }
                                     },
@@ -172,7 +191,9 @@ class _AddGymState extends State<GymPrice> {
                               children: [
                                 Expanded(
                                   child: TextFormField(
-                                    initialValue: widget.gym.gymId!.isNotEmpty
+                                    initialValue: widget
+                                                .gym.gymId!.isNotEmpty &&
+                                            widget.gym.priceThreeMonts != 0
                                         ? widget.gym.priceThreeMonts.toString()
                                         : "",
                                     decoration: InputDecoration(
@@ -186,11 +207,16 @@ class _AddGymState extends State<GymPrice> {
                                     textInputAction: TextInputAction.next,
                                     keyboardType: TextInputType.number,
                                     onChanged: (value) {
-                                      widget.gym.priceThreeMonts =
-                                          double.parse(value);
+                                      if (value.isNotEmpty) {
+                                        widget.gym.priceThreeMonts =
+                                            double.parse(value);
+                                      } else {
+                                        widget.gym.priceThreeMonts = 0;
+                                      }
                                     },
                                     validator: (value) {
-                                      if (!numbers.hasMatch(value.toString())) {
+                                      if (!numbers.hasMatch(value.toString()) &&
+                                          value.toString() != '') {
                                         return 'please enter digits only';
                                       }
                                     },
@@ -214,7 +240,11 @@ class _AddGymState extends State<GymPrice> {
                               children: [
                                 Expanded(
                                   child: TextFormField(
-                                    initialValue: widget.gym.gymId!.isNotEmpty
+                                    initialValue: widget
+                                                .gym.gymId!.isNotEmpty &&
+                                            widget.gym.priceSixMonths
+                                                    .toString() !=
+                                                '0.0'
                                         ? widget.gym.priceSixMonths.toString()
                                         : "",
                                     decoration: InputDecoration(
@@ -228,11 +258,16 @@ class _AddGymState extends State<GymPrice> {
                                     textInputAction: TextInputAction.next,
                                     keyboardType: TextInputType.number,
                                     onChanged: (value) {
-                                      widget.gym.priceSixMonths =
-                                          double.parse(value);
+                                      if (value.isNotEmpty) {
+                                        widget.gym.priceSixMonths =
+                                            double.parse(value);
+                                      } else {
+                                        widget.gym.priceSixMonths = 0;
+                                      }
                                     },
                                     validator: (value) {
-                                      if (!numbers.hasMatch(value.toString())) {
+                                      if (!numbers.hasMatch(value.toString()) &&
+                                          value.toString() != '') {
                                         return 'please enter digits only';
                                       }
                                     },
@@ -256,9 +291,11 @@ class _AddGymState extends State<GymPrice> {
                               children: [
                                 Expanded(
                                   child: TextFormField(
-                                    initialValue: widget.gym.gymId!.isNotEmpty
-                                        ? widget.gym.priceOneYear.toString()
-                                        : "",
+                                    initialValue:
+                                        widget.gym.gymId!.isNotEmpty &&
+                                                widget.gym.priceOneYear != 0
+                                            ? widget.gym.priceOneYear.toString()
+                                            : "",
                                     decoration: InputDecoration(
                                       labelText: 'Price for one Year',
                                       border: OutlineInputBorder(
@@ -270,11 +307,16 @@ class _AddGymState extends State<GymPrice> {
                                     textInputAction: TextInputAction.next,
                                     keyboardType: TextInputType.number,
                                     onChanged: (value) {
-                                      widget.gym.priceOneYear =
-                                          double.parse(value);
+                                      if (value.isNotEmpty) {
+                                        widget.gym.priceOneYear =
+                                            double.parse(value);
+                                      } else {
+                                        widget.gym.priceOneYear = 0;
+                                      }
                                     },
                                     validator: (value) {
-                                      if (!numbers.hasMatch(value.toString())) {
+                                      if (!numbers.hasMatch(value.toString()) &&
+                                          value.toString().isNotEmpty) {
                                         return 'please enter digits only';
                                       }
                                     },

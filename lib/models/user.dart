@@ -170,16 +170,17 @@ Future getImageCamera() async {
   _imageFile = imageTemp;
 }
 
-var userEmail = FirebaseAuth.instance.currentUser!.email;
+var userId = FirebaseAuth.instance.currentUser!.uid;
+
 Future uploadPicForUserProfile() async {
   FirebaseStorage storage = FirebaseStorage.instance;
   Reference ref = storage
       .ref()
-      .child("$userEmail" + " ProfilePic " + DateTime.now().toString());
+      .child("$userId" + " ProfilePic " + DateTime.now().toString());
   await ref.putFile(_imageFile!);
   String imageurl = await ref.getDownloadURL();
   FirebaseFirestore.instance
       .collection('Customer')
-      .doc(userEmail)
+      .doc(userId)
       .update({'profilePicture': imageurl});
 }

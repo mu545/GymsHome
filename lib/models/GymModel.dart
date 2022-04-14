@@ -14,23 +14,26 @@ class GymModel {
   String? location;
   bool? isWaiting;
   bool? isComplete;
+  String? gender;
 
   GymModel(
-      this.images,
-      this.faciltrs,
-      this.priceOndDay,
-      this.priceOndMonth,
-      this.priceOneYear,
-      this.priceSixMonths,
-      this.priceThreeMonts,
-      this.imageURL,
-      this.gymId,
-      this.ownerId,
-      this.name,
-      this.description,
-      this.location,
-      this.isComplete,
-      this.isWaiting);
+    this.images,
+    this.faciltrs,
+    this.priceOndDay,
+    this.priceOndMonth,
+    this.priceOneYear,
+    this.priceSixMonths,
+    this.priceThreeMonts,
+    this.imageURL,
+    this.gymId,
+    this.ownerId,
+    this.name,
+    this.description,
+    this.location,
+    this.isComplete,
+    this.isWaiting,
+    this.gender,
+  );
 
   GymModel.fromJson(Map<String, dynamic> json) {
     images = json['images'];
@@ -47,6 +50,7 @@ class GymModel {
     location = json['Location'];
     isWaiting = json['isWaiting'];
     isComplete = json['isComplete'];
+    gender = json['gender'];
   }
 
   // Map<String, dynamic> toJson() {

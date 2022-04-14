@@ -77,49 +77,74 @@ class _ImageInputState extends State<ImageInput> {
         ),
       );
     } else {
-      GymModel _gymProfile =
-          GymModel([], [], 0, 0, 0, 0, 0, '', '', '', '', '', '', false, true);
-      return StreamBuilder(
-        stream:
-            _fireStore.collection('Watting').doc(widget.gym.gymId).snapshots(),
-        builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-          if (snapshot.hasData) {
-            Map<String, dynamic> _data =
-                snapshot.data.data() as Map<String, dynamic>;
-            _gymProfile = GymModel.fromJson(_data);
-            if (_gymProfile.images!.isEmpty) {
-              return Container();
-            }
-            return Container(
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10.0),
-                  border: Border.all(color: colors.blue_smooth)),
-              height: 100,
-              child: Container(
-                height: 50,
-                child: GridView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: _gymProfile.images!.length,
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 1,
-                        childAspectRatio: 1,
-                        crossAxisSpacing: 5,
-                        mainAxisSpacing: 5),
-                    itemBuilder: (context, index) {
-                      return Container(
-                        margin: EdgeInsets.all(3),
-                        child: Image.network(
-                          _gymProfile.images![index],
-                          fit: BoxFit.cover,
-                        ),
-                      );
-                    }),
-              ),
-            );
-          }
-          return Container();
-        },
+      return Container(
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10.0),
+            border: Border.all(color: colors.blue_smooth)),
+        height: 100,
+        child: Container(
+          height: 50,
+          child: GridView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: widget.gym.images!.length,
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 1,
+                  childAspectRatio: 1,
+                  crossAxisSpacing: 5,
+                  mainAxisSpacing: 5),
+              itemBuilder: (context, index) {
+                return Container(
+                    margin: EdgeInsets.all(3),
+                    child: Image.network(
+                      widget.gym.images![index],
+                      fit: BoxFit.cover,
+                    ));
+              }),
+        ),
       );
+
+      // GymModel _gymProfile =
+      //     GymModel([], [], 0, 0, 0, 0, 0, '', '', '', '', '', '', false, true);
+      // return StreamBuilder(
+      //   stream: _fireStore.collection('gyms').doc(widget.gym.gymId).snapshots(),
+      //   builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+      //     if (snapshot.hasData) {
+      //       Map<String, dynamic> _data =
+      //           snapshot.data.data() as Map<String, dynamic>;
+      //       _gymProfile = GymModel.fromJson(_data);
+      //       if (_gymProfile.images!.isEmpty) {
+      //         return Container();
+      //       }
+      //       return Container(
+      //         decoration: BoxDecoration(
+      //             borderRadius: BorderRadius.circular(10.0),
+      //             border: Border.all(color: colors.blue_smooth)),
+      //         height: 100,
+      //         child: Container(
+      //           height: 50,
+      //           child: GridView.builder(
+      //               scrollDirection: Axis.horizontal,
+      //               itemCount: _gymProfile.images!.length,
+      //               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+      //                   crossAxisCount: 1,
+      //                   childAspectRatio: 1,
+      //                   crossAxisSpacing: 5,
+      //                   mainAxisSpacing: 5),
+      //               itemBuilder: (context, index) {
+      //                 return Container(
+      //                   margin: EdgeInsets.all(3),
+      //                   child: Image.network(
+      //                     _gymProfile.images![index],
+      //                     fit: BoxFit.cover,
+      //                   ),
+      //                 );
+      //               }),
+      //         ),
+      //       );
+      //     }
+      //     return Container();
+      //   },
+      // );
     }
   }
 
@@ -148,7 +173,7 @@ class _ImageInputState extends State<ImageInput> {
         await ref.putFile(img).whenComplete(() async {
           await ref.getDownloadURL().then((value) {
             FirebaseFirestore.instance
-                .collection('Watting')
+                .collection('gyms')
                 .doc(widget.gym.gymId)
                 .update({
               'images': FieldValue.arrayUnion([value])

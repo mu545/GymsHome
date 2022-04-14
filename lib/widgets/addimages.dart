@@ -17,7 +17,7 @@ class _ViewGymImagesState extends State<ViewGymImages> {
   final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
   final String userId = "95fFRxumpsU3TI6jXi1K";
   GymModel _gymProfile =
-      GymModel([], [], 0, 0, 0, 0, 0, '', '', '', '', '', '', false, true);
+      GymModel([], [], 0, 0, 0, 0, 0, '', '', '', '', '', '', false, true, '');
 
   Future? _getData() => _fireStore.collection('Gyms').doc(userId).get();
   @override

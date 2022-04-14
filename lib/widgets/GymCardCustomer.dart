@@ -2,26 +2,27 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gymhome/GymOwnerwidgets/EditGymInfo.dart';
 import 'package:gymhome/GymOwnerwidgets/location.dart';
+import 'package:gymhome/Styles.dart';
 import 'package:gymhome/models/GymModel.dart';
 import 'package:gymhome/widgets/gymdescrption.dart';
+import 'package:palette_generator/palette_generator.dart';
 
 class GymCardCustomer extends StatelessWidget {
-  const GymCardCustomer({
+  GymCardCustomer({
     Key? key,
     required this.gymInfo,
-    //required this.name,
-    // required this.priceSixMonths,
-    // required this.price,
-    //  required this.imageURL,
-    //this.onfavoriteTap,
   }) : super(key: key);
   final GymModel gymInfo;
-  //final bool isFavorite;
-  //final String name;
-  // final double price;
-//  final String imageURL;
-  //final VoidCallback? onfavoriteTap;
-  // final String gymId;
+
+  updatePalettes() async {
+    List<PaletteColor?> colorss = [];
+    final PaletteGenerator generator = await PaletteGenerator.fromImageProvider(
+        AssetImage(gymInfo.imageURL ?? ''));
+    colorss.add(generator.lightMutedColor == null
+        ? generator.lightMutedColor
+        : PaletteColor(Colors.blue, 2));
+    return colorss.first;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -100,7 +101,7 @@ class GymCardCustomer extends StatelessWidget {
               ),
               Container(
                 decoration: BoxDecoration(
-                    color: Colors.black12,
+                    color: Colors.white24,
                     borderRadius: BorderRadius.only(
                       bottomLeft: Radius.circular(15),
                       bottomRight: Radius.circular(15),

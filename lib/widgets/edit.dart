@@ -185,7 +185,7 @@ class _AddGymInfoState extends State<AddGymInfo> {
                               GestureDetector(
                                 onTap: () {
                                   setState(() {
-                                    isMen = true;
+                                    // isMen = true;
                                     widget.gym.gender = 'Men';
                                     print(widget.gym.gender);
                                   });
@@ -223,7 +223,7 @@ class _AddGymInfoState extends State<AddGymInfo> {
                               GestureDetector(
                                 onTap: () {
                                   setState(() {
-                                    isMen = false;
+                                    //  isMen = false;
                                     widget.gym.gender = 'Women';
                                     print(widget.gym.gender);
                                   });

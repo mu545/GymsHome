@@ -57,28 +57,17 @@ class AddGymInfo extends StatefulWidget {
 class _AddGymInfoState extends State<AddGymInfo> {
   var uid = FirebaseAuth.instance.currentUser!.uid;
 
-  Widget genderButton(String fac) {
-    bool isHere = false;
-    // bool notHere = false;
-    return Container(
-      height: 23,
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10), color: colors.blue_base),
-      child: FlatButton(
-        child: Text(
-          fac,
-          style: TextStyle(
-              color: isHere ? Colors.white : colors.blue_base, fontSize: 13),
-        ),
-        color: isHere ? colors.blue_base : Colors.white,
-        highlightColor: !isHere ? Colors.blue : Colors.white,
-        onPressed: () {},
-        shape: RoundedRectangleBorder(
-          side: BorderSide(
-              color: colors.blue_base, width: 1, style: BorderStyle.solid),
-        ),
-      ),
-    );
+  bool? isMen = true;
+  void whatIsGender() {
+    if (widget.gym.gender == 'Men') {
+      setState(() {
+        isMen = true;
+      });
+    } else if (widget.gym.gender == 'Women') {
+      setState(() {
+        isMen = false;
+      });
+    }
   }
 
   Future image() async {
@@ -192,83 +181,79 @@ class _AddGymInfoState extends State<AddGymInfo> {
                           padding: EdgeInsets.all(20),
                           child: Row(
                             children: [
-                              // is customer?
-
+                              //is man?
                               GestureDetector(
                                 onTap: () {
                                   setState(() {
-                                    iscustomer = true;
+                                    isMen = true;
+                                    widget.gym.gender = 'Men';
+                                    print(widget.gym.gender);
                                   });
                                 },
-                                child: Row(
-                                  children: [
-                                    Icon(
-                                      Icons.person_rounded,
-                                      size: 30,
-                                      color: iscustomer
-                                          ? colors.iconscolor
-                                          : colors.hinttext,
-                                    ),
-                                    Text(
-                                      "Customer",
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        fontFamily: 'Roborto',
-                                        color: iscustomer
+                                child: SizedBox(
+                                  width: MediaQuery.of(context).size.width / 3,
+                                  child: Row(
+                                    children: [
+                                      Icon(
+                                        Icons.male,
+                                        size: 30,
+                                        color: widget.gym.gender == 'Men'
                                             ? colors.iconscolor
                                             : colors.hinttext,
-                                        fontWeight: iscustomer
-                                            ? FontWeight.bold
-                                            : FontWeight.normal,
                                       ),
-                                    ),
-                                    Container(
-                                      height: 40,
-                                      width: 40,
-                                      margin: EdgeInsets.only(right: 8),
-                                      decoration: BoxDecoration(
-                                        color: iscustomer
-                                            ? Colors.white
-                                            : Colors.white,
+                                      Text(
+                                        "Men",
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          fontFamily: 'Roborto',
+                                          color: widget.gym.gender == 'Men'
+                                              ? colors.iconscolor
+                                              : colors.hinttext,
+                                          fontWeight: widget.gym.gender == 'Men'
+                                              ? FontWeight.bold
+                                              : FontWeight.normal,
+                                        ),
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
                               ),
 
-                              // is gym owner?
+                              // is woman?
                               GestureDetector(
                                 onTap: () {
                                   setState(() {
-                                    iscustomer = false;
+                                    isMen = false;
+                                    widget.gym.gender = 'Women';
+                                    print(widget.gym.gender);
                                   });
                                 },
-                                child: Row(
-                                  children: [
-                                    Icon(
-                                      Icons.business_rounded,
-                                      size: 30,
-                                      color: iscustomer
-                                          ? colors.hinttext
-                                          : colors.iconscolor,
-                                    ),
-                                    SizedBox(
-                                      width: 5,
-                                    ),
-                                    Text(
-                                      "Gym owner",
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        fontFamily: 'Roborto',
-                                        color: iscustomer
+                                child: SizedBox(
+                                  width: MediaQuery.of(context).size.width / 3,
+                                  child: Row(
+                                    children: [
+                                      Icon(
+                                        Icons.female,
+                                        size: 30,
+                                        color: widget.gym.gender == 'Men'
                                             ? colors.hinttext
                                             : colors.iconscolor,
-                                        fontWeight: iscustomer
-                                            ? FontWeight.normal
-                                            : FontWeight.bold,
                                       ),
-                                    ),
-                                  ],
+                                      Text(
+                                        "Women",
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          fontFamily: 'Roborto',
+                                          color: widget.gym.gender == 'Men'
+                                              ? colors.hinttext
+                                              : colors.iconscolor,
+                                          fontWeight: widget.gym.gender == 'Men'
+                                              ? FontWeight.normal
+                                              : FontWeight.bold,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
                             ],

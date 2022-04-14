@@ -57,6 +57,30 @@ class AddGymInfo extends StatefulWidget {
 class _AddGymInfoState extends State<AddGymInfo> {
   var uid = FirebaseAuth.instance.currentUser!.uid;
 
+  Widget genderButton(String fac) {
+    bool isHere = false;
+    // bool notHere = false;
+    return Container(
+      height: 23,
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10), color: colors.blue_base),
+      child: FlatButton(
+        child: Text(
+          fac,
+          style: TextStyle(
+              color: isHere ? Colors.white : colors.blue_base, fontSize: 13),
+        ),
+        color: isHere ? colors.blue_base : Colors.white,
+        highlightColor: !isHere ? Colors.blue : Colors.white,
+        onPressed: () {},
+        shape: RoundedRectangleBorder(
+          side: BorderSide(
+              color: colors.blue_base, width: 1, style: BorderStyle.solid),
+        ),
+      ),
+    );
+  }
+
   Future image() async {
     final image =
         await ImagePicker.platform.pickImage(source: ImageSource.gallery);
@@ -70,8 +94,6 @@ class _AddGymInfoState extends State<AddGymInfo> {
   }
 
   final _form = GlobalKey<FormState>();
-  TextEditingController _nameTEC = TextEditingController();
-  TextEditingController _desTEC = TextEditingController();
 
   var _isInit = true;
 
@@ -166,6 +188,95 @@ class _AddGymInfoState extends State<AddGymInfo> {
                         SizedBox(
                           height: 20,
                         ),
+                        Padding(
+                          padding: EdgeInsets.all(20),
+                          child: Row(
+                            children: [
+                              // is customer?
+
+                              GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    iscustomer = true;
+                                  });
+                                },
+                                child: Row(
+                                  children: [
+                                    Icon(
+                                      Icons.person_rounded,
+                                      size: 30,
+                                      color: iscustomer
+                                          ? colors.iconscolor
+                                          : colors.hinttext,
+                                    ),
+                                    Text(
+                                      "Customer",
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        fontFamily: 'Roborto',
+                                        color: iscustomer
+                                            ? colors.iconscolor
+                                            : colors.hinttext,
+                                        fontWeight: iscustomer
+                                            ? FontWeight.bold
+                                            : FontWeight.normal,
+                                      ),
+                                    ),
+                                    Container(
+                                      height: 40,
+                                      width: 40,
+                                      margin: EdgeInsets.only(right: 8),
+                                      decoration: BoxDecoration(
+                                        color: iscustomer
+                                            ? Colors.white
+                                            : Colors.white,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+
+                              // is gym owner?
+                              GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    iscustomer = false;
+                                  });
+                                },
+                                child: Row(
+                                  children: [
+                                    Icon(
+                                      Icons.business_rounded,
+                                      size: 30,
+                                      color: iscustomer
+                                          ? colors.hinttext
+                                          : colors.iconscolor,
+                                    ),
+                                    SizedBox(
+                                      width: 5,
+                                    ),
+                                    Text(
+                                      "Gym owner",
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        fontFamily: 'Roborto',
+                                        color: iscustomer
+                                            ? colors.hinttext
+                                            : colors.iconscolor,
+                                        fontWeight: iscustomer
+                                            ? FontWeight.normal
+                                            : FontWeight.bold,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
                         Column(
                           children: [
                             Center(
@@ -239,8 +350,8 @@ class _AddGymInfoState extends State<AddGymInfo> {
                 ),
                 onPressed: () {
                   if (_form.currentState!.validate() &&
-                          widget.imageFile != null ||
-                      widget.gym.imageURL != '') {
+                      (widget.imageFile != null ||
+                          widget.gym.imageURL!.isNotEmpty)) {
                     List<File?> imgs = [];
                     Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) => ImageInput(
@@ -252,7 +363,8 @@ class _AddGymInfoState extends State<AddGymInfo> {
                     print(widget.gym.description);
                     print(widget.imageFile);
                   } else {
-                    if (widget.imageFile == null)
+                    if (widget.gym.imageURL!.isEmpty &&
+                        widget.imageFile == null)
                       message(context, false,
                           "Please Choose a Picture for Your Gym");
                   }

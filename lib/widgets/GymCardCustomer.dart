@@ -2,8 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gymhome/GymOwnerwidgets/EditGymInfo.dart';
 import 'package:gymhome/GymOwnerwidgets/location.dart';
+import 'package:gymhome/Styles.dart';
 import 'package:gymhome/models/GymModel.dart';
 import 'package:gymhome/widgets/gymdescrption.dart';
+import 'package:palette_generator/palette_generator.dart';
 
 import '../provider/customer.dart';
 

@@ -10,6 +10,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:gymhome/authintactions/database.dart';
 import 'package:gymhome/provider/customer.dart';
 import 'package:gymhome/models/user.dart';
+import 'package:gymhome/widgets/edit.dart';
 import 'package:gymhome/widgets/imageinput.dart';
 import 'package:gymhome/widgets/welcome.dart';
 import 'package:flutter/material.dart';
@@ -41,13 +42,11 @@ class _ProfileState extends State<Profile> {
 
   Widget iconEdit() {
     if (isedit == false) {
-      //  readsName();
       return Icon(
         Icons.edit,
         color: Colors.blueGrey,
       );
     } else {
-      //    readsName();
       return Icon(
         Icons.check,
         color: Colors.blueGrey,
@@ -55,12 +54,51 @@ class _ProfileState extends State<Profile> {
     }
   }
 
+  File? _imageFile;
+
+// get image method GALLERY
+  Future getImageGallery() async {
+    final image =
+        await ImagePicker.platform.pickImage(source: ImageSource.gallery);
+    if (image == null) return;
+
+    final imageTemp = File(image.path);
+    setState(() {
+      _imageFile = imageTemp;
+    });
+  }
+
+// get image method CAMERA
+  Future getImageCamera() async {
+    final image =
+        await ImagePicker.platform.pickImage(source: ImageSource.camera);
+    if (image == null) return;
+    final imageTemp = File(image.path);
+    setState(() {
+      _imageFile = imageTemp;
+    });
+  }
+
+  Future uploadPicForUserProfile() async {
+    FirebaseStorage storage = FirebaseStorage.instance;
+    Reference ref = storage
+        .ref()
+        .child("$userId" + " ProfilePic " + DateTime.now().toString());
+    await ref.putFile(_imageFile!);
+    String imageurl = await ref.getDownloadURL();
+    FirebaseFirestore.instance
+        .collection('Customer')
+        .doc(userId)
+        .update({'profilePicture': imageurl});
+  }
+
   @override
   final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
+  var userId = FirebaseAuth.instance.currentUser!.uid;
   var userEmail = FirebaseAuth.instance.currentUser!.email;
   ProfileModel _userProfile = ProfileModel('', '');
-  Future? _getData() => _fireStore.collection('Customer').doc(userEmail).get();
-
+  Future? _getData() => _fireStore.collection('Customer').doc(userId).get();
+  String? name;
   @override
   Widget build(BuildContext context) {
     Widget bottomSheet() {
@@ -102,37 +140,43 @@ class _ProfileState extends State<Profile> {
                         label: Text("Gallery"),
                       ),
                     ]),
-                Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      FlatButton.icon(
-                        icon: Icon(Icons.check),
-                        onPressed: () {
-                          setState(() {
-                            uploading = true;
-                          });
-                          Navigator.of(context).pop();
-                          uploadPicForUserProfile().whenComplete(() {
+                Row(mainAxisAlignment: MainAxisAlignment.center, children: <
+                    Widget>[
+                  FlatButton.icon(
+                    icon: Icon(Icons.check),
+                    onPressed: () {
+                      if (_imageFile != null) {
+                        setState(() {
+                          uploading = true;
+                        });
+                        Navigator.of(context).pop();
+                        uploadPicForUserProfile().whenComplete(() {
+                          Future.delayed(Duration(seconds: 1), () {
                             setState(() {
                               uploading = false;
-                              Scaffold.of(context).showSnackBar(SnackBar(
-                                content: Text('Profile Picture Uploaded'),
-                                backgroundColor: colors.green_base,
-                              ));
+                              message(
+                                  context, true, 'Profile Picture Uploaded');
                             });
                           });
-
-                          // setState(() {
-                          //   print("Profile Picture Uploaded");
-                          //  Scaffold.of(context).showSnackBar(SnackBar(
-                          //  content: Text('Profile Picture Uploaded'),
-                          //    backgroundColor: colors.green_base,
-                          //   ));
-                          // });
-                        },
-                        label: Text("Submit Photo"),
-                      ),
-                    ]),
+                        });
+                      } else {
+                        Navigator.of(context).pop();
+                        message(context, false, 'You didn\'t choose new image');
+                      }
+                    },
+                    label: Text("Submit Photo"),
+                  ),
+                  FlatButton.icon(
+                    icon: Icon(Icons.cancel_outlined),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                      setState(() {
+                        _imageFile = null;
+                      });
+                    },
+                    label: Text("Cancel"),
+                  ),
+                ]),
               ],
             )
           ],
@@ -169,31 +213,39 @@ class _ProfileState extends State<Profile> {
                             margin: EdgeInsets.only(top: 10),
                             child: Stack(
                               children: <Widget>[
-                                FutureBuilder(
-                                    future: _getData(),
-                                    builder: (BuildContext context,
-                                        AsyncSnapshot<dynamic> snapshot) {
-                                      if (snapshot.hasData &&
-                                          uploading != true) {
-                                        Map<String, dynamic> _data =
-                                            snapshot.data.data()
-                                                as Map<String, dynamic>;
-                                        _userProfile =
-                                            ProfileModel.fromJson(_data);
-                                        return CircleAvatar(
-                                          radius: 80.0,
-                                          backgroundImage: NetworkImage(
-                                              _userProfile.userImage ?? ''),
-                                        );
-                                      } else
-                                        return CircleAvatar(
-                                          radius: 80.0,
-                                          backgroundColor: colors.blue_smooth,
-                                          child: Center(
-                                              child:
-                                                  CircularProgressIndicator()),
-                                        );
-                                    }),
+                                _imageFile == null
+                                    ? StreamBuilder(
+                                        stream: _fireStore
+                                            .collection("Customer")
+                                            .doc(userId)
+                                            .snapshots(),
+                                        builder: (BuildContext context,
+                                            AsyncSnapshot<dynamic> snapshot) {
+                                          if (snapshot.hasData) {
+                                            Map<String, dynamic> _data =
+                                                snapshot.data.data()
+                                                    as Map<String, dynamic>;
+                                            _userProfile =
+                                                ProfileModel.fromJson(_data);
+                                            return CircleAvatar(
+                                              radius: 80.0,
+                                              backgroundImage: NetworkImage(
+                                                  _userProfile.userImage ?? ''),
+                                            );
+                                          } else
+                                            return CircleAvatar(
+                                              radius: 80.0,
+                                              child: Center(
+                                                  child:
+                                                      CircularProgressIndicator(
+                                                color: colors.blue_base,
+                                              )),
+                                            );
+                                        })
+                                    : CircleAvatar(
+                                        radius: 80.0,
+                                        backgroundImage:
+                                            FileImage(_imageFile!)),
                                 Positioned(
                                   bottom: 20,
                                   right: 20,
@@ -232,7 +284,11 @@ class _ProfileState extends State<Profile> {
                               Expanded(
                                 child: isedit
                                     ? TextFormField(
-                                        controller: _nameTEC,
+                                        initialValue: name,
+                                        onChanged: (value) {
+                                          name = value;
+                                        },
+                                        //    controller: _nameTEC,
                                         decoration: InputDecoration(
                                           enabledBorder: OutlineInputBorder(
                                               borderSide: BorderSide(
@@ -262,6 +318,7 @@ class _ProfileState extends State<Profile> {
                                                     as Map<String, dynamic>;
                                             _userProfile =
                                                 ProfileModel.fromJson(_data);
+                                            name = _userProfile.userName;
                                             return Text(
                                               '${_userProfile.userName}',
                                               style: TextStyle(
@@ -274,18 +331,25 @@ class _ProfileState extends State<Profile> {
                               ),
                               IconButton(
                                 onPressed: () {
-                                  setState(() {
-                                    if (isedit == true) {
-                                      isedit = false;
-                                      FirebaseFirestore.instance
-                                          .collection("Customer")
-                                          .doc(userEmail)
-                                          .update({'name': _nameTEC.text});
-                                      //     username = _nameTEC.text;
-                                    } else {
-                                      isedit = true;
-                                    }
-                                  });
+                                  if (name!.isEmpty) {
+                                    message(context, false,
+                                        'Name cannot be empty!');
+                                  } else if (name!.length <= 2) {
+                                    message(
+                                        context, false, 'Name is too short!');
+                                  } else {
+                                    setState(() {
+                                      if (isedit == true) {
+                                        isedit = false;
+                                        FirebaseFirestore.instance
+                                            .collection("Customer")
+                                            .doc(userId)
+                                            .update({'name': name});
+                                      } else {
+                                        isedit = true;
+                                      }
+                                    });
+                                  }
                                 },
                                 icon: iconEdit(),
                               ),

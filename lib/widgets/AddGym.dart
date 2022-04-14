@@ -41,7 +41,7 @@ class AddGymMethods with ChangeNotifier {
     await ref.putFile(_imageFile!);
     String imageurl = await ref.getDownloadURL();
     FirebaseFirestore.instance
-        .collection('Watting')
+        .collection('gyms')
         .doc(gymId)
         .update({'imageURL': imageurl});
   }
@@ -53,7 +53,7 @@ class AddGymMethods with ChangeNotifier {
       Reference ref = storage.ref().child('images/${Path.basename(img.path)}');
       await ref.putFile(img).whenComplete(() async {
         await ref.getDownloadURL().then((value) {
-          FirebaseFirestore.instance.collection('Watting').doc(gymId).update({
+          FirebaseFirestore.instance.collection('gyms').doc(gymId).update({
             'images': FieldValue.arrayUnion([value])
           });
         });
@@ -95,8 +95,7 @@ class AddGymMethods with ChangeNotifier {
   Future addGym(
       GymModel newGym, File? imageUrl, List<File> newGymImages) async {
     if (newGym.gymId!.isNotEmpty) {
-      var gym =
-          FirebaseFirestore.instance.collection('Watting').doc(newGym.gymId);
+      var gym = FirebaseFirestore.instance.collection('gyms').doc(newGym.gymId);
       gym.update({
         'Location': '7KM',
         'descrption': newGym.description,
@@ -109,10 +108,11 @@ class AddGymMethods with ChangeNotifier {
         'One Year': newGym.priceOneYear,
         'isWaiting': false,
         'isComplete': false,
+        'gender': newGym.gender,
       });
       if (imageUrl != null) getImageGallery(imageUrl, gym.id);
     } else {
-      var gym = FirebaseFirestore.instance.collection('Watting').doc();
+      var gym = FirebaseFirestore.instance.collection('gyms').doc();
       gym.set({
         'gymId': gym.id,
         'ownerId': userId,
@@ -129,9 +129,10 @@ class AddGymMethods with ChangeNotifier {
         'One Year': newGym.priceOneYear,
         'isWaiting': false,
         'isComplete': false,
-      });
+        'gender': newGym.gender
+      }).whenComplete(() => getImageGallery(imageUrl, gym.id)
+          .whenComplete(() => uploadFiles(newGymImages, gym.id)));
       getImageGallery(imageUrl, gym.id);
-      uploadFiles(newGymImages, gym.id);
     }
   }
 }

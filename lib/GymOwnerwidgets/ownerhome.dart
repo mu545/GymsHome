@@ -28,10 +28,11 @@ class OwnerHome extends StatefulWidget with ChangeNotifier {
 class _WidgtessState extends State<OwnerHome> {
   final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
   List<GymModel> _gymsList = [];
+  var uid = FirebaseAuth.instance.currentUser!.uid;
 
   Future? _getData() => _fireStore
-      .collection("Watting")
-      .where('ownerId', isEqualTo: 'WR3c9JaDPRSAA7RUHAIgQADmcOW2')
+      .collection("gyms")
+      .where('ownerId', isEqualTo: uid)
       .where('isWaiting', isEqualTo: false)
       .get();
   // Future? _getDataByID() => _fireStore
@@ -61,12 +62,12 @@ class _WidgtessState extends State<OwnerHome> {
   // );
   // bool _ShowOnly = false;
   //var gymId = '';
-  var uid = FirebaseAuth.instance.currentUser!.uid;
+
   @override
   Widget build(BuildContext context) {
     final Gym = Provider.of<Gyms>(context);
+    print(uid);
 
-    final prodactDate = Provider.of<Gymsitems>(context);
     return Scaffold(
       appBar: AppBar(
         title: Center(
@@ -112,7 +113,7 @@ class _WidgtessState extends State<OwnerHome> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           GymModel _gym = GymModel(
-              [], [], 0, 0, 0, 0, 0, '', '', '', '', '', '', false, true);
+              [], [], 0, 0, 0, 0, 0, '', '', '', '', '', '', false, true, '');
           Navigator.of(context).push(MaterialPageRoute(
               builder: (context) => AddGymInfo(
                     gym: _gym,

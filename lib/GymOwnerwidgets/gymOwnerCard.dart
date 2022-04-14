@@ -9,19 +9,8 @@ class GymCard extends StatelessWidget {
   const GymCard({
     Key? key,
     required this.gymInfo,
-    //required this.name,
-    // required this.priceSixMonths,
-    // required this.price,
-    //  required this.imageURL,
-    //this.onfavoriteTap,
   }) : super(key: key);
   final GymModel gymInfo;
-  //final bool isFavorite;
-  //final String name;
-  // final double price;
-//  final String imageURL;
-  //final VoidCallback? onfavoriteTap;
-  // final String gymId;
 
   @override
   Widget build(BuildContext context) {

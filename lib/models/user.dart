@@ -7,6 +7,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 
 import 'package:gymhome/Styles.dart';
+import 'package:gymhome/models/Owner.dart';
 import 'package:gymhome/provider/customer.dart';
 import 'package:gymhome/widgets/welcome.dart';
 // import 'package:gymhome/models/review.dart';
@@ -61,8 +62,8 @@ class User {
       String userid = FirebaseAuth.instance.currentUser!.uid;
       String profilePicture =
           'https://firebasestorage.googleapis.com/v0/b/gymshome-ce96b.appspot.com/o/DefaultProfilePic.jpg?alt=media&token=e175c7f8-55f2-4575-8315-9bc5a527fd9b';
+      UserData.setUserDate(customer, userid, name, email);
       if (customer) {
-        UserData.setUserDate(customer, userid, name, email);
         Customer _currentc = Customer(
             name: name,
             profilePicture: profilePicture,
@@ -74,7 +75,7 @@ class User {
           'profilePicture': _currentc.profilePicture
         });
 
-        Navigator.of(cxt).push(
+        Navigator.of(cxt).pushReplacement(
           MaterialPageRoute(
             builder: (context) => NewHome(
                 // currentc: _currentc,
@@ -82,9 +83,18 @@ class User {
           ),
         );
       } else {
-        FirebaseFirestore.instance.collection("Gym Owner").doc(userid).set(
-            {'name': name, 'email': email, 'profilePicture': profilePicture});
-        Navigator.of(cxt).pushNamed(OwnerHome.rounamed);
+        FirebaseFirestore.instance
+            .collection("Gym Owner")
+            .doc(userid)
+            .set({'name': name, 'email': email});
+        // Navigator.of(cxt).pushNamed(OwnerHome.rounamed);
+        Navigator.of(cxt).pushReplacement(
+          MaterialPageRoute(
+            builder: (context) => OwnerHome(
+                // currentc: _currentc,
+                ),
+          ),
+        );
       }
     } on FirebaseAuthException catch (e) {
       String messages = e.code;
@@ -107,6 +117,10 @@ class User {
       var collection = FirebaseFirestore.instance.collection('Gym Owner');
       var docSnapshot = await collection.doc(userid).get();
       if (docSnapshot.exists) {
+        Owner _currentOwner =
+            Owner.fromjson(docSnapshot.data() as Map<String, dynamic>, userid);
+        UserData.setUserDate(
+            false, userid, _currentOwner.name, _currentOwner.email);
         Navigator.of(cxt).pushReplacement(MaterialPageRoute(
           builder: (context) => OwnerHome(),
         ));
@@ -121,9 +135,7 @@ class User {
             true, _currentc.uid, _currentc.name, _currentc.email);
         Navigator.of(cxt).pushReplacement(
           MaterialPageRoute(
-            builder: (context) => NewHome(
-                // currentc: _currentc,
-                ),
+            builder: (context) => NewHome(),
           ),
         );
       }

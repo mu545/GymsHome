@@ -2,14 +2,14 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/widgets.dart';
 import 'package:gymhome/GymOwnerwidgets/facilities.dart';
-import 'package:gymhome/authintactions/auth.dart';
+// import 'package:gymhome/authintactions/auth.dart';
 import 'package:gymhome/provider/customer.dart';
 import 'package:flutter/src/rendering/box.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:gymhome/authintactions/database.dart';
+// import 'package:gymhome/authintactions/database.dart';
 import 'package:gymhome/provider/customer.dart';
-import 'package:gymhome/models/user.dart';
+// import 'package:gymhome/models/user.dart';
 import 'package:gymhome/widgets/edit.dart';
 import 'package:gymhome/widgets/imageinput.dart';
 import 'package:gymhome/widgets/welcome.dart';
@@ -20,10 +20,12 @@ import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:gymhome/authintactions/database.dart';
+// import 'package:gymhome/authintactions/database.dart';
 import 'package:provider/provider.dart';
+// import 'package:gymhome/models/user.dart';
 
 import 'package:gymhome/models/profile_model.dart';
+import 'package:gymhome/models/user.dart';
 
 class Profile extends StatefulWidget {
   final String userid;
@@ -440,7 +442,9 @@ class _ProfileState extends State<Profile> {
                         FlatButton(
                           onPressed: () {
                             // Provider.of<Auth>(context, listen: false).logout();
-                            Navigator.of(context).pop();
+                            // User.signup();
+                            AppUser.logout(context);
+                            // Navigator.of(context).pop();
                           },
                           child: Container(
                             width: 100,

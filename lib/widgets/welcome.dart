@@ -210,8 +210,8 @@ class _welcomeState extends State<welcome> {
                                 setState(() {
                                   isLoading = true;
                                 });
-                                User.signup(iscustomer, email, name, password,
-                                        context)
+                                AppUser.signup(iscustomer, email, name,
+                                        password, context)
                                     .whenComplete(() => setState(() {
                                           isLoading = false;
                                         }));
@@ -222,7 +222,7 @@ class _welcomeState extends State<welcome> {
                                 setState(() {
                                   isLoading = true;
                                 });
-                                User.login(email, password, context)
+                                AppUser.login(email, password, context)
                                     .whenComplete(() => setState(() {
                                           isLoading = false;
                                         }));

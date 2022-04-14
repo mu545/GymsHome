@@ -20,7 +20,7 @@ import '../widgets/newhome.dart';
 // import 'package:shared_preferences/shared_preferences.dart';
 import 'package:gymhome/models/userdata.dart';
 
-class User {
+class AppUser {
   // String email;
   // String name;
   // String password;

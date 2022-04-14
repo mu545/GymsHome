@@ -207,10 +207,10 @@ class _GymDescrptionState extends State<GymDescrption> {
                                   Review.addRate(gymid!, rate, widget.userid)
                                       .whenComplete(() {
                                     Navigator.pop(context);
-                                    User.message(bodyctx, true, 'Thank you');
+                                    AppUser.message(bodyctx, true, 'Thank you');
                                   });
                                 } on FirebaseFirestore catch (e) {
-                                  User.message(cxt, false, e.toString());
+                                  AppUser.message(cxt, false, e.toString());
                                 }
                               }
 
@@ -288,7 +288,7 @@ class _GymDescrptionState extends State<GymDescrption> {
             onPressed: () {
               Review.deleteReview(gymid, uid).whenComplete(() {
                 Navigator.pop(context, true);
-                User.message(context, false, 'The review has been deleted');
+                AppUser.message(context, false, 'The review has been deleted');
               });
 
               // Navigator.pop(context);

@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class GymModel {
   List<dynamic>? images;
   List<dynamic>? faciltrs;
@@ -52,6 +54,10 @@ class GymModel {
     isComplete = json['isComplete'];
     gender = json['gender'];
   }
+  // GymModel.fromQ(QueryDocumentSnapshot<Object?> data){
+  //   return GymModel(data.get('images'), faciltrs, priceOndDay, priceOndMonth, priceOneYear, priceSixMonths, priceThreeMonts, imageURL, gymId, ownerId, name, description, location, isComplete, isWaiting);
+
+  // }
 
   // Map<String, dynamic> toJson() {
   //   final Map<String, dynamic> data = new Map<String, dynamic>();

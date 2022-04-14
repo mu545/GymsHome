@@ -7,45 +7,88 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 
 import 'package:gymhome/Styles.dart';
-import 'package:gymhome/widgets/review.dart';
+import 'package:gymhome/provider/customer.dart';
+import 'package:gymhome/widgets/welcome.dart';
+// import 'package:gymhome/models/review.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 
 import '../GymOwnerwidgets/ownerhome.dart';
 import '../widgets/newhome.dart';
 
-class User with ChangeNotifier {
-  String email = '';
-  String name = '';
-  static final _auth = FirebaseAuth.instance;
-  bool iscustomer = false;
-  static String messages = '';
-  User(email, name, bool customer) {
-    this.email = email;
-    this.name = name;
-    this.iscustomer = customer;
+// import 'package:shared_preferences/shared_preferences.dart';
+import 'package:gymhome/models/userdata.dart';
+
+class User {
+  // String email;
+  // String name;
+  // String password;
+  // String userid = '';
+  // bool iscustomer = false;
+  // String messages = '';
+  // User(
+  //     {required this.email,
+  //     required this.name,
+  //     required this.password,
+  //     required this.iscustomer});
+
+  // User(email, name, bool customer) {
+  //   this.email = email;
+  //   this.name = name;
+  //   this.iscustomer = customer;
+  // }
+  // void setCustomerDate(bool iscustomer, String uid, String name, String email,
+  //     String profilePicture) async {
+  //   final _userdate = await SharedPreferences.getInstance();
+  //   _userdate.setBool('iscustomer', iscustomer);
+  //   _userdate.setString('email', email);
+  //   _userdate.setString('name', name);
+  //   _userdate.setString('uid', uid);
+  //   _userdate.setString('profilePicture', profilePicture);
+  // }
+  static void logout(BuildContext cxt) {
+    UserData.deleteUserData();
+    Navigator.of(cxt).pushReplacement(MaterialPageRoute(
+      builder: (context) => welcome(),
+    ));
   }
+
   static Future signup(bool customer, String email, String name,
       String password, BuildContext cxt) async {
     try {
-      await _auth.createUserWithEmailAndPassword(
-          email: email, password: password);
+      await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(email: email, password: password);
       String userid = FirebaseAuth.instance.currentUser!.uid;
+      String profilePicture =
+          'https://firebasestorage.googleapis.com/v0/b/gymshome-ce96b.appspot.com/o/DefaultProfilePic.jpg?alt=media&token=e175c7f8-55f2-4575-8315-9bc5a527fd9b';
       if (customer) {
+        UserData.setUserDate(customer, userid, name, email);
+        Customer _currentc = Customer(
+            name: name,
+            profilePicture: profilePicture,
+            uid: userid,
+            email: email);
         FirebaseFirestore.instance.collection("Customer").doc(userid).set({
-          'name': name,
-          'profilePicture':
-              'https://firebasestorage.googleapis.com/v0/b/gymshome-ce96b.appspot.com/o/DefaultProfilePic.jpg?alt=media&token=e175c7f8-55f2-4575-8315-9bc5a527fd9b'
+          'name': _currentc.name,
+          'email': _currentc.email,
+          'profilePicture': _currentc.profilePicture
         });
-        Navigator.of(cxt).pushNamed(NewHome.rounamed);
+
+        Navigator.of(cxt).push(
+          MaterialPageRoute(
+            builder: (context) => NewHome(
+                // currentc: _currentc,
+                ),
+          ),
+        );
       } else {
-        FirebaseFirestore.instance
-            .collection("Gym Owner")
-            .doc(userid)
-            .set({'name': name});
+        FirebaseFirestore.instance.collection("Gym Owner").doc(userid).set(
+            {'name': name, 'email': email, 'profilePicture': profilePicture});
         Navigator.of(cxt).pushNamed(OwnerHome.rounamed);
       }
     } on FirebaseAuthException catch (e) {
-      messages = e.code;
+      String messages = e.code;
+
       if (e.code == 'weak-password') {
         messages = 'The password provided is too weak.';
       } else if (e.code == 'email-already-in-use') {
@@ -58,21 +101,40 @@ class User with ChangeNotifier {
 
   static Future login(String email, String password, BuildContext cxt) async {
     try {
-      await _auth.signInWithEmailAndPassword(email: email, password: password);
+      await FirebaseAuth.instance
+          .signInWithEmailAndPassword(email: email, password: password);
+      String userid = FirebaseAuth.instance.currentUser!.uid;
       var collection = FirebaseFirestore.instance.collection('Gym Owner');
-      var docSnapshot = await collection.doc(email).get();
+      var docSnapshot = await collection.doc(userid).get();
       if (docSnapshot.exists) {
-        Navigator.of(cxt).pushNamed(OwnerHome.rounamed);
+        Navigator.of(cxt).pushReplacement(MaterialPageRoute(
+          builder: (context) => OwnerHome(),
+        ));
       } else {
-        Navigator.of(cxt).pushNamed(NewHome.rounamed);
+        var _currentcustomer = await FirebaseFirestore.instance
+            .collection('Customer')
+            .doc(userid)
+            .get();
+        Customer _currentc = Customer.fromJson(
+            _currentcustomer.data() as Map<String, dynamic>, userid);
+        UserData.setUserDate(
+            true, _currentc.uid, _currentc.name, _currentc.email);
+        Navigator.of(cxt).pushReplacement(
+          MaterialPageRoute(
+            builder: (context) => NewHome(
+                // currentc: _currentc,
+                ),
+          ),
+        );
       }
     } on FirebaseAuthException catch (e) {
-      messages = e.code;
+      String messages = e.code;
       message(cxt, false, messages);
     }
   }
 
   static Future resetpass(String email, BuildContext cxt) async {
+    String messages;
     try {
       await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
       messages = 'Check your email';
@@ -98,38 +160,38 @@ class User with ChangeNotifier {
 //     prefs.clear();
 //   }
 
-  static bool areYousure(
-      BuildContext cxt, String title, String messame, Function? function) {
-    bool sure;
+  // static bool areYousure(
+  //     BuildContext cxt, String title, String messame, Function? function) {
+  //   bool sure;
 
-    showDialog<bool>(
-      context: cxt,
-      builder: (BuildContext context) => AlertDialog(
-        title: Text(title, style: TextStyle(color: colors.blue_base)),
-        content: Text(messame, style: TextStyle(color: colors.black60)),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context, false),
-            child:
-                const Text('Cancel', style: TextStyle(color: colors.red_base)),
-          ),
-          TextButton(
-            onPressed: () {
-              function;
-              Navigator.pop(context, true);
-            },
-            child: const Text(
-              'yes',
-              style: TextStyle(color: colors.blue_base),
-            ),
-          ),
-        ],
-      ),
-    ).then((value) {
-      return value;
-    });
-    return false;
-  }
+  //   showDialog<bool>(
+  //     context: cxt,
+  //     builder: (BuildContext context) => AlertDialog(
+  //       title: Text(title, style: TextStyle(color: colors.blue_base)),
+  //       content: Text(messame, style: TextStyle(color: colors.black60)),
+  //       actions: [
+  //         TextButton(
+  //           onPressed: () => Navigator.pop(context, false),
+  //           child:
+  //               const Text('Cancel', style: TextStyle(color: colors.red_base)),
+  //         ),
+  //         TextButton(
+  //           onPressed: () {
+  //             function;
+  //             Navigator.pop(context, true);
+  //           },
+  //           child: const Text(
+  //             'yes',
+  //             style: TextStyle(color: colors.blue_base),
+  //           ),
+  //         ),
+  //       ],
+  //     ),
+  //   ).then((value) {
+  //     return value;
+  //   });
+  //   return false;
+  // }
 
   static message(BuildContext cxt, bool iserror, String message) {
     ScaffoldMessenger.of(cxt).showSnackBar(

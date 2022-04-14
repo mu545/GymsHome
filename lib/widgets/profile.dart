@@ -3,12 +3,12 @@ import 'dart:io';
 import 'package:flutter/widgets.dart';
 import 'package:gymhome/GymOwnerwidgets/facilities.dart';
 import 'package:gymhome/authintactions/auth.dart';
-import 'package:gymhome/models/customer.dart';
+import 'package:gymhome/provider/customer.dart';
 import 'package:flutter/src/rendering/box.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:gymhome/authintactions/database.dart';
-import 'package:gymhome/models/customer.dart';
+import 'package:gymhome/provider/customer.dart';
 import 'package:gymhome/models/user.dart';
 import 'package:gymhome/widgets/edit.dart';
 import 'package:gymhome/widgets/imageinput.dart';
@@ -26,7 +26,8 @@ import 'package:provider/provider.dart';
 import 'package:gymhome/models/profile_model.dart';
 
 class Profile extends StatefulWidget {
-  const Profile({Key? key}) : super(key: key);
+  final String userid;
+  const Profile({required this.userid, Key? key}) : super(key: key);
 
   @override
   _ProfileState createState() => _ProfileState();

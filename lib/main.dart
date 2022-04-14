@@ -5,6 +5,7 @@
 import 'package:firebase_core/firebase_core.dart';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_launcher_icons/ios.dart';
 import 'package:gymhome/GymOwnerwidgets/addgym.dart';
 import 'package:gymhome/GymOwnerwidgets/facilities.dart';
 import 'package:gymhome/GymOwnerwidgets/gymprice.dart';
@@ -12,11 +13,12 @@ import 'package:gymhome/GymOwnerwidgets/location.dart';
 import 'package:gymhome/GymOwnerwidgets/ownerhome.dart';
 import 'package:gymhome/authintactions/auth.dart';
 import 'package:gymhome/models/GymModel.dart';
-import 'package:gymhome/models/customer.dart';
+import 'package:gymhome/provider/customer.dart';
 import 'package:gymhome/models/favorite.dart';
 import 'package:gymhome/models/gyms.dart';
-import 'package:gymhome/models/user.dart';
+
 import 'package:gymhome/provider/gymsitems.dart';
+import 'package:gymhome/models/review.dart';
 import 'package:gymhome/provider/womengymitems.dart';
 import 'package:gymhome/widgets/AddGym.dart';
 import 'package:gymhome/widgets/add_image.dart';
@@ -27,6 +29,7 @@ import 'package:gymhome/widgets/imageinput.dart';
 // import 'package:gymhome/widgets/reviwe.dart';
 import 'package:gymhome/widgets/gymdescrption.dart';
 import 'package:gymhome/widgets/help.dart';
+import 'package:gymhome/widgets/placeloc.dart';
 import 'package:gymhome/widgets/profile.dart';
 import 'package:gymhome/widgets/newhome.dart';
 import 'package:gymhome/widgets/onerdescrption.dart';
@@ -42,11 +45,23 @@ import 'package:gymhome/widgets/welcome.dart';
 import 'package:gymhome/widgets/womengym.dart';
 import 'package:provider/provider.dart';
 import 'package:gymhome/widgets/resetpass.dart';
+import 'package:gymhome/models/user.dart';
+// user data
+import 'package:gymhome/models/userdata.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+bool? iscustomer;
+// Customer? currentc;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await Firebase.initializeApp();
+// to read and write user data
+  final _userdata = await SharedPreferences.getInstance();
+  iscustomer = _userdata.getBool('iscustomer');
+
+  // UserData.init();
   runApp(const MyApp());
 }
 
@@ -55,8 +70,37 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // get userid
+    // String? uid;
+    // UserData.getUserId().then((value) => uid = value);
+    // bool? iscustomer;
+    // UserData.isCustomer().then((value) => iscustomer = value);
+    //  get home
+    Widget getHome(bool iscustomer) {
+      // UserData.isCustomer().then((value) => iscustomer = value);
+      // print('uid = ');
+      // print(uid);
+
+      if (iscustomer)
+        return NewHome();
+      else
+        return OwnerHome();
+    }
+
     return MultiProvider(
         providers: [
+          // ChangeNotifierProvider.value(
+          //   value: Review(
+          //       uid: '',
+          //       name: '',
+          //       profileimg: '',
+          //       rate: 0.0,
+          //       comment: '',
+          //       time: ''),
+          // ),
+          // ChangeNotifierProvider.value(
+          //   value: User(),
+          // ),
           ChangeNotifierProvider.value(
             value: Gymsitems(),
           ),
@@ -98,9 +142,13 @@ class MyApp extends StatelessWidget {
         child: Consumer<Gymsitems>(
             builder: (ctx, auth, _) => MaterialApp(
                   debugShowCheckedModeBanner: false,
-                  home: OwnerHome(),
+                  // if uid null then the user should login
+                  home: iscustomer == null ? welcome() : getHome(iscustomer!),
                   routes: {
-                    NewHome.rounamed: (ctx) => NewHome(),
+                    NewHome.rounamed: (ctx) => NewHome(
+                        // currentc: Customer(
+                        //     email: '', name: '', profilePicture: '', uid: ''),
+                        ),
                     //     ImageInput.routenamed: (ctx) => ImageInput(),
                     OwnerHome.rounamed: (ctx) => OwnerHome(),
                     //   GymPrice.routenames: (ctx) => GymPrice(),

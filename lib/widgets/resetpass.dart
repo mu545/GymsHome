@@ -105,7 +105,7 @@ class _resetpasswordState extends State<resetpassword> {
                       onPrimary: colors.blue_smooth,
                       minimumSize: Size(250, 40)),
                   onPressed: () {
-                    User.resetpass(email, context);
+                    AppUser.resetpass(email, context);
                   },
                   child: Text(
                     "Send",

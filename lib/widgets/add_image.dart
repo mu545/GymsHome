@@ -32,7 +32,6 @@ class _AddImageState extends State<AddImage> {
   double val = 0;
   List<File> _image = [];
 
-  //late CollectionReference imgRef;
   late firebase_storage.Reference ref;
   @override
   Widget build(BuildContext context) {
@@ -53,13 +52,6 @@ class _AddImageState extends State<AddImage> {
                   }
 
                   print(_image);
-                  Navigator.pop(context);
-                  //Navigator.pop(context);
-                  // Provider.of<AddGymMethods>(context, listen: false)
-                  //     .uploadFiles(_image)
-                  //     .whenComplete(() => Navigator.of(context).push(
-                  //         MaterialPageRoute(
-                  //             builder: (context) => ImageInput())));
                 },
                 child: Text(
                   'Upload',
@@ -125,51 +117,4 @@ class _AddImageState extends State<AddImage> {
     print("Image List Length:" + imageFileList!.length.toString());
     setState(() {});
   }
-
-  // chooseImage() async {
-  //   final pickedFile =
-  //       await ImagePicker.platform.pickImage(source: ImageSource.gallery);
-  //   setState(() {
-  //     _image.add(File(pickedFile!.path));
-  //   });
-  //   if (pickedFile!.path == null) retrieveLostData();
-  // }
-
-  // Future<void> retrieveLostData() async {
-  //   final LostDataResponse response = await ImagePicker.platform.getLostData();
-  //   if (response.isEmpty) {
-  //     return;
-  //   }
-  //   if (response.file != null) {
-  //     setState(() {
-  //       _image.add(File(response.file!.path));
-  //     });
-  //   } else {
-  //     print(response.file);
-  //   }
-  // }
-
-  // Future uploadFile() async {
-  //   int i = 1;
-
-  //   for (var img in _image) {
-  //     setState(() {
-  //       val = i / _image.length;
-  //     });
-  //     ref = firebase_storage.FirebaseStorage.instance
-  //         .ref()
-  //         .child('images/${Path.basename(img.path)}');
-  //     await ref.putFile(img).whenComplete(() async {
-  //       await ref.getDownloadURL().then((value) {
-  //         FirebaseFirestore.instance
-  //             .collection('Gyms')
-  //             .doc('95fFRxumpsU3TI6jXi1K')
-  //             .update({
-  //           'images': FieldValue.arrayUnion([value])
-  //         });
-  //         i++;
-  //       });
-  //     });
-  //   }
-  // }
 }

@@ -1,7 +1,9 @@
 import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_launcher_icons/main.dart';
 import 'package:gymhome/Styles.dart';
+import 'package:http/http.dart';
 import 'package:path/path.dart' as Path;
 import 'package:gymhome/models/GymModel.dart';
 import 'package:gymhome/models/Gymprofile.dart';
@@ -12,13 +14,13 @@ import 'package:gymhome/widgets/AddGym.dart';
 import 'package:gymhome/widgets/addimages.dart';
 import 'package:gymhome/widgets/gymdescrption.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:path/path.dart' as path;
-import 'package:path/path.dart';
+import 'package:photo_view/photo_view.dart';
 import 'package:path_provider/path_provider.dart' as syspath;
 import 'package:provider/provider.dart';
 import 'package:transparent_image/transparent_image.dart';
 import 'package:flutter/src/rendering/box.dart';
 import 'add_image.dart';
+import 'package:gymhome/GymOwnerwidgets/ManageImages.dart';
 
 class ImageInput extends StatefulWidget {
   GymModel gym;
@@ -38,7 +40,7 @@ class ImageInput extends StatefulWidget {
 
 class _ImageInputState extends State<ImageInput> {
   final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
-  Widget viewImages() {
+  Widget viewImages(BuildContext cxt) {
     // int length = imageFileList!.length + widget.gym.images!.length;
     if (widget.gym.gymId == '') {
       return Container(
@@ -46,106 +48,131 @@ class _ImageInputState extends State<ImageInput> {
             borderRadius: BorderRadius.circular(10.0),
             border: Border.all(color: colors.blue_smooth)),
         height: 100,
-        child: Container(
-          height: 50,
-          child: GridView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: imageFileList!.length,
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 1,
-                  childAspectRatio: 1,
-                  crossAxisSpacing: 5,
-                  mainAxisSpacing: 5),
-              itemBuilder: (context, index) {
-                //     int newImagesLength = length - imageFileList!.length;
-                //   if (index <= imageFileList!.length) {
-                return Container(
-                    margin: EdgeInsets.all(3),
-                    child: Image.file(
-                      File(imageFileList![index].path),
-                      fit: BoxFit.cover,
-                    ));
-                //  } else {
-                //   return Container(
-                //       margin: EdgeInsets.all(3),
-                //       child: Image.network(
-                //         widget.gym.images![newImagesLength],
-                //         fit: BoxFit.cover,
-                //       ));
-                //   }
-              }),
-        ),
+        child: GridView.builder(
+            scrollDirection: Axis.horizontal,
+            itemCount: imageFileList!.length,
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 1,
+                childAspectRatio: 1,
+                crossAxisSpacing: 5,
+                mainAxisSpacing: 5),
+            itemBuilder: (context, index) {
+              return Container(
+                  margin: EdgeInsets.all(3),
+                  child: Image.file(
+                    File(imageFileList![index].path),
+                    fit: BoxFit.cover,
+                  ));
+            }),
       );
     } else {
-      return Container(
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10.0),
-            border: Border.all(color: colors.blue_smooth)),
-        height: 100,
-        child: Container(
-          height: 50,
-          child: GridView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: widget.gym.images!.length,
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 1,
-                  childAspectRatio: 1,
-                  crossAxisSpacing: 5,
-                  mainAxisSpacing: 5),
-              itemBuilder: (context, index) {
-                return Container(
-                    margin: EdgeInsets.all(3),
-                    child: Image.network(
-                      widget.gym.images![index],
-                      fit: BoxFit.cover,
-                    ));
-              }),
-        ),
+      GymModel _gymProfile = GymModel(
+          [], [], 0, 0, 0, 0, 0, '', '', '', '', '', '', false, true, '');
+      return StreamBuilder(
+        stream: _fireStore.collection('gyms').doc(widget.gym.gymId).snapshots(),
+        builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+          if (snapshot.hasData) {
+            Map<String, dynamic> _data =
+                snapshot.data.data() as Map<String, dynamic>;
+            _gymProfile = GymModel.fromJson(_data);
+            if (_gymProfile.images!.isEmpty) {
+              return Container();
+            }
+            return Column(
+              children: [
+                Container(
+                  margin: EdgeInsets.only(right: 120),
+                  child: Text(
+                    'Tap any image to view all images',
+                    style: TextStyle(
+                        fontFamily: 'Roboto', color: colors.blue_base),
+                  ),
+                ),
+                Container(
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10.0),
+                      border: Border.all(color: colors.blue_smooth)),
+                  height: 120,
+                  child: GridView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: _gymProfile.images!.length,
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 1,
+                          childAspectRatio: 1,
+                          crossAxisSpacing: 5,
+                          mainAxisSpacing: 5),
+                      itemBuilder: (context, index) {
+                        return Stack(
+                          children: <Widget>[
+                            InkWell(
+                              onTap: () {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) => ManageNewGymImages(
+                                          images: _gymProfile.images,
+                                        )));
+                              },
+                              child: Image.network(
+                                _gymProfile.images![index],
+                                height: double.infinity,
+                                fit: BoxFit.contain,
+                              ),
+                            ),
+                            Positioned(
+                              top: -10,
+                              left: -10,
+                              child: IconButton(
+                                  onPressed: () {
+                                    showDialog(
+                                        context: context,
+                                        builder: (_) => AlertDialogs(
+                                            _gymProfile.images![index]));
+                                  },
+                                  icon: Icon(
+                                    Icons.delete,
+                                    color: colors.black100,
+                                  )),
+                            )
+                          ],
+                        );
+                      }),
+                ),
+              ],
+            );
+          }
+          return Container();
+        },
       );
-
-      // GymModel _gymProfile =
-      //     GymModel([], [], 0, 0, 0, 0, 0, '', '', '', '', '', '', false, true);
-      // return StreamBuilder(
-      //   stream: _fireStore.collection('gyms').doc(widget.gym.gymId).snapshots(),
-      //   builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-      //     if (snapshot.hasData) {
-      //       Map<String, dynamic> _data =
-      //           snapshot.data.data() as Map<String, dynamic>;
-      //       _gymProfile = GymModel.fromJson(_data);
-      //       if (_gymProfile.images!.isEmpty) {
-      //         return Container();
-      //       }
-      //       return Container(
-      //         decoration: BoxDecoration(
-      //             borderRadius: BorderRadius.circular(10.0),
-      //             border: Border.all(color: colors.blue_smooth)),
-      //         height: 100,
-      //         child: Container(
-      //           height: 50,
-      //           child: GridView.builder(
-      //               scrollDirection: Axis.horizontal,
-      //               itemCount: _gymProfile.images!.length,
-      //               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-      //                   crossAxisCount: 1,
-      //                   childAspectRatio: 1,
-      //                   crossAxisSpacing: 5,
-      //                   mainAxisSpacing: 5),
-      //               itemBuilder: (context, index) {
-      //                 return Container(
-      //                   margin: EdgeInsets.all(3),
-      //                   child: Image.network(
-      //                     _gymProfile.images![index],
-      //                     fit: BoxFit.cover,
-      //                   ),
-      //                 );
-      //               }),
-      //         ),
-      //       );
-      //     }
-      //     return Container();
-      //   },
-      // );
     }
+  }
+
+  Widget AlertDialogs(img) {
+    return AlertDialog(
+      title: Text('Delete Image?'),
+      actions: [
+        FlatButton(
+            onPressed: () {
+              deleteImg(img);
+              Navigator.pop(context);
+            },
+            child: Text('Delete')),
+        FlatButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: Text('Cancel')),
+      ],
+      clipBehavior: Clip.antiAliasWithSaveLayer,
+      elevation: 24,
+      backgroundColor: colors.blue_smooth,
+    );
+  }
+
+//delete img
+  void deleteImg(imgUrl) {
+    FirebaseFirestore.instance.collection('gyms').doc(widget.gym.gymId).update({
+      'images': FieldValue.arrayRemove([imgUrl])
+    });
+    print(imgUrl);
   }
 
   List<File> newGymImages = [];
@@ -191,37 +218,12 @@ class _ImageInputState extends State<ImageInput> {
     print("Image List Length:" + imageFileList!.length.toString());
   }
 
-  //final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
-  // final String userId = "95fFRxumpsU3TI6jXi1K";
-
-  // Future? _getData() => _fireStore.collection('Gyms').doc(userId).get();
-
-  // Widget bottomSheet() {
-  //   return Container(
-  //     height: 100.0,
-  //     // width: MediaQuery.of(context).size.width,
-  //     margin: EdgeInsets.symmetric(
-  //       horizontal: 20,
-  //       vertical: 20,
-  //     ),
-  //     child: Column(
-  //       children: <Widget>[
-  //         // Text(
-  //         //   "Choose Profile photo",
-  //         //   style: TextStyle(
-  //         //     fontSize: 20.0,
-  //         //   ),
-  //         // ),
-  //         // SizedBox(
-  //         //   height: 20,
-  //         // ),
-  //         Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[])
-  //       ],
-  //     ),
-  //   );
-  // }
-
-  // List<String> facilities = [];
+  Widget displyText() {
+    return Text(
+      'Tap any image to view all images',
+      style: TextStyle(fontFamily: 'Roboto', color: colors.blue_base),
+    );
+  }
 
   Widget facButton(String fac) {
     bool isHere = false;
@@ -273,17 +275,6 @@ class _ImageInputState extends State<ImageInput> {
         ),
         backgroundColor: colors.blue_base,
         elevation: 0,
-        // actions: <Widget>[
-        //   IconButton(
-        //     onPressed: () {
-        //       bottomSheet();
-        //     },
-        //     icon: Icon(
-        //       Icons.more_vert,
-        //       color: Colors.black,
-        //     ),
-        //   )
-        // ],
       ),
       body: Column(
         children: [
@@ -343,37 +334,40 @@ class _ImageInputState extends State<ImageInput> {
                       SizedBox(
                         height: 30,
                       ),
-                      Column(
-                        children: [
-                          widget.gym.images!.isNotEmpty ||
-                                  imageFileList!.isNotEmpty
-                              ? viewImages()
-                              : Container(),
-                          SizedBox(
-                            height: 25,
-                          ),
-                          Container(
-                            margin: EdgeInsets.symmetric(horizontal: 10),
-                            child: Wrap(
-                              runSpacing: 10.0,
-                              spacing: 19.0,
-                              children: <Widget>[
-                                facButton('Pool'),
-                                facButton('Lounge Area'),
-                                facButton('Wifi'),
-                                facButton('Squash Courts'),
-                                facButton('Spin Studio'),
-                                facButton('Showrs'),
-                                facButton('Basketball Field'),
-                                facButton('Sauna'),
-                                facButton('Rowing'),
-                                facButton('Free Weights'),
-                                facButton('Steam Room'),
-                                facButton('Football Field'),
-                              ],
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          children: [
+                            widget.gym.images!.isNotEmpty ||
+                                    imageFileList!.isNotEmpty
+                                ? viewImages(context)
+                                : Container(),
+                            SizedBox(
+                              height: 25,
                             ),
-                          ),
-                        ],
+                            Container(
+                              margin: EdgeInsets.symmetric(horizontal: 10),
+                              child: Wrap(
+                                runSpacing: 10.0,
+                                spacing: 19.0,
+                                children: <Widget>[
+                                  facButton('Pool'),
+                                  facButton('Lounge Area'),
+                                  facButton('Wifi'),
+                                  facButton('Squash Courts'),
+                                  facButton('Spin Studio'),
+                                  facButton('Showrs'),
+                                  facButton('Basketball Field'),
+                                  facButton('Sauna'),
+                                  facButton('Rowing'),
+                                  facButton('Free Weights'),
+                                  facButton('Steam Room'),
+                                  facButton('Football Field'),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ],
                   ),

@@ -1,5 +1,6 @@
 // import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:gymhome/models/user.dart';
 // import 'package:gymhome/models/gyms.dart';
 // import 'package:gymhome/provider/gymsitems.dart';
 // import 'package:gymhome/widgets/gymdescrption.dart';
@@ -9,7 +10,8 @@ import 'package:gymhome/widgets/newSearch.dart';
 // import 'package:search_page/search_page.dart';
 
 class Searchlesss extends StatefulWidget {
-  const Searchlesss({Key? key}) : super(key: key);
+  Searchlesss({Key? key, required this.userID}) : super(key: key);
+  String userID;
   @override
   State<Searchlesss> createState() => _SearchlesssState();
 }

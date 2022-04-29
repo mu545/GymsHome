@@ -11,21 +11,8 @@ import '../provider/customer.dart';
 class GymCardCustomer extends StatelessWidget {
   final String userid;
   final GymModel gymInfo;
-  const GymCardCustomer({Key? key, required this.gymInfo, required this.userid
-      //required this.name,
-      // required this.priceSixMonths,
-      // required this.price,
-      //  required this.imageURL,
-      //this.onfavoriteTap,
-      })
+  const GymCardCustomer({Key? key, required this.gymInfo, required this.userid})
       : super(key: key);
-
-  //final bool isFavorite;
-  //final String name;
-  // final double price;
-//  final String imageURL;
-  //final VoidCallback? onfavoriteTap;
-  // final String gymId;
 
   @override
   Widget build(BuildContext context) {

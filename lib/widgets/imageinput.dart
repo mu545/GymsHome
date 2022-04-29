@@ -421,7 +421,10 @@ class _ImageInputState extends State<ImageInput> {
                   fontFamily: 'Roboto',
                 ),
               ),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.of(context).pop();
+                Navigator.of(context).pop();
+              },
               padding: EdgeInsets.symmetric(horizontal: 30.0, vertical: 4),
               materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
               textColor: Theme.of(context).primaryColor,

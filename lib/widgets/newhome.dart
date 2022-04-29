@@ -177,7 +177,7 @@ class NewWidgetHome extends StatelessWidget {
         backgroundColor: Colors.white,
         elevation: 0,
         actions: <Widget>[
-          Searchlesss(),
+          Searchlesss(userID: userid),
           IconButton(
             onPressed: () {
               // CloudFirestoreSearch();
@@ -306,37 +306,35 @@ class NewWidgetHome extends StatelessWidget {
 
           Expanded(
             child: SingleChildScrollView(
-              child: SafeArea(
-                child: FutureBuilder(
-                  future: _getData(),
-                  builder:
-                      (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-                    if (snapshot.hasData) {
-                      _gymsList.clear();
-                      snapshot.data.docs.forEach((element) {
-                        _gymsList.add(GymModel.fromJson(element.data()));
-                      });
-                      return Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Column(
-                          children: [
-                            ListView.builder(
-                              shrinkWrap: true,
-                              itemCount: _gymsList.length,
-                              itemBuilder: (BuildContext context, int index) {
-                                return GymCardCustomer(
-                                  gymInfo: _gymsList[index],
-                                  userid: userid,
-                                );
-                              },
-                            )
-                          ],
-                        ),
-                      );
-                    } else
-                      return Center(child: CircularProgressIndicator());
-                  },
-                ),
+              child: FutureBuilder(
+                future: _getData(),
+                builder:
+                    (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                  if (snapshot.hasData) {
+                    _gymsList.clear();
+                    snapshot.data.docs.forEach((element) {
+                      _gymsList.add(GymModel.fromJson(element.data()));
+                    });
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        children: [
+                          ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: _gymsList.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              return GymCardCustomer(
+                                gymInfo: _gymsList[index],
+                                userid: userid,
+                              );
+                            },
+                          )
+                        ],
+                      ),
+                    );
+                  } else
+                    return Center(child: CircularProgressIndicator());
+                },
               ),
             ),
           ),

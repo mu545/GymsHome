@@ -117,8 +117,8 @@ class _WidgtessState extends State<OwnerHome> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          GymModel _gym = GymModel(
-              [], [], 0, 0, 0, 0, 0, '', '', '', '', '', '', false, true, '');
+          GymModel _gym = GymModel([], [], 0, 0, 0, 0, 0, '', '', '', '', '',
+              '', false, true, '', 0);
           Navigator.of(context).push(MaterialPageRoute(
               builder: (context) => AddGymInfo(
                     gym: _gym,

@@ -168,9 +168,9 @@ class Review {
         .doc(gymid)
         .collection('Review')
         .get();
-    if (snapshot.size == 0)
+    if (snapshot.size == 0) {
       setAvgRate(gymid, 0.0);
-    else {
+    } else {
       int size = snapshot.docs.length;
       for (var doc in snapshot.docs) {
         sum += doc.get('rate');

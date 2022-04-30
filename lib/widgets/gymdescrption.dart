@@ -1,19 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-// import 'package:flutter/scheduler.dart';
+
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:gymhome/models/GymModel.dart';
-// import 'package:gymhome/models/gyms.dart';
-// import 'package:provider/provider.dart';
-// import 'package:gymhome/provider/gymsitems.dart';
+
 import 'package:gymhome/models/review.dart';
-// import 'package:provider/provider.dart';
+
 import 'package:gymhome/Styles.dart';
 
-// import '../provider/customer.dart';
 import '../models/user.dart';
 import '../widgets/commentCard.dart';
-// import 'package:intl/intl.dart';
 
 class GymDescrption extends StatefulWidget {
   GymModel gym;
@@ -26,450 +22,20 @@ class GymDescrption extends StatefulWidget {
   _GymDescrptionState createState() => _GymDescrptionState();
 }
 
-// Customer _currentUser = Customer();
-
-// bool isReviewed = false;
-
 class _GymDescrptionState extends State<GymDescrption> {
 //
   List<Review> reviews = [];
   Review? userReview;
-// Review userReview = Review(uid:widget.currentUser.uid , name:_currentUser.name, profileimg: _currentUser.profilePicture, rate: 0.0, comment: '', time: '');
-  // bool readmore = false;
-
-  ///////////////////////////////////////////////////////////
-  void reviewForm(BuildContext bodyctx, Review? userReview, String? gymid) {
-    // bool israted;
-    double rate = 0.0;
-    String comment = '';
-    final GlobalKey<FormState> _formKey = GlobalKey();
-    if (userReview != null) {
-      rate = userReview.rate;
-      comment = userReview.comment;
-      // israted = true;
-    } else {
-      rate = 0.0;
-      comment = '';
-      // israted = true;
-    }
-    // final Map<String, dynamic> _reviwe = {'reviews': comment, 'rate': rate};
-    showDialog(
-        context: bodyctx,
-        builder: (BuildContext cxt) {
-          return Center(
-            child: SingleChildScrollView(
-              child: AlertDialog(
-                  title: Text(
-                    "Write a review",
-                    style: TextStyle(
-                        fontFamily: 'Epilogue',
-                        fontSize: 18,
-                        color: colors.blue_base),
-                  ),
-                  content: SizedBox(
-                    width: MediaQuery.of(cxt).size.width,
-                    child: Column(children: [
-                      Form(
-                        key: _formKey,
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: <Widget>[
-                            RatingBar.builder(
-                              initialRating: rate,
-                              minRating: 0,
-                              direction: Axis.horizontal,
-                              allowHalfRating: false,
-                              itemCount: 5,
-                              itemPadding:
-                                  EdgeInsets.symmetric(horizontal: 2.0),
-                              itemBuilder: (context, _) => Icon(Icons.star,
-                                  size: 6, color: colors.yellow_base),
-                              onRatingUpdate: (rating) {
-                                rate = rating;
-                              },
-                            ),
-
-                            Padding(
-                              padding: EdgeInsets.all(8.0),
-                              child: TextFormField(
-                                  initialValue: comment,
-                                  maxLines: null,
-                                  obscureText: false,
-                                  keyboardType: TextInputType.emailAddress,
-                                  decoration: InputDecoration(
-                                    contentPadding: EdgeInsets.all(10),
-                                    hintText: "review (optional)",
-                                    hintStyle: TextStyle(
-                                      color: colors.hinttext,
-                                    ),
-                                  ),
-                                  validator: (value) {
-                                    // check if rate is null
-                                    if (rate == 0) {
-                                      // return 'please add rate';
-                                    }
-                                  },
-                                  onChanged: (value) {
-                                    comment = value;
-                                  }),
-                            ),
-
-                            // SizedBox(
-                            //   height: 15,
-                            //   // ),
-                            //   Row(
-                            //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            //     children: [
-                            //       if (userReview != null)
-                            //         InkWell(
-                            //           onTap: () {
-                            //             // Customer c1 = Customer();
-                            //             deleteSure(gymid!, userReview.uid);
-                            //           },
-                            //           child: Align(
-                            //             alignment: Alignment.bottomRight,
-                            //             child: Text(
-                            //               "Delete",
-                            //               style: TextStyle(
-                            //                 color: colors.red_base,
-                            //                 fontFamily: 'Roboto',
-                            //                 fontSize: 18,
-                            //               ),
-                            //             ),
-                            //           ),
-                            //         ),
-                            //       // GestureDetector(
-                            //       //   onTap: () {
-                            //       //     if (_formKey.currentState!.validate() &&
-                            //       //         rate != 0.0) {
-                            //       //       // Customer c1 = Customer();
-
-                            //       //       if (comment == '')
-                            //       //         // c1.addRate(gymid, _reviwe['rate']);
-                            //       //         // else
-                            //       //         // c1.addReviwe(gymid, _reviwe['rate'],
-                            //       //         // _reviwe['reviews']);
-
-                            //       //         rate = 0.0;
-                            //       //       comment = '';
-
-                            //       //       Navigator.of(cxt).pop();
-                            //       //       Provider.of<User>(cxt, listen: false)
-                            //       //           .message(cxt, true, 'Thank you!');
-                            //       //     }
-                            //       //   },
-                            //       //   child: Align(
-                            //       //     alignment: Alignment.bottomRight,
-                            //       //     child: Text(
-                            //       //       "Send",
-                            //       //       style: TextStyle(
-                            //       //         color: colors.blue_base,
-                            //       //         fontFamily: 'Roboto',
-                            //       //         fontSize: 18,
-                            //       //       ),
-                            //       //     ),
-                            //       //   ),
-                            //       // ),
-                            //     ],
-                            //   ),
-                          ],
-                        ),
-                      ),
-                    ]),
-                  ),
-                  actions: <Widget>[
-                    Row(
-                      mainAxisAlignment: userReview != null
-                          ? MainAxisAlignment.spaceAround
-                          : MainAxisAlignment.start,
-                      children: [
-                        TextButton(
-                          style: TextButton.styleFrom(
-                            primary: colors.blue_base,
-                            // minimumSize:
-                          ),
-                          child: const Text(
-                            "Send",
-                            style: TextStyle(
-                              color: colors.blue_base,
-                              fontFamily: 'Roboto',
-                              fontSize: 18,
-                            ),
-                          ),
-                          onPressed: () {
-                            if (_formKey.currentState!.validate() &&
-                                rate != 0.0) {
-                              // setState(() {});
-                              // Customer c1 = Customer();
-
-                              if (comment == '') {
-                                try {
-                                  Review.addRate(gymid!, rate, widget.userid)
-                                      .whenComplete(() {
-                                    Navigator.pop(context);
-                                    AppUser.message(bodyctx, true, 'Thank you');
-                                  });
-                                } on FirebaseFirestore catch (e) {
-                                  AppUser.message(cxt, false, e.toString());
-                                }
-                              }
-
-                              // c1.addRate(gymid, _reviwe['rate']);
-                              // else
-                              // c1.addReviwe(gymid, _reviwe['rate'],
-                              // _reviwe['reviews']);
-
-                              // rate = 0.0;
-                              // comment = '';
-
-                              // Navigator.of(cxt).pop();
-                              // User.message(cxt, true, 'Thank you!');
-                            }
-                          },
-                        ),
-                        SizedBox(width: MediaQuery.of(bodyctx).size.width / 3),
-                        if (userReview != null)
-                          TextButton(
-                            style:
-                                TextButton.styleFrom(primary: colors.red_base),
-                            child: const Text(
-                              "Delete",
-                              style: TextStyle(
-                                color: colors.red_base,
-                                fontFamily: 'Roboto',
-                                fontSize: 18,
-                              ),
-                            ),
-                            onPressed: () {
-                              Navigator.pop(context);
-                              deleteSure(gymid!, userReview.uid);
-                              // if (_formKey.currentState!.validate() &&
-                              //     rate != 0.0) {
-                              //   // Customer c1 = Customer();
-
-                              //   if (comment == '')
-                              //     // c1.addRate(gymid, _reviwe['rate']);
-                              //     // else
-                              //     // c1.addReviwe(gymid, _reviwe['rate'],
-                              //     // _reviwe['reviews']);
-
-                              //     rate = 0.0;
-                              //   comment = '';
-
-                              //   Navigator.of(cxt).pop();
-                              //   Provider.of<User>(cxt, listen: false)
-                              //       .message(cxt, true, 'Thank you!');
-                              // }
-                            },
-                          )
-                      ],
-                    ),
-                  ]),
-            ),
-          );
-        });
-  }
-
-  // /////////////////////////////////////////////////////////////////////////
-  void deleteSure(String gymid, String uid) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) => AlertDialog(
-        title: Text('Delete Review', style: TextStyle(color: colors.red_base)),
-        content: Text('Are you sure you want delete the Review? ',
-            style: TextStyle(color: colors.black60)),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context, false),
-            child:
-                const Text('Cancel', style: TextStyle(color: colors.blue_base)),
-          ),
-          TextButton(
-            onPressed: () {
-              Review.deleteReview(gymid, uid).whenComplete(() {
-                Navigator.pop(context, true);
-                AppUser.message(context, false, 'The review has been deleted');
-              });
-
-              // Navigator.pop(context);
-            },
-            child: const Text(
-              'yes',
-              style: TextStyle(color: colors.red_base),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  // void show() {
-  //   final GlobalKey<FormState> _formKey = GlobalKey();
-  //   Map<String, dynamic> _reviwe = {
-  //     'reviews': '',
-  //     'rate': 0.0,
-  //   };
-
-  //   print('isReviewed');
-  //   // print(isReviewed);
-  //   showDialog(
-  //       context: context,
-  //       builder: (BuildContext cxt) {
-  //         return Center(
-  //           child: SingleChildScrollView(
-  //             child: AlertDialog(
-  //               content: Container(
-  //                 width: MediaQuery.of(context).size.width,
-  //                 child: Column(children: [
-  //                   Form(
-  //                     key: _formKey,
-  //                     child: Column(
-  //                       mainAxisSize: MainAxisSize.min,
-  //                       children: <Widget>[
-  //                         Row(
-  //                             // mainAxisAlignment: MainAxisAlignment.start,
-  //                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //                             children: [
-  //                               Text(
-  //                                 userReview != null
-  //                                     ? 'Edit your review'
-  //                                     : "Write a review",
-  //                                 style: TextStyle(
-  //                                     fontFamily: 'Epilogue',
-  //                                     fontSize: 18,
-  //                                     color: colors.blue_base),
-  //                               ),
-  //                               GestureDetector(
-  //                                 onTap: () {
-  //                                   Navigator.of(context).pop();
-  //                                 },
-  //                                 child: Icon(
-  //                                   Icons.cancel_outlined,
-  //                                   color: colors.iconscolor,
-  //                                   size: 25,
-  //                                 ),
-  //                               ),
-  //                             ]),
-  //                         SizedBox(
-  //                           height: 20,
-  //                         ),
-  //                         RatingBar.builder(
-  //                           initialRating: 0,
-  //                           minRating: 0,
-  //                           direction: Axis.horizontal,
-  //                           allowHalfRating: false,
-  //                           itemCount: 5,
-  //                           itemPadding: EdgeInsets.symmetric(horizontal: 2.0),
-  //                           itemBuilder: (context, _) => Icon(
-  //                             Icons.star,
-  //                             size: 6,
-  //                             color: colors.yellow_base,
-  //                           ),
-  //                           onRatingUpdate: (rating) {
-  //                             _reviwe['rate'] = rating;
-  //                           },
-  //                         ),
-  //                         SizedBox(
-  //                           height: 20,
-  //                         ),
-  //                         Padding(
-  //                           padding: EdgeInsets.all(8.0),
-  //                           child: TextFormField(
-  //                               maxLines: null,
-  //                               obscureText: false,
-  //                               keyboardType: TextInputType.emailAddress,
-  //                               decoration: InputDecoration(
-  //                                 contentPadding: EdgeInsets.all(10),
-  //                                 hintText: "review (optional)",
-  //                                 hintStyle: TextStyle(
-  //                                   color: colors.hinttext,
-  //                                 ),
-  //                               ),
-  //                               validator: (value) {
-  //                                 if (_reviwe['rate'] == 0.0) {
-  //                                   // error message
-  //                                   showDialog(
-  //                                       context: context,
-  //                                       builder: (context) {
-  //                                         return SimpleDialog(
-  //                                           children: <Widget>[
-  //                                             Center(
-  //                                               child: Container(
-  //                                                 child: Text(
-  //                                                   'please add rate',
-  //                                                   style: TextStyle(
-  //                                                       color: colors.red_base,
-  //                                                       fontSize: 18),
-  //                                                 ),
-  //                                               ),
-  //                                             )
-  //                                           ],
-  //                                         );
-  //                                       });
-  //                                 }
-  //                               },
-  //                               onChanged: (value) {
-  //                                 _reviwe['reviews'] = value;
-  //                               }),
-  //                         ),
-  //                         SizedBox(
-  //                           height: 10,
-  //                         ),
-  //                         GestureDetector(
-  //                           onTap: () {
-  //                             if (_formKey.currentState!.validate() &&
-  //                                 _reviwe['rate'] != 0.0) {
-  //                               // Customer c1 = Customer();
-  //                               // c1.deleteReview('EE6yUxZMs3OK8OotZ0t5');
-  //                               // c1 = c1.fromdb;
-  //                               print('iam c1');
-  //                               // print(c1!.fromdb!.name);
-  //                               if (_reviwe['reviews'] == '')
-  //                                 c1.addRate(
-  //                                     widget.gym.gymId, _reviwe['rate']);
-  //                               else
-  //                                 c1.addReviwe('EE6yUxZMs3OK8OotZ0t5',
-  //                                     _reviwe['rate'], _reviwe['reviews']);
-
-  //                               _reviwe['rate'] = 0.0;
-  //                               _reviwe['reviews'] = '';
-  //                               Navigator.of(context).pop();
-  //                               Provider.of<User>(context, listen: false)
-  //                                   .message(cxt, true, 'Thank you!');
-  //                               //  message(context, true, 'Thank you!');
-  //                             }
-  //                           },
-  //                           child: Align(
-  //                             alignment: Alignment.bottomRight,
-  //                             child: Text(
-  //                               "Send",
-  //                               style: TextStyle(
-  //                                 color: colors.blue_base,
-  //                                 fontFamily: 'Roboto',
-  //                                 fontSize: 18,
-  //                               ),
-  //                             ),
-  //                           ),
-  //                         ),
-  //                       ],
-  //                     ),
-  //                   ),
-  //                 ]),
-  //               ),
-  //             ),
-  //           ),
-  //         );
-  //       });
-  // }
 
   @override
   Widget build(BuildContext context) {
+    // WidgetsBinding.instance!.addPostFrameCallback((_) {
+    //   setState(() {});
+    // });
+
     GymModel gym = widget.gym;
     String uid = widget.userid;
     double screenWidth = MediaQuery.of(context).size.width;
-    // final productid = ModalRoute.of(context)!.settings.arguments as String;
-    // final lodedproductr = Provider.of<Gymsitems>(context).FindbyId(productid);
-    // final Gym = Provider.of<Gyms>(context);
 
     return Scaffold(
       //     appBar: AppBar( iconTheme: IconThemeData(
@@ -650,9 +216,12 @@ class _GymDescrptionState extends State<GymDescrption> {
                   SizedBox(
                     width: 5,
                   ),
-                  Text('_________________________________________________')
+                  // Text('_________________________________________________')
                 ],
               ),
+            ),
+            Divider(
+              color: Colors.black,
             ),
             SizedBox(height: 10),
             Column(
@@ -860,6 +429,7 @@ class _GymDescrptionState extends State<GymDescrption> {
             SizedBox(
               height: 10,
             ),
+
             Container(
               margin: EdgeInsets.symmetric(horizontal: 10),
               child: Row(
@@ -875,97 +445,41 @@ class _GymDescrptionState extends State<GymDescrption> {
             Divider(
               color: Colors.black,
             ),
+//Start Commments
             Container(
               margin: EdgeInsets.symmetric(horizontal: 10),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text('Comments'),
-
-                  // print(User.areYousure(
-                  //     context,
-                  //     'Delete Review',
-                  //     'Are you sure you want delete the Review? ',
-                  //     () {}));
-                  // print(yousure);
-
-                  // showDialog<String>(
-                  //   context: context,
-                  //   builder: (BuildContext context) => AlertDialog(
-                  //     title: const Text('AlertDialog Title'),
-                  //     content: const Text('AlertDialog description'),
-                  //     actions: [
-                  //       TextButton(
-                  //         onPressed: () =>
-                  //             Navigator.pop(context, 'Cancel'),
-                  //         child: const Text('Cancel'),
-                  //       ),
-                  //       TextButton(
-                  //         onPressed: () {
-                  //           currentCustomer.deleteReview(gymid);
-                  //           User.message(context, false,
-                  //               'The review has been deleted');
-                  //           setState(() {
-                  //             userReview = null;
-                  //           });
-                  //           Navigator.pop(context, 'OK');
-                  //         },
-                  //         child: const Text('OK'),
-                  //       ),
-                  //     ],
-                  //   ),
-                  // );
-                  //   if (yousure == true) {}
                 ],
               ),
             ),
+            SizedBox(
+              height: 20,
+            ),
 
             StreamBuilder<QuerySnapshot>(
-              stream:
-                  //  Provider.of<Review>(context, listen: false)
-                  Review.getcomments(gym.gymId ?? ''),
+              stream: Review.getcomments(gym.gymId ?? ''),
               builder: (context, snapshot) {
                 reviews.clear();
+
                 if (snapshot.hasData) {
                   for (QueryDocumentSnapshot<Object?> comment
                       in snapshot.data!.docs) {
-                    if (comment.get('uid') == uid) {
-                      print('Fahad T');
-                      setState(() {
-                        userReview = Review.fromList(comment);
-                      });
-                    }
-                    // userReview = Review.fromList(comment);
-
-                    // Review.getUserreview(gymid, currentCustomer.uid)
-                    //     .then((value) {
-
-                    // setState(() {});
-
-                    else {
-                      print('Fahad F');
-                      userReview = null;
-                    }
-
-                    // ;
-                    // });
-                    // });
-
-                    // reviews.add(Provider.of<Review>(context, listen: false)
                     reviews.add(Review.fromList(comment));
                   }
-
-                  return ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: reviews.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return commentCard(
-                          review: reviews[index],
-                        );
-                      });
+// put user review
+                  currentUserRev(reviews);
+// show all reviews
+                  List<Widget> commentCards = [];
+                  for (var item in reviews) {
+                    commentCards.add(commentCard(review: item));
+                  }
+                  return Column(
+                    children: commentCards,
+                  );
                 }
-
-                // <3> Retrieve `List<DocumentSnapshot>` from snapshot
 
                 return CircularProgressIndicator(
                   color: colors.blue_base,
@@ -975,7 +489,7 @@ class _GymDescrptionState extends State<GymDescrption> {
           ],
         ),
       ),
-
+// End comments
       bottomNavigationBar: Row(
         children: [
           InkWell(
@@ -989,7 +503,8 @@ class _GymDescrptionState extends State<GymDescrption> {
                 height: 50,
                 child: Center(
                   child: Text(
-                    userReview != null ? 'Edit my review' : "Write a review",
+                    // userReview != null ? 'Edit my review' : "Write a review",
+                    'Comment',
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 16,
@@ -1006,7 +521,8 @@ class _GymDescrptionState extends State<GymDescrption> {
                 height: 50,
                 child: Center(
                   child: Text(
-                    userReview != null ? 'Edit my review' : "Write a review",
+                    // userReview != null ? 'Edit my review' : "Write a review",
+                    'Pay',
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 16,
@@ -1014,6 +530,207 @@ class _GymDescrptionState extends State<GymDescrption> {
                     ),
                   ),
                 )),
+          ),
+        ],
+      ),
+    );
+  }
+
+// ignore: slash_for_doc_comments
+/** 
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+////////////////////////////////////////////////// Methods //////////////////////////////////////////////////
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+ */
+// Search for user comment in th comment list
+  bool currentUserRev(List<Review> reviews) {
+    if (reviews == null) userReview = null;
+    for (Review userrev in reviews) {
+      if (userrev.uid == widget.userid) {
+        print('put data');
+
+        userReview = userrev;
+
+        return true;
+      }
+    }
+    userReview = null;
+    return false;
+  }
+
+  ///////////////////////////////////////////////////////////
+  // Review Form
+  void reviewForm(BuildContext bodyctx, Review? userReview, String? gymid) {
+    double rate = 0.0;
+    String comment = '';
+    final GlobalKey<FormState> _formKey = GlobalKey();
+    if (userReview != null) {
+      rate = userReview.rate;
+      comment = userReview.comment;
+    } else {
+      rate = 0.0;
+      comment = '';
+    }
+
+    showDialog(
+        context: bodyctx,
+        builder: (BuildContext cxt) {
+          return Center(
+            child: SingleChildScrollView(
+              child: AlertDialog(
+                  title: Text(
+                    "Write a review",
+                    style: TextStyle(
+                        fontFamily: 'Epilogue',
+                        fontSize: 18,
+                        color: colors.blue_base),
+                  ),
+                  content: SizedBox(
+                    width: MediaQuery.of(cxt).size.width,
+                    child: Column(children: [
+                      Form(
+                        key: _formKey,
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            RatingBar.builder(
+                              initialRating: rate,
+                              minRating: 0,
+                              direction: Axis.horizontal,
+                              allowHalfRating: false,
+                              itemCount: 5,
+                              itemPadding:
+                                  EdgeInsets.symmetric(horizontal: 2.0),
+                              itemBuilder: (context, _) => Icon(Icons.star,
+                                  size: 6, color: colors.yellow_base),
+                              onRatingUpdate: (rating) {
+                                rate = rating;
+                              },
+                            ),
+                            Padding(
+                              padding: EdgeInsets.all(8.0),
+                              child: TextFormField(
+                                  initialValue: comment,
+                                  maxLines: null,
+                                  obscureText: false,
+                                  keyboardType: TextInputType.emailAddress,
+                                  decoration: InputDecoration(
+                                    contentPadding: EdgeInsets.all(10),
+                                    hintText: "review (optional)",
+                                    hintStyle: TextStyle(
+                                      color: colors.hinttext,
+                                    ),
+                                  ),
+                                  validator: (value) {
+                                    // check if rate is null
+                                    if (rate == 0) {
+                                      return 'please add rate';
+                                    }
+                                  },
+                                  onChanged: (value) {
+                                    comment = value;
+                                  }),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ]),
+                  ),
+                  actions: <Widget>[
+                    Row(
+                      mainAxisAlignment: userReview != null
+                          ? MainAxisAlignment.spaceAround
+                          : MainAxisAlignment.start,
+                      children: [
+                        TextButton(
+                          style: TextButton.styleFrom(
+                            primary: colors.blue_base,
+                            // minimumSize:
+                          ),
+                          child: const Text(
+                            "Send",
+                            style: TextStyle(
+                              color: colors.blue_base,
+                              fontFamily: 'Roboto',
+                              fontSize: 18,
+                            ),
+                          ),
+                          onPressed: () {
+                            if (_formKey.currentState!.validate() &&
+                                rate != 0.0) {
+                              if (comment == '') {
+                                Review.addRate(gymid!, rate, widget.userid)
+                                    .whenComplete(() {
+                                  Navigator.pop(context);
+                                  AppUser.message(bodyctx, true, 'Thank you');
+                                });
+                              } else {
+                                Review.addReviwe(
+                                        gymid!, rate, comment, widget.userid)
+                                    .whenComplete(() {
+                                  Navigator.pop(context);
+                                  AppUser.message(bodyctx, true, 'Thank you');
+                                });
+                              }
+                            }
+                          },
+                        ),
+                        SizedBox(width: MediaQuery.of(bodyctx).size.width / 3),
+                        if (userReview != null)
+                          TextButton(
+                            style:
+                                TextButton.styleFrom(primary: colors.red_base),
+                            child: const Text(
+                              "Delete",
+                              style: TextStyle(
+                                color: colors.red_base,
+                                fontFamily: 'Roboto',
+                                fontSize: 18,
+                              ),
+                            ),
+                            onPressed: () {
+                              Navigator.pop(context);
+                              deleteSure(gymid!, userReview.uid);
+                            },
+                          )
+                      ],
+                    ),
+                  ]),
+            ),
+          );
+        });
+  }
+
+  // /////////////////////////////////////////////////////////////////////////
+  // Delet Comment
+  void deleteSure(String gymid, String uid) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: Text('Delete Review', style: TextStyle(color: colors.red_base)),
+        content: Text('Are you sure you want delete the Review? ',
+            style: TextStyle(color: colors.black60)),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child:
+                const Text('Cancel', style: TextStyle(color: colors.blue_base)),
+          ),
+          TextButton(
+            onPressed: () {
+              setState(() {
+                userReview = null;
+              });
+
+              Review.deleteReview(gymid, uid).whenComplete(() {
+                Navigator.pop(context, true);
+                AppUser.message(context, false, 'The review has been deleted');
+              });
+            },
+            child: const Text(
+              'yes',
+              style: TextStyle(color: colors.red_base),
+            ),
           ),
         ],
       ),

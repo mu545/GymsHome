@@ -1,4 +1,3 @@
-//import 'dart:io';
 import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
@@ -10,14 +9,12 @@ import 'package:gymhome/Styles.dart';
 import 'package:gymhome/models/Owner.dart';
 import 'package:gymhome/provider/customer.dart';
 import 'package:gymhome/widgets/welcome.dart';
-// import 'package:gymhome/models/review.dart';
+
 import 'package:image_picker/image_picker.dart';
-import 'package:provider/provider.dart';
 
 import '../GymOwnerwidgets/ownerhome.dart';
 import '../widgets/newhome.dart';
 
-// import 'package:shared_preferences/shared_preferences.dart';
 import 'package:gymhome/models/userdata.dart';
 
 class AppUser {
@@ -59,6 +56,12 @@ class AppUser {
     try {
       await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: email, password: password);
+      //   .then((user) {
+      // if (user != null) {
+      //   user.user!.sendEmailVerification();
+      // }
+      // });
+
       String userid = FirebaseAuth.instance.currentUser!.uid;
       String profilePicture =
           'https://firebasestorage.googleapis.com/v0/b/gymshome-ce96b.appspot.com/o/DefaultProfilePic.jpg?alt=media&token=e175c7f8-55f2-4575-8315-9bc5a527fd9b';
@@ -72,6 +75,9 @@ class AppUser {
         FirebaseFirestore.instance.collection("Customer").doc(userid).set({
           'name': _currentc.name,
           'email': _currentc.email,
+          'reviews': [],
+          'Likes': [],
+          'compare': [],
           'profilePicture': _currentc.profilePicture
         });
 

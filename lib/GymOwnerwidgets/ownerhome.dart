@@ -30,11 +30,11 @@ class _WidgtessState extends State<OwnerHome> {
   List<GymModel> _gymsList = [];
   var uid = FirebaseAuth.instance.currentUser!.uid;
 
-  Future? _getData() => _fireStore
-      .collection("gyms")
-      .where('ownerId', isEqualTo: uid)
-      .where('isWaiting', isEqualTo: false)
-      .get();
+  // Future? _getData() => _fireStore
+  //     .collection("gyms")
+  //     .where('ownerId', isEqualTo: uid)
+  //     .where('isWaiting', isEqualTo: false)
+  //     .get();
   // Future? _getDataByID() => _fireStore
   //     .collection("Gyms")
   //     .where("Gym id", isEqualTo: uid)
@@ -80,8 +80,12 @@ class _WidgtessState extends State<OwnerHome> {
       ),
       body: SingleChildScrollView(
         child: SafeArea(
-          child: FutureBuilder(
-            future: _getData(),
+          child: StreamBuilder(
+            stream: _fireStore
+                .collection("gyms")
+                .where('ownerId', isEqualTo: uid)
+                .where('isWaiting', isEqualTo: false)
+                .snapshots(),
             builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
               if (snapshot.hasData) {
                 _gymsList.clear();
@@ -93,6 +97,7 @@ class _WidgtessState extends State<OwnerHome> {
                   child: Column(
                     children: [
                       ListView.builder(
+                        controller: ScrollController(keepScrollOffset: true),
                         shrinkWrap: true,
                         itemCount: _gymsList.length,
                         itemBuilder: (BuildContext context, int index) {

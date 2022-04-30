@@ -8,7 +8,8 @@ import 'package:gymhome/models/gyms.dart';
 import 'package:gymhome/models/userdata.dart';
 import 'package:gymhome/provider/gymsitems.dart';
 import 'package:gymhome/widgets/GymCardCustomer.dart';
-import 'package:gymhome/widgets/empty.dart';
+import 'package:gymhome/widgets/PaymentScreen.dart';
+
 import 'package:gymhome/widgets/favorite.dart';
 import 'package:gymhome/widgets/gymdescrption.dart';
 import 'package:gymhome/widgets/gymgrid.dart';
@@ -21,6 +22,8 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../provider/customer.dart';
 import 'package:gymhome/widgets/newSearch.dart';
+
+import 'Sort.dart';
 
 class NewHome extends StatefulWidget {
   static const rounamed = '/ssssdff';
@@ -72,7 +75,7 @@ class _NewHomeState extends State<NewHome> {
         Viewcompare(
           userid: _uid ?? '',
         ),
-        Empty(
+        Sort(
           userid: _uid ?? '',
         ),
         Favorite(
@@ -169,18 +172,20 @@ class NewWidgetHome extends StatelessWidget {
 // final gymitem = shoefav ? prodactDate.favoriteitem : prodactDate.items;
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title: Center(
             child: Text(
           'HOME',
-          style: TextStyle(color: Colors.black),
+          style: TextStyle(color: Colors.white, fontFamily: "Epilogue"),
         )),
-        backgroundColor: Colors.white,
+        backgroundColor: colors.blue_base,
         elevation: 0,
         actions: <Widget>[
           Searchlesss(userID: userid),
           IconButton(
             onPressed: () {
-              // CloudFirestoreSearch();
+              Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => PaymentScreen()));
             },
             icon: Icon(
               Icons.more_vert,
@@ -320,6 +325,8 @@ class NewWidgetHome extends StatelessWidget {
                       child: Column(
                         children: [
                           ListView.builder(
+                            controller:
+                                ScrollController(keepScrollOffset: true),
                             shrinkWrap: true,
                             itemCount: _gymsList.length,
                             itemBuilder: (BuildContext context, int index) {

@@ -57,7 +57,7 @@ class AddGymInfo extends StatefulWidget {
 class _AddGymInfoState extends State<AddGymInfo> {
   var uid = FirebaseAuth.instance.currentUser!.uid;
 
-  bool? isMen = true;
+  bool? isMen;
   void whatIsGender() {
     if (widget.gym.gender == 'Men') {
       setState(() {

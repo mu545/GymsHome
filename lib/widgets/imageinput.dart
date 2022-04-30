@@ -3,6 +3,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_launcher_icons/main.dart';
 import 'package:gymhome/Styles.dart';
+import 'package:gymhome/widgets/edit.dart';
 import 'package:http/http.dart';
 import 'package:path/path.dart' as Path;
 import 'package:gymhome/models/GymModel.dart';
@@ -276,167 +277,169 @@ class _ImageInputState extends State<ImageInput> {
         backgroundColor: colors.blue_base,
         elevation: 0,
       ),
-      body: Column(
-        children: [
-          Container(
-            margin: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-            height: 500,
-            width: 390,
-            child: Card(
-              child: Column(
-                children: [
-                  Row(
-                    children: [
-                      Container(
-                        margin:
-                            EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                        child: Text(
-                          'Facilites',
-                          style: TextStyle(
-                              fontFamily: 'Epilogue',
-                              fontSize: 30,
-                              color: colors.blue_base),
-                        ),
-                      ),
-                    ],
-                  ),
-                  Column(
-                    children: [
-                      SizedBox(
-                        width: 8,
-                        height: 4,
-                      ),
-                      Row(
-                        children: [
-                          Container(
-                            height: 30,
-                            margin: EdgeInsets.only(left: 100),
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+              height: 500,
+              width: 390,
+              child: Card(
+                child: Column(
+                  children: [
+                    Row(
+                      children: [
+                        Container(
+                          margin: EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 10),
+                          child: Text(
+                            'Facilites',
+                            style: TextStyle(
+                                fontFamily: 'Epilogue',
+                                fontSize: 30,
                                 color: colors.blue_base),
-                            child: FlatButton.icon(
-                              icon: Icon(Icons.camera_alt_rounded,
-                                  color: Colors.white),
-                              onPressed: () {
-                                selectImages();
-                              },
-                              label: Text(
-                                "Upload Pictures",
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontFamily: 'Roboto',
-                                ),
-                              ),
-                            ),
                           ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 30,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Column(
+                        ),
+                      ],
+                    ),
+                    Column(
+                      children: [
+                        SizedBox(
+                          width: 8,
+                          height: 4,
+                        ),
+                        Row(
                           children: [
-                            widget.gym.images!.isNotEmpty ||
-                                    imageFileList!.isNotEmpty
-                                ? viewImages(context)
-                                : Container(),
-                            SizedBox(
-                              height: 25,
-                            ),
                             Container(
-                              margin: EdgeInsets.symmetric(horizontal: 10),
-                              child: Wrap(
-                                runSpacing: 10.0,
-                                spacing: 19.0,
-                                children: <Widget>[
-                                  facButton('Pool'),
-                                  facButton('Lounge Area'),
-                                  facButton('Wifi'),
-                                  facButton('Squash Courts'),
-                                  facButton('Spin Studio'),
-                                  facButton('Showrs'),
-                                  facButton('Basketball Field'),
-                                  facButton('Sauna'),
-                                  facButton('Rowing'),
-                                  facButton('Free Weights'),
-                                  facButton('Steam Room'),
-                                  facButton('Football Field'),
-                                ],
+                              height: 30,
+                              margin: EdgeInsets.only(left: 100),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(20),
+                                  color: colors.blue_base),
+                              child: FlatButton.icon(
+                                icon: Icon(Icons.camera_alt_rounded,
+                                    color: Colors.white),
+                                onPressed: () {
+                                  selectImages();
+                                },
+                                label: Text(
+                                  "Upload Pictures",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontFamily: 'Roboto',
+                                  ),
+                                ),
                               ),
                             ),
                           ],
                         ),
-                      ),
-                    ],
+                        SizedBox(
+                          height: 30,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            children: [
+                              widget.gym.images!.isNotEmpty ||
+                                      imageFileList!.isNotEmpty
+                                  ? viewImages(context)
+                                  : Container(),
+                              SizedBox(
+                                height: 25,
+                              ),
+                              Container(
+                                margin: EdgeInsets.symmetric(horizontal: 10),
+                                child: Wrap(
+                                  runSpacing: 10.0,
+                                  spacing: 19.0,
+                                  children: <Widget>[
+                                    facButton('Pool'),
+                                    facButton('Lounge Area'),
+                                    facButton('Wifi'),
+                                    facButton('Squash Courts'),
+                                    facButton('Spin Studio'),
+                                    facButton('Showrs'),
+                                    facButton('Basketball Field'),
+                                    facButton('Sauna'),
+                                    facButton('Rowing'),
+                                    facButton('Free Weights'),
+                                    facButton('Steam Room'),
+                                    facButton('Football Field'),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 30,
+            ),
+            Container(
+              width: 250,
+              height: 40,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  color: colors.blue_base),
+              child: FlatButton(
+                child: Text(
+                  'Next',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontFamily: 'Roboto',
                   ),
-                ],
-              ),
-            ),
-          ),
-          SizedBox(
-            height: 30,
-          ),
-          Container(
-            width: 250,
-            height: 40,
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                color: colors.blue_base),
-            child: FlatButton(
-              child: Text(
-                'Next',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontFamily: 'Roboto',
                 ),
+                onPressed: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => GymPrice(
+                            gym: widget.gym,
+                            imageFile: widget.imageFile,
+                            newGymImages: newGymImages,
+                          )));
+                },
+                padding: EdgeInsets.symmetric(horizontal: 30.0, vertical: 4),
+                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                textColor: Theme.of(context).primaryColor,
               ),
-              onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => GymPrice(
-                          gym: widget.gym,
-                          imageFile: widget.imageFile,
-                          newGymImages: newGymImages,
-                        )));
-              },
-              padding: EdgeInsets.symmetric(horizontal: 30.0, vertical: 4),
-              materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-              textColor: Theme.of(context).primaryColor,
             ),
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          Container(
-            width: 250,
-            height: 40,
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20), color: Colors.white),
-            child: FlatButton(
-              child: Text(
-                'Cancel',
-                style: TextStyle(
-                  color: colors.blue_base,
-                  fontFamily: 'Roboto',
+            SizedBox(
+              height: 10,
+            ),
+            Container(
+              width: 250,
+              height: 40,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20), color: Colors.white),
+              child: FlatButton(
+                child: Text(
+                  'Cancel',
+                  style: TextStyle(
+                    color: colors.blue_base,
+                    fontFamily: 'Roboto',
+                  ),
                 ),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  Navigator.of(context).pop();
+                },
+                padding: EdgeInsets.symmetric(horizontal: 30.0, vertical: 4),
+                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                textColor: Theme.of(context).primaryColor,
+                shape: RoundedRectangleBorder(
+                    side: BorderSide(
+                        color: colors.blue_base,
+                        width: 1,
+                        style: BorderStyle.solid),
+                    borderRadius: BorderRadius.circular(50)),
               ),
-              onPressed: () {
-                Navigator.of(context).pop();
-                Navigator.of(context).pop();
-              },
-              padding: EdgeInsets.symmetric(horizontal: 30.0, vertical: 4),
-              materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-              textColor: Theme.of(context).primaryColor,
-              shape: RoundedRectangleBorder(
-                  side: BorderSide(
-                      color: colors.blue_base,
-                      width: 1,
-                      style: BorderStyle.solid),
-                  borderRadius: BorderRadius.circular(50)),
-            ),
-          )
-        ],
+            )
+          ],
+        ),
       ),
     );
   }

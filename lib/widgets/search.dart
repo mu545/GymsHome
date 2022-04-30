@@ -1,5 +1,6 @@
 // import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:gymhome/Styles.dart';
 import 'package:gymhome/models/user.dart';
 // import 'package:gymhome/models/gyms.dart';
 // import 'package:gymhome/provider/gymsitems.dart';
@@ -27,7 +28,7 @@ class _SearchlesssState extends State<Searchlesss> {
     // final productdata = Provider.of<Gymsitems>(context);
 
     return FloatingActionButton(
-      backgroundColor: Colors.white,
+      backgroundColor: colors.blue_base,
       elevation: 0,
       tooltip: 'Search people',
       onPressed: () => showSearch(context: context, delegate: newSearch()

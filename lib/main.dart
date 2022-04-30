@@ -6,6 +6,7 @@ import 'package:firebase_core/firebase_core.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_launcher_icons/ios.dart';
+import 'package:gymhome/Admin/AdminHome.dart';
 import 'package:gymhome/GymOwnerwidgets/addgym.dart';
 import 'package:gymhome/GymOwnerwidgets/facilities.dart';
 import 'package:gymhome/GymOwnerwidgets/gymprice.dart';
@@ -21,6 +22,7 @@ import 'package:gymhome/provider/gymsitems.dart';
 import 'package:gymhome/models/review.dart';
 import 'package:gymhome/provider/womengymitems.dart';
 import 'package:gymhome/widgets/AddGym.dart';
+import 'package:gymhome/widgets/PaymentScreen.dart';
 import 'package:gymhome/widgets/add_image.dart';
 import 'package:gymhome/widgets/addimages.dart';
 // import 'package:gymhome/widgets/customer_list.dart';
@@ -80,7 +82,7 @@ class MyApp extends StatelessWidget {
       // UserData.isCustomer().then((value) => iscustomer = value);
       // print('uid = ');
       // print(uid);
-
+      // return welcome();
       if (iscustomer)
         return NewHome();
       else

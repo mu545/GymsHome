@@ -110,6 +110,7 @@ class AppUser {
       } else if (e.code == 'email-already-in-use') {
         messages = 'The account already exists for that email.';
       }
+
       message(cxt, false, messages);
     }
     //end catch

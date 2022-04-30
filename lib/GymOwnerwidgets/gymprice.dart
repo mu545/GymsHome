@@ -6,6 +6,7 @@ import 'package:gymhome/Styles.dart';
 import 'package:gymhome/models/gyms.dart';
 import 'package:gymhome/provider/gymsitems.dart';
 import 'package:gymhome/widgets/AddGym.dart';
+import 'package:gymhome/widgets/edit.dart';
 import 'package:provider/provider.dart';
 import '../models/GymModel.dart';
 
@@ -345,8 +346,17 @@ class _AddGymState extends State<GymPrice> {
                 ),
                 onPressed: () {
                   if (_form.currentState!.validate()) {
-                    Provider.of<AddGymMethods>(context, listen: false).addGym(
-                        widget.gym, widget.imageFile, widget.newGymImages);
+                    Provider.of<AddGymMethods>(context, listen: false)
+                        .addGym(
+                            widget.gym, widget.imageFile, widget.newGymImages)
+                        .whenComplete(() {
+                      if (widget.gym.gymId == '') {
+                        message(
+                            context, true, 'Thank you, your gym has been sent');
+                      } else {
+                        message(context, true, 'Your gym has been updated');
+                      }
+                    });
                     Navigator.pop(context);
                     Navigator.pop(context);
                     Navigator.pop(context);
@@ -373,7 +383,9 @@ class _AddGymState extends State<GymPrice> {
                   ),
                 ),
                 onPressed: () {
-                  Navigator.of(context).pushNamed('/');
+                  Navigator.of(context).pop();
+                  Navigator.of(context).pop();
+                  Navigator.of(context).pop();
                 },
                 padding: EdgeInsets.symmetric(horizontal: 30.0, vertical: 4),
                 materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,

@@ -1,7 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 // import 'package:search_page/search_page.dart';
 // import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:gymhome/models/GymModel.dart';
+import 'package:gymhome/models/user.dart';
 import 'package:gymhome/widgets/gymdescrption.dart';
 
 // class newSearch extends StatefulWidget {
@@ -13,6 +16,7 @@ import 'package:gymhome/widgets/gymdescrption.dart';
 class newSearch extends SearchDelegate {
   CollectionReference _firebaseFirestore =
       FirebaseFirestore.instance.collection('gyms');
+
   @override
   List<Widget> buildActions(BuildContext context) {
     return <Widget>[
@@ -67,14 +71,17 @@ class newSearch extends SearchDelegate {
                   // final g
                   final String name = data['name'];
                   final String gymIcon = data['imageURL'];
+                  GymModel fetchGym = GymModel.fromQ(data);
+
+                  // datas = dsajej(data)
                   // final String gymIcon = data['imageURL'];
                   return ListTile(
                     onTap: () {
-                      //            Navigator.of(context).push(MaterialPageRoute(
-                      // builder: (context) => GymDescrption(
-                      //       gym: gymInfo,
-                      //       currentUser: currentc,
-                      //     )));
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => GymDescrption(
+                                gym: fetchGym,
+                                userid: userId,
+                              )));
                     },
                     title: Text(name),
                     leading: CircleAvatar(

@@ -54,10 +54,23 @@ class GymModel {
     isComplete = json['isComplete'];
     gender = json['gender'];
   }
-  // GymModel.fromQ(QueryDocumentSnapshot<Object?> data){
-  //   return GymModel(data.get('images'), faciltrs, priceOndDay, priceOndMonth, priceOneYear, priceSixMonths, priceThreeMonts, imageURL, gymId, ownerId, name, description, location, isComplete, isWaiting);
-
-  // }
+  GymModel.fromQ(QueryDocumentSnapshot<Object?> data) {
+    images = data['images'];
+    faciltrs = data['faciltrs'];
+    priceOndDay = double.parse(data['One Day'].toString());
+    priceOndMonth = double.parse(data['One Month'].toString());
+    priceThreeMonts = double.parse(data['Three Months'].toString());
+    priceSixMonths = double.parse(data['Six Months'].toString());
+    priceOneYear = double.parse(data['One Year'].toString());
+    gymId = data['gymId'];
+    imageURL = data['imageURL'];
+    name = data['name'];
+    description = data['descrption'];
+    location = data['Location'];
+    isWaiting = data['isWaiting'];
+    isComplete = data['isComplete'];
+    gender = data['gender'];
+  }
 
   // Map<String, dynamic> toJson() {
   //   final Map<String, dynamic> data = new Map<String, dynamic>();

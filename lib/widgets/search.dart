@@ -1,5 +1,7 @@
 // import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:gymhome/Styles.dart';
+import 'package:gymhome/models/user.dart';
 // import 'package:gymhome/models/gyms.dart';
 // import 'package:gymhome/provider/gymsitems.dart';
 // import 'package:gymhome/widgets/gymdescrption.dart';
@@ -9,7 +11,8 @@ import 'package:gymhome/widgets/newSearch.dart';
 // import 'package:search_page/search_page.dart';
 
 class Searchlesss extends StatefulWidget {
-  const Searchlesss({Key? key}) : super(key: key);
+  Searchlesss({Key? key, required this.userID}) : super(key: key);
+  String userID;
   @override
   State<Searchlesss> createState() => _SearchlesssState();
 }
@@ -25,7 +28,7 @@ class _SearchlesssState extends State<Searchlesss> {
     // final productdata = Provider.of<Gymsitems>(context);
 
     return FloatingActionButton(
-      backgroundColor: Colors.white,
+      backgroundColor: colors.blue_base,
       elevation: 0,
       tooltip: 'Search people',
       onPressed: () => showSearch(context: context, delegate: newSearch()

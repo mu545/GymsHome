@@ -127,7 +127,7 @@ class AddGymMethods with ChangeNotifier {
         'Three Months': newGym.priceThreeMonts,
         'Six Months': newGym.priceSixMonths,
         'One Year': newGym.priceOneYear,
-        'isWaiting': false,
+        'isWaiting': true,
         'isComplete': false,
         'gender': newGym.gender
       }).whenComplete(() => getImageGallery(imageUrl, gym.id)

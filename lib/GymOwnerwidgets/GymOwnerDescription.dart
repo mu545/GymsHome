@@ -10,18 +10,20 @@ import 'package:gymhome/Styles.dart';
 import '../models/user.dart';
 import '../widgets/commentCard.dart';
 
-class GymDescrption extends StatefulWidget {
+class GymOwnerDescrption extends StatefulWidget {
   GymModel gym;
-  final String userid;
-  GymDescrption({Key? key, required this.gym, required this.userid})
-      : super(key: key);
+  //final String userid;
+  GymOwnerDescrption({
+    Key? key,
+    required this.gym,
+  }) : super(key: key);
   static const routeName = '/gym';
 
   @override
-  _GymDescrptionState createState() => _GymDescrptionState();
+  _GymOwnerDescrptionState createState() => _GymOwnerDescrptionState();
 }
 
-class _GymDescrptionState extends State<GymDescrption> {
+class _GymOwnerDescrptionState extends State<GymOwnerDescrption> {
 //
   // int pricess = 6;
   List<Review> reviews = [];
@@ -116,7 +118,7 @@ class _GymDescrptionState extends State<GymDescrption> {
               reviews.add(Review.fromList(comment));
             }
 // put user review
-            currentUserRev(reviews);
+// currentUserRev(reviews);
 // show all reviews
             List<Widget> commentCards = [];
             for (var item in reviews) {
@@ -202,7 +204,7 @@ class _GymDescrptionState extends State<GymDescrption> {
     // });
 
     GymModel gym = widget.gym;
-    String uid = widget.userid;
+    // String uid = widget.gym.ownerId!;
     double screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
@@ -233,7 +235,7 @@ class _GymDescrptionState extends State<GymDescrption> {
                           //  fontStyle: FontStyle.italic,
                           foreground: Paint()
                             ..style = PaintingStyle.stroke
-                            ..strokeWidth = 6
+                            ..strokeWidth = 1
                             ..color = colors.black100),
                     ),
                   ),
@@ -599,7 +601,7 @@ class _GymDescrptionState extends State<GymDescrption> {
         children: [
           InkWell(
             onTap: () {
-              reviewForm(context, userReview, widget.gym.gymId);
+              //   reviewForm(context, userReview, widget.gym.gymId);
             },
             // splashColor: colors.blue_base,
             child: Container(
@@ -609,7 +611,7 @@ class _GymDescrptionState extends State<GymDescrption> {
                 child: Center(
                   child: Text(
                     // userReview != null ? 'Edit my review' : "Write a review",
-                    'Comment',
+                    'Edit Gym',
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 16,
@@ -627,7 +629,7 @@ class _GymDescrptionState extends State<GymDescrption> {
                 child: Center(
                   child: Text(
                     // userReview != null ? 'Edit my review' : "Write a review",
-                    'Pay',
+                    'Delete Gym',
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 16,
@@ -635,207 +637,6 @@ class _GymDescrptionState extends State<GymDescrption> {
                     ),
                   ),
                 )),
-          ),
-        ],
-      ),
-    );
-  }
-
-// ignore: slash_for_doc_comments
-/** 
-\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-////////////////////////////////////////////////// Methods //////////////////////////////////////////////////
-\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
- */
-// Search for user comment in th comment list
-  bool currentUserRev(List<Review> reviews) {
-    if (reviews == null) userReview = null;
-    for (Review userrev in reviews) {
-      if (userrev.uid == widget.userid) {
-        print('put data');
-
-        userReview = userrev;
-
-        return true;
-      }
-    }
-    userReview = null;
-    return false;
-  }
-
-  ///////////////////////////////////////////////////////////
-  // Review Form
-  void reviewForm(BuildContext bodyctx, Review? userReview, String? gymid) {
-    double rate = 0.0;
-    String comment = '';
-    final GlobalKey<FormState> _formKey = GlobalKey();
-    if (userReview != null) {
-      rate = userReview.rate;
-      comment = userReview.comment;
-    } else {
-      rate = 0.0;
-      comment = '';
-    }
-
-    showDialog(
-        context: bodyctx,
-        builder: (BuildContext cxt) {
-          return Center(
-            child: SingleChildScrollView(
-              child: AlertDialog(
-                  title: Text(
-                    "Write a review",
-                    style: TextStyle(
-                        fontFamily: 'Epilogue',
-                        fontSize: 18,
-                        color: colors.blue_base),
-                  ),
-                  content: SizedBox(
-                    width: MediaQuery.of(cxt).size.width,
-                    child: Column(children: [
-                      Form(
-                        key: _formKey,
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: <Widget>[
-                            RatingBar.builder(
-                              initialRating: rate,
-                              minRating: 0,
-                              direction: Axis.horizontal,
-                              allowHalfRating: false,
-                              itemCount: 5,
-                              itemPadding:
-                                  EdgeInsets.symmetric(horizontal: 2.0),
-                              itemBuilder: (context, _) => Icon(Icons.star,
-                                  size: 6, color: colors.yellow_base),
-                              onRatingUpdate: (rating) {
-                                rate = rating;
-                              },
-                            ),
-                            Padding(
-                              padding: EdgeInsets.all(8.0),
-                              child: TextFormField(
-                                  initialValue: comment,
-                                  maxLines: null,
-                                  obscureText: false,
-                                  keyboardType: TextInputType.emailAddress,
-                                  decoration: InputDecoration(
-                                    contentPadding: EdgeInsets.all(10),
-                                    hintText: "review (optional)",
-                                    hintStyle: TextStyle(
-                                      color: colors.hinttext,
-                                    ),
-                                  ),
-                                  validator: (value) {
-                                    // check if rate is null
-                                    if (rate == 0) {
-                                      return 'please add rate';
-                                    }
-                                  },
-                                  onChanged: (value) {
-                                    comment = value;
-                                  }),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ]),
-                  ),
-                  actions: <Widget>[
-                    Row(
-                      mainAxisAlignment: userReview != null
-                          ? MainAxisAlignment.spaceAround
-                          : MainAxisAlignment.start,
-                      children: [
-                        TextButton(
-                          style: TextButton.styleFrom(
-                            primary: colors.blue_base,
-                            // minimumSize:
-                          ),
-                          child: const Text(
-                            "Send",
-                            style: TextStyle(
-                              color: colors.blue_base,
-                              fontFamily: 'Roboto',
-                              fontSize: 18,
-                            ),
-                          ),
-                          onPressed: () {
-                            if (_formKey.currentState!.validate() &&
-                                rate != 0.0) {
-                              if (comment == '') {
-                                Review.addRate(gymid!, rate, widget.userid)
-                                    .whenComplete(() {
-                                  Navigator.pop(context);
-                                  AppUser.message(bodyctx, true, 'Thank you');
-                                });
-                              } else {
-                                Review.addReviwe(
-                                        gymid!, rate, comment, widget.userid)
-                                    .whenComplete(() {
-                                  Navigator.pop(context);
-                                  AppUser.message(bodyctx, true, 'Thank you');
-                                });
-                              }
-                            }
-                          },
-                        ),
-                        SizedBox(width: MediaQuery.of(bodyctx).size.width / 3),
-                        if (userReview != null)
-                          TextButton(
-                            style:
-                                TextButton.styleFrom(primary: colors.red_base),
-                            child: const Text(
-                              "Delete",
-                              style: TextStyle(
-                                color: colors.red_base,
-                                fontFamily: 'Roboto',
-                                fontSize: 18,
-                              ),
-                            ),
-                            onPressed: () {
-                              Navigator.pop(context);
-                              deleteSure(gymid!, userReview.uid);
-                            },
-                          )
-                      ],
-                    ),
-                  ]),
-            ),
-          );
-        });
-  }
-
-  // /////////////////////////////////////////////////////////////////////////
-  // Delet Comment
-  void deleteSure(String gymid, String uid) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) => AlertDialog(
-        title: Text('Delete Review', style: TextStyle(color: colors.red_base)),
-        content: Text('Are you sure you want delete the Review? ',
-            style: TextStyle(color: colors.black60)),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context, false),
-            child:
-                const Text('Cancel', style: TextStyle(color: colors.blue_base)),
-          ),
-          TextButton(
-            onPressed: () {
-              setState(() {
-                userReview = null;
-              });
-
-              Review.deleteReview(gymid, uid).whenComplete(() {
-                Navigator.pop(context, true);
-                AppUser.message(context, false, 'The review has been deleted');
-              });
-            },
-            child: const Text(
-              'yes',
-              style: TextStyle(color: colors.red_base),
-            ),
           ),
         ],
       ),

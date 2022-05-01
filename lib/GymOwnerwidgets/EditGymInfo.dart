@@ -25,6 +25,7 @@ class EditGymInfo extends StatelessWidget {
       ),
     );
   }
+  //
 
   Widget PriceView(String duration, String price) {
     return Material(

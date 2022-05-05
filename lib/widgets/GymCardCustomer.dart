@@ -113,7 +113,7 @@ class GymCardCustomer extends StatelessWidget {
                             style: TextStyle(fontSize: 20, color: Colors.white),
                           ),
                           Text(
-                            gymInfo.location ?? '',
+                            gymInfo.location.toString(),
                             style: TextStyle(fontSize: 20, color: Colors.white),
                           ),
                         ],

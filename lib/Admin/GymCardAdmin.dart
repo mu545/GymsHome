@@ -1,9 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:gymhome/GymOwnerwidgets/EditGymInfo.dart';
-import 'package:gymhome/GymOwnerwidgets/location.dart';
+
 import 'package:gymhome/models/GymModel.dart';
-import 'package:gymhome/widgets/edit.dart';
 
 class GymCardAdmin extends StatelessWidget {
   const GymCardAdmin({
@@ -98,7 +95,7 @@ class GymCardAdmin extends StatelessWidget {
                           style: TextStyle(fontSize: 20, color: Colors.white),
                         ),
                         Text(
-                          gymInfo.location ?? '',
+                          gymInfo.location.toString(),
                           style: TextStyle(fontSize: 20, color: Colors.white),
                         ),
                       ],

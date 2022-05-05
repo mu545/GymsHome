@@ -15,6 +15,9 @@ class colors {
   static const red_base = Color.fromARGB(255, 234, 60, 47);
   static const red_smooth = Color.fromARGB(255, 254, 228, 226);
 
+  // for loading backgraound
+  static const loadback = Color.fromARGB(174, 255, 255, 255);
+
 // icon color
   static const iconscolor = Color.fromARGB(255, 120, 144, 156);
 //Fonts

@@ -211,16 +211,51 @@ class AppUser {
   //   });
   //   return false;
   // }
+  static warning(BuildContext cxt, String message) {
+    ScaffoldMessenger.of(cxt).showSnackBar(
+      SnackBar(
+        duration: Duration(seconds: 7),
+        content: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              Icons.warning_amber_rounded,
+              color: colors.yellow_base,
+            ),
+            Text(
+              message,
+              style: TextStyle(
+                  color: colors.yellow_base,
+                  fontFamily: 'Roboto',
+                  fontSize: 16),
+            ),
+          ],
+        ),
+        backgroundColor: colors.yellow_smooth,
+      ),
+    );
+  }
 
   static message(BuildContext cxt, bool iserror, String message) {
     ScaffoldMessenger.of(cxt).showSnackBar(
       SnackBar(
-        content: Text(
-          message,
-          style: TextStyle(
+        content: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              iserror ? Icons.check : Icons.error_outline,
               color: iserror ? colors.green_base : colors.red_base,
-              fontFamily: 'Roboto',
-              fontSize: 16),
+            ),
+            Text(
+              message,
+              style: TextStyle(
+                  color: iserror ? colors.green_base : colors.red_base,
+                  fontFamily: 'Roboto',
+                  fontSize: 16),
+            ),
+          ],
         ),
         backgroundColor: iserror ? colors.green_smooth : colors.red_smooth,
       ),

@@ -51,7 +51,7 @@ class _AddplaceState extends State<Addplace> {
                   SizedBox(
                     height: 10,
                   ),
-                  PlaceLocation()
+                  // PlaceLocation()
                 ],
               ),
             ),

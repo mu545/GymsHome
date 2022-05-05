@@ -56,14 +56,13 @@ class _NewHomeState extends State<NewHome> {
       //     uid: uid ?? '',
       //     name: name ?? '');
     });
-
-    getlist();
   }
 
   @override
   void initState() {
     super.initState();
     getUid();
+    getlist();
   }
 
   void getlist() {

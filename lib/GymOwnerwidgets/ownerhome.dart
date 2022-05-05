@@ -1,22 +1,19 @@
-import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:flutter/material.dart';
-import 'package:gymhome/GymOwnerwidgets/addgym.dart';
+
 import 'package:gymhome/GymOwnerwidgets/gymOwnerCard.dart';
 import 'package:gymhome/models/GymModel.dart';
-import 'package:gymhome/models/Gymprofile.dart';
+
 import 'package:gymhome/models/gyms.dart';
-import 'package:gymhome/provider/gymsitems.dart';
-import 'package:gymhome/widgets/AddGym.dart';
+
 import 'package:gymhome/widgets/edit.dart';
-import 'package:gymhome/widgets/gymdescrption.dart';
-import 'package:gymhome/widgets/gymgrid.dart';
-import 'package:gymhome/widgets/newhome.dart';
-import 'package:http/http.dart';
+
 import 'package:provider/provider.dart';
 import 'package:gymhome/Styles.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../widgets/locationmap.dart';
 
 class OwnerHome extends StatefulWidget with ChangeNotifier {
   static const rounamed = '/shshs';
@@ -28,8 +25,22 @@ class OwnerHome extends StatefulWidget with ChangeNotifier {
 class _WidgtessState extends State<OwnerHome> {
   final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
   List<GymModel> _gymsList = [];
-  var uid = FirebaseAuth.instance.currentUser!.uid;
+  List<Placelocation> _gymsaddress = [];
+  String? uid;
 
+  void getUid() async {
+    SharedPreferences _userdata = await SharedPreferences.getInstance();
+
+    setState(() {
+      uid = _userdata.getString('uid');
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getUid();
+  }
   // Future? _getData() => _fireStore
   //     .collection("gyms")
   //     .where('ownerId', isEqualTo: uid)
@@ -89,8 +100,12 @@ class _WidgtessState extends State<OwnerHome> {
             builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
               if (snapshot.hasData) {
                 _gymsList.clear();
+                _gymsaddress.clear();
                 snapshot.data.docs.forEach((element) {
                   _gymsList.add(GymModel.fromJson(element.data()));
+
+                  _gymsaddress
+                      .add(Placelocation.getListAddress(element.data()));
                 });
                 return Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -102,6 +117,7 @@ class _WidgtessState extends State<OwnerHome> {
                         itemCount: _gymsList.length,
                         itemBuilder: (BuildContext context, int index) {
                           return GymCard(
+                            gymsaddress: _gymsaddress,
                             gymInfo: _gymsList[index],
                           );
                         },
@@ -118,9 +134,10 @@ class _WidgtessState extends State<OwnerHome> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           GymModel _gym = GymModel(
-              [], [], 0, 0, 0, 0, 0, '', '', '', '', '', '', false, true, '');
+              [], [], 0, 0, 0, 0, 0, '', '', '', '', '', null, false, true, '');
           Navigator.of(context).push(MaterialPageRoute(
               builder: (context) => AddGymInfo(
+                    gymsaddress: _gymsaddress,
                     gym: _gym,
                     imageFile: null,
                     oldGym: false,

@@ -1,26 +1,18 @@
 import 'dart:io';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
-import 'package:gymhome/GymOwnerwidgets/facilities.dart';
-import 'package:gymhome/GymOwnerwidgets/gymprice.dart';
-import 'package:gymhome/GymOwnerwidgets/location.dart';
-import 'package:gymhome/GymOwnerwidgets/ownerhome.dart';
 import 'package:gymhome/Styles.dart';
 import 'package:gymhome/models/GymModel.dart';
 import 'package:gymhome/models/gyms.dart';
-import 'package:gymhome/models/user.dart';
-import 'package:gymhome/provider/gymsitems.dart';
-import 'package:gymhome/widgets/checkbox.dart';
+
 import 'package:gymhome/widgets/imageinput.dart';
-import 'package:gymhome/widgets/newhome.dart';
-import 'package:gymhome/widgets/AddGym.dart';
-import 'package:gymhome/widgets/welcome.dart';
+
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
+
+import 'locationmap.dart';
 
 message(BuildContext cxt, bool iserror, String message) {
   ScaffoldMessenger.of(cxt).showSnackBar(
@@ -41,11 +33,13 @@ class AddGymInfo extends StatefulWidget {
   GymModel gym;
   File? imageFile;
   bool oldGym;
+  List<Placelocation> gymsaddress;
   AddGymInfo(
       {Key? key,
       required this.gym,
       required this.imageFile,
-      required this.oldGym})
+      required this.oldGym,
+      required this.gymsaddress})
       : super(key: key);
   static const routeName = '/sawedd';
   @override
@@ -340,6 +334,7 @@ class _AddGymInfoState extends State<AddGymInfo> {
                     List<File?> imgs = [];
                     Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) => ImageInput(
+                              gymsaddress: widget.gymsaddress,
                               imagesFile: imgs,
                               gym: widget.gym,
                               imageFile: widget.imageFile,

@@ -5,51 +5,35 @@
 import 'package:firebase_core/firebase_core.dart';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_launcher_icons/ios.dart';
-import 'package:gymhome/Admin/AdminHome.dart';
-import 'package:gymhome/GymOwnerwidgets/addgym.dart';
+
 import 'package:gymhome/GymOwnerwidgets/facilities.dart';
-import 'package:gymhome/GymOwnerwidgets/gymprice.dart';
-import 'package:gymhome/GymOwnerwidgets/location.dart';
+
 import 'package:gymhome/GymOwnerwidgets/ownerhome.dart';
-import 'package:gymhome/authintactions/auth.dart';
-import 'package:gymhome/models/GymModel.dart';
-import 'package:gymhome/provider/customer.dart';
+
 import 'package:gymhome/models/favorite.dart';
 import 'package:gymhome/models/gyms.dart';
 
 import 'package:gymhome/provider/gymsitems.dart';
-import 'package:gymhome/models/review.dart';
+
 import 'package:gymhome/provider/womengymitems.dart';
 import 'package:gymhome/widgets/AddGym.dart';
-import 'package:gymhome/widgets/PaymentScreen.dart';
-import 'package:gymhome/widgets/add_image.dart';
-import 'package:gymhome/widgets/addimages.dart';
+
 // import 'package:gymhome/widgets/customer_list.dart';
-import 'package:gymhome/widgets/edit.dart';
-import 'package:gymhome/widgets/imageinput.dart';
+
 // import 'package:gymhome/widgets/reviwe.dart';
-import 'package:gymhome/widgets/gymdescrption.dart';
+
 import 'package:gymhome/widgets/help.dart';
-import 'package:gymhome/widgets/placeloc.dart';
-import 'package:gymhome/widgets/profile.dart';
+
 import 'package:gymhome/widgets/newhome.dart';
 import 'package:gymhome/widgets/onerdescrption.dart';
 import 'package:gymhome/widgets/pic.dart';
-import 'package:gymhome/widgets/placess.dart';
-import 'package:gymhome/widgets/profile.dart';
-import 'package:gymhome/widgets/resetpass.dart';
-
-import 'package:gymhome/widgets/signup.dart';
-import 'package:gymhome/widgets/ssss.dart';
 
 import 'package:gymhome/widgets/welcome.dart';
-import 'package:gymhome/widgets/womengym.dart';
+
 import 'package:provider/provider.dart';
-import 'package:gymhome/widgets/resetpass.dart';
-import 'package:gymhome/models/user.dart';
+
 // user data
-import 'package:gymhome/models/userdata.dart';
+
 import 'package:shared_preferences/shared_preferences.dart';
 
 bool? iscustomer;
@@ -85,6 +69,7 @@ class MyApp extends StatelessWidget {
       // return welcome();
       if (iscustomer)
         return NewHome();
+      // return Location();
       else
         return OwnerHome();
     }
@@ -157,7 +142,7 @@ class MyApp extends StatelessWidget {
                     // Comparepage.routeName: (ctx) => Comparepage(),
                     // GymDescrption.routeName: (ctx) => GymDescrption(),
                     OwnerDescrption.routeName: (ctx) => OwnerDescrption(),
-                    Location.routenamed: (ctx) => Location(),
+                    // Location.routenamed: (ctx) => Location(),
                     //      AddGymInfo.routeName: (ctx) => AddGymInfo(gym:),
                     Facilites.routenames: (ctx) => Facilites(),
                     Addplace.routeName: (ctx) => Addplace(),

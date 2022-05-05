@@ -1,23 +1,34 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:gymhome/GymOwnerwidgets/EditGymInfo.dart';
-import 'package:gymhome/GymOwnerwidgets/location.dart';
+
 import 'package:gymhome/models/GymModel.dart';
 import 'package:gymhome/widgets/edit.dart';
+import '../widgets/locationmap.dart';
 
 class GymCard extends StatelessWidget {
-  const GymCard({
+  List<Placelocation> gymsaddress;
+  GymCard({
     Key? key,
+    required this.gymsaddress,
     required this.gymInfo,
   }) : super(key: key);
   final GymModel gymInfo;
+  String? distance;
+  @override
+  void getDistance() async {
+    distance = await Placelocation.calculateDistance(gymInfo.location!);
+    print(distance);
+  }
 
   @override
   Widget build(BuildContext context) {
+    getDistance();
+    // Placelocation.calculateDistance(gymInfo.location!)
+    //     .then((value) => distance = value);
     return InkWell(
       onTap: () {
         Navigator.of(context).push(MaterialPageRoute(
             builder: (context) => AddGymInfo(
+                  gymsaddress: gymsaddress,
                   gym: gymInfo,
                   imageFile: null,
                   oldGym: true,
@@ -110,7 +121,7 @@ class GymCard extends StatelessWidget {
                           style: TextStyle(fontSize: 20, color: Colors.white),
                         ),
                         Text(
-                          gymInfo.location ?? '',
+                          distance ?? 'No result here wait to fix ',
                           style: TextStyle(fontSize: 20, color: Colors.white),
                         ),
                       ],

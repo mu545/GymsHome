@@ -314,7 +314,13 @@ class _GymDescrptionState extends State<GymDescrption> {
                           ),
                           Container(
                               margin: EdgeInsets.only(right: 10),
-                              child: Text('Based on 320 reviews')),
+                              child: Text(
+                                widget.gym.reviews == 0
+                                    ? 'No reviews yet'
+                                    : "Based on " +
+                                        widget.gym.reviews.toString() +
+                                        " reviews",
+                              )),
                         ],
                       ),
                     ],

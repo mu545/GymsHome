@@ -175,27 +175,29 @@ class _GymCardCustomerState extends State<GymCardCustomer> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            showPrice(),
+                            showPrice() + ' SAR',
                             style: TextStyle(fontSize: 20, color: Colors.white),
                           ),
-                          Text(
-                            'Rate',
-                            style: TextStyle(fontSize: 20, color: Colors.white),
-                          ),
+                          Row(
+                            children: [
+                              Icon(
+                                Icons.star,
+                                size: 45,
+                                color: colors.yellow_base,
+                              ),
+                              Text(
+                                ' ' + widget.gymInfo.avg_rate.toString(),
+                                style: TextStyle(
+                                    fontSize: 20, color: Colors.white),
+                              ),
+                            ],
+                          )
                         ],
                       ),
                       SizedBox(height: 10),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Expanded(
-                            child: Text(
-                              "Based on 320 reviews",
-                              overflow: TextOverflow.ellipsis,
-                              style:
-                                  TextStyle(fontSize: 18, color: Colors.white),
-                            ),
-                          ),
                           Row(
                             children: [
                               Text(
@@ -210,6 +212,16 @@ class _GymCardCustomerState extends State<GymCardCustomer> {
                                 color: Colors.white,
                               )
                             ],
+                          ),
+                          ///////
+                          Text(
+                            widget.gymInfo.reviews == 0
+                                ? 'No reviews yet'
+                                : "Based on " +
+                                    widget.gymInfo.reviews.toString() +
+                                    " reviews",
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(fontSize: 18, color: Colors.white),
                           ),
                         ],
                       ),

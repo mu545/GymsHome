@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gymhome/models/GymModel.dart';
-
+import '../Styles.dart';
 import '../widgets/locationmap.dart';
 import 'GymOwnerDescription.dart';
 
@@ -139,26 +139,29 @@ class _GymCardState extends State<GymCard> {
                       children: [
                         Text(
                           //    price ??
-                          widget.gymInfo.priceOneDay.toString(),
+                          widget.gymInfo.priceOneDay.toString() + ' SAR',
                           style: TextStyle(fontSize: 20, color: Colors.white),
                         ),
-                        Text(
-                          'rate here',
-                          style: TextStyle(fontSize: 20, color: Colors.white),
-                        ),
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.star,
+                              size: 45,
+                              color: colors.yellow_base,
+                            ),
+                            Text(
+                              ' ' + widget.gymInfo.avg_rate.toString(),
+                              style:
+                                  TextStyle(fontSize: 20, color: Colors.white),
+                            ),
+                          ],
+                        )
                       ],
                     ),
                     SizedBox(height: 10),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Expanded(
-                          child: Text(
-                            "Based on 320 reviews",
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(fontSize: 18, color: Colors.white),
-                          ),
-                        ),
                         Row(
                           children: [
                             Text(
@@ -173,6 +176,15 @@ class _GymCardState extends State<GymCard> {
                               color: Colors.white,
                             )
                           ],
+                        ),
+                        Text(
+                          widget.gymInfo.reviews == 0
+                              ? 'No reviews yet'
+                              : "Based on " +
+                                  widget.gymInfo.reviews.toString() +
+                                  " reviews",
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(fontSize: 18, color: Colors.white),
                         ),
                       ],
                     ),

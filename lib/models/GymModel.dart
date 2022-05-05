@@ -14,7 +14,7 @@ class GymModel {
   String? ownerId;
   String? name;
   String? description;
-  String? location;
+  GeoPoint? location;
   bool? isWaiting;
   bool? isComplete;
   String? gender;

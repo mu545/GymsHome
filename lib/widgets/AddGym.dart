@@ -1,12 +1,10 @@
-import 'dart:ffi';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:gymhome/models/GymModel.dart';
 import 'package:path/path.dart' as Path;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:gymhome/models/Gymprofile.dart';
-import 'package:image_picker/image_picker.dart';
+
 import 'dart:io';
 import '../models/gyms.dart';
 
@@ -91,6 +89,12 @@ class AddGymMethods with ChangeNotifier {
   //   }
   //   return false;
   // }
+  // Future addLocation(String gymId, GeoPoint location) async {
+  //   FirebaseFirestore.instance.collection("gyms").doc(gymId).update({
+  //     'Location': location
+
+  //   });
+  // }
 
   Future addGym(
       GymModel newGym, File? imageUrl, List<File> newGymImages, prices) async {
@@ -98,7 +102,7 @@ class AddGymMethods with ChangeNotifier {
       var gym = FirebaseFirestore.instance.collection('gyms').doc(newGym.gymId);
       gym.update({
         'prices': prices,
-        'Location': '7KM',
+        'Location': newGym.location,
         'descrption': newGym.description,
         'faciltrs': newGym.faciltrs,
         'name': newGym.name,
@@ -120,7 +124,7 @@ class AddGymMethods with ChangeNotifier {
         'ownerId': userId,
         'images': [],
         'imageURL': 'newGym.imageURL',
-        'Location': '7KM',
+        'Location': newGym.location,
         'descrption': newGym.description,
         'faciltrs': newGym.faciltrs,
         'name': newGym.name,

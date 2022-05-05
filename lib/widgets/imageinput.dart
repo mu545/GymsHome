@@ -1,34 +1,29 @@
 import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter_launcher_icons/main.dart';
+
+import 'package:gymhome/GymOwnerwidgets/location.dart';
 import 'package:gymhome/Styles.dart';
-import 'package:gymhome/widgets/edit.dart';
-import 'package:http/http.dart';
+
 import 'package:path/path.dart' as Path;
 import 'package:gymhome/models/GymModel.dart';
-import 'package:gymhome/models/Gymprofile.dart';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:gymhome/GymOwnerwidgets/gymprice.dart';
-import 'package:gymhome/widgets/AddGym.dart';
-import 'package:gymhome/widgets/addimages.dart';
-import 'package:gymhome/widgets/gymdescrption.dart';
+
 import 'package:image_picker/image_picker.dart';
-import 'package:photo_view/photo_view.dart';
-import 'package:path_provider/path_provider.dart' as syspath;
-import 'package:provider/provider.dart';
-import 'package:transparent_image/transparent_image.dart';
-import 'package:flutter/src/rendering/box.dart';
-import 'add_image.dart';
+
 import 'package:gymhome/GymOwnerwidgets/ManageImages.dart';
 
+import 'locationmap.dart';
+
 class ImageInput extends StatefulWidget {
+  List<Placelocation> gymsaddress;
   GymModel gym;
   File? imageFile;
   List<File?> imagesFile;
   ImageInput({
     Key? key,
+    required this.gymsaddress,
     required this.imagesFile,
     required this.gym,
     required this.imageFile,
@@ -68,7 +63,7 @@ class _ImageInputState extends State<ImageInput> {
       );
     } else {
       GymModel _gymProfile = GymModel([], [], [], 0, 0, 0, 0, 0, '', '', '', '',
-          '', '', false, true, '', 0);
+          '', null, false, true, '', 0);
       return StreamBuilder(
         stream: _fireStore.collection('gyms').doc(widget.gym.gymId).snapshots(),
         builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
@@ -406,11 +401,22 @@ class _ImageInputState extends State<ImageInput> {
                 ),
                 onPressed: () {
                   Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => GymPrice(
+                      builder: (context) => Location(
+                            gymsaddress: widget.gymsaddress,
                             gym: widget.gym,
                             imageFile: widget.imageFile,
                             newGymImages: newGymImages,
+
+                            // imageFile: widget.imageFile,
+                            // newGymImages: newGymImages,
                           )));
+
+                  // Navigator.of(context).push(MaterialPageRoute(
+                  // builder: (context) => GymPrice(
+                  //           gym: widget.gym,
+                  //           imageFile: widget.imageFile,
+                  //           newGymImages: newGymImages,
+                  //         )));
                 },
                 padding: EdgeInsets.symmetric(horizontal: 30.0, vertical: 4),
                 materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,

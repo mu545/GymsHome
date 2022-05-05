@@ -84,7 +84,7 @@ class _welcomeState extends State<welcome> {
                         "all gyms in one place",
                         style: TextStyle(
                           fontFamily: 'Epilogue',
-                          fontSize: 14,
+                          fontSize: 17,
                           color: Color.fromARGB(255, 255, 208, 79),
                         ),
                       )
@@ -199,7 +199,7 @@ class _welcomeState extends State<welcome> {
                             style: ElevatedButton.styleFrom(
                                 primary: colors.blue_base,
                                 onPrimary: colors.blue_smooth,
-                                minimumSize: Size(250, 40)),
+                                minimumSize: Size(devicsize.width, 40)),
                             onPressed: () async {
                               FocusScope.of(context).unfocus();
 

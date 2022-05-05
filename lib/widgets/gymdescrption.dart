@@ -4,6 +4,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:gymhome/GymOwnerwidgets/gymprice.dart';
 import 'package:gymhome/models/GymModel.dart';
+import 'package:gymhome/widgets/locationmap.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:gymhome/models/review.dart';
 import 'package:gymhome/Styles.dart';
@@ -22,7 +23,15 @@ class GymDescrption extends StatefulWidget {
 }
 
 class _GymDescrptionState extends State<GymDescrption> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getDistance();
+  }
+
 //
+  String distance = 'Loading...';
   // int pricess = 6;
   List<Review> reviews = [];
   Review? userReview;
@@ -55,6 +64,14 @@ class _GymDescrptionState extends State<GymDescrption> {
       //     window = '';
       //   });
     }
+  }
+
+  void getDistance() async {
+    final _dis = await Placelocation.calculateDistance(widget.gym.location!);
+    if (mounted)
+      setState(() {
+        distance = _dis;
+      });
   }
 
   Widget buildIndicator() => AnimatedSmoothIndicator(
@@ -275,7 +292,7 @@ class _GymDescrptionState extends State<GymDescrption> {
                             width: 15,
                           ),
                           Text(
-                            '55 Km',
+                            distance,
                             style: TextStyle(fontSize: 20),
                           ),
                           Icon(Icons.directions_walk_outlined)

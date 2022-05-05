@@ -29,9 +29,10 @@ class _GymCardState extends State<GymCard> {
   void getDistance() async {
     final _dis =
         await Placelocation.calculateDistance(widget.gymInfo.location!);
-    setState(() {
-      distance = _dis;
-    });
+    if (mounted)
+      setState(() {
+        distance = _dis;
+      });
 
     // print(distance);
   }

@@ -5,6 +5,7 @@ import 'package:gymhome/GymOwnerwidgets/location.dart';
 import 'package:gymhome/Styles.dart';
 import 'package:gymhome/models/GymModel.dart';
 import 'package:gymhome/widgets/gymdescrption.dart';
+import 'package:gymhome/widgets/locationmap.dart';
 
 import '../provider/customer.dart';
 
@@ -24,6 +25,7 @@ class GymCardCustomer extends StatefulWidget {
 }
 
 class _GymCardCustomerState extends State<GymCardCustomer> {
+  String distance = 'Loading...';
   String price = '';
   String showPrice() {
     switch (widget.price) {
@@ -57,7 +59,28 @@ class _GymCardCustomerState extends State<GymCardCustomer> {
     }
   }
 
+  void getDistance() async {
+    final _dis =
+        await Placelocation.calculateDistance(widget.gymInfo.location!);
+    if (mounted)
+      setState(() {
+        distance = _dis;
+      });
+  }
+
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getDistance();
+    // getDistance();
+  }
+
+  // @override
+  // void dispose() {
+  //   super.dispose();
+  // }
+
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -156,7 +179,7 @@ class _GymCardCustomerState extends State<GymCardCustomer> {
                             style: TextStyle(fontSize: 20, color: Colors.white),
                           ),
                           Text(
-                            widget.gymInfo.location!.longitude.toString(),
+                            'Rate',
                             style: TextStyle(fontSize: 20, color: Colors.white),
                           ),
                         ],
@@ -176,7 +199,7 @@ class _GymCardCustomerState extends State<GymCardCustomer> {
                           Row(
                             children: [
                               Text(
-                                "50 Km",
+                                distance,
                                 style: TextStyle(
                                     fontSize: 20,
                                     color: Colors.white,

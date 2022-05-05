@@ -151,7 +151,7 @@ class _PlaceLocationState extends State<PlaceLocation> {
                         borderRadius: BorderRadius.circular(20),
                         color: colors.blue_base,
                       ),
-                      child: FlatButton(
+                      child: ElevatedButton(
                         child: Text(
                           'Next',
                           style: TextStyle(color: Colors.white),
@@ -171,8 +171,16 @@ class _PlaceLocationState extends State<PlaceLocation> {
                           AppUser.message(
                               context, true, 'Gym address has been seved');
                         },
-                        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                        textColor: Theme.of(context).primaryColor,
+                        style: ElevatedButton.styleFrom(
+                          primary: colors.blue_base,
+                          onPrimary: colors.blue_smooth,
+                          shape: RoundedRectangleBorder(
+                              side: BorderSide(
+                                  color: colors.blue_base,
+                                  width: 1,
+                                  style: BorderStyle.solid),
+                              borderRadius: BorderRadius.circular(50)),
+                        ),
                       ),
                     ),
                     SizedBox(
@@ -184,7 +192,7 @@ class _PlaceLocationState extends State<PlaceLocation> {
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(20),
                           color: Colors.white),
-                      child: FlatButton(
+                      child: ElevatedButton(
                         child: Text(
                           'Cancel',
                           style: TextStyle(
@@ -196,14 +204,24 @@ class _PlaceLocationState extends State<PlaceLocation> {
                           Navigator.pop(context);
                           Navigator.pop(context);
                         },
-                        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                        textColor: Theme.of(context).primaryColor,
-                        shape: RoundedRectangleBorder(
-                            side: BorderSide(
-                                color: colors.blue_base,
-                                width: 1,
-                                style: BorderStyle.solid),
-                            borderRadius: BorderRadius.circular(50)),
+                        // materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                        style: ElevatedButton.styleFrom(
+                          primary: Colors.white,
+                          onPrimary: colors.blue_smooth,
+                          shape: RoundedRectangleBorder(
+                              side: BorderSide(
+                                  color: colors.blue_base,
+                                  width: 1,
+                                  style: BorderStyle.solid),
+                              borderRadius: BorderRadius.circular(50)),
+                        ),
+                        // textColor: Theme.of(context).primaryColor,
+                        // shape: RoundedRectangleBorder(
+                        //     side: BorderSide(
+                        //         color: colors.blue_base,
+                        //         width: 1,
+                        //         style: BorderStyle.solid),
+                        //     borderRadius: BorderRadius.circular(50)),
                       ),
                     )
                   ],

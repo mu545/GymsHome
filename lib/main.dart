@@ -68,6 +68,7 @@ class MyApp extends StatelessWidget {
       // print('uid = ');
       // print(uid);
       // return welcome();
+      // return NewHome();
       if (iscustomer)
         return NewHome();
       // return Location();

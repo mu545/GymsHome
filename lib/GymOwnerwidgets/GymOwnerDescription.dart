@@ -74,9 +74,10 @@ class _GymOwnerDescrptionState extends State<GymOwnerDescrption> {
 
   void getDistance() async {
     final _dis = await Placelocation.calculateDistance(widget.gym.location!);
-    setState(() {
-      distance = _dis;
-    });
+    if (mounted)
+      setState(() {
+        distance = _dis;
+      });
   }
 
   Widget buildIndicator() => AnimatedSmoothIndicator(

@@ -94,7 +94,7 @@ class GymCardAdmin extends StatelessWidget {
                       children: [
                         Text(
                           //    price ??
-                          gymInfo.priceOndDay.toString(),
+                          gymInfo.priceOneDay.toString(),
                           style: TextStyle(fontSize: 20, color: Colors.white),
                         ),
                         Text(

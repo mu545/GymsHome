@@ -67,8 +67,8 @@ class _ImageInputState extends State<ImageInput> {
             }),
       );
     } else {
-      GymModel _gymProfile = GymModel(
-          [], [], 0, 0, 0, 0, 0, '', '', '', '', '', '', false, true, '', 0);
+      GymModel _gymProfile = GymModel([], [], [], 0, 0, 0, 0, 0, '', '', '', '',
+          '', '', false, true, '', 0);
       return StreamBuilder(
         stream: _fireStore.collection('gyms').doc(widget.gym.gymId).snapshots(),
         builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
@@ -148,23 +148,33 @@ class _ImageInputState extends State<ImageInput> {
 
   Widget AlertDialogs(img) {
     return AlertDialog(
-      title: Text('Delete Image?'),
+      title: Text(
+        'Delete Image?',
+        style: TextStyle(color: colors.red_base),
+      ),
+      content: Text('Are you sure you want to delete this image?'),
       actions: [
         FlatButton(
             onPressed: () {
               deleteImg(img);
               Navigator.pop(context);
             },
-            child: Text('Delete')),
+            child: Text(
+              'Yes',
+              style: TextStyle(color: colors.red_base),
+            )),
         FlatButton(
             onPressed: () {
               Navigator.pop(context);
             },
-            child: Text('Cancel')),
+            child: Text(
+              'No',
+              style: TextStyle(color: colors.blue_base),
+            )),
       ],
       clipBehavior: Clip.antiAliasWithSaveLayer,
       elevation: 24,
-      backgroundColor: colors.blue_smooth,
+      // backgroundColor: colors.blue_smooth,
     );
   }
 

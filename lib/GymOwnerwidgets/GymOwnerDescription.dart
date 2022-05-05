@@ -1,9 +1,12 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:gymhome/GymOwnerwidgets/gymprice.dart';
 import 'package:gymhome/models/GymModel.dart';
+import 'package:gymhome/widgets/edit.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:gymhome/models/review.dart';
 import 'package:gymhome/Styles.dart';
@@ -63,8 +66,13 @@ class _GymOwnerDescrptionState extends State<GymOwnerDescrption> {
         activeIndex: activeIndex,
         count: widget.gym.images!.length,
         onDotClicked: animateToSlide,
-        effect: JumpingDotEffect(
-            activeDotColor: colors.blue_base, dotColor: Colors.grey),
+        effect: ScrollingDotsEffect(
+          //   strokeWidth: 100,
+          dotHeight: 10,
+          dotWidth: 10,
+          activeDotColor: colors.blue_base,
+          dotColor: Colors.grey,
+        ),
       );
 
   void animateToSlide(int index) => controller.animateToPage(index);
@@ -319,22 +327,27 @@ class _GymOwnerDescrptionState extends State<GymOwnerDescrption> {
                             borderRadius: BorderRadius.circular(5)),
                         child: Row(
                           children: [
-                            gym.priceOndDay != 0
+                            gym.priceOneDay != 0
                                 ? FlatButton(
                                     minWidth: 5,
                                     child: Text(
                                       'Day',
                                       style: TextStyle(
-                                          color: Colors.black, fontSize: 13),
+                                          color: currentPrice ==
+                                                  gym.priceOneDay.toString()
+                                              ? Colors.white
+                                              : Colors.black,
+                                          fontSize: 13),
                                     ),
                                     color: currentPrice ==
-                                            gym.priceOndDay.toString()
-                                        ? colors.blue_smooth
+                                            gym.priceOneDay.toString()
+                                        //do this for all
+                                        ? Color.fromARGB(195, 71, 153, 183)
                                         : Colors.white,
                                     onPressed: () {
                                       setState(() {
                                         currentPrice =
-                                            gym.priceOndDay.toString();
+                                            gym.priceOneDay.toString();
                                       });
                                     },
                                   )
@@ -346,22 +359,26 @@ class _GymOwnerDescrptionState extends State<GymOwnerDescrption> {
                                       style: TextStyle(color: Colors.grey),
                                     ),
                                   ),
-                            gym.priceOndMonth != 0
+                            gym.priceOneMonth != 0
                                 ? FlatButton(
                                     minWidth: 5,
                                     child: Text(
                                       'Month',
                                       style: TextStyle(
-                                          color: Colors.black, fontSize: 13),
+                                          color: currentPrice ==
+                                                  gym.priceOneMonth.toString()
+                                              ? Colors.white
+                                              : Colors.black,
+                                          fontSize: 13),
                                     ),
                                     color: currentPrice ==
-                                            gym.priceOndMonth.toString()
-                                        ? colors.blue_smooth
+                                            gym.priceOneMonth.toString()
+                                        ? Color.fromARGB(195, 71, 153, 183)
                                         : Colors.white,
                                     onPressed: () {
                                       setState(() {
                                         currentPrice =
-                                            gym.priceOndMonth.toString();
+                                            gym.priceOneMonth.toString();
                                       });
                                     },
                                   )
@@ -373,22 +390,27 @@ class _GymOwnerDescrptionState extends State<GymOwnerDescrption> {
                                       style: TextStyle(color: Colors.grey),
                                     ),
                                   ),
-                            gym.priceThreeMonts != 0
+                            gym.priceThreeMonths != 0
                                 ? FlatButton(
                                     minWidth: 5,
                                     child: Text(
                                       '3 Months',
                                       style: TextStyle(
-                                          color: Colors.black, fontSize: 13),
+                                          color: currentPrice ==
+                                                  gym.priceThreeMonths
+                                                      .toString()
+                                              ? Colors.white
+                                              : Colors.black,
+                                          fontSize: 13),
                                     ),
                                     color: currentPrice ==
-                                            gym.priceThreeMonts.toString()
-                                        ? colors.blue_smooth
+                                            gym.priceThreeMonths.toString()
+                                        ? Color.fromARGB(195, 71, 153, 183)
                                         : Colors.white,
                                     onPressed: () {
                                       setState(() {
                                         currentPrice =
-                                            gym.priceThreeMonts.toString();
+                                            gym.priceThreeMonths.toString();
                                       });
                                     },
                                   )
@@ -406,11 +428,15 @@ class _GymOwnerDescrptionState extends State<GymOwnerDescrption> {
                                     child: Text(
                                       '6 Months',
                                       style: TextStyle(
-                                          color: Colors.black, fontSize: 13),
+                                          color: currentPrice ==
+                                                  gym.priceSixMonths.toString()
+                                              ? Colors.white
+                                              : Colors.black,
+                                          fontSize: 13),
                                     ),
                                     color: currentPrice ==
                                             gym.priceSixMonths.toString()
-                                        ? colors.blue_smooth
+                                        ? Color.fromARGB(195, 71, 153, 183)
                                         : Colors.white,
                                     onPressed: () {
                                       setState(() {
@@ -433,11 +459,15 @@ class _GymOwnerDescrptionState extends State<GymOwnerDescrption> {
                                     child: Text(
                                       'Year',
                                       style: TextStyle(
-                                          color: Colors.black, fontSize: 13),
+                                          color: currentPrice ==
+                                                  gym.priceOneYear.toString()
+                                              ? Colors.white
+                                              : Colors.black,
+                                          fontSize: 13),
                                     ),
                                     color: currentPrice ==
                                             gym.priceOneYear.toString()
-                                        ? colors.blue_smooth
+                                        ? Color.fromARGB(195, 71, 153, 183)
                                         : Colors.white,
                                     onPressed: () {
                                       setState(() {
@@ -494,13 +524,14 @@ class _GymOwnerDescrptionState extends State<GymOwnerDescrption> {
                                   width: 100,
                                   //  color: colors.red_base,
                                   decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.only(
-                                        topLeft: Radius.circular(15),
-                                        topRight: Radius.circular(15),
-                                      ),
-                                      color: window == 'Description'
-                                          ? colors.blue_smooth
-                                          : Colors.white),
+                                    borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(15),
+                                      topRight: Radius.circular(15),
+                                    ),
+                                    color: window == 'Description'
+                                        ? Color.fromARGB(195, 71, 153, 183)
+                                        : Colors.white,
+                                  ),
                                   child: Center(
                                       child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
@@ -508,7 +539,12 @@ class _GymOwnerDescrptionState extends State<GymOwnerDescrption> {
                                       SizedBox(
                                         width: 3,
                                       ),
-                                      Text('Description'),
+                                      Text('Description',
+                                          style: TextStyle(
+                                            color: window == 'Description'
+                                                ? Colors.white
+                                                : Colors.black,
+                                          )),
                                     ],
                                   )),
                                 ),
@@ -524,13 +560,14 @@ class _GymOwnerDescrptionState extends State<GymOwnerDescrption> {
                                 width: 100,
                                 //  color: colors.red_base,
                                 decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.only(
-                                      topLeft: Radius.circular(15),
-                                      topRight: Radius.circular(15),
-                                    ),
-                                    color: window == 'Facilites'
-                                        ? colors.blue_smooth
-                                        : Colors.white),
+                                  borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(15),
+                                    topRight: Radius.circular(15),
+                                  ),
+                                  color: window == 'Facilites'
+                                      ? Color.fromARGB(195, 71, 153, 183)
+                                      : Colors.white,
+                                ),
                                 child: Center(
                                     child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
@@ -538,7 +575,14 @@ class _GymOwnerDescrptionState extends State<GymOwnerDescrption> {
                                     SizedBox(
                                       width: 3,
                                     ),
-                                    Text('Facilites'),
+                                    Text(
+                                      'Facilites',
+                                      style: TextStyle(
+                                        color: window == 'Facilites'
+                                            ? Colors.white
+                                            : Colors.black,
+                                      ),
+                                    )
                                   ],
                                 )),
                               ),
@@ -555,13 +599,14 @@ class _GymOwnerDescrptionState extends State<GymOwnerDescrption> {
                                 width: 100,
                                 //  color: colors.red_base,
                                 decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.only(
-                                      topLeft: Radius.circular(15),
-                                      topRight: Radius.circular(15),
-                                    ),
-                                    color: window == 'Comments'
-                                        ? colors.blue_smooth
-                                        : Colors.white),
+                                  borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(15),
+                                    topRight: Radius.circular(15),
+                                  ),
+                                  color: window == 'Comments'
+                                      ? Color.fromARGB(195, 71, 153, 183)
+                                      : Colors.white,
+                                ),
                                 child: Center(
                                     child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
@@ -569,7 +614,14 @@ class _GymOwnerDescrptionState extends State<GymOwnerDescrption> {
                                     SizedBox(
                                       width: 3,
                                     ),
-                                    Text('Comments'),
+                                    Text(
+                                      'Comments',
+                                      style: TextStyle(
+                                        color: window == 'Comments'
+                                            ? Colors.white
+                                            : Colors.black,
+                                      ),
+                                    )
                                   ],
                                 )),
                               ),
@@ -601,16 +653,22 @@ class _GymOwnerDescrptionState extends State<GymOwnerDescrption> {
         children: [
           InkWell(
             onTap: () {
-              //   reviewForm(context, userReview, widget.gym.gymId);
+              File? imageFile;
+
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => AddGymInfo(
+                        gym: gym,
+                        imageFile: null,
+                        oldGym: true,
+                      )));
             },
             // splashColor: colors.blue_base,
             child: Container(
-                color: Color.fromARGB(251, 119, 140, 33),
+                color: colors.blue_base,
                 width: screenWidth / 2,
                 height: 50,
                 child: Center(
                   child: Text(
-                    // userReview != null ? 'Edit my review' : "Write a review",
                     'Edit Gym',
                     style: TextStyle(
                       color: Colors.white,
@@ -621,9 +679,11 @@ class _GymOwnerDescrptionState extends State<GymOwnerDescrption> {
                 )),
           ),
           InkWell(
-            // splashColor: colors.blue_base,
+            onTap: () {
+              //DELETE GYM HERE:
+            },
             child: Container(
-                color: colors.blue_base,
+                color: Color.fromARGB(230, 234, 60, 47),
                 width: screenWidth / 2,
                 height: 50,
                 child: Center(

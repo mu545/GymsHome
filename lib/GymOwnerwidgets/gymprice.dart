@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_launcher_icons/utils.dart';
 import 'package:gymhome/GymOwnerwidgets/location.dart';
 import 'package:gymhome/Styles.dart';
 import 'package:gymhome/models/gyms.dart';
@@ -14,6 +15,7 @@ class GymPrice extends StatefulWidget {
   GymModel gym;
   File? imageFile;
   List<File> newGymImages;
+
   static const routenames = '/srsss';
   GymPrice({
     Key? key,
@@ -27,10 +29,12 @@ class GymPrice extends StatefulWidget {
 }
 
 class _AddGymState extends State<GymPrice> {
+  List<String?> prices = [];
   RegExp numbers = RegExp(r'^[0-9]+\.?[0-9]*$');
   final _form = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
+    prices.clear();
     return Scaffold(
       appBar: AppBar(
         title: Center(
@@ -96,8 +100,8 @@ class _AddGymState extends State<GymPrice> {
                                   child: TextFormField(
                                     initialValue:
                                         widget.gym.gymId!.isNotEmpty &&
-                                                widget.gym.priceOndDay != 0
-                                            ? widget.gym.priceOndDay.toString()
+                                                widget.gym.priceOneDay != 0
+                                            ? widget.gym.priceOneDay.toString()
                                             : "",
                                     decoration: InputDecoration(
                                       labelText: 'Price for one Day',
@@ -111,10 +115,10 @@ class _AddGymState extends State<GymPrice> {
                                     keyboardType: TextInputType.number,
                                     onChanged: (value) {
                                       if (value.isNotEmpty) {
-                                        widget.gym.priceSixMonths =
+                                        widget.gym.priceOneDay =
                                             double.parse(value);
                                       } else {
-                                        widget.gym.priceSixMonths = 0;
+                                        widget.gym.priceOneDay = 0;
                                       }
                                     },
                                     validator: (value) {
@@ -145,8 +149,8 @@ class _AddGymState extends State<GymPrice> {
                                   child: TextFormField(
                                     initialValue: widget
                                                 .gym.gymId!.isNotEmpty &&
-                                            widget.gym.priceOndMonth != 0
-                                        ? widget.gym.priceOndMonth.toString()
+                                            widget.gym.priceOneMonth != 0
+                                        ? widget.gym.priceOneMonth.toString()
                                         : "",
                                     decoration: InputDecoration(
                                       labelText: 'Price for one Month',
@@ -160,10 +164,10 @@ class _AddGymState extends State<GymPrice> {
                                     keyboardType: TextInputType.number,
                                     onChanged: (value) {
                                       if (value.isNotEmpty) {
-                                        widget.gym.priceOndMonth =
+                                        widget.gym.priceOneMonth =
                                             double.parse(value);
                                       } else {
-                                        widget.gym.priceOndMonth = 0;
+                                        widget.gym.priceOneMonth = 0;
                                       }
                                     },
                                     validator: (value) {
@@ -194,8 +198,8 @@ class _AddGymState extends State<GymPrice> {
                                   child: TextFormField(
                                     initialValue: widget
                                                 .gym.gymId!.isNotEmpty &&
-                                            widget.gym.priceThreeMonts != 0
-                                        ? widget.gym.priceThreeMonts.toString()
+                                            widget.gym.priceThreeMonths != 0
+                                        ? widget.gym.priceThreeMonths.toString()
                                         : "",
                                     decoration: InputDecoration(
                                       labelText: 'Price for Three Months',
@@ -209,10 +213,10 @@ class _AddGymState extends State<GymPrice> {
                                     keyboardType: TextInputType.number,
                                     onChanged: (value) {
                                       if (value.isNotEmpty) {
-                                        widget.gym.priceThreeMonts =
+                                        widget.gym.priceThreeMonths =
                                             double.parse(value);
                                       } else {
-                                        widget.gym.priceThreeMonts = 0;
+                                        widget.gym.priceThreeMonths = 0;
                                       }
                                     },
                                     validator: (value) {
@@ -243,9 +247,7 @@ class _AddGymState extends State<GymPrice> {
                                   child: TextFormField(
                                     initialValue: widget
                                                 .gym.gymId!.isNotEmpty &&
-                                            widget.gym.priceSixMonths
-                                                    .toString() !=
-                                                '0.0'
+                                            widget.gym.priceSixMonths != 0
                                         ? widget.gym.priceSixMonths.toString()
                                         : "",
                                     decoration: InputDecoration(
@@ -345,10 +347,31 @@ class _AddGymState extends State<GymPrice> {
                   style: TextStyle(color: Colors.white),
                 ),
                 onPressed: () {
+                  prices.clear();
                   if (_form.currentState!.validate()) {
+                    if (widget.gym.priceOneDay == 0) {
+                      prices.remove('One Day');
+                    } else
+                      prices.add('One Day');
+                    if (widget.gym.priceOneMonth == 0) {
+                      prices.remove('One Month');
+                    } else
+                      prices.add('One Month');
+                    if (widget.gym.priceThreeMonths == 0) {
+                      prices.remove('Three Months');
+                    } else
+                      prices.add('Three Months');
+                    if (widget.gym.priceSixMonths == 0) {
+                      prices.remove('Six Months');
+                    } else
+                      prices.add('Six Months');
+                    if (widget.gym.priceOneYear == 0) {
+                      prices.remove('One Year');
+                    } else
+                      prices.add('One Year');
                     Provider.of<AddGymMethods>(context, listen: false)
-                        .addGym(
-                            widget.gym, widget.imageFile, widget.newGymImages)
+                        .addGym(widget.gym, widget.imageFile,
+                            widget.newGymImages, prices)
                         .whenComplete(() {
                       if (widget.gym.gymId == '') {
                         message(
@@ -360,6 +383,7 @@ class _AddGymState extends State<GymPrice> {
                     Navigator.pop(context);
                     Navigator.pop(context);
                     Navigator.pop(context);
+                    if (widget.gym.gymId!.isNotEmpty) Navigator.pop(context);
                   }
                 },
                 padding: EdgeInsets.symmetric(horizontal: 30.0, vertical: 4),

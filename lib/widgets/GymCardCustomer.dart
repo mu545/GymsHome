@@ -8,20 +8,64 @@ import 'package:gymhome/widgets/gymdescrption.dart';
 
 import '../provider/customer.dart';
 
-class GymCardCustomer extends StatelessWidget {
+class GymCardCustomer extends StatefulWidget {
   final String userid;
   final GymModel gymInfo;
-  const GymCardCustomer({Key? key, required this.gymInfo, required this.userid})
+  final String price;
+  const GymCardCustomer(
+      {Key? key,
+      required this.gymInfo,
+      required this.userid,
+      required this.price})
       : super(key: key);
 
+  @override
+  State<GymCardCustomer> createState() => _GymCardCustomerState();
+}
+
+class _GymCardCustomerState extends State<GymCardCustomer> {
+  String price = '';
+  String showPrice() {
+    switch (widget.price) {
+      case 'One Day':
+        setState(() {
+          price = widget.gymInfo.priceOneDay.toString();
+        });
+        return price;
+      case 'One Month':
+        setState(() {
+          price = widget.gymInfo.priceOneMonth.toString();
+        });
+        return price;
+      case 'Three Months':
+        setState(() {
+          price = widget.gymInfo.priceThreeMonths.toString();
+        });
+        return price;
+      case 'Six Months':
+        setState(() {
+          price = widget.gymInfo.priceSixMonths.toString();
+        });
+        return price;
+      case 'One Year':
+        setState(() {
+          price = widget.gymInfo.priceOneYear.toString();
+        });
+        return price;
+      default:
+        return '';
+    }
+  }
+
+  @override
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
         Navigator.of(context).push(MaterialPageRoute(
             builder: (context) => GymDescrption(
-                  gym: gymInfo,
-                  userid: userid,
+                  gym: widget.gymInfo,
+                  userid: widget.userid,
                 )));
       },
       child: Padding(
@@ -57,7 +101,7 @@ class GymCardCustomer extends StatelessWidget {
                             borderRadius: BorderRadius.only(
                                 topLeft: Radius.circular(15),
                                 topRight: Radius.circular(15)),
-                            child: Image.network(gymInfo.imageURL ?? '',
+                            child: Image.network(widget.gymInfo.imageURL ?? '',
                                 fit: BoxFit.cover)),
                       ),
                       // Positioned(
@@ -83,7 +127,7 @@ class GymCardCustomer extends StatelessWidget {
                               borderRadius: BorderRadius.only(
                                   topRight: Radius.circular(50))),
                           child: Text(
-                            gymInfo.name ?? '',
+                            widget.gymInfo.name ?? '',
                             style: TextStyle(
                                 fontSize: 32,
                                 color: Colors.white,
@@ -108,12 +152,11 @@ class GymCardCustomer extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            //    price ??
-                            gymInfo.priceOndDay.toString(),
+                            showPrice(),
                             style: TextStyle(fontSize: 20, color: Colors.white),
                           ),
                           Text(
-                            gymInfo.location ?? '',
+                            widget.gymInfo.location ?? '',
                             style: TextStyle(fontSize: 20, color: Colors.white),
                           ),
                         ],

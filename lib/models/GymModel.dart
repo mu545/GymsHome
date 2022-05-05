@@ -3,9 +3,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class GymModel {
   List<dynamic>? images;
   List<dynamic>? faciltrs;
-  double? priceOndDay;
-  double? priceOndMonth;
-  double? priceThreeMonts;
+  List<dynamic>? prices;
+  double? priceOneDay;
+  double? priceOneMonth;
+  double? priceThreeMonths;
   double? priceSixMonths;
   double? priceOneYear;
   String? imageURL;
@@ -22,11 +23,12 @@ class GymModel {
   GymModel(
     this.images,
     this.faciltrs,
-    this.priceOndDay,
-    this.priceOndMonth,
+    this.prices,
+    this.priceOneDay,
+    this.priceOneMonth,
     this.priceOneYear,
     this.priceSixMonths,
-    this.priceThreeMonts,
+    this.priceThreeMonths,
     this.imageURL,
     this.gymId,
     this.ownerId,
@@ -42,9 +44,9 @@ class GymModel {
   GymModel.fromJson(Map<String, dynamic> json) {
     images = json['images'];
     faciltrs = json['faciltrs'];
-    priceOndDay = double.parse(json['One Day'].toString());
-    priceOndMonth = double.parse(json['One Month'].toString());
-    priceThreeMonts = double.parse(json['Three Months'].toString());
+    priceOneDay = double.parse(json['One Day'].toString());
+    priceOneMonth = double.parse(json['One Month'].toString());
+    priceThreeMonths = double.parse(json['Three Months'].toString());
     priceSixMonths = double.parse(json['Six Months'].toString());
     priceOneYear = double.parse(json['One Year'].toString());
     gymId = json['gymId'];
@@ -60,9 +62,9 @@ class GymModel {
   GymModel.fromQ(QueryDocumentSnapshot<Object?> data) {
     images = data['images'];
     faciltrs = data['faciltrs'];
-    priceOndDay = double.parse(data['One Day'].toString());
-    priceOndMonth = double.parse(data['One Month'].toString());
-    priceThreeMonts = double.parse(data['Three Months'].toString());
+    priceOneDay = double.parse(data['One Day'].toString());
+    priceOneMonth = double.parse(data['One Month'].toString());
+    priceThreeMonths = double.parse(data['Three Months'].toString());
     priceSixMonths = double.parse(data['Six Months'].toString());
     priceOneYear = double.parse(data['One Year'].toString());
     gymId = data['gymId'];

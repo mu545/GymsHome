@@ -165,11 +165,11 @@ class EditGymInfo extends StatelessWidget {
                     Wrap(
                       spacing: 10,
                       children: [
-                        PriceView('One Day', gym.priceOndDay.toString()),
-                        PriceView('One Month', gym.priceOndDay.toString()),
-                        PriceView('Three Months', gym.priceOndDay.toString()),
-                        PriceView('Six Months', gym.priceOndDay.toString()),
-                        PriceView('One Year', gym.priceOndDay.toString()),
+                        PriceView('One Day', gym.priceOneDay.toString()),
+                        PriceView('One Month', gym.priceOneDay.toString()),
+                        PriceView('Three Months', gym.priceOneDay.toString()),
+                        PriceView('Six Months', gym.priceOneDay.toString()),
+                        PriceView('One Year', gym.priceOneDay.toString()),
                       ],
                     ),
                   ],

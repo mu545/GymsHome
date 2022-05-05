@@ -71,10 +71,11 @@ class _WidgtessState extends State<OwnerHome> {
     return Scaffold(
       appBar: AppBar(
         title: Center(
-            child: Text(
-          'HOME',
-          style: TextStyle(color: Colors.white, fontFamily: 'Epilogue'),
-        )),
+          child: Text(
+            'HOME',
+            style: TextStyle(color: Colors.white, fontFamily: 'Epilogue'),
+          ),
+        ),
         backgroundColor: colors.blue_base,
         elevation: 0,
       ),
@@ -117,8 +118,8 @@ class _WidgtessState extends State<OwnerHome> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          GymModel _gym = GymModel([], [], 0, 0, 0, 0, 0, '', '', '', '', '',
-              '', false, true, '', 0);
+          GymModel _gym = GymModel([], [], [], 0, 0, 0, 0, 0, '', '', '', '',
+              '', '', false, true, '', 0);
           Navigator.of(context).push(MaterialPageRoute(
               builder: (context) => AddGymInfo(
                     gym: _gym,

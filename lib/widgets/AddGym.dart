@@ -93,17 +93,18 @@ class AddGymMethods with ChangeNotifier {
   // }
 
   Future addGym(
-      GymModel newGym, File? imageUrl, List<File> newGymImages) async {
+      GymModel newGym, File? imageUrl, List<File> newGymImages, prices) async {
     if (newGym.gymId!.isNotEmpty) {
       var gym = FirebaseFirestore.instance.collection('gyms').doc(newGym.gymId);
       gym.update({
+        'prices': prices,
         'Location': '7KM',
         'descrption': newGym.description,
         'faciltrs': newGym.faciltrs,
         'name': newGym.name,
-        'One Day': newGym.priceOndDay,
-        'One Month': newGym.priceOndMonth,
-        'Three Months': newGym.priceThreeMonts,
+        'One Day': newGym.priceOneDay,
+        'One Month': newGym.priceOneMonth,
+        'Three Months': newGym.priceThreeMonths,
         'Six Months': newGym.priceSixMonths,
         'One Year': newGym.priceOneYear,
         'isWaiting': false,
@@ -114,6 +115,7 @@ class AddGymMethods with ChangeNotifier {
     } else {
       var gym = FirebaseFirestore.instance.collection('gyms').doc();
       gym.set({
+        'prices': prices,
         'gymId': gym.id,
         'ownerId': userId,
         'images': [],
@@ -122,9 +124,9 @@ class AddGymMethods with ChangeNotifier {
         'descrption': newGym.description,
         'faciltrs': newGym.faciltrs,
         'name': newGym.name,
-        'One Day': newGym.priceOndDay,
-        'One Month': newGym.priceOndMonth,
-        'Three Months': newGym.priceThreeMonts,
+        'One Day': newGym.priceOneDay,
+        'One Month': newGym.priceOneMonth,
+        'Three Months': newGym.priceThreeMonths,
         'Six Months': newGym.priceSixMonths,
         'One Year': newGym.priceOneYear,
         'isWaiting': true,

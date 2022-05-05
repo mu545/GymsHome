@@ -1,4 +1,5 @@
 import 'dart:ffi';
+//import 'dart:html';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:gymhome/Styles.dart';
@@ -117,7 +118,6 @@ class _NewHomeState extends State<NewHome> {
               icon: Icon(Icons.sort),
               label: 'Sort',
             ),
-
             BottomNavigationBarItem(
               icon: Icon(Icons.favorite),
               label: 'Favorite',
@@ -127,16 +127,7 @@ class _NewHomeState extends State<NewHome> {
             BottomNavigationBarItem(
               icon: Icon(Icons.account_circle),
               label: 'Account',
-              // backgroundColor: Colors.pink,
             ),
-            //  BottomNavigationBarItem(
-            //   icon: Icon(Icons.school),
-            //   label: 'School',
-            // ),
-            //  BottomNavigationBarItem(
-            //   icon: Icon(Icons.school),
-            //   label: 'School',
-            // ),
           ],
 
           currentIndex: _selectedIndex,
@@ -150,7 +141,7 @@ class _NewHomeState extends State<NewHome> {
 
 bool _ShowOnly = false;
 
-class NewWidgetHome extends StatelessWidget {
+class NewWidgetHome extends StatefulWidget {
   //  bool shoefav;
   // Customer? customer;
   final String userid;
@@ -158,18 +149,132 @@ class NewWidgetHome extends StatelessWidget {
     required this.userid,
     Key? key,
   }) : super(key: key);
-  // NewWidgetHome.e(this.c);
+
+  @override
+  State<NewWidgetHome> createState() => _NewWidgetHomeState();
+}
+
+class _NewWidgetHomeState extends State<NewWidgetHome> {
+  String priceChoosed = 'One Day';
+  String genderChoosed = 'Men';
+  void genderChoose(gender) {
+    switch (gender) {
+      case "Men":
+        setState(() {
+          genderChoosed = "Men";
+        });
+
+        break;
+      case "Women":
+        setState(() {
+          genderChoosed = "Women";
+        });
+        break;
+      default:
+    }
+  }
+
+  void priceChoose(price) {
+    switch (price) {
+      case "Day":
+        setState(() {
+          priceChoosed = 'One Day';
+        });
+        break;
+      case "Month":
+        setState(() {
+          priceChoosed = 'One Month';
+        });
+        break;
+      case "3 Months":
+        setState(() {
+          priceChoosed = 'Three Months';
+        });
+        break;
+      case "6 Months":
+        setState(() {
+          priceChoosed = 'Six Months';
+        });
+        break;
+      case "Year":
+        setState(() {
+          priceChoosed = 'One Year';
+        });
+        break;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
     List<GymModel> _gymsList = [];
 
-    Future? _getData() => _fireStore
-        .collection("gyms")
-        .where('isWaiting', isEqualTo: false)
-        .get();
-// final gymitem = shoefav ? prodactDate.favoriteitem : prodactDate.items;
+    Future? _getData() {
+      switch (priceChoosed) {
+        case 'One Day':
+          return _fireStore
+              .collection("gyms")
+              .where(
+                'isWaiting',
+                isEqualTo: false,
+              )
+              .where('gender', isEqualTo: genderChoosed)
+              .where('prices', arrayContains: 'One Day')
+              .get();
+
+        case 'One Month':
+          return _fireStore
+              .collection("gyms")
+              .where(
+                'isWaiting',
+                isEqualTo: false,
+              )
+              .where('gender', isEqualTo: genderChoosed)
+              .where('prices', arrayContains: 'One Month')
+              .get();
+        case 'Three Months':
+          return _fireStore
+              .collection("gyms")
+              .where(
+                'isWaiting',
+                isEqualTo: false,
+              )
+              .where('gender', isEqualTo: genderChoosed)
+              .where('prices', arrayContains: 'Three Months')
+              .get();
+        case 'Six Months':
+          return _fireStore
+              .collection("gyms")
+              .where(
+                'isWaiting',
+                isEqualTo: false,
+              )
+              .where('gender', isEqualTo: genderChoosed)
+              .where('prices', arrayContains: 'Six Months')
+              .get();
+        case 'One Year':
+          return _fireStore
+              .collection("gyms")
+              .where(
+                'isWaiting',
+                isEqualTo: false,
+              )
+              .where('gender', isEqualTo: genderChoosed)
+              .where('prices', arrayContains: 'One Year')
+              .get();
+
+        default:
+          return _fireStore
+              .collection("gyms")
+              .where(
+                'isWaiting',
+                isEqualTo: false,
+              )
+              .where('gender', isEqualTo: genderChoosed)
+              .get();
+      }
+    }
+
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -181,7 +286,7 @@ class NewWidgetHome extends StatelessWidget {
         backgroundColor: colors.blue_base,
         elevation: 0,
         actions: <Widget>[
-          Searchlesss(userID: userid),
+          Searchlesss(userID: widget.userid),
           IconButton(
             onPressed: () {
               Navigator.of(context).push(
@@ -210,39 +315,63 @@ class NewWidgetHome extends StatelessWidget {
           // ),
           //  ),
           Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Container(
-                margin: EdgeInsets.fromLTRB(5, 10, 0, 0),
+                margin: EdgeInsets.fromLTRB(10, 10, 0, 0),
                 height: 20,
-                width: 180,
+                // width: 180,
                 decoration: BoxDecoration(
                     border: Border.all(color: Colors.grey),
                     borderRadius: BorderRadius.circular(5)),
-                child: Row(
-                  children: [
-                    Container(
-                      child: FlatButton(
-                        highlightColor: Colors.blue,
-                        hoverColor: Colors.blue,
-                        child: Text(
-                          'Men',
-                          style: TextStyle(color: Colors.black, fontSize: 13),
+                child: Expanded(
+                  child: Row(
+                    children: [
+                      Container(
+                        child: ElevatedButton(
+                          child: Text(
+                            'Men',
+                            style: TextStyle(
+                                color: genderChoosed == 'Men'
+                                    ? Colors.white
+                                    : Colors.black,
+                                fontSize: 13),
+                          ),
+                          style: ButtonStyle(
+                              shape: MaterialStateProperty.all<OutlinedBorder>(
+                                  RoundedRectangleBorder(
+                                      side: BorderSide.none)),
+                              backgroundColor: genderChoosed == 'Men'
+                                  ? MaterialStateProperty.all(
+                                      Color.fromARGB(209, 71, 153, 183))
+                                  : MaterialStateProperty.all(Colors.white)),
+                          onPressed: () {
+                            genderChoose('Men');
+                          },
                         ),
-                        color: Colors.white,
-                        onPressed: () => ProductGrid(_ShowOnly),
                       ),
-                    ),
-                    FlatButton(
-                      highlightColor: Colors.blue,
-                      hoverColor: Colors.blue,
-                      child: Text(
-                        'Women',
-                        style: TextStyle(color: Colors.black, fontSize: 13),
+                      ElevatedButton(
+                        child: Text(
+                          'Women',
+                          style: TextStyle(
+                              color: genderChoosed == 'Women'
+                                  ? Colors.white
+                                  : Colors.black,
+                              fontSize: 13),
+                        ),
+                        style: ButtonStyle(
+                            shape: MaterialStateProperty.all<OutlinedBorder>(
+                                RoundedRectangleBorder(side: BorderSide.none)),
+                            backgroundColor: genderChoosed == 'Women'
+                                ? MaterialStateProperty.all(
+                                    Color.fromARGB(209, 71, 153, 183))
+                                : MaterialStateProperty.all(Colors.white)),
+                        onPressed: () {
+                          genderChoose('Women');
+                        },
                       ),
-                      color: Colors.white,
-                      onPressed: () {/** */},
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ],
@@ -251,59 +380,125 @@ class NewWidgetHome extends StatelessWidget {
             height: 5,
           ),
           Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Container(
-                margin: EdgeInsets.only(left: 5),
+                margin: EdgeInsets.only(left: 5, right: 5),
                 height: 20,
-                width: 390,
+                // width: MediaQuery.of(context).size.width,
                 decoration: BoxDecoration(
                     border: Border.all(color: Colors.grey),
                     borderRadius: BorderRadius.circular(5)),
-                child: Row(
-                  children: [
-                    Container(
-                      child: FlatButton(
+                child: Expanded(
+                  child: Row(
+                    children: [
+                      ElevatedButton(
+                        //    minWidth: 50,
+                        onPressed: () {
+                          priceChoose('Day');
+                        },
                         child: Text(
                           'Day',
-                          style: TextStyle(color: Colors.grey, fontSize: 13),
+                          style: TextStyle(
+                            color: priceChoosed == 'One Day'
+                                ? Colors.white
+                                : Colors.black,
+                          ),
                         ),
-                        color: Colors.white,
-                        onPressed: () {/** */},
+                        style: ButtonStyle(
+                            shape: MaterialStateProperty.all<OutlinedBorder>(
+                                RoundedRectangleBorder(side: BorderSide.none)),
+                            backgroundColor: priceChoosed == 'One Day'
+                                ? MaterialStateProperty.all(
+                                    Color.fromARGB(209, 71, 153, 183))
+                                : MaterialStateProperty.all(Colors.white)),
                       ),
-                    ),
-
-                    FlatButton(
-                      child: Text(
-                        'Month',
-                        style: TextStyle(color: Colors.grey, fontSize: 13),
+                      ElevatedButton(
+                        //     minWidth: 10,
+                        onPressed: () {
+                          priceChoose('Month');
+                        },
+                        child: Text(
+                          'Month',
+                          style: TextStyle(
+                            color: priceChoosed == 'One Month'
+                                ? Colors.white
+                                : Colors.black,
+                          ),
+                        ),
+                        style: ButtonStyle(
+                            shape: MaterialStateProperty.all<OutlinedBorder>(
+                                RoundedRectangleBorder(side: BorderSide.none)),
+                            backgroundColor: priceChoosed == 'One Month'
+                                ? MaterialStateProperty.all(
+                                    Color.fromARGB(209, 71, 153, 183))
+                                : MaterialStateProperty.all(Colors.white)),
                       ),
-                      color: Colors.white,
-                      onPressed: () {/** */},
-                    ),
-                    FlatButton(
-                      child: Text(
-                        '3 Months',
-                        style: TextStyle(color: Colors.grey, fontSize: 13),
+                      ElevatedButton(
+                        //    minWidth: 10,
+                        onPressed: () {
+                          priceChoose('3 Months');
+                        },
+                        child: Text(
+                          '3 Months',
+                          style: TextStyle(
+                            color: priceChoosed == 'Three Months'
+                                ? Colors.white
+                                : Colors.black,
+                          ),
+                        ),
+                        style: ButtonStyle(
+                            shape: MaterialStateProperty.all<OutlinedBorder>(
+                                RoundedRectangleBorder(side: BorderSide.none)),
+                            backgroundColor: priceChoosed == 'Three Months'
+                                ? MaterialStateProperty.all(
+                                    Color.fromARGB(209, 71, 153, 183))
+                                : MaterialStateProperty.all(Colors.white)),
                       ),
-                      color: Colors.white,
-                      onPressed: () {/** */},
-                    ),
-                    FlatButton(
-                      child: Text(
-                        '6 Months',
-                        style: TextStyle(color: Colors.grey, fontSize: 13),
+                      ElevatedButton(
+                        //   minWidth: 10,
+                        onPressed: () {
+                          priceChoose('6 Months');
+                        },
+                        child: Text(
+                          '6 Months',
+                          style: TextStyle(
+                            color: priceChoosed == 'Six Months'
+                                ? Colors.white
+                                : Colors.black,
+                          ),
+                        ),
+                        style: ButtonStyle(
+                            shape: MaterialStateProperty.all<OutlinedBorder>(
+                                RoundedRectangleBorder(side: BorderSide.none)),
+                            backgroundColor: priceChoosed == 'Six Months'
+                                ? MaterialStateProperty.all(
+                                    Color.fromARGB(209, 71, 153, 183))
+                                : MaterialStateProperty.all(Colors.white)),
                       ),
-                      color: Colors.white,
-                      onPressed: () {/** */},
-                    ),
-                    // FlatButton(
-
-                    //     child: Text('Month',style: TextStyle(color: Colors.blue , fontSize: 13),),
-                    //     color: Colors.white,
-                    //     onPressed: () {/** */},
-
-                    // ),
-                  ],
+                      ElevatedButton(
+                        //   minWidth: 10,
+                        onPressed: () {
+                          priceChoose('Year');
+                        },
+                        child: Text(
+                          'Year',
+                          style: TextStyle(
+                            color: priceChoosed == 'One Year'
+                                ? Colors.white
+                                : Colors.black,
+                          ),
+                        ),
+                        style: ButtonStyle(
+                            shape: MaterialStateProperty.all<OutlinedBorder>(
+                                RoundedRectangleBorder(side: BorderSide.none)),
+                            backgroundColor: priceChoosed == 'One Year'
+                                ? MaterialStateProperty.all(
+                                    Color.fromARGB(209, 71, 153, 183))
+                                : MaterialStateProperty.all(Colors.white)),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ],
@@ -320,6 +515,17 @@ class NewWidgetHome extends StatelessWidget {
                     snapshot.data.docs.forEach((element) {
                       _gymsList.add(GymModel.fromJson(element.data()));
                     });
+
+                    if (_gymsList.isEmpty)
+                      return Center(
+                          child: Container(
+                        margin: EdgeInsets.only(top: 100),
+                        child: Text(
+                          'No gyms found',
+                          textAlign: TextAlign.center,
+                        ),
+                      ));
+
                     //
                     return Padding(
                       padding: const EdgeInsets.all(8.0),
@@ -332,8 +538,9 @@ class NewWidgetHome extends StatelessWidget {
                             itemCount: _gymsList.length,
                             itemBuilder: (BuildContext context, int index) {
                               return GymCardCustomer(
+                                price: priceChoosed,
                                 gymInfo: _gymsList[index],
-                                userid: userid,
+                                userid: widget.userid,
                               );
                             },
                           )

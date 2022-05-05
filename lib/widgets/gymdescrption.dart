@@ -183,21 +183,24 @@ class _GymDescrptionState extends State<GymDescrption> {
             height: 10,
           ),
           Center(
-            child: CarouselSlider.builder(
-              carouselController: controller,
-              options: CarouselOptions(
-                height: 400,
-                enlargeCenterPage: true,
-                onPageChanged: (index, reason) =>
-                    setState(() => activeIndex = index),
-              ),
-              itemCount: widget.gym.images!.length,
-              itemBuilder: (context, index, realIndex) {
-                final urlImage = widget.gym.images![index];
-                return buildImage(urlImage, index);
-              },
-            ),
-          ),
+              child: widget.gym.images!.isEmpty
+                  ? CarouselSlider.builder(
+                      carouselController: controller,
+                      options: CarouselOptions(
+                        height: 400,
+                        enlargeCenterPage: true,
+                        onPageChanged: (index, reason) =>
+                            setState(() => activeIndex = index),
+                      ),
+                      itemCount: widget.gym.images!.length,
+                      itemBuilder: (context, index, realIndex) {
+                        final urlImage = widget.gym.images![index];
+                        return buildImage(urlImage, index);
+                      },
+                    )
+                  : Container(
+                      child: Text('Three is no images uploaded for this gym'),
+                    )),
           SizedBox(
             height: 20,
           ),

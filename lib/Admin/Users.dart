@@ -136,6 +136,8 @@ class _UsersState extends State<Users> {
                       child: Column(
                         children: [
                           ListView.builder(
+                            controller:
+                                ScrollController(keepScrollOffset: true),
                             shrinkWrap: true,
                             itemCount: _CustomersList.length,
                             itemBuilder: (BuildContext context, int index) {

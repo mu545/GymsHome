@@ -82,6 +82,7 @@ class _AddGymInfoState extends State<AddGymInfo> {
 
   @override
   Widget build(BuildContext context) {
+    widget.gym.gender = 'Men';
     final Gym = Provider.of<Gyms>(context);
     return Scaffold(
       appBar: AppBar(
@@ -179,7 +180,6 @@ class _AddGymInfoState extends State<AddGymInfo> {
                               GestureDetector(
                                 onTap: () {
                                   setState(() {
-                                    // isMen = true;
                                     widget.gym.gender = 'Men';
                                     print(widget.gym.gender);
                                   });
@@ -217,7 +217,6 @@ class _AddGymInfoState extends State<AddGymInfo> {
                               GestureDetector(
                                 onTap: () {
                                   setState(() {
-                                    //  isMen = false;
                                     widget.gym.gender = 'Women';
                                     print(widget.gym.gender);
                                   });

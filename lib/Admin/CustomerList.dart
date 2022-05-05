@@ -19,10 +19,35 @@ class _CustomerListState extends State<CustomerList> {
       child: Row(children: [
         Container(
           margin: EdgeInsets.all(5),
-          child: CircleAvatar(
-            radius: 40.0,
-            backgroundImage: NetworkImage(widget.user.userImage ?? ''),
-          ),
+          child: widget.user.userImage != null
+              ? ClipOval(
+                  child: Image.network(
+                    widget.user.userImage!,
+                    height: 90,
+                    width: 90,
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) {
+                      return CircleAvatar(
+                        radius: 45,
+                        backgroundColor: colors.blue_smooth,
+                        child: Icon(
+                          Icons.person,
+                          size: 85,
+                          color: colors.iconscolor,
+                        ),
+                      );
+                    },
+                  ),
+                )
+              : CircleAvatar(
+                  radius: 45,
+                  backgroundColor: colors.blue_smooth,
+                  child: Icon(
+                    Icons.person,
+                    size: 85,
+                    color: colors.iconscolor,
+                  ),
+                ),
         ),
         SizedBox(
           width: 5,
@@ -58,7 +83,7 @@ class _CustomerListState extends State<CustomerList> {
                 message: widget.user.email,
                 child: Container(
                   margin: EdgeInsets.only(bottom: 20),
-                  child: widget.user.email!.length <= 20
+                  child: widget.user.email!.length <= 10
                       ? Text(widget.user.email ?? '')
                       : Text(widget.user.email!
                           .replaceRange(10, widget.user.email!.length, '..')),
@@ -72,15 +97,13 @@ class _CustomerListState extends State<CustomerList> {
         ),
         InkWell(
           onTap: () {},
-          child: Expanded(
-            child: Container(
-              decoration: BoxDecoration(
-                shape: BoxShape.rectangle,
-              ),
-              child: Text(
-                'Contact',
-                style: TextStyle(color: colors.blue_base),
-              ),
+          child: Container(
+            decoration: BoxDecoration(
+              shape: BoxShape.rectangle,
+            ),
+            child: Text(
+              'Contact',
+              style: TextStyle(color: colors.blue_base),
             ),
           ),
         ),
@@ -89,15 +112,13 @@ class _CustomerListState extends State<CustomerList> {
         ),
         InkWell(
           onTap: () {},
-          child: Expanded(
-            child: Container(
-              decoration: BoxDecoration(
-                shape: BoxShape.rectangle,
-              ),
-              child: Text(
-                'Ban',
-                style: TextStyle(color: colors.red_base),
-              ),
+          child: Container(
+            decoration: BoxDecoration(
+              shape: BoxShape.rectangle,
+            ),
+            child: Text(
+              'Ban',
+              style: TextStyle(color: colors.red_base),
             ),
           ),
         ),

@@ -101,6 +101,16 @@ class _GymOwnerDescrptionState extends State<GymOwnerDescrption> {
         child: Image.network(
           urlImage,
           fit: BoxFit.cover,
+          errorBuilder: (context, error, stackTrace) {
+            return Container(
+              color: Colors.white,
+              alignment: Alignment.center,
+              child: const Text(
+                'Whoops!',
+                style: TextStyle(fontSize: 30, color: colors.black60),
+              ),
+            );
+          },
         ),
       ); // Container
   Widget display() {
@@ -195,28 +205,32 @@ class _GymOwnerDescrptionState extends State<GymOwnerDescrption> {
             height: 10,
           ),
           Center(
-            child: CarouselSlider.builder(
-              carouselController: controller,
-              options: CarouselOptions(
-                height: 400,
-                enlargeCenterPage: true,
-                onPageChanged: (index, reason) =>
-                    setState(() => activeIndex = index),
-              ),
-              itemCount: widget.gym.images!.length,
-              itemBuilder: (context, index, realIndex) {
-                final urlImage = widget.gym.images![index];
-                return buildImage(urlImage, index);
-              },
-            ),
-          ),
+              child: widget.gym.images!.isNotEmpty
+                  ? CarouselSlider.builder(
+                      carouselController: controller,
+                      options: CarouselOptions(
+                        height: 400,
+                        enlargeCenterPage: true,
+                        onPageChanged: (index, reason) =>
+                            setState(() => activeIndex = index),
+                      ),
+                      itemCount: widget.gym.images!.length,
+                      itemBuilder: (context, index, realIndex) {
+                        final urlImage = widget.gym.images![index];
+                        return buildImage(urlImage, index);
+                      },
+                    )
+                  : Container(
+                      child: Text('There are no images uploaded for this gym'),
+                    )),
           SizedBox(
             height: 20,
           ),
-          buildIndicator(),
-          SizedBox(
-            height: 20,
-          ),
+          widget.gym.images!.isNotEmpty
+              ? buildIndicator()
+              : SizedBox(
+                  height: 20,
+                ),
         ],
       );
     }

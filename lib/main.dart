@@ -5,6 +5,7 @@
 import 'package:firebase_core/firebase_core.dart';
 
 import 'package:flutter/material.dart';
+import 'package:gymhome/Admin/AdminHome.dart';
 
 import 'package:gymhome/GymOwnerwidgets/facilities.dart';
 
@@ -68,7 +69,7 @@ class MyApp extends StatelessWidget {
       // print('uid = ');
       // print(uid);
       // return welcome();
-      // return NewHome();
+      return AdminHome();
       if (iscustomer)
         return NewHome();
       // return Location();

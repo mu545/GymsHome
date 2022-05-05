@@ -9,12 +9,15 @@ import 'package:gymhome/models/review.dart';
 import 'package:gymhome/Styles.dart';
 import '../models/user.dart';
 import '../widgets/commentCard.dart';
+import '../widgets/locationmap.dart';
 
 class GymOwnerDescrption extends StatefulWidget {
   GymModel gym;
+  List<Placelocation> gymsaddress;
   //final String userid;
   GymOwnerDescrption({
     Key? key,
+    required this.gymsaddress,
     required this.gym,
   }) : super(key: key);
   static const routeName = '/gym';

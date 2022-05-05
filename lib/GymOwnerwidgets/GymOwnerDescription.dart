@@ -20,6 +20,7 @@ class GymOwnerDescrption extends StatefulWidget {
   //final String userid;
   GymOwnerDescrption({
     Key? key,
+    // required this.distance,
     required this.gymsaddress,
     required this.gym,
   }) : super(key: key);
@@ -30,8 +31,8 @@ class GymOwnerDescrption extends StatefulWidget {
 }
 
 class _GymOwnerDescrptionState extends State<GymOwnerDescrption> {
-//
   // int pricess = 6;
+  String distance = 'Loading...';
   List<Review> reviews = [];
   Review? userReview;
   String currentPrice = '';
@@ -63,6 +64,19 @@ class _GymOwnerDescrptionState extends State<GymOwnerDescrption> {
       //     window = '';
       //   });
     }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getDistance();
+  }
+
+  void getDistance() async {
+    final _dis = await Placelocation.calculateDistance(widget.gym.location!);
+    setState(() {
+      distance = _dis;
+    });
   }
 
   Widget buildIndicator() => AnimatedSmoothIndicator(
@@ -289,7 +303,7 @@ class _GymOwnerDescrptionState extends State<GymOwnerDescrption> {
                             width: 15,
                           ),
                           Text(
-                            '55 Km',
+                            distance,
                             style: TextStyle(fontSize: 20),
                           ),
                           Icon(Icons.directions_walk_outlined)

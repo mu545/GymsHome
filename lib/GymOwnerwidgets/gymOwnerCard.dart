@@ -4,7 +4,7 @@ import 'package:gymhome/models/GymModel.dart';
 import '../widgets/locationmap.dart';
 import 'GymOwnerDescription.dart';
 
-class GymCard extends StatelessWidget {
+class GymCard extends StatefulWidget {
   List<Placelocation> gymsaddress;
   GymCard({
     Key? key,
@@ -12,24 +12,40 @@ class GymCard extends StatelessWidget {
     required this.gymInfo,
   }) : super(key: key);
   final GymModel gymInfo;
-  String? distance;
+
   @override
+  State<GymCard> createState() => _GymCardState();
+}
+
+class _GymCardState extends State<GymCard> {
+  String distance = 'Loading...';
+
+  @override
+  void initState() {
+    super.initState();
+    getDistance();
+  }
+
   void getDistance() async {
-    distance = await Placelocation.calculateDistance(gymInfo.location!);
-    print(distance);
+    final _dis =
+        await Placelocation.calculateDistance(widget.gymInfo.location!);
+    setState(() {
+      distance = _dis;
+    });
+
+    // print(distance);
   }
 
   @override
   Widget build(BuildContext context) {
-    getDistance();
     // Placelocation.calculateDistance(gymInfo.location!)
     //     .then((value) => distance = value);
     return InkWell(
       onTap: () {
         Navigator.of(context).push(MaterialPageRoute(
             builder: (context) => GymOwnerDescrption(
-                  gym: gymInfo,
-                  gymsaddress: gymsaddress,
+                  gym: widget.gymInfo,
+                  gymsaddress: widget.gymsaddress,
                   //  userid: gymInfo.ownerId,
                 )));
         // Navigator.of(context).push(MaterialPageRoute(
@@ -70,7 +86,7 @@ class GymCard extends StatelessWidget {
                           borderRadius: BorderRadius.only(
                               topLeft: Radius.circular(15),
                               topRight: Radius.circular(15)),
-                          child: Image.network(gymInfo.imageURL ?? '',
+                          child: Image.network(widget.gymInfo.imageURL ?? '',
                               fit: BoxFit.cover)),
                     ),
                     // Positioned(
@@ -96,7 +112,7 @@ class GymCard extends StatelessWidget {
                             borderRadius: BorderRadius.only(
                                 topRight: Radius.circular(50))),
                         child: Text(
-                          gymInfo.name ?? '',
+                          widget.gymInfo.name ?? '',
                           style: TextStyle(
                               fontSize: 32,
                               color: Colors.white,
@@ -122,11 +138,11 @@ class GymCard extends StatelessWidget {
                       children: [
                         Text(
                           //    price ??
-                          gymInfo.priceOneDay.toString(),
+                          widget.gymInfo.priceOneDay.toString(),
                           style: TextStyle(fontSize: 20, color: Colors.white),
                         ),
                         Text(
-                          distance ?? 'No result here wait to fix ',
+                          'rate here',
                           style: TextStyle(fontSize: 20, color: Colors.white),
                         ),
                       ],
@@ -145,7 +161,7 @@ class GymCard extends StatelessWidget {
                         Row(
                           children: [
                             Text(
-                              "50 Km",
+                              distance,
                               style: TextStyle(
                                   fontSize: 20,
                                   color: Colors.white,

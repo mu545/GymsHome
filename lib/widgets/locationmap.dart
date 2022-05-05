@@ -38,7 +38,7 @@ class Placelocation {
             cos(userLocation.latitude * p) *
             (1 - cos((userLocation.longitude - gymLocation.longitude) * p)) /
             2;
-    String distance = (12742 * asin(sqrt(a))).toString() + ' KM';
+    String distance = (12742 * asin(sqrt(a))).toStringAsFixed(0) + ' KM';
     return distance;
   }
 }

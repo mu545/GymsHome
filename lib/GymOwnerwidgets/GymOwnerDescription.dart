@@ -660,6 +660,7 @@ class _GymOwnerDescrptionState extends State<GymOwnerDescrption> {
 
               Navigator.of(context).push(MaterialPageRoute(
                   builder: (context) => AddGymInfo(
+                        gymsaddress: widget.gymsaddress,
                         gym: gym,
                         imageFile: null,
                         oldGym: true,

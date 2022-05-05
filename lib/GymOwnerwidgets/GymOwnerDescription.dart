@@ -328,19 +328,26 @@ class _GymOwnerDescrptionState extends State<GymOwnerDescrption> {
                         children: [
                           Row(
                             children: [
+                              Icon(
+                                Icons.star,
+                                size: 45,
+                                color: colors.yellow_base,
+                              ),
                               Text(
                                 gym.avg_rate.toString(),
                                 style: TextStyle(fontSize: 30),
-                              ),
-                              Icon(
-                                Icons.star,
-                                color: colors.yellow_base,
                               ),
                             ],
                           ),
                           Container(
                               margin: EdgeInsets.only(right: 10),
-                              child: Text('Based on 320 reviews')),
+                              child: Text(
+                                widget.gym.reviews == 0
+                                    ? 'No reviews yet'
+                                    : "Based on " +
+                                        widget.gym.reviews.toString() +
+                                        " reviews",
+                              )),
                         ],
                       ),
                     ],

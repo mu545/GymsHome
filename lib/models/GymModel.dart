@@ -19,27 +19,28 @@ class GymModel {
   bool? isComplete;
   String? gender;
   double? avg_rate;
+  int? reviews;
 
   GymModel(
-    this.images,
-    this.faciltrs,
-    this.prices,
-    this.priceOneDay,
-    this.priceOneMonth,
-    this.priceOneYear,
-    this.priceSixMonths,
-    this.priceThreeMonths,
-    this.imageURL,
-    this.gymId,
-    this.ownerId,
-    this.name,
-    this.description,
-    this.location,
-    this.isComplete,
-    this.isWaiting,
-    this.gender,
-    this.avg_rate,
-  );
+      this.images,
+      this.faciltrs,
+      this.prices,
+      this.priceOneDay,
+      this.priceOneMonth,
+      this.priceOneYear,
+      this.priceSixMonths,
+      this.priceThreeMonths,
+      this.imageURL,
+      this.gymId,
+      this.ownerId,
+      this.name,
+      this.description,
+      this.location,
+      this.isComplete,
+      this.isWaiting,
+      this.gender,
+      this.avg_rate,
+      this.reviews);
 
   GymModel.fromJson(Map<String, dynamic> json) {
     images = json['images'];
@@ -58,6 +59,7 @@ class GymModel {
     isComplete = json['isComplete'];
     gender = json['gender'];
     avg_rate = double.parse(json['Avg_rate'].toString());
+    reviews = json['reviews'];
   }
   GymModel.fromQ(QueryDocumentSnapshot<Object?> data) {
     images = data['images'];
@@ -76,6 +78,7 @@ class GymModel {
     isComplete = data['isComplete'];
     gender = data['gender'];
     avg_rate = double.parse(data['Avg_rate'].toString());
+    reviews = data['reviews'];
   }
 
   // Map<String, dynamic> toJson() {

@@ -13,8 +13,8 @@ class ViewGymImages extends StatefulWidget {
 class _ViewGymImagesState extends State<ViewGymImages> {
   final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
   final String userId = "95fFRxumpsU3TI6jXi1K";
-  GymModel _gymProfile = GymModel([], [], 0, 0, 0, 0, 0, '', '', '', '', '',
-      GeoPoint(0, 0), false, true, '');
+  GymModel _gymProfile = GymModel(
+      [], [], 0, 0, 0, 0, 0, '', '', '', '', '', null, false, true, '', 0);
 
   Future? _getData() => _fireStore.collection('Gyms').doc(userId).get();
   @override

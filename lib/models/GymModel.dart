@@ -17,6 +17,7 @@ class GymModel {
   bool? isWaiting;
   bool? isComplete;
   String? gender;
+  double? avg_rate;
 
   GymModel(
     this.images,
@@ -35,6 +36,7 @@ class GymModel {
     this.isComplete,
     this.isWaiting,
     this.gender,
+    this.avg_rate,
   );
 
   GymModel.fromJson(Map<String, dynamic> json) {
@@ -53,6 +55,7 @@ class GymModel {
     isWaiting = json['isWaiting'];
     isComplete = json['isComplete'];
     gender = json['gender'];
+    avg_rate = double.parse(json['Avg_rate'].toString());
   }
   GymModel.fromQ(QueryDocumentSnapshot<Object?> data) {
     images = data['images'];
@@ -70,6 +73,7 @@ class GymModel {
     isWaiting = data['isWaiting'];
     isComplete = data['isComplete'];
     gender = data['gender'];
+    avg_rate = double.parse(data['Avg_rate'].toString());
   }
 
   // Map<String, dynamic> toJson() {

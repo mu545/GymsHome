@@ -20,13 +20,15 @@ class _ManageNewGymImagesState extends State<ManageNewGymImages> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: PhotoViewGallery.builder(
-            itemCount: widget.images!.length,
-            builder: (context, index) {
-              final urlImage = widget.images![index];
+      body: PhotoViewGallery.builder(
+        itemCount: widget.images!.length,
+        builder: (context, index) {
+          final urlImage = widget.images![index];
 
-              return PhotoViewGalleryPageOptions(
-                  imageProvider: NetworkImage(urlImage));
-            }));
+          return PhotoViewGalleryPageOptions(
+              imageProvider: NetworkImage(urlImage));
+        },
+      ),
+    );
   }
 }

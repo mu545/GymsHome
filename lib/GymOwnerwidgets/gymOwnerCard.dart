@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-
 import 'package:gymhome/models/GymModel.dart';
-import 'package:gymhome/widgets/edit.dart';
+
 import '../widgets/locationmap.dart';
+import 'GymOwnerDescription.dart';
 
 class GymCard extends StatelessWidget {
   List<Placelocation> gymsaddress;
@@ -27,12 +27,17 @@ class GymCard extends StatelessWidget {
     return InkWell(
       onTap: () {
         Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => AddGymInfo(
-                  gymsaddress: gymsaddress,
+            builder: (context) => GymOwnerDescrption(
                   gym: gymInfo,
-                  imageFile: null,
-                  oldGym: true,
+                  gymsaddress: gymsaddress,
+                  //  userid: gymInfo.ownerId,
                 )));
+        // Navigator.of(context).push(MaterialPageRoute(
+        //     builder: (context) => AddGymInfo(
+        //           gym: gymInfo,
+        //           imageFile: null,
+        //           oldGym: true,
+        //         )));
       },
       child: Container(
           height: MediaQuery.of(context).size.height * 0.35,

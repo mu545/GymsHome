@@ -133,7 +133,8 @@ class AddGymMethods with ChangeNotifier {
         'One Year': newGym.priceOneYear,
         'isWaiting': true,
         'isComplete': false,
-        'gender': newGym.gender
+        'gender': newGym.gender,
+        'Avg_rate': newGym.avg_rate
       }).whenComplete(() => getImageGallery(imageUrl, gym.id)
           .whenComplete(() => uploadFiles(newGymImages, gym.id)));
       getImageGallery(imageUrl, gym.id);

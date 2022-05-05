@@ -1,19 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-
 import 'package:flutter/material.dart';
-
 import 'package:gymhome/GymOwnerwidgets/gymOwnerCard.dart';
 import 'package:gymhome/models/GymModel.dart';
-
 import 'package:gymhome/models/gyms.dart';
-
 import 'package:gymhome/widgets/edit.dart';
-
 import 'package:provider/provider.dart';
 import 'package:gymhome/Styles.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import '../widgets/locationmap.dart';
+// import 'package:http/http.dart';
 
 class OwnerHome extends StatefulWidget with ChangeNotifier {
   static const rounamed = '/shshs';
@@ -30,7 +25,6 @@ class _WidgtessState extends State<OwnerHome> {
 
   void getUid() async {
     SharedPreferences _userdata = await SharedPreferences.getInstance();
-
     setState(() {
       uid = _userdata.getString('uid');
     });

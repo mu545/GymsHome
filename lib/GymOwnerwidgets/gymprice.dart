@@ -380,6 +380,7 @@ class _AddGymState extends State<GymPrice> {
                     Navigator.pop(context);
                     Navigator.pop(context);
                     Navigator.pop(context);
+                    Navigator.pop(context);
                     if (widget.gym.gymId!.isNotEmpty) Navigator.pop(context);
                   }
                 },

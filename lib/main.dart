@@ -43,6 +43,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await Firebase.initializeApp();
+  // MapsInitializer.initialize();
 // to read and write user data
   final _userdata = await SharedPreferences.getInstance();
   iscustomer = _userdata.getBool('iscustomer');

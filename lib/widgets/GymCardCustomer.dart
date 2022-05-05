@@ -156,7 +156,7 @@ class _GymCardCustomerState extends State<GymCardCustomer> {
                             style: TextStyle(fontSize: 20, color: Colors.white),
                           ),
                           Text(
-                            widget.gymInfo.location.toString(),
+                            widget.gymInfo.location!.longitude.toString(),
                             style: TextStyle(fontSize: 20, color: Colors.white),
                           ),
                         ],

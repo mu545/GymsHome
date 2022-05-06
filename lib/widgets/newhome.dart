@@ -6,6 +6,7 @@ import 'package:gymhome/Styles.dart';
 import 'package:gymhome/models/GymModel.dart';
 import 'package:gymhome/models/favorite.dart';
 import 'package:gymhome/models/gyms.dart';
+import 'package:gymhome/models/user.dart';
 import 'package:gymhome/models/userdata.dart';
 import 'package:gymhome/provider/gymsitems.dart';
 import 'package:gymhome/widgets/GymCardCustomer.dart';
@@ -14,6 +15,7 @@ import 'package:gymhome/widgets/PaymentScreen.dart';
 import 'package:gymhome/widgets/favorite.dart';
 import 'package:gymhome/widgets/gymdescrption.dart';
 import 'package:gymhome/widgets/gymgrid.dart';
+import 'package:gymhome/widgets/locationmap.dart';
 import 'package:gymhome/widgets/newSearch.dart';
 import 'package:gymhome/widgets/profile.dart';
 import 'package:gymhome/widgets/search.dart';
@@ -37,52 +39,52 @@ class NewHome extends StatefulWidget {
 
 class _NewHomeState extends State<NewHome> {
   // Customer? currentc;
-  String? _uid;
+  String? uid;
   int _selectedIndex = 0;
   // final SharedPreferences _userdata = await SharedPreferences.getInstance();
   // late Customer c;
   List<Widget>? _list;
+  String? name;
+  // void getUid() async {
+  //   // SharedPreferences _userdata = await SharedPreferences.getInstance();
 
-  void getUid() async {
-    SharedPreferences _userdata = await SharedPreferences.getInstance();
-    // String? email = _userdata.getString('email');
-    // String? name = _userdata.getString('name');
-    // String? profilePicture = _userdata.getString('profilePicture');
-    // String? uid = _userdata.getString('uid');
-    setState(() {
-      _uid = _userdata.getString('uid');
-      // currentc = Customer(
-      //     email: email ?? '',
-      //     profilePicture: '',
-      //     uid: uid ?? '',
-      //     name: name ?? '');
-    });
-  }
+  //   setState(() {
+  //     // uid = _userdata.getString('uid');
+  //     // name = _userdata.getString('name');
+  //   });
+  //   print('name$name');
+  //   // print('uid$uid');
+  // }
 
   @override
   void initState() {
     super.initState();
-    getUid();
-    getlist();
+    SharedPreferences.getInstance().then((userdata) {
+      setState(() {
+        uid = userdata.getString('uid');
+      });
+      print('uid$uid');
+    }).whenComplete((() {
+      getlist();
+    }));
+
+    // if (mounted) getlist();
   }
 
   void getlist() {
     setState(() {
       _list = [
         NewWidgetHome(
-          userid: _uid ?? '',
+          userid: uid ?? 'no user',
         ),
         Viewcompare(
-          userid: _uid ?? '',
-        ),
-        Sort(
-          userid: _uid ?? '',
+          userid: uid ?? 'no user',
         ),
         Favorite(
-          userid: _uid ?? '',
+          userid: uid ?? 'no user',
         ),
         Profile(
-          userid: _uid ?? '',
+          userid: uid ?? 'no user',
         ),
       ];
     });
@@ -112,10 +114,6 @@ class _NewHomeState extends State<NewHome> {
             BottomNavigationBarItem(
               icon: Icon(Icons.compare_arrows_rounded),
               label: 'Compare',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.sort),
-              label: 'Sort',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.favorite),
@@ -154,8 +152,13 @@ class NewWidgetHome extends StatefulWidget {
 }
 
 class _NewWidgetHomeState extends State<NewWidgetHome> {
+  bool isSort = false;
+  bool isloading = false;
+  int sortBy = 0;
   String priceChoosed = 'One Day';
   String genderChoosed = 'Men';
+  List<GymModel> _gymsList = [];
+  // List<GymModel> _gymsListSorted = [];
   void genderChoose(gender) {
     switch (gender) {
       case "Men":
@@ -203,10 +206,66 @@ class _NewWidgetHomeState extends State<NewWidgetHome> {
     }
   }
 
+  void sortByWhat(Object? by) {
+    print('uid' + widget.userid);
+    print('by$by');
+    switch (by) {
+      case 0:
+        sortByLocation().whenComplete(() {
+          setState(() {
+            isloading = false;
+          });
+        });
+        break;
+      case 1:
+        setState(() {
+          isloading = true;
+          sortBy = 1;
+        });
+        break;
+      case 2:
+        setState(() {
+          isloading = true;
+          sortBy = 2;
+        });
+        break;
+      default:
+    }
+  }
+
+  Future<void> sortByLocation() async {
+    GeoPoint gym1;
+    double dis1;
+    GeoPoint gym2;
+    double dis2;
+    for (int i = 0; i < _gymsList.length - 1; i++) {
+      for (int j = 0; j < _gymsList.length - 1 - i; j++) {
+        gym1 = GeoPoint(
+            _gymsList[j].location!.latitude, _gymsList[j].location!.longitude);
+        gym2 = GeoPoint(_gymsList[j + 1].location!.latitude,
+            _gymsList[j + 1].location!.longitude);
+
+        dis1 = await Placelocation.distanceInKM(gym1);
+        dis2 = await Placelocation.distanceInKM(gym2);
+        if (dis1 > dis2) {
+          GymModel tmp = _gymsList[j];
+          _gymsList[j] = _gymsList[j + 1];
+          _gymsList[j + 1] = tmp;
+        }
+      }
+    }
+    print('list' +
+        _gymsList[0].location!.latitude.toString() +
+        '->' +
+        _gymsList[1].location!.latitude.toString());
+    // setState(() {});
+    // _gymsListSorted = _gymsList;
+  }
+
   @override
   Widget build(BuildContext context) {
+    final Size screenSize = MediaQuery.of(context).size;
     final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
-    List<GymModel> _gymsList = [];
 
     Future? _getData() {
       switch (priceChoosed) {
@@ -316,6 +375,35 @@ class _NewWidgetHomeState extends State<NewWidgetHome> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              PopupMenuButton(
+                icon: Icon(Icons.sort),
+                onSelected: (value) {
+                  setState(() {
+                    isloading = true;
+                    isSort = true;
+                  });
+                  sortByWhat(value);
+                },
+                itemBuilder: (BuildContext bc) {
+                  return const [
+                    PopupMenuItem(
+                      enabled: true,
+                      child: Text("By location"),
+                      value: 0,
+                    ),
+                    PopupMenuItem(
+                      child: Text("By Rate"),
+                      enabled: false,
+                      value: 1,
+                    ),
+                    PopupMenuItem(
+                      child: Text("By price"),
+                      enabled: false,
+                      value: 2,
+                    )
+                  ];
+                },
+              ),
               Container(
                 margin: EdgeInsets.fromLTRB(10, 10, 0, 0),
                 height: 20,
@@ -323,37 +411,14 @@ class _NewWidgetHomeState extends State<NewWidgetHome> {
                 decoration: BoxDecoration(
                     border: Border.all(color: Colors.grey),
                     borderRadius: BorderRadius.circular(5)),
-                child: Expanded(
-                  child: Row(
-                    children: [
-                      Container(
-                        child: ElevatedButton(
-                          child: Text(
-                            'Men',
-                            style: TextStyle(
-                                color: genderChoosed == 'Men'
-                                    ? Colors.white
-                                    : Colors.black,
-                                fontSize: 13),
-                          ),
-                          style: ButtonStyle(
-                              shape: MaterialStateProperty.all<OutlinedBorder>(
-                                  RoundedRectangleBorder(
-                                      side: BorderSide.none)),
-                              backgroundColor: genderChoosed == 'Men'
-                                  ? MaterialStateProperty.all(
-                                      Color.fromARGB(209, 71, 153, 183))
-                                  : MaterialStateProperty.all(Colors.white)),
-                          onPressed: () {
-                            genderChoose('Men');
-                          },
-                        ),
-                      ),
-                      ElevatedButton(
+                child: Row(
+                  children: [
+                    Container(
+                      child: ElevatedButton(
                         child: Text(
-                          'Women',
+                          'Men',
                           style: TextStyle(
-                              color: genderChoosed == 'Women'
+                              color: genderChoosed == 'Men'
                                   ? Colors.white
                                   : Colors.black,
                               fontSize: 13),
@@ -361,16 +426,36 @@ class _NewWidgetHomeState extends State<NewWidgetHome> {
                         style: ButtonStyle(
                             shape: MaterialStateProperty.all<OutlinedBorder>(
                                 RoundedRectangleBorder(side: BorderSide.none)),
-                            backgroundColor: genderChoosed == 'Women'
+                            backgroundColor: genderChoosed == 'Men'
                                 ? MaterialStateProperty.all(
                                     Color.fromARGB(209, 71, 153, 183))
                                 : MaterialStateProperty.all(Colors.white)),
                         onPressed: () {
-                          genderChoose('Women');
+                          genderChoose('Men');
                         },
                       ),
-                    ],
-                  ),
+                    ),
+                    ElevatedButton(
+                      child: Text(
+                        'Women',
+                        style: TextStyle(
+                            color: genderChoosed == 'Women'
+                                ? Colors.white
+                                : Colors.black,
+                            fontSize: 13),
+                      ),
+                      style: ButtonStyle(
+                          shape: MaterialStateProperty.all<OutlinedBorder>(
+                              RoundedRectangleBorder(side: BorderSide.none)),
+                          backgroundColor: genderChoosed == 'Women'
+                              ? MaterialStateProperty.all(
+                                  Color.fromARGB(209, 71, 153, 183))
+                              : MaterialStateProperty.all(Colors.white)),
+                      onPressed: () {
+                        genderChoose('Women');
+                      },
+                    ),
+                  ],
                 ),
               ),
             ],
@@ -388,211 +473,245 @@ class _NewWidgetHomeState extends State<NewWidgetHome> {
                 decoration: BoxDecoration(
                     border: Border.all(color: Colors.grey),
                     borderRadius: BorderRadius.circular(5)),
-                child: Expanded(
-                  child: Row(
-                    children: [
-                      ElevatedButton(
-                        //    minWidth: 50,
-                        onPressed: () {
-                          priceChoose('Day');
-                        },
-                        child: Text(
-                          'Day',
-                          style: TextStyle(
-                            color: priceChoosed == 'One Day'
-                                ? Colors.white
-                                : Colors.black,
-                          ),
+                child: Row(
+                  children: [
+                    ElevatedButton(
+                      onPressed: () {
+                        priceChoose('Day');
+                      },
+                      child: Text(
+                        'Day',
+                        style: TextStyle(
+                          color: priceChoosed == 'One Day'
+                              ? Colors.white
+                              : Colors.black,
                         ),
-                        style: ButtonStyle(
-                            shape: MaterialStateProperty.all<OutlinedBorder>(
-                                RoundedRectangleBorder(side: BorderSide.none)),
-                            backgroundColor: priceChoosed == 'One Day'
-                                ? MaterialStateProperty.all(
-                                    Color.fromARGB(209, 71, 153, 183))
-                                : MaterialStateProperty.all(Colors.white)),
                       ),
-                      ElevatedButton(
-                        //     minWidth: 10,
-                        onPressed: () {
-                          priceChoose('Month');
-                        },
-                        child: Text(
-                          'Month',
-                          style: TextStyle(
-                            color: priceChoosed == 'One Month'
-                                ? Colors.white
-                                : Colors.black,
-                          ),
+                      style: ButtonStyle(
+                          // fixedSize:,
+                          // fixedSize: MaterialStateProperty<Size>(Size.fromWidth(screenSize.width/5)) ,
+                          // minimumSize:MaterialStateProperty(Size(screenSize.width/5, height)) ,
+                          // minimumSize: MaterialStateProperty Size(10,10),
+                          shape: MaterialStateProperty.all<OutlinedBorder>(
+                              RoundedRectangleBorder(side: BorderSide.none)),
+                          backgroundColor: priceChoosed == 'One Day'
+                              ? MaterialStateProperty.all(
+                                  Color.fromARGB(209, 71, 153, 183))
+                              : MaterialStateProperty.all(Colors.white)),
+                    ),
+                    ElevatedButton(
+                      // minWidth: 10,
+                      onPressed: () {
+                        priceChoose('Month');
+                      },
+                      child: Text(
+                        'Month',
+                        style: TextStyle(
+                          color: priceChoosed == 'One Month'
+                              ? Colors.white
+                              : Colors.black,
                         ),
-                        style: ButtonStyle(
-                            shape: MaterialStateProperty.all<OutlinedBorder>(
-                                RoundedRectangleBorder(side: BorderSide.none)),
-                            backgroundColor: priceChoosed == 'One Month'
-                                ? MaterialStateProperty.all(
-                                    Color.fromARGB(209, 71, 153, 183))
-                                : MaterialStateProperty.all(Colors.white)),
                       ),
-                      ElevatedButton(
-                        //    minWidth: 10,
-                        onPressed: () {
-                          priceChoose('3 Months');
-                        },
-                        child: Text(
-                          '3 Months',
-                          style: TextStyle(
-                            color: priceChoosed == 'Three Months'
-                                ? Colors.white
-                                : Colors.black,
-                          ),
+                      // style: ElevatedButton.styleFrom(
+                      //   fixedSize: Size(screenSize.width / 5, 100),
+                      //   // primary: colors.blue_base
+                      //   // backgroundColor:Colors.white,
+
+                      //   // shape: RoundedRectangleBorder(
+                      //   //     borderRadius: BorderRadius.circular(50)),
+                      // ),
+                    ),
+                    // style: ButtonStyle(
+                    //   // fixedSize:MaterialStateProperty.all(240, 80),
+                    //     shape: MaterialStateProperty.all<OutlinedBorder>(
+                    //         RoundedRectangleBorder(side: BorderSide.none)),
+                    //     backgroundColor: priceChoosed == 'One Month'
+                    //         ? MaterialStateProperty.all(
+                    //             Color.fromARGB(209, 71, 153, 183))
+                    //         : MaterialStateProperty.all(Colors.white)),
+                    // ),
+                    ElevatedButton(
+                      //    minWidth: 10,
+                      onPressed: () {
+                        priceChoose('3 Months');
+                      },
+                      child: Text(
+                        '3 Months',
+                        style: TextStyle(
+                          color: priceChoosed == 'Three Months'
+                              ? Colors.white
+                              : Colors.black,
                         ),
-                        style: ButtonStyle(
-                            shape: MaterialStateProperty.all<OutlinedBorder>(
-                                RoundedRectangleBorder(side: BorderSide.none)),
-                            backgroundColor: priceChoosed == 'Three Months'
-                                ? MaterialStateProperty.all(
-                                    Color.fromARGB(209, 71, 153, 183))
-                                : MaterialStateProperty.all(Colors.white)),
                       ),
-                      ElevatedButton(
-                        //   minWidth: 10,
-                        onPressed: () {
-                          priceChoose('6 Months');
-                        },
-                        child: Text(
-                          '6 Months',
-                          style: TextStyle(
-                            color: priceChoosed == 'Six Months'
-                                ? Colors.white
-                                : Colors.black,
-                          ),
+                      style: ButtonStyle(
+                          shape: MaterialStateProperty.all<OutlinedBorder>(
+                              RoundedRectangleBorder(side: BorderSide.none)),
+                          backgroundColor: priceChoosed == 'Three Months'
+                              ? MaterialStateProperty.all(
+                                  Color.fromARGB(209, 71, 153, 183))
+                              : MaterialStateProperty.all(Colors.white)),
+                    ),
+                    ElevatedButton(
+                      //   minWidth: 10,
+                      onPressed: () {
+                        priceChoose('6 Months');
+                      },
+                      child: Text(
+                        '6 Months',
+                        style: TextStyle(
+                          color: priceChoosed == 'Six Months'
+                              ? Colors.white
+                              : Colors.black,
                         ),
-                        style: ButtonStyle(
-                            shape: MaterialStateProperty.all<OutlinedBorder>(
-                                RoundedRectangleBorder(side: BorderSide.none)),
-                            backgroundColor: priceChoosed == 'Six Months'
-                                ? MaterialStateProperty.all(
-                                    Color.fromARGB(209, 71, 153, 183))
-                                : MaterialStateProperty.all(Colors.white)),
                       ),
-                      ElevatedButton(
-                        //   minWidth: 10,
-                        onPressed: () {
-                          priceChoose('Year');
-                        },
-                        child: Text(
-                          'Year',
-                          style: TextStyle(
-                            color: priceChoosed == 'One Year'
-                                ? Colors.white
-                                : Colors.black,
-                          ),
+                      style: ButtonStyle(
+                          shape: MaterialStateProperty.all<OutlinedBorder>(
+                              RoundedRectangleBorder(side: BorderSide.none)),
+                          backgroundColor: priceChoosed == 'Six Months'
+                              ? MaterialStateProperty.all(
+                                  Color.fromARGB(209, 71, 153, 183))
+                              : MaterialStateProperty.all(Colors.white)),
+                    ),
+                    ElevatedButton(
+                      //   minWidth: 10,
+                      onPressed: () {
+                        priceChoose('Year');
+                      },
+                      child: Text(
+                        'Year',
+                        style: TextStyle(
+                          color: priceChoosed == 'One Year'
+                              ? Colors.white
+                              : Colors.black,
                         ),
-                        style: ButtonStyle(
-                            shape: MaterialStateProperty.all<OutlinedBorder>(
-                                RoundedRectangleBorder(side: BorderSide.none)),
-                            backgroundColor: priceChoosed == 'One Year'
-                                ? MaterialStateProperty.all(
-                                    Color.fromARGB(209, 71, 153, 183))
-                                : MaterialStateProperty.all(Colors.white)),
                       ),
-                    ],
-                  ),
+                      style: ButtonStyle(
+                          shape: MaterialStateProperty.all<OutlinedBorder>(
+                              RoundedRectangleBorder(side: BorderSide.none)),
+                          backgroundColor: priceChoosed == 'One Year'
+                              ? MaterialStateProperty.all(
+                                  Color.fromARGB(209, 71, 153, 183))
+                              : MaterialStateProperty.all(Colors.white)),
+                    ),
+                  ],
                 ),
               ),
             ],
           ),
-
-          Expanded(
-            child: SingleChildScrollView(
-              child: FutureBuilder(
-                future: _getData(),
-                builder:
-                    (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-                  if (snapshot.hasData) {
-                    _gymsList.clear();
-                    snapshot.data.docs.forEach((element) {
-                      _gymsList.add(GymModel.fromJson(element.data()));
-                    });
-
-                    if (_gymsList.isEmpty)
-                      return Center(
-                          child: Container(
-                        margin: EdgeInsets.only(top: 100),
-                        child: Text(
-                          'No gyms found',
-                          textAlign: TextAlign.center,
-                        ),
-                      ));
-
-                    //
-                    return Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        children: [
-                          ListView.builder(
-                            controller:
-                                ScrollController(keepScrollOffset: true),
-                            shrinkWrap: true,
-                            itemCount: _gymsList.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              return GymCardCustomer(
-                                price: priceChoosed,
-                                gymInfo: _gymsList[index],
-                                userid: widget.userid,
-                              );
-                            },
-                          )
-                        ],
-                      ),
-                    );
-                  } else
-                    return Center(child: CircularProgressIndicator());
-                },
-              ),
-            ),
+          SizedBox(
+            height: 10,
           ),
+          (!isSort)
+              ? Expanded(
+                  child: SingleChildScrollView(
+                      child: FutureBuilder(
+                  future: _getData(),
+                  builder:
+                      (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                    if (snapshot.hasData) {
+                      _gymsList.clear();
+                      snapshot.data.docs.forEach((element) {
+                        _gymsList.add(GymModel.fromJson(element.data()));
+                      });
+
+                      if (_gymsList.isEmpty)
+                        return Center(
+                            child: Container(
+                          margin: EdgeInsets.only(top: 100),
+                          child: Text(
+                            'No gyms found',
+                            textAlign: TextAlign.center,
+                          ),
+                        ));
+                      // else if (isSort) {
+                      //   if (sortBy == 'SortByLocation') {
+                      //     sortByLocation().whenComplete(() {
+                      //       setState(() {
+                      //         isloading = false;
+                      //       });
+                      //     });
+                      //   }
+                      // }
+
+                      //
+
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          children: [
+                            ListView.builder(
+                              controller:
+                                  ScrollController(keepScrollOffset: true),
+                              shrinkWrap: true,
+                              itemCount: _gymsList.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                return GymCardCustomer(
+                                  price: priceChoosed,
+                                  gymInfo: _gymsList[index],
+                                  userid: widget.userid,
+                                );
+                              },
+                            )
+                          ],
+                        ),
+                      );
+                    } else
+                      return Center(child: CircularProgressIndicator());
+                  },
+                )
+
+                      // Padding(
+                      //     padding: const EdgeInsets.all(8.0),
+                      //     child: Column(
+                      //       children: [
+                      //         if (_gymsListSorted.isNotEmpty)
+                      //           ListView.builder(
+                      //             controller:
+                      //                 ScrollController(keepScrollOffset: true),
+                      //             shrinkWrap: true,
+                      //             itemCount: _gymsListSorted.length,
+                      //             itemBuilder: (BuildContext context, int index) {
+                      //               return GymCardCustomer(
+                      //                 price: priceChoosed,
+                      //                 gymInfo: _gymsListSorted[index],
+                      //                 userid: widget.userid,
+                      //               );
+                      //             },
+                      //           ),
+                      //         if (isloading)
+                      //           Center(child: CircularProgressIndicator()),
+                      //         if (_gymsListSorted.isEmpty)
+                      //           Center(
+                      //               child: Container(
+                      //             margin: EdgeInsets.only(top: 100),
+                      //             child: Text(
+                      //               'No gyms found',
+                      //               textAlign: TextAlign.center,
+                      //             ),
+                      //           ))
+                      // ],
+                      // ),
+                      ))
+              // ),
+              : (!isloading)
+                  ?
+                  // sort()
+                  Sort(
+                      gymsList: _gymsList,
+                      priceChoosed: priceChoosed,
+                      sortBy: sortBy,
+                      userid: widget.userid,
+                    )
+                  : loading()
         ],
       ),
     );
   }
+
+  Widget loading() {
+    return SizedBox(
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height - 100,
+        child: Center(child: CircularProgressIndicator()));
+  }
 }
-
-// class heart extends StatelessWidget {
-//   const heart({
-//     Key? key,
-//     required this.Gym,
-//   }) : super(key: key);
-
-//   final Gyms Gym;
-
-//   @override
-//   Widget build(BuildContext context) {
-//      final carta = Provider.of<cart>(context);
-//     return Consumer<Gyms>(
-//         builder: (ctx, prod, _) => IconButton(
-//               onPressed: () {
-//                 Gym.favoriteproducts();
-//                 carta.additem(
-//                     Gym.id, Gym.title, Gym.description, Gym.price, Gym.imageUrl);
-//               // Scaffold.of(context).showSnackBar(SnackBar(
-//               //   content: Text('Product added to the Cart'),
-//               //   duration: Duration(seconds: 2),
-//               //   action: SnackBarAction(
-//               //     label: 'UNDO',
-//               //     onPressed: () {
-//               //       // carta.removesingleitem(product.id);
-//               //     },
-//               //   ),
-//               // ));
-//               },
-//               icon: Icon(
-//                 Gym.isadd
-//                     ? Icons.shopping_cart : Icons.shopping_cart,
-
-//                 color: Colors.green,
-//               ),
-
-//             ));
-//   }
-// }

@@ -51,6 +51,20 @@ class Placelocation {
       distance = (res.toStringAsFixed(0) + ' KM');
     return distance;
   }
+
+  static Future<double> distanceInKM(GeoPoint gymLocation) async {
+    final Position locdata = await Geolocator.getCurrentPosition();
+    GeoPoint userLocation = GeoPoint(locdata.latitude, locdata.longitude);
+    var p = 0.017453292519943295;
+    var a = 0.5 -
+        cos((userLocation.latitude - gymLocation.latitude) * p) / 2 +
+        cos(gymLocation.latitude * p) *
+            cos(userLocation.latitude * p) *
+            (1 - cos((userLocation.longitude - gymLocation.longitude) * p)) /
+            2;
+
+    return 12742 * asin(sqrt(a));
+  }
 }
 
 class Place {

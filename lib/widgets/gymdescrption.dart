@@ -13,7 +13,7 @@ import '../widgets/commentCard.dart';
 
 class GymDescrption extends StatefulWidget {
   GymModel gym;
-  final String userid;
+  String userid;
   GymDescrption({Key? key, required this.gym, required this.userid})
       : super(key: key);
   static const routeName = '/gym';
@@ -25,14 +25,12 @@ class GymDescrption extends StatefulWidget {
 class _GymDescrptionState extends State<GymDescrption> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     getDistance();
   }
 
-//
   String distance = 'Loading...';
-  // int pricess = 6;
+
   List<Review> reviews = [];
   Review? userReview;
   String currentPrice = '';
@@ -698,6 +696,8 @@ class _GymDescrptionState extends State<GymDescrption> {
         children: [
           InkWell(
             onTap: () {
+              print('uid' + widget.userid.toString());
+              print('gymid' + widget.gym.gymId.toString());
               reviewForm(context, userReview, widget.gym.gymId);
             },
             // splashColor: colors.blue_base,
@@ -864,17 +864,25 @@ class _GymDescrptionState extends State<GymDescrption> {
                                 rate != 0.0) {
                               if (comment == '') {
                                 Review.addRate(gymid!, rate, widget.userid)
-                                    .whenComplete(() {
-                                  Navigator.pop(context);
-                                  AppUser.message(bodyctx, true, 'Thank you');
-                                });
+                                    .then((value) => AppUser.message(
+                                        bodyctx, true, 'Thank you'))
+                                    .onError((error, stackTrace) =>
+                                        AppUser.message(
+                                            bodyctx, false, error.toString()));
+
+                                Navigator.pop(context);
+
+                                ;
                               } else {
                                 Review.addReviwe(
                                         gymid!, rate, comment, widget.userid)
-                                    .whenComplete(() {
-                                  Navigator.pop(context);
-                                  AppUser.message(bodyctx, true, 'Thank you');
-                                });
+                                    .then((value) => AppUser.message(
+                                        bodyctx, true, 'Thank you'))
+                                    .onError((error, stackTrace) =>
+                                        AppUser.message(
+                                            bodyctx, false, error.toString()));
+
+                                Navigator.pop(context);
                               }
                             }
                           },

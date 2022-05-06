@@ -121,8 +121,10 @@ class AppUser {
       await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: password);
       String userid = FirebaseAuth.instance.currentUser!.uid;
+
       var collection = FirebaseFirestore.instance.collection('Gym Owner');
       var docSnapshot = await collection.doc(userid).get();
+
       if (docSnapshot.exists) {
         Owner _currentOwner =
             Owner.fromjson(docSnapshot.data() as Map<String, dynamic>, userid);

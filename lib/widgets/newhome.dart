@@ -488,10 +488,6 @@ class _NewWidgetHomeState extends State<NewWidgetHome> {
                         ),
                       ),
                       style: ButtonStyle(
-                          // fixedSize:,
-                          // fixedSize: MaterialStateProperty<Size>(Size.fromWidth(screenSize.width/5)) ,
-                          // minimumSize:MaterialStateProperty(Size(screenSize.width/5, height)) ,
-                          // minimumSize: MaterialStateProperty Size(10,10),
                           shape: MaterialStateProperty.all<OutlinedBorder>(
                               RoundedRectangleBorder(side: BorderSide.none)),
                           backgroundColor: priceChoosed == 'One Day'
@@ -500,7 +496,7 @@ class _NewWidgetHomeState extends State<NewWidgetHome> {
                               : MaterialStateProperty.all(Colors.white)),
                     ),
                     ElevatedButton(
-                      // minWidth: 10,
+                      //     minWidth: 10,
                       onPressed: () {
                         priceChoose('Month');
                       },
@@ -512,24 +508,14 @@ class _NewWidgetHomeState extends State<NewWidgetHome> {
                               : Colors.black,
                         ),
                       ),
-                      // style: ElevatedButton.styleFrom(
-                      //   fixedSize: Size(screenSize.width / 5, 100),
-                      //   // primary: colors.blue_base
-                      //   // backgroundColor:Colors.white,
-
-                      //   // shape: RoundedRectangleBorder(
-                      //   //     borderRadius: BorderRadius.circular(50)),
-                      // ),
+                      style: ButtonStyle(
+                          shape: MaterialStateProperty.all<OutlinedBorder>(
+                              RoundedRectangleBorder(side: BorderSide.none)),
+                          backgroundColor: priceChoosed == 'One Month'
+                              ? MaterialStateProperty.all(
+                                  Color.fromARGB(209, 71, 153, 183))
+                              : MaterialStateProperty.all(Colors.white)),
                     ),
-                    // style: ButtonStyle(
-                    //   // fixedSize:MaterialStateProperty.all(240, 80),
-                    //     shape: MaterialStateProperty.all<OutlinedBorder>(
-                    //         RoundedRectangleBorder(side: BorderSide.none)),
-                    //     backgroundColor: priceChoosed == 'One Month'
-                    //         ? MaterialStateProperty.all(
-                    //             Color.fromARGB(209, 71, 153, 183))
-                    //         : MaterialStateProperty.all(Colors.white)),
-                    // ),
                     ElevatedButton(
                       //    minWidth: 10,
                       onPressed: () {
@@ -600,6 +586,55 @@ class _NewWidgetHomeState extends State<NewWidgetHome> {
           ),
           SizedBox(
             height: 10,
+          ),
+
+          Expanded(
+            child: FutureBuilder(
+              future: _getData(),
+              builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                if (snapshot.hasData) {
+                  _gymsList.clear();
+                  snapshot.data.docs.forEach((element) {
+                    _gymsList.add(GymModel.fromJson(element.data()));
+                  });
+
+                  if (_gymsList.isEmpty)
+                    return Center(
+                        child: Container(
+                      margin: EdgeInsets.only(top: 100),
+                      child: Text(
+                        'No gyms found',
+                        textAlign: TextAlign.center,
+                      ),
+                    ));
+
+                  //
+                  return Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          ListView.builder(
+                            controller:
+                                ScrollController(keepScrollOffset: true),
+                            shrinkWrap: true,
+                            itemCount: _gymsList.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              return GymCardCustomer(
+                                price: priceChoosed,
+                                gymInfo: _gymsList[index],
+                                userid: widget.userid,
+                              );
+                            },
+                          )
+                        ],
+                      ),
+                    ),
+                  );
+                } else
+                  return Center(child: CircularProgressIndicator());
+              },
+            ),
           ),
           (!isSort)
               ? Expanded(

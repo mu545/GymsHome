@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:gymhome/models/user.dart';
 
 import 'package:gymhome/provider/customer.dart';
 

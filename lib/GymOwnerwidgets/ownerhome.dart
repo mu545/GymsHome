@@ -23,17 +23,22 @@ class _WidgtessState extends State<OwnerHome> {
   List<Placelocation> _gymsaddress = [];
   String? uid;
 
-  void getUid() async {
-    SharedPreferences _userdata = await SharedPreferences.getInstance();
-    setState(() {
-      uid = _userdata.getString('uid');
-    });
-  }
+  // void getUid() async {
+  //   SharedPreferences _userdata = await SharedPreferences.getInstance();
+  //   setState(() {
+  //     uid = _userdata.getString('uid');
+  //   });
+  // }
 
   @override
   void initState() {
     super.initState();
-    getUid();
+    SharedPreferences.getInstance().then((value) {
+      setState(() {
+        uid = value.getString('uid');
+      });
+    });
+    // getUid();
   }
   // Future? _getData() => _fireStore
   //     .collection("gyms")
@@ -71,7 +76,7 @@ class _WidgtessState extends State<OwnerHome> {
   @override
   Widget build(BuildContext context) {
     final Gym = Provider.of<Gyms>(context);
-    print(uid);
+    print('uid$uid');
 
     return Scaffold(
       appBar: AppBar(

@@ -93,6 +93,16 @@ class _GymDescrptionState extends State<GymDescrption> {
         child: Image.network(
           urlImage,
           fit: BoxFit.cover,
+          errorBuilder: (context, error, stackTrace) {
+            return Container(
+              color: Colors.white,
+              alignment: Alignment.center,
+              child: const Text(
+                'Whoops!',
+                style: TextStyle(fontSize: 30, color: colors.black60),
+              ),
+            );
+          },
         ),
       ); // Container
   Widget display() {
@@ -183,7 +193,7 @@ class _GymDescrptionState extends State<GymDescrption> {
             height: 10,
           ),
           Center(
-              child: widget.gym.images!.isEmpty
+              child: widget.gym.images!.isNotEmpty
                   ? CarouselSlider.builder(
                       carouselController: controller,
                       options: CarouselOptions(
@@ -204,10 +214,11 @@ class _GymDescrptionState extends State<GymDescrption> {
           SizedBox(
             height: 20,
           ),
-          buildIndicator(),
-          SizedBox(
-            height: 20,
-          ),
+          widget.gym.images!.isNotEmpty
+              ? buildIndicator()
+              : SizedBox(
+                  height: 20,
+                ),
         ],
       );
     }

@@ -383,8 +383,9 @@ class _NewWidgetHomeState extends State<NewWidgetHome> {
                 height: 20,
                 // width: MediaQuery.of(context).size.width,
                 decoration: BoxDecoration(
-                    border: Border.all(color: Colors.grey),
-                    borderRadius: BorderRadius.circular(5)),
+                  border: Border.all(color: Colors.grey),
+                  borderRadius: BorderRadius.circular(5),
+                ),
                 child: Row(
                   children: [
                     ElevatedButton(

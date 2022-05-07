@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:gymhome/GymOwnerwidgets/gymprice.dart';
 import 'package:gymhome/models/GymModel.dart';
 import 'package:gymhome/widgets/locationmap.dart';
@@ -26,11 +27,15 @@ class _GymDescrptionState extends State<GymDescrption> {
   @override
   void initState() {
     super.initState();
-    getDistance();
+    Geolocator.getCurrentPosition().then((value) {
+      setState(() {
+        userLocation = GeoPoint(value.latitude, value.longitude);
+      });
+    }).whenComplete(() => getDistance());
   }
 
   String distance = 'Loading...';
-
+  GeoPoint? userLocation;
   List<Review> reviews = [];
   Review? userReview;
   String currentPrice = '';
@@ -65,7 +70,10 @@ class _GymDescrptionState extends State<GymDescrption> {
   }
 
   void getDistance() async {
-    final _dis = await Placelocation.calculateDistance(widget.gym.location!);
+    // final Position locdata = await Geolocator.getCurrentPosition();
+    // GeoPoint userLocation = GeoPoint(locdata.latitude, locdata.longitude);
+    final _dis = await Placelocation.calculateDistance(
+        widget.gym.location!, userLocation!);
     if (mounted)
       setState(() {
         distance = _dis;
@@ -305,11 +313,12 @@ class _GymDescrptionState extends State<GymDescrption> {
                             children: [
                               Text(
                                 gym.avg_rate.toString(),
-                                style: TextStyle(fontSize: 30),
+                                style: TextStyle(fontSize: 25),
                               ),
                               Icon(
                                 Icons.star,
                                 color: colors.yellow_base,
+                                size: 45,
                               ),
                             ],
                           ),

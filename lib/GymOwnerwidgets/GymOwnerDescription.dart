@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:gymhome/GymOwnerwidgets/gymprice.dart';
 import 'package:gymhome/models/GymModel.dart';
 import 'package:gymhome/widgets/edit.dart';
@@ -32,6 +33,7 @@ class GymOwnerDescrption extends StatefulWidget {
 
 class _GymOwnerDescrptionState extends State<GymOwnerDescrption> {
   // int pricess = 6;
+  GeoPoint? userLocation;
   String distance = 'Loading...';
   List<Review> reviews = [];
   Review? userReview;
@@ -69,11 +71,18 @@ class _GymOwnerDescrptionState extends State<GymOwnerDescrption> {
   @override
   void initState() {
     super.initState();
-    getDistance();
+    Geolocator.getCurrentPosition().then((value) {
+      setState(() {
+        userLocation = GeoPoint(value.latitude, value.longitude);
+      });
+    }).whenComplete(() => getDistance());
   }
 
   void getDistance() async {
-    final _dis = await Placelocation.calculateDistance(widget.gym.location!);
+    // final Position locdata = await Geolocator.getCurrentPosition();
+    // GeoPoint userLocation = GeoPoint(locdata.latitude, locdata.longitude);
+    final _dis = await Placelocation.calculateDistance(
+        widget.gym.location!, userLocation!);
     if (mounted)
       setState(() {
         distance = _dis;
@@ -328,14 +337,14 @@ class _GymOwnerDescrptionState extends State<GymOwnerDescrption> {
                         children: [
                           Row(
                             children: [
-                              Icon(
-                                Icons.star,
-                                size: 45,
-                                color: colors.yellow_base,
-                              ),
                               Text(
                                 gym.avg_rate.toString(),
-                                style: TextStyle(fontSize: 30),
+                                style: TextStyle(fontSize: 25),
+                              ),
+                              Icon(
+                                Icons.star,
+                                color: colors.yellow_base,
+                                size: 45,
                               ),
                             ],
                           ),

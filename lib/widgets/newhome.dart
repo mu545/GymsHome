@@ -2,6 +2,7 @@ import 'dart:ffi';
 //import 'dart:html';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:gymhome/Styles.dart';
 import 'package:gymhome/models/GymModel.dart';
 import 'package:gymhome/models/favorite.dart';
@@ -44,17 +45,6 @@ class _NewHomeState extends State<NewHome> {
   // final SharedPreferences _userdata = await SharedPreferences.getInstance();
   // late Customer c;
   List<Widget>? _list;
-  String? name;
-  // void getUid() async {
-  //   // SharedPreferences _userdata = await SharedPreferences.getInstance();
-
-  //   setState(() {
-  //     // uid = _userdata.getString('uid');
-  //     // name = _userdata.getString('name');
-  //   });
-  //   print('name$name');
-  //   // print('uid$uid');
-  // }
 
   @override
   void initState() {
@@ -63,7 +53,6 @@ class _NewHomeState extends State<NewHome> {
       setState(() {
         uid = userdata.getString('uid');
       });
-      print('uid$uid');
     }).whenComplete((() {
       getlist();
     }));
@@ -158,7 +147,19 @@ class _NewWidgetHomeState extends State<NewWidgetHome> {
   String priceChoosed = 'One Day';
   String genderChoosed = 'Men';
   List<GymModel> _gymsList = [];
-  // List<GymModel> _gymsListSorted = [];
+  GeoPoint? userLocation;
+
+  @override
+  void initState() {
+    Geolocator.getCurrentPosition().then((value) {
+      setState(() {
+        userLocation = GeoPoint(value.latitude, value.longitude);
+      });
+    });
+
+    super.initState();
+  }
+
   void genderChoose(gender) {
     switch (gender) {
       case "Men":
@@ -207,33 +208,54 @@ class _NewWidgetHomeState extends State<NewWidgetHome> {
   }
 
   void sortByWhat(Object? by) {
-    print('uid' + widget.userid);
-    print('by$by');
     switch (by) {
       case 0:
-        sortByLocation().whenComplete(() {
+        sortByLocation(true).whenComplete(() {
           setState(() {
             isloading = false;
           });
         });
         break;
       case 1:
-        setState(() {
-          isloading = true;
-          sortBy = 1;
+        sortByRate(false).whenComplete(() {
+          setState(() {
+            isloading = false;
+          });
         });
         break;
       case 2:
-        setState(() {
-          isloading = true;
-          sortBy = 2;
+        sortByPrice(true).whenComplete(() {
+          setState(() {
+            isloading = false;
+          });
+        });
+        break;
+      case 3:
+        sortByRate(true).whenComplete(() {
+          setState(() {
+            isloading = false;
+          });
+        });
+        break;
+      case 4:
+        sortByPrice(false).whenComplete(() {
+          setState(() {
+            isloading = false;
+          });
+        });
+        break;
+      case 5:
+        sortByLocation(false).whenComplete(() {
+          setState(() {
+            isloading = false;
+          });
         });
         break;
       default:
     }
   }
 
-  Future<void> sortByLocation() async {
+  Future<void> sortByLocation(bool ascending) async {
     GeoPoint gym1;
     double dis1;
     GeoPoint gym2;
@@ -245,21 +267,83 @@ class _NewWidgetHomeState extends State<NewWidgetHome> {
         gym2 = GeoPoint(_gymsList[j + 1].location!.latitude,
             _gymsList[j + 1].location!.longitude);
 
-        dis1 = await Placelocation.distanceInKM(gym1);
-        dis2 = await Placelocation.distanceInKM(gym2);
-        if (dis1 > dis2) {
-          GymModel tmp = _gymsList[j];
-          _gymsList[j] = _gymsList[j + 1];
-          _gymsList[j + 1] = tmp;
+        dis1 = await Placelocation.distanceInKM(gym1, userLocation!);
+        dis2 = await Placelocation.distanceInKM(gym2, userLocation!);
+        if (ascending) {
+          if (dis1 > dis2) {
+            GymModel tmp = _gymsList[j];
+            _gymsList[j] = _gymsList[j + 1];
+            _gymsList[j + 1] = tmp;
+          }
+        } else {
+          if (dis1 < dis2) {
+            GymModel tmp = _gymsList[j];
+            _gymsList[j] = _gymsList[j + 1];
+            _gymsList[j + 1] = tmp;
+          }
         }
       }
     }
-    print('list' +
-        _gymsList[0].location!.latitude.toString() +
-        '->' +
-        _gymsList[1].location!.latitude.toString());
-    // setState(() {});
-    // _gymsListSorted = _gymsList;
+  }
+
+  Future<void> sortByRate(bool ascending) async {
+    if (ascending)
+      _gymsList.sort(
+          (a, b) => a.avg_rate!.toDouble().compareTo(b.avg_rate!.toDouble()));
+    else
+      _gymsList.sort(
+          (b, a) => a.avg_rate!.toDouble().compareTo(b.avg_rate!.toDouble()));
+  }
+
+  Future<void> sortByPrice(bool ascending) async {
+    switch (priceChoosed) {
+      case "One Day":
+        if (ascending)
+          _gymsList.sort((a, b) =>
+              a.priceOneDay!.toDouble().compareTo(b.priceOneDay!.toDouble()));
+        else
+          _gymsList.sort((b, a) =>
+              a.priceOneDay!.toDouble().compareTo(b.priceOneDay!.toDouble()));
+        break;
+      case "One Month":
+        if (ascending)
+          _gymsList.sort((a, b) => a.priceOneMonth!
+              .toDouble()
+              .compareTo(b.priceOneMonth!.toDouble()));
+        else
+          _gymsList.sort((b, a) => a.priceOneMonth!
+              .toDouble()
+              .compareTo(b.priceOneMonth!.toDouble()));
+        break;
+      case "Three Months":
+        if (ascending)
+          _gymsList.sort((a, b) => a.priceThreeMonths!
+              .toDouble()
+              .compareTo(b.priceThreeMonths!.toDouble()));
+        else
+          _gymsList.sort((b, a) => a.priceThreeMonths!
+              .toDouble()
+              .compareTo(b.priceThreeMonths!.toDouble()));
+        break;
+      case "Six Months":
+        if (ascending)
+          _gymsList.sort((a, b) => a.priceSixMonths!
+              .toDouble()
+              .compareTo(b.priceSixMonths!.toDouble()));
+        else
+          _gymsList.sort((b, a) => a.priceSixMonths!
+              .toDouble()
+              .compareTo(b.priceSixMonths!.toDouble()));
+        break;
+      case "One Year":
+        if (ascending)
+          _gymsList.sort((a, b) =>
+              a.priceOneYear!.toDouble().compareTo(b.priceOneYear!.toDouble()));
+        else
+          _gymsList.sort((b, a) =>
+              a.priceOneYear!.toDouble().compareTo(b.priceOneYear!.toDouble()));
+        break;
+    }
   }
 
   @override
@@ -373,37 +457,8 @@ class _NewWidgetHomeState extends State<NewWidgetHome> {
           // ),
           //  ),
           Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              PopupMenuButton(
-                icon: Icon(Icons.sort),
-                onSelected: (value) {
-                  setState(() {
-                    isloading = true;
-                    isSort = true;
-                  });
-                  sortByWhat(value);
-                },
-                itemBuilder: (BuildContext bc) {
-                  return const [
-                    PopupMenuItem(
-                      enabled: true,
-                      child: Text("By location"),
-                      value: 0,
-                    ),
-                    PopupMenuItem(
-                      child: Text("By Rate"),
-                      enabled: false,
-                      value: 1,
-                    ),
-                    PopupMenuItem(
-                      child: Text("By price"),
-                      enabled: false,
-                      value: 2,
-                    )
-                  ];
-                },
-              ),
               Container(
                 margin: EdgeInsets.fromLTRB(10, 10, 0, 0),
                 height: 20,
@@ -458,6 +513,56 @@ class _NewWidgetHomeState extends State<NewWidgetHome> {
                   ],
                 ),
               ),
+              SizedBox(
+                width: screenSize.width / 9,
+              ),
+              PopupMenuButton(
+                icon: Icon(Icons.sort),
+                onSelected: (value) {
+                  if (_gymsList.isNotEmpty && _gymsList.length > 1) {
+                    setState(() {
+                      isloading = true;
+                      isSort = true;
+                    });
+
+                    sortByWhat(value);
+                  }
+                },
+                itemBuilder: (BuildContext bc) {
+                  return const [
+                    PopupMenuItem(
+                      enabled: true,
+                      child: Text("Nearest"),
+                      value: 0,
+                    ),
+                    PopupMenuItem(
+                      child: Text("High Rate"),
+                      enabled: true,
+                      value: 1,
+                    ),
+                    PopupMenuItem(
+                      child: Text("Low Price"),
+                      enabled: true,
+                      value: 2,
+                    ),
+                    PopupMenuItem(
+                      child: Text("Low Rate"),
+                      enabled: true,
+                      value: 3,
+                    ),
+                    PopupMenuItem(
+                      child: Text("High Price"),
+                      enabled: true,
+                      value: 4,
+                    ),
+                    PopupMenuItem(
+                      child: Text("Furthest"),
+                      enabled: true,
+                      value: 5,
+                    )
+                  ];
+                },
+              ),
             ],
           ),
           SizedBox(
@@ -477,6 +582,9 @@ class _NewWidgetHomeState extends State<NewWidgetHome> {
                   children: [
                     ElevatedButton(
                       onPressed: () {
+                        setState(() {
+                          isSort = false;
+                        });
                         priceChoose('Day');
                       },
                       child: Text(
@@ -498,6 +606,9 @@ class _NewWidgetHomeState extends State<NewWidgetHome> {
                     ElevatedButton(
                       //     minWidth: 10,
                       onPressed: () {
+                        setState(() {
+                          isSort = false;
+                        });
                         priceChoose('Month');
                       },
                       child: Text(
@@ -519,6 +630,9 @@ class _NewWidgetHomeState extends State<NewWidgetHome> {
                     ElevatedButton(
                       //    minWidth: 10,
                       onPressed: () {
+                        setState(() {
+                          isSort = false;
+                        });
                         priceChoose('3 Months');
                       },
                       child: Text(
@@ -540,6 +654,9 @@ class _NewWidgetHomeState extends State<NewWidgetHome> {
                     ElevatedButton(
                       //   minWidth: 10,
                       onPressed: () {
+                        setState(() {
+                          isSort = false;
+                        });
                         priceChoose('6 Months');
                       },
                       child: Text(
@@ -561,6 +678,9 @@ class _NewWidgetHomeState extends State<NewWidgetHome> {
                     ElevatedButton(
                       //   minWidth: 10,
                       onPressed: () {
+                        setState(() {
+                          isSort = false;
+                        });
                         priceChoose('Year');
                       },
                       child: Text(
@@ -588,54 +708,6 @@ class _NewWidgetHomeState extends State<NewWidgetHome> {
             height: 10,
           ),
 
-          Expanded(
-            child: FutureBuilder(
-              future: _getData(),
-              builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-                if (snapshot.hasData) {
-                  _gymsList.clear();
-                  snapshot.data.docs.forEach((element) {
-                    _gymsList.add(GymModel.fromJson(element.data()));
-                  });
-
-                  if (_gymsList.isEmpty)
-                    return Center(
-                        child: Container(
-                      margin: EdgeInsets.only(top: 100),
-                      child: Text(
-                        'No gyms found',
-                        textAlign: TextAlign.center,
-                      ),
-                    ));
-
-                  //
-                  return Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: SingleChildScrollView(
-                      child: Column(
-                        children: [
-                          ListView.builder(
-                            controller:
-                                ScrollController(keepScrollOffset: true),
-                            shrinkWrap: true,
-                            itemCount: _gymsList.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              return GymCardCustomer(
-                                price: priceChoosed,
-                                gymInfo: _gymsList[index],
-                                userid: widget.userid,
-                              );
-                            },
-                          )
-                        ],
-                      ),
-                    ),
-                  );
-                } else
-                  return Center(child: CircularProgressIndicator());
-              },
-            ),
-          ),
           (!isSort)
               ? Expanded(
                   child: SingleChildScrollView(
@@ -658,17 +730,6 @@ class _NewWidgetHomeState extends State<NewWidgetHome> {
                             textAlign: TextAlign.center,
                           ),
                         ));
-                      // else if (isSort) {
-                      //   if (sortBy == 'SortByLocation') {
-                      //     sortByLocation().whenComplete(() {
-                      //       setState(() {
-                      //         isloading = false;
-                      //       });
-                      //     });
-                      //   }
-                      // }
-
-                      //
 
                       return Padding(
                         padding: const EdgeInsets.all(8.0),
@@ -691,47 +752,12 @@ class _NewWidgetHomeState extends State<NewWidgetHome> {
                         ),
                       );
                     } else
-                      return Center(child: CircularProgressIndicator());
+                      return loading();
                   },
-                )
-
-                      // Padding(
-                      //     padding: const EdgeInsets.all(8.0),
-                      //     child: Column(
-                      //       children: [
-                      //         if (_gymsListSorted.isNotEmpty)
-                      //           ListView.builder(
-                      //             controller:
-                      //                 ScrollController(keepScrollOffset: true),
-                      //             shrinkWrap: true,
-                      //             itemCount: _gymsListSorted.length,
-                      //             itemBuilder: (BuildContext context, int index) {
-                      //               return GymCardCustomer(
-                      //                 price: priceChoosed,
-                      //                 gymInfo: _gymsListSorted[index],
-                      //                 userid: widget.userid,
-                      //               );
-                      //             },
-                      //           ),
-                      //         if (isloading)
-                      //           Center(child: CircularProgressIndicator()),
-                      //         if (_gymsListSorted.isEmpty)
-                      //           Center(
-                      //               child: Container(
-                      //             margin: EdgeInsets.only(top: 100),
-                      //             child: Text(
-                      //               'No gyms found',
-                      //               textAlign: TextAlign.center,
-                      //             ),
-                      //           ))
-                      // ],
-                      // ),
-                      ))
+                )))
               // ),
               : (!isloading)
-                  ?
-                  // sort()
-                  Sort(
+                  ? Sort(
                       gymsList: _gymsList,
                       priceChoosed: priceChoosed,
                       sortBy: sortBy,
@@ -746,7 +772,7 @@ class _NewWidgetHomeState extends State<NewWidgetHome> {
   Widget loading() {
     return SizedBox(
         width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height - 100,
+        height: MediaQuery.of(context).size.height / 2,
         child: Center(child: CircularProgressIndicator()));
   }
 }

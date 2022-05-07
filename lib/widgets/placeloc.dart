@@ -44,7 +44,7 @@ class _PlaceLocationState extends State<PlaceLocation> {
   @override
   void initState() {
     super.initState();
-    Permission.location.request();
+    // Permission.location.request();
 
     setGendricons().whenComplete(() {
       if (widget.gymsaddress.isNotEmpty) getGymsLocation();

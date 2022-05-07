@@ -28,10 +28,11 @@ class Placelocation {
         address: json['name'],
         gymid: json['gymId']);
   }
-  static Future<String> calculateDistance(GeoPoint gymLocation) async {
+  static Future<String> calculateDistance(
+      GeoPoint gymLocation, GeoPoint userLocation) async {
     String distance = '10 M';
-    final Position locdata = await Geolocator.getCurrentPosition();
-    GeoPoint userLocation = GeoPoint(locdata.latitude, locdata.longitude);
+    // final Position locdata = await Geolocator.getCurrentPosition();
+    // GeoPoint userLocation = GeoPoint(locdata.latitude, locdata.longitude);
     var p = 0.017453292519943295;
     var a = 0.5 -
         cos((userLocation.latitude - gymLocation.latitude) * p) / 2 +
@@ -52,9 +53,10 @@ class Placelocation {
     return distance;
   }
 
-  static Future<double> distanceInKM(GeoPoint gymLocation) async {
-    final Position locdata = await Geolocator.getCurrentPosition();
-    GeoPoint userLocation = GeoPoint(locdata.latitude, locdata.longitude);
+  static Future<double> distanceInKM(
+      GeoPoint gymLocation, GeoPoint userLocation) async {
+    // final Position locdata = await Geolocator.getCurrentPosition();
+    // GeoPoint userLocation = GeoPoint(locdata.latitude, locdata.longitude);
     var p = 0.017453292519943295;
     var a = 0.5 -
         cos((userLocation.latitude - gymLocation.latitude) * p) / 2 +

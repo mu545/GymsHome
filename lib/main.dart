@@ -3,7 +3,7 @@
 // found in the LICENSE file.
 
 import 'package:firebase_core/firebase_core.dart';
-
+import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter/material.dart';
 import 'package:gymhome/Admin/AdminHome.dart';
 
@@ -48,6 +48,7 @@ void main() async {
 // to read and write user data
   final _userdata = await SharedPreferences.getInstance();
   iscustomer = _userdata.getBool('iscustomer');
+  Permission.location.request();
 
   // UserData.init();
   runApp(const MyApp());

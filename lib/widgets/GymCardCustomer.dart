@@ -1,5 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:gymhome/GymOwnerwidgets/EditGymInfo.dart';
 import 'package:gymhome/GymOwnerwidgets/location.dart';
 import 'package:gymhome/Styles.dart';
@@ -25,6 +27,7 @@ class GymCardCustomer extends StatefulWidget {
 }
 
 class _GymCardCustomerState extends State<GymCardCustomer> {
+  GeoPoint? userLocation;
   String distance = 'Loading...';
   String price = '';
   String showPrice() {
@@ -60,8 +63,10 @@ class _GymCardCustomerState extends State<GymCardCustomer> {
   }
 
   void getDistance() async {
-    final _dis =
-        await Placelocation.calculateDistance(widget.gymInfo.location!);
+    // final Position locdata = await Geolocator.getCurrentPosition();
+    // GeoPoint userLocation = GeoPoint(locdata.latitude, locdata.longitude);
+    final _dis = await Placelocation.calculateDistance(
+        widget.gymInfo.location!, userLocation!);
     if (mounted)
       setState(() {
         distance = _dis;
@@ -72,7 +77,11 @@ class _GymCardCustomerState extends State<GymCardCustomer> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    getDistance();
+    Geolocator.getCurrentPosition().then((value) {
+      setState(() {
+        userLocation = GeoPoint(value.latitude, value.longitude);
+      });
+    }).whenComplete(() => getDistance());
     // getDistance();
   }
 
@@ -180,15 +189,15 @@ class _GymCardCustomerState extends State<GymCardCustomer> {
                           ),
                           Row(
                             children: [
-                              Icon(
-                                Icons.star,
-                                size: 45,
-                                color: colors.yellow_base,
-                              ),
                               Text(
                                 ' ' + widget.gymInfo.avg_rate.toString(),
                                 style: TextStyle(
                                     fontSize: 20, color: Colors.white),
+                              ),
+                              Icon(
+                                Icons.star,
+                                size: 45,
+                                color: colors.yellow_base,
                               ),
                             ],
                           )

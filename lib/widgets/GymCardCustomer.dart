@@ -7,6 +7,7 @@ import 'package:gymhome/GymOwnerwidgets/location.dart';
 import 'package:gymhome/Styles.dart';
 import 'package:gymhome/models/GymModel.dart';
 import 'package:gymhome/models/profile_model.dart';
+import 'package:gymhome/models/user.dart';
 import 'package:gymhome/widgets/gymdescrption.dart';
 import 'package:gymhome/widgets/locationmap.dart';
 
@@ -16,14 +17,14 @@ class GymCardCustomer extends StatefulWidget {
   final String userid;
   final GymModel gymInfo;
   final String price;
-  final bool fav;
-  final bool compare;
+  // final bool fav;
+  // final bool compare;
   const GymCardCustomer(
       {Key? key,
       required this.gymInfo,
       required this.userid,
-      required this.compare,
-      required this.fav,
+      // required this.compare,
+      // required this.fav,
       required this.price})
       : super(key: key);
 
@@ -33,9 +34,10 @@ class GymCardCustomer extends StatefulWidget {
 
 class _GymCardCustomerState extends State<GymCardCustomer> {
   GeoPoint? userLocation;
-  List<dynamic> list = [];
-  bool? isFav;
-  bool? isCompare;
+  List<dynamic> listFav = [];
+  List<dynamic> listCompare = [];
+  bool? isFav = false;
+  bool? isCompare = false;
 
   // bool iconClr(type) {
   //   list.clear();
@@ -101,34 +103,84 @@ class _GymCardCustomerState extends State<GymCardCustomer> {
   //   //return false;
   // }
 
-  // getList() {
-  //   list.clear();
-  //   var user = FirebaseFirestore.instance
-  //       .collection('Customer')
-  //       .doc(widget.userid)
-  //       .get();
-  //   user.then((value) {
-  //     list = value['Likes'];
-  //     print(list);
-  //   });
-  // }
+  getListFav() {
+    listFav.clear();
+    var gym = FirebaseFirestore.instance
+        .collection('gyms')
+        .doc(widget.gymInfo.gymId)
+        .get();
+    print(widget.gymInfo.gymId);
+    gym.then((value) {
+      listFav = value['Likes'];
+      handelFavs(listFav);
+      // print(list);
+    });
+    setState(() {});
+  }
 
-  handelFavs(bool isFav) {
-    if (isFav) {
+  getListCompare() {
+    listCompare.clear();
+    var gym = FirebaseFirestore.instance
+        .collection('gyms')
+        .doc(widget.gymInfo.gymId)
+        .get();
+    print(widget.gymInfo.gymId);
+    gym.then((value) {
+      listCompare = value['compare'];
+      handelCompare(listCompare);
+      // print(list);
+    });
+    setState(() {});
+  }
+
+  handelCompare(List list) {
+    if (list.contains(widget.userid)) {
+      list.remove(widget.userid);
+      print('REMOVED FROM LIST $list');
       FirebaseFirestore.instance
-          .collection('Customer')
-          .doc(widget.userid)
+          .collection('gyms')
+          .doc(widget.gymInfo.gymId)
           .update({
-        'Likes': FieldValue.arrayRemove([widget.gymInfo.gymId])
+        'compare': FieldValue.arrayRemove([widget.userid])
       });
     } else {
+      list.add(widget.userid);
+      print('ADD TO LIST $list');
       FirebaseFirestore.instance
-          .collection('Customer')
-          .doc(widget.userid)
+          .collection('gyms')
+          .doc(widget.gymInfo.gymId)
           .update({
-        'Likes': FieldValue.arrayUnion([widget.gymInfo.gymId])
+        'compare': FieldValue.arrayUnion([widget.userid])
       });
     }
+    setState(() {
+      widget.gymInfo.compare = list;
+    });
+  }
+
+  handelFavs(List list) {
+    if (list.contains(widget.userid)) {
+      list.remove(widget.userid);
+      print('REMOVED FROM LIST $list');
+      FirebaseFirestore.instance
+          .collection('gyms')
+          .doc(widget.gymInfo.gymId)
+          .update({
+        'Likes': FieldValue.arrayRemove([widget.userid])
+      });
+    } else {
+      list.add(widget.userid);
+      print('ADD TO LIST $list');
+      FirebaseFirestore.instance
+          .collection('gyms')
+          .doc(widget.gymInfo.gymId)
+          .update({
+        'Likes': FieldValue.arrayUnion([widget.userid])
+      });
+    }
+    setState(() {
+      widget.gymInfo.Likes = list;
+    });
   }
 
   String distance = 'Loading...';
@@ -185,8 +237,19 @@ class _GymCardCustomerState extends State<GymCardCustomer> {
         userLocation = GeoPoint(value.latitude, value.longitude);
       });
     }).whenComplete(() => getDistance());
-    isFav = widget.fav;
-    isCompare = widget.compare;
+    // list.clear();
+    // var gym = FirebaseFirestore.instance
+    //     .collection('gyms')
+    //     .doc(widget.gymInfo.gymId)
+    //     .get();
+    // print(widget.gymInfo.gymId);
+    // gym.then((value) {
+    //   list = value['Likes'];
+
+    //   print(list);
+    // });
+    // isFav = widget.fav;
+    // isCompare = widget.compare;
     // getDistance();
   }
 
@@ -248,34 +311,34 @@ class _GymCardCustomerState extends State<GymCardCustomer> {
                         top: 10,
                         child: InkWell(
                           onTap: () {
-                            handelFavs(isFav!);
-                            setState(() {
-                              isFav = !isFav!;
-                            });
+                            getListFav();
                           },
                           child: Icon(
-                            isFav! ? Icons.favorite : Icons.favorite_border,
+                            widget.gymInfo.Likes!.contains(widget.userid)
+                                ? Icons.favorite
+                                : Icons.favorite_border,
                             size: 42,
-                            color: isFav! ? Colors.red : Colors.black,
+                            color: widget.gymInfo.Likes!.contains(widget.userid)
+                                ? Colors.red
+                                : Colors.black,
                           ),
                         ),
                       ),
-                      //COMPARE
+                      // COMPARE
                       Positioned(
                         right: 10,
                         top: 10,
                         child: InkWell(
                           onTap: () {
-                            setState(() {
-                              isCompare = !isCompare!;
-                            });
+                            getListCompare();
                           },
                           child: Icon(
                             Icons.compare_arrows,
                             size: 42,
-                            color: isCompare!
-                                ? colors.green_base
-                                : colors.black100,
+                            color:
+                                widget.gymInfo.compare!.contains(widget.userid)
+                                    ? colors.green_base
+                                    : colors.black100,
                           ),
                         ),
                       ),

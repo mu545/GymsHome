@@ -4,6 +4,8 @@ class GymModel {
   List<dynamic>? images;
   List<dynamic>? faciltrs;
   List<dynamic>? prices;
+  List<dynamic>? Likes;
+  List<dynamic>? compare;
   double? priceOneDay;
   double? priceOneMonth;
   double? priceThreeMonths;
@@ -25,6 +27,8 @@ class GymModel {
       this.images,
       this.faciltrs,
       this.prices,
+      this.Likes,
+      this.compare,
       this.priceOneDay,
       this.priceOneMonth,
       this.priceOneYear,
@@ -44,6 +48,8 @@ class GymModel {
 
   GymModel.fromJson(Map<String, dynamic> json) {
     images = json['images'];
+    Likes = json['Likes'];
+    compare = json['compare'];
     faciltrs = json['faciltrs'];
     priceOneDay = double.parse(json['One Day'].toString());
     priceOneMonth = double.parse(json['One Month'].toString());

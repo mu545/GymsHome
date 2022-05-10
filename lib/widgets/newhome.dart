@@ -150,8 +150,8 @@ class _NewWidgetHomeState extends State<NewWidgetHome> {
   double? price;
   String genderChoosed = 'Men';
   List<GymModel> _gymsList = [];
-  List<dynamic> _favs = [];
-  List<dynamic> _compare = [];
+  // List<dynamic> _favs = [];
+  // List<dynamic> _compare = [];
   GeoPoint? userLocation;
 
   @override
@@ -161,29 +161,29 @@ class _NewWidgetHomeState extends State<NewWidgetHome> {
         userLocation = GeoPoint(value.latitude, value.longitude);
       });
     });
-    var userCompares = FirebaseFirestore.instance
-        .collection('Customer')
-        .doc(widget.userid)
-        .get();
-    userCompares.then((value) {
-      setState(() {
-        _compare = value['compare'];
-      });
+    // var userCompares = FirebaseFirestore.instance
+    //     .collection('Customer')
+    //     .doc(widget.userid)
+    //     .get();
+    // userCompares.then((value) {
+    //   setState(() {
+    //     _compare = value['compare'];
+    //   });
 
-      print(_compare);
-    });
-    var userLikes = FirebaseFirestore.instance
-        .collection('Customer')
-        .doc(widget.userid)
-        .get();
+    //   print(_compare);
+    // });
+    // var userLikes = FirebaseFirestore.instance
+    //     .collection('Customer')
+    //     .doc(widget.userid)
+    //     .get();
 
-    userLikes.then((value) {
-      setState(() {
-        _favs = value['Likes'];
-      });
+    // userLikes.then((value) {
+    //   setState(() {
+    //     _favs = value['Likes'];
+    //   });
 
-      print(_favs);
-    });
+    //   print(_favs);
+    // });
 
     super.initState();
   }
@@ -800,15 +800,15 @@ class _NewWidgetHomeState extends State<NewWidgetHome> {
                               shrinkWrap: true,
                               itemCount: _gymsList.length,
                               itemBuilder: (BuildContext context, int index) {
-                                bool fav =
-                                    _favs.contains(_gymsList[index].gymId);
-                                bool compare =
-                                    _compare.contains(_gymsList[index].gymId);
-                                print('FAV$fav' + index.toString());
-                                print('Compare$compare' + index.toString());
+                                // bool fav =
+                                //     _favs.contains(_gymsList[index].gymId);
+                                // bool compare =
+                                //     _compare.contains(_gymsList[index].gymId);
+                                // print('FAV$fav' + index.toString());
+                                // print('Compare$compare' + index.toString());
                                 return GymCardCustomer(
-                                  fav: fav,
-                                  compare: compare,
+                                  // fav: fav,
+                                  // compare: compare,
                                   price: priceChoosed,
                                   gymInfo: _gymsList[index],
                                   userid: widget.userid,
@@ -836,14 +836,14 @@ class _NewWidgetHomeState extends State<NewWidgetHome> {
                                 shrinkWrap: true,
                                 itemCount: _gymsList.length,
                                 itemBuilder: (BuildContext context, int index) {
-                                  bool fav =
-                                      _favs.contains(_gymsList[index].gymId);
-                                  bool compare =
-                                      _compare.contains(_gymsList[index].gymId);
+                                  // bool fav =
+                                  //     _favs.contains(_gymsList[index].gymId);
+                                  // bool compare =
+                                  //     _compare.contains(_gymsList[index].gymId);
 
                                   return GymCardCustomer(
-                                    fav: fav,
-                                    compare: compare,
+                                    // fav: fav,
+                                    // compare: compare,
                                     price: priceChoosed,
                                     gymInfo: _gymsList[index],
                                     userid: widget.userid,

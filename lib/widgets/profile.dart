@@ -98,6 +98,7 @@ class _ProfileState extends State<Profile> {
   final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
   var userId = FirebaseAuth.instance.currentUser!.uid;
   var userEmail = FirebaseAuth.instance.currentUser!.email;
+
   ProfileModel _userProfile = ProfileModel('', '', '');
   Future? _getData() => _fireStore.collection('Customer').doc(userId).get();
   String? name;

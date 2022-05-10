@@ -69,7 +69,7 @@ class MyApp extends StatelessWidget {
       // UserData.isCustomer().then((value) => iscustomer = value);
       // print('uid = ');
       // print(uid);
-      // return welcome();
+      //return welcome();
       // return OwnerHome();
       if (iscustomer)
         return NewHome();

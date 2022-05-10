@@ -17,16 +17,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
     StripeServices.init();
   }
 
-  void payNow() async {
-    //the amount must be transformed to cents
-
-    var response =
-        await StripeServices.payNowHandler(amount: '1000', currency: 'USD');
-
-    print('response message ${response.message}');
-    print('meowssss');
-  }
-
   @override
   Widget build(BuildContext context) {
     // final productdata = Provider.of<Products>(context);
@@ -35,9 +25,9 @@ class _PaymentScreenState extends State<PaymentScreen> {
       body: Center(
           child: TextButton(
         onPressed: () {
-          payNow();
+          //   payNow();
         },
-        child: Text('33'),
+        child: Text(''),
       )),
     );
   }

@@ -92,6 +92,7 @@ class _GymCardState extends State<GymCard> {
                         topRight: Radius.circular(15),
                       )),
                       width: double.infinity,
+                      height: double.infinity,
                       child: ClipRRect(
                           borderRadius: BorderRadius.only(
                               topLeft: Radius.circular(15),

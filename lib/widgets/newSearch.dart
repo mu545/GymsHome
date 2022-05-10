@@ -79,7 +79,7 @@ class newSearch extends SearchDelegate {
                     onTap: () {
                       Navigator.of(context).push(MaterialPageRoute(
                           builder: (context) => GymDescrption(
-                                price: 'One Day',
+                                price: 'non',
                                 gym: fetchGym,
                                 userid: userId,
                               )));

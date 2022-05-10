@@ -189,27 +189,27 @@ class _GymCardCustomerState extends State<GymCardCustomer> {
     switch (widget.price) {
       case 'One Day':
         setState(() {
-          price = widget.gymInfo.priceOneDay.toString();
+          price = widget.gymInfo.priceOneDay.toString() + ' SAR';
         });
         return price;
       case 'One Month':
         setState(() {
-          price = widget.gymInfo.priceOneMonth.toString();
+          price = widget.gymInfo.priceOneMonth.toString() + ' SAR';
         });
         return price;
       case 'Three Months':
         setState(() {
-          price = widget.gymInfo.priceThreeMonths.toString();
+          price = widget.gymInfo.priceThreeMonths.toString() + ' SAR';
         });
         return price;
       case 'Six Months':
         setState(() {
-          price = widget.gymInfo.priceSixMonths.toString();
+          price = widget.gymInfo.priceSixMonths.toString() + ' SAR';
         });
         return price;
       case 'One Year':
         setState(() {
-          price = widget.gymInfo.priceOneYear.toString();
+          price = widget.gymInfo.priceOneYear.toString() + ' SAR';
         });
         return price;
       default:
@@ -378,7 +378,7 @@ class _GymCardCustomerState extends State<GymCardCustomer> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            showPrice() + ' SAR',
+                            showPrice(),
                             style: TextStyle(fontSize: 20, color: Colors.white),
                           ),
                           Row(

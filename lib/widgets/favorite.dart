@@ -24,15 +24,15 @@ class Favorite extends StatefulWidget {
 List<dynamic> favs = [];
 final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
 
-_getData() {
-  favs.clear();
-  return _fireStore
-      .collection('gyms')
-      .where('Likes', arrayContains: userId)
-      .snapshots();
-}
-
 class _FavoriteState extends State<Favorite> {
+  _getData() {
+    favs.clear();
+    return _fireStore
+        .collection('gyms')
+        .where('Likes', arrayContains: widget.userid)
+        .snapshots();
+  }
+
   String priceChoosed = 'non';
   double? price;
   String genderChoosed = 'Men';
@@ -78,15 +78,7 @@ class _FavoriteState extends State<Favorite> {
                       shrinkWrap: true,
                       itemCount: _gymsList.length,
                       itemBuilder: (BuildContext context, int index) {
-                        // bool fav =
-                        //     _favs.contains(_gymsList[index].gymId);
-                        // bool compare =
-                        //     _compare.contains(_gymsList[index].gymId);
-                        // print('FAV$fav' + index.toString());
-                        // print('Compare$compare' + index.toString());
                         return GymCardCustomer(
-                          // fav: fav,
-                          // compare: compare,
                           price: priceChoosed,
                           gymInfo: _gymsList[index],
                           userid: widget.userid,
@@ -98,7 +90,7 @@ class _FavoriteState extends State<Favorite> {
               );
             } else
               return Container(
-                child: Text('No Gyms to view'),
+                child: Text(''),
               );
           },
         )));

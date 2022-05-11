@@ -1,5 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:gymhome/Styles.dart';
+import 'package:gymhome/models/profile_model.dart';
 import '../models/review.dart';
 import '../models/user.dart';
 
@@ -12,6 +14,13 @@ class commentCard extends StatefulWidget {
 }
 
 class _commentCardState extends State<commentCard> {
+  final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
+
+  Future? _getData() {
+    return _fireStore.collection("Customer").doc(widget.review.uid).get();
+  }
+
+  ProfileModel _userProfile = ProfileModel('', '', '');
   bool readmore = false;
   @override
   Widget build(BuildContext context) {
@@ -23,10 +32,36 @@ class _commentCardState extends State<commentCard> {
           mainAxisSize: MainAxisSize.max,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            CircleAvatar(
-              radius: 25,
-              backgroundImage: NetworkImage(widget.review.profileimg),
-            ),
+            FutureBuilder(
+                future: _getData(),
+                builder:
+                    (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                  if (snapshot.hasData) {
+                    Map<String, dynamic> _data =
+                        snapshot.data.data() as Map<String, dynamic>;
+                    _userProfile = ProfileModel.fromJson(_data);
+                    return ClipOval(
+                      child: Image.network(
+                        _userProfile.userImage!,
+                        height: 50,
+                        width: 50,
+                        fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) {
+                          return CircleAvatar(
+                            radius: 25,
+                            backgroundColor: colors.blue_smooth,
+                            child: Icon(
+                              Icons.person,
+                              size: 30,
+                              color: colors.iconscolor,
+                            ),
+                          );
+                        },
+                      ),
+                    );
+                  }
+                  return Text('');
+                }),
             Padding(
               padding: EdgeInsets.only(left: 10),
               child: SizedBox(

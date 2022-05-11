@@ -13,13 +13,13 @@ import 'package:gymhome/widgets/locationmap.dart';
 
 import '../provider/customer.dart';
 
-class GymCardCustomer extends StatefulWidget {
+class compareCard extends StatefulWidget {
   final String userid;
   final GymModel gymInfo;
   final String price;
   // final bool fav;
   // final bool compare;
-  const GymCardCustomer(
+  const compareCard(
       {Key? key,
       required this.gymInfo,
       required this.userid,
@@ -29,10 +29,10 @@ class GymCardCustomer extends StatefulWidget {
       : super(key: key);
 
   @override
-  State<GymCardCustomer> createState() => _GymCardCustomerState();
+  State<compareCard> createState() => _compareCardState();
 }
 
-class _GymCardCustomerState extends State<GymCardCustomer> {
+class _compareCardState extends State<compareCard> {
   GeoPoint? userLocation;
   List<dynamic> listFav = [];
   List<dynamic> listCompare = [];
@@ -260,6 +260,11 @@ class _GymCardCustomerState extends State<GymCardCustomer> {
 
   @override
   Widget build(BuildContext context) {
+    var oneDay = widget.gymInfo.priceOneDay.toString();
+    var oneMonth = widget.gymInfo.priceOneMonth.toString();
+    var threeMonths = widget.gymInfo.priceThreeMonths.toString();
+    var sixMonths = widget.gymInfo.priceSixMonths.toString();
+    var oneYear = widget.gymInfo.priceOneYear.toString();
     return InkWell(
       onTap: () {
         Navigator.of(context).push(MaterialPageRoute(
@@ -270,169 +275,146 @@ class _GymCardCustomerState extends State<GymCardCustomer> {
                 )));
       },
       child: Padding(
-        padding: const EdgeInsets.all(10.0),
+        padding: const EdgeInsets.all(5.0),
         child: Container(
-            height: MediaQuery.of(context).size.height * 0.35,
-            margin: EdgeInsets.only(bottom: 20),
-            decoration: BoxDecoration(
-                color: Color(0xff3d4343),
-                borderRadius: BorderRadius.circular(15),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.45),
-                    offset: Offset(3, 3),
-                    spreadRadius: 2,
-                    blurRadius: 2,
-                  )
-                ]),
+          width: MediaQuery.of(context).size.width * 0.30,
+          child: Card(
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Expanded(
-                  flex: 3,
-                  child: Stack(
-                    children: [
-                      Container(
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(15),
-                          topRight: Radius.circular(15),
-                        )),
-                        width: double.infinity,
-                        child: ClipRRect(
-                            borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(15),
-                                topRight: Radius.circular(15)),
-                            child: Image.network(widget.gymInfo.imageURL ?? '',
-                                fit: BoxFit.cover)),
+                Stack(
+                  children: [
+                    Container(
+                      height: MediaQuery.of(context).size.height * 0.2,
+                      child: Image.network(
+                        widget.gymInfo.imageURL ?? '',
+                        fit: BoxFit.cover,
                       ),
-                      //FAVORITE
-                      Positioned(
-                        left: 10,
-                        top: 10,
-                        child: InkWell(
-                          onTap: () {
-                            getListFav();
-                          },
-                          child: Icon(
-                            widget.gymInfo.Likes!.contains(widget.userid)
-                                ? Icons.favorite
-                                : Icons.favorite_border,
-                            size: 42,
-                            color: widget.gymInfo.Likes!.contains(widget.userid)
-                                ? Colors.red
-                                : Colors.black,
-                          ),
+                    ),
+                    Positioned(
+                      child: InkWell(
+                        onTap: () {
+                          getListFav();
+                        },
+                        child: Icon(
+                          widget.gymInfo.Likes!.contains(widget.userid)
+                              ? Icons.favorite
+                              : Icons.favorite_border,
+                          size: 42,
+                          color: widget.gymInfo.Likes!.contains(widget.userid)
+                              ? Colors.red
+                              : Colors.black,
                         ),
                       ),
-                      // COMPARE
-                      Positioned(
-                        right: 10,
-                        top: 10,
-                        child: InkWell(
-                          onTap: () {
-                            getListCompare();
-                          },
-                          child: Icon(
-                            Icons.compare_arrows,
-                            size: 42,
-                            color:
-                                widget.gymInfo.compare!.contains(widget.userid)
-                                    ? colors.green_base
-                                    : colors.black100,
-                          ),
+                    ),
+                    Positioned(
+                      child: InkWell(
+                        onTap: () {
+                          getListFav();
+                        },
+                        child: Icon(
+                          Icons.favorite_border,
+                          size: 43,
+                          color: Color.fromARGB(35, 0, 0, 0),
                         ),
                       ),
-                      Positioned(
-                        bottom: 0,
-                        right: 0,
-                        left: 0,
-                        child: Container(
-                          padding: EdgeInsets.fromLTRB(0, 10, 10, 10),
-                          decoration: BoxDecoration(
-                              color: Colors.black.withOpacity(0.5),
-                              borderRadius: BorderRadius.only(
-                                  topRight: Radius.circular(50))),
-                          child: Text(
-                            widget.gymInfo.name ?? '',
-                            style: TextStyle(
-                                fontSize: 32,
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold),
-                          ),
+                    ),
+                    Positioned(
+                      right: 10,
+                      // top: 10,
+                      child: InkWell(
+                        onTap: () {
+                          getListCompare();
+                        },
+                        child: Icon(
+                          Icons.compare_arrows,
+                          size: 42,
+                          color: widget.gymInfo.compare!.contains(widget.userid)
+                              ? colors.green_base
+                              : colors.black100,
                         ),
-                      )
-                    ],
-                  ),
+                      ),
+                    ),
+                  ],
                 ),
                 Container(
-                  decoration: BoxDecoration(
-                      color: Colors.black12,
-                      borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(15),
-                        bottomRight: Radius.circular(15),
-                      )),
-                  padding: EdgeInsets.all(10),
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            showPrice(),
-                            style: TextStyle(fontSize: 20, color: Colors.white),
-                          ),
-                          Row(
-                            children: [
-                              Text(
-                                ' ' + widget.gymInfo.avg_rate.toString(),
-                                style: TextStyle(
-                                    fontSize: 20, color: Colors.white),
-                              ),
-                              Icon(
-                                Icons.star,
-                                size: 45,
-                                color: colors.yellow_base,
-                              ),
-                            ],
-                          )
-                        ],
-                      ),
-                      SizedBox(height: 10),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            children: [
-                              Text(
-                                distance,
-                                style: TextStyle(
-                                    fontSize: 20,
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              Icon(
-                                Icons.directions_walk,
-                                color: Colors.white,
-                              )
-                            ],
-                          ),
-                          ///////
-                          Text(
-                            widget.gymInfo.reviews == 0
-                                ? 'No reviews yet'
-                                : "Based on " +
-                                    widget.gymInfo.reviews.toString() +
-                                    " reviews",
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(fontSize: 18, color: Colors.white),
-                          ),
-                        ],
-                      ),
-                    ],
+                  height: MediaQuery.of(context).size.height * 0.1,
+                  child: Text(
+                    widget.gymInfo.name ?? '',
+                    style: TextStyle(fontSize: 20),
                   ),
                 ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      child: Text(
+                        widget.gymInfo.avg_rate.toString(),
+                        style: TextStyle(fontSize: 20),
+                      ),
+                    ),
+                    Icon(
+                      Icons.star,
+                      size: 35,
+                      color: colors.yellow_base,
+                    ),
+                  ],
+                ),
+                Container(
+                  child: Text(
+                    distance,
+                    style: TextStyle(fontSize: 20),
+                  ),
+                ),
+                Column(
+                  children: [
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          oneDay != '0.0' ? oneDay : 'no price',
+                          style: TextStyle(fontSize: 20),
+                        ),
+                        SizedBox(
+                          height: 2,
+                        ),
+                        Text(
+                          oneMonth != '0.0' ? oneMonth : 'no price',
+                          style: TextStyle(fontSize: 20),
+                        ),
+                        SizedBox(
+                          height: 2,
+                        ),
+                        Text(
+                          threeMonths != '0.0' ? threeMonths : 'no price',
+                          style: TextStyle(fontSize: 20),
+                        ),
+                        SizedBox(
+                          height: 2,
+                        ),
+                        Text(
+                          sixMonths != '0.0' ? sixMonths : 'no price',
+                          style: TextStyle(fontSize: 20),
+                        ),
+                        SizedBox(
+                          height: 2,
+                        ),
+                        Text(
+                          oneYear != '0.0' ? oneYear : 'no price',
+                          style: TextStyle(fontSize: 20),
+                        ),
+                      ],
+                    ),
+                    // Text(widget.gymInfo.priceOneMonth.toString()),
+                    // Text(widget.gymInfo.priceThreeMonths.toString()),
+                    // Text(widget.gymInfo.priceSixMonths.toString()),
+                    // Text(widget.gymInfo.priceOneYear.toString())
+                  ],
+                ),
               ],
-            )),
+            ),
+          ),
+        ),
       ),
     );
   }

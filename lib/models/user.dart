@@ -164,7 +164,7 @@ class AppUser {
             builder: (context) => OwnerHome(),
           ));
         } else {
-          message(cxt, false, 'Sorry your account in Banned For some reason');
+          message(cxt, false, 'Sorry your account is banned for some reason');
         }
       } else {
         var _currentcustomer = await FirebaseFirestore.instance
@@ -183,7 +183,7 @@ class AppUser {
             ),
           );
         } else {
-          message(cxt, false, 'Sorry your account in Banned For some reason');
+          message(cxt, false, 'Sorry your account is banned for some reason');
         }
       }
     } on FirebaseAuthException catch (e) {

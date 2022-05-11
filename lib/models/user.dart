@@ -18,7 +18,7 @@ import '../widgets/newhome.dart';
 import 'package:gymhome/models/userdata.dart';
 
 class AppUser {
-  static Future<bool> isban(String uid, iscustomer) async {
+  static Future<bool> isban(BuildContext cxt, String uid, iscustomer) async {
     if (iscustomer) {
       var _snapshot = await FirebaseFirestore.instance
           .collection("Customer")

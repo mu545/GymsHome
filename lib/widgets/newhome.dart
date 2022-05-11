@@ -80,6 +80,8 @@ class _NewHomeState extends State<NewHome> {
   }
 
   @override
+  //
+  @override
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
@@ -145,8 +147,11 @@ class _NewWidgetHomeState extends State<NewWidgetHome> {
   bool isloading = false;
   int sortBy = 0;
   String priceChoosed = 'One Day';
+  double? price;
   String genderChoosed = 'Men';
   List<GymModel> _gymsList = [];
+  // List<dynamic> _favs = [];
+  // List<dynamic> _compare = [];
   GeoPoint? userLocation;
 
   @override
@@ -156,6 +161,29 @@ class _NewWidgetHomeState extends State<NewWidgetHome> {
         userLocation = GeoPoint(value.latitude, value.longitude);
       });
     });
+    // var userCompares = FirebaseFirestore.instance
+    //     .collection('Customer')
+    //     .doc(widget.userid)
+    //     .get();
+    // userCompares.then((value) {
+    //   setState(() {
+    //     _compare = value['compare'];
+    //   });
+
+    //   print(_compare);
+    // });
+    // var userLikes = FirebaseFirestore.instance
+    //     .collection('Customer')
+    //     .doc(widget.userid)
+    //     .get();
+
+    // userLikes.then((value) {
+    //   setState(() {
+    //     _favs = value['Likes'];
+    //   });
+
+    //   print(_favs);
+    // });
 
     super.initState();
   }
@@ -346,6 +374,28 @@ class _NewWidgetHomeState extends State<NewWidgetHome> {
     }
   }
 
+  // getListCompare() {
+  //   var user = FirebaseFirestore.instance
+  //       .collection('Customer')
+  //       .doc(widget.userid)
+  //       .get();
+  //   user.then((value) {
+  //     _compare = value['compare'];
+  //     print(_compare);
+  //   });
+  // }
+
+  // getListLikes() {
+  //   var user = FirebaseFirestore.instance
+  //       .collection('Customer')
+  //       .doc(widget.userid)
+  //       .get();
+  //   user.then((value) {
+  //     _favs = value['Likes'];
+  //     print(_favs);
+  //   });
+  // }
+
   @override
   Widget build(BuildContext context) {
     final Size screenSize = MediaQuery.of(context).size;
@@ -430,10 +480,7 @@ class _NewWidgetHomeState extends State<NewWidgetHome> {
         actions: <Widget>[
           Searchlesss(userID: widget.userid),
           IconButton(
-            onPressed: () {
-              Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => PaymentScreen()));
-            },
+            onPressed: () {},
             icon: Icon(
               Icons.more_vert,
               color: Colors.black,
@@ -708,7 +755,18 @@ class _NewWidgetHomeState extends State<NewWidgetHome> {
           SizedBox(
             height: 10,
           ),
-
+          // StreamBuilder(
+          //   stream: FirebaseFirestore.instance
+          //       .collection("Customer")
+          //       .doc(widget.userid)
+          //       .snapshots(),
+          //   builder: (context, snapshot) {
+          //     if (snapshot.hasData) {
+          //       {}
+          //     }
+          //     return Text('');
+          //   }, //end then
+          // ),
           (!isSort)
               ? Expanded(
                   child: SingleChildScrollView(
@@ -742,7 +800,15 @@ class _NewWidgetHomeState extends State<NewWidgetHome> {
                               shrinkWrap: true,
                               itemCount: _gymsList.length,
                               itemBuilder: (BuildContext context, int index) {
+                                // bool fav =
+                                //     _favs.contains(_gymsList[index].gymId);
+                                // bool compare =
+                                //     _compare.contains(_gymsList[index].gymId);
+                                // print('FAV$fav' + index.toString());
+                                // print('Compare$compare' + index.toString());
                                 return GymCardCustomer(
+                                  // fav: fav,
+                                  // compare: compare,
                                   price: priceChoosed,
                                   gymInfo: _gymsList[index],
                                   userid: widget.userid,
@@ -758,11 +824,36 @@ class _NewWidgetHomeState extends State<NewWidgetHome> {
                 )))
               // ),
               : (!isloading)
-                  ? Sort(
-                      gymsList: _gymsList,
-                      priceChoosed: priceChoosed,
-                      sortBy: sortBy,
-                      userid: widget.userid,
+                  ? Expanded(
+                      child: SingleChildScrollView(
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            children: [
+                              ListView.builder(
+                                controller:
+                                    ScrollController(keepScrollOffset: true),
+                                shrinkWrap: true,
+                                itemCount: _gymsList.length,
+                                itemBuilder: (BuildContext context, int index) {
+                                  // bool fav =
+                                  //     _favs.contains(_gymsList[index].gymId);
+                                  // bool compare =
+                                  //     _compare.contains(_gymsList[index].gymId);
+
+                                  return GymCardCustomer(
+                                    // fav: fav,
+                                    // compare: compare,
+                                    price: priceChoosed,
+                                    gymInfo: _gymsList[index],
+                                    userid: widget.userid,
+                                  );
+                                },
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
                     )
                   : loading()
         ],

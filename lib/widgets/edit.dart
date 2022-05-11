@@ -53,6 +53,7 @@ class _AddGymInfoState extends State<AddGymInfo> {
 
   bool? isMen;
   void whatIsGender() {
+    print('ss');
     if (widget.gym.gender == 'Men') {
       setState(() {
         isMen = true;
@@ -82,7 +83,6 @@ class _AddGymInfoState extends State<AddGymInfo> {
 
   @override
   Widget build(BuildContext context) {
-    widget.gym.gender = 'Men';
     final Gym = Provider.of<Gyms>(context);
     return Scaffold(
       appBar: AppBar(

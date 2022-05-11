@@ -62,8 +62,8 @@ class _ImageInputState extends State<ImageInput> {
             }),
       );
     } else {
-      GymModel _gymProfile = GymModel([], [], [], 0, 0, 0, 0, 0, '', '', '', '',
-          '', null, false, true, '', 0, 0);
+      GymModel _gymProfile = GymModel([], [], [], [], [], 0, 0, 0, 0, 0, '', '',
+          '', '', '', null, false, true, '', 0, 0);
       return StreamBuilder(
         stream: _fireStore.collection('gyms').doc(widget.gym.gymId).snapshots(),
         builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {

@@ -123,6 +123,8 @@ class AddGymMethods with ChangeNotifier {
         'gymId': gym.id,
         'ownerId': userId,
         'images': [],
+        'Likes': [],
+        'compare': [],
         'imageURL': 'newGym.imageURL',
         'Location': newGym.location,
         'descrption': newGym.description,

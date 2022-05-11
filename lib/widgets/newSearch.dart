@@ -6,6 +6,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:gymhome/models/GymModel.dart';
 import 'package:gymhome/models/user.dart';
 import 'package:gymhome/widgets/gymdescrption.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 // class newSearch extends StatefulWidget {
 //   const newSearch({Key? key}) : super(key: key);
@@ -77,11 +78,16 @@ class newSearch extends SearchDelegate {
                   // final String gymIcon = data['imageURL'];
                   return ListTile(
                     onTap: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => GymDescrption(
-                                gym: fetchGym,
-                                userid: userId,
-                              )));
+                      SharedPreferences.getInstance().then((userdata) {
+                        String? uid = userdata.getString('uid');
+
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => GymDescrption(
+                                  price: '',
+                                  gym: fetchGym,
+                                  userid: uid!,
+                                )));
+                      });
                     },
                     title: Text(name),
                     leading: CircleAvatar(

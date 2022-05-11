@@ -98,6 +98,7 @@ class _ProfileState extends State<Profile> {
   final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
   var userId = FirebaseAuth.instance.currentUser!.uid;
   var userEmail = FirebaseAuth.instance.currentUser!.email;
+
   ProfileModel _userProfile = ProfileModel('', '', '');
   Future? _getData() => _fireStore.collection('Customer').doc(userId).get();
   String? name;
@@ -229,23 +230,43 @@ class _ProfileState extends State<Profile> {
                                                     as Map<String, dynamic>;
                                             _userProfile =
                                                 ProfileModel.fromJson(_data);
-                                            return CircleAvatar(
-                                              radius: 80.0,
-                                              backgroundImage: NetworkImage(
-                                                  _userProfile.userImage ?? ''),
+                                            return ClipOval(
+                                              child: Image.network(
+                                                _userProfile.userImage!,
+                                                height: 180,
+                                                width: 180,
+                                                fit: BoxFit.cover,
+                                                errorBuilder: (context, error,
+                                                    stackTrace) {
+                                                  return CircleAvatar(
+                                                    radius: 90,
+                                                    backgroundColor:
+                                                        colors.blue_smooth,
+                                                    child: Icon(
+                                                      Icons.person,
+                                                      size: 120,
+                                                      color: colors.iconscolor,
+                                                    ),
+                                                  );
+                                                },
+                                              ),
                                             );
                                           } else
-                                            return CircleAvatar(
-                                              radius: 80.0,
-                                              child: Center(
-                                                  child:
-                                                      CircularProgressIndicator(
-                                                color: colors.blue_base,
-                                              )),
+                                            return ClipOval(
+                                              child: Container(
+                                                child:
+                                                    CircularProgressIndicator(
+                                                        color: colors
+                                                            .green_smooth),
+                                                decoration: BoxDecoration(
+                                                    color: colors.blue_smooth),
+                                                height: 180,
+                                                width: 180,
+                                              ),
                                             );
                                         })
                                     : CircleAvatar(
-                                        radius: 80.0,
+                                        radius: 90,
                                         backgroundImage:
                                             FileImage(_imageFile!)),
                                 Positioned(

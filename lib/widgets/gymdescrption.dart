@@ -5,6 +5,8 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:gymhome/GymOwnerwidgets/gymprice.dart';
 import 'package:gymhome/models/GymModel.dart';
+import 'package:gymhome/widgets/PaymentScreen.dart';
+import 'package:gymhome/widgets/Stripe.dart';
 import 'package:gymhome/widgets/locationmap.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:gymhome/models/review.dart';
@@ -15,7 +17,9 @@ import '../widgets/commentCard.dart';
 class GymDescrption extends StatefulWidget {
   GymModel gym;
   String userid;
-  GymDescrption({Key? key, required this.gym, required this.userid})
+  String price;
+  GymDescrption(
+      {Key? key, required this.gym, required this.userid, required this.price})
       : super(key: key);
   static const routeName = '/gym';
 
@@ -32,6 +36,16 @@ class _GymDescrptionState extends State<GymDescrption> {
         userLocation = GeoPoint(value.latitude, value.longitude);
       });
     }).whenComplete(() => getDistance());
+  }
+
+  void payNow() async {
+    //the amount must be transformed to cents
+
+    var response = await StripeServices.payNowHandler(
+        amount: currentPrice, currency: 'USD');
+    print(currentPrice);
+    print('response message ${response.message}');
+    print('meowssss');
   }
 
   String distance = 'Loading...';
@@ -66,6 +80,39 @@ class _GymDescrptionState extends State<GymDescrption> {
       //   setState(() {
       //     window = '';
       //   });
+    }
+  }
+
+  String showPrice() {
+    // String price = 's';
+    switch (widget.price) {
+      case 'One Day':
+        setState(() {
+          currentPrice = widget.gym.priceOneDay.toString();
+        });
+        return currentPrice;
+      case 'One Month':
+        setState(() {
+          currentPrice = widget.gym.priceOneMonth.toString();
+        });
+        return currentPrice;
+      case 'Three Months':
+        setState(() {
+          currentPrice = widget.gym.priceThreeMonths.toString();
+        });
+        return currentPrice;
+      case 'Six Months':
+        setState(() {
+          currentPrice = widget.gym.priceSixMonths.toString();
+        });
+        return currentPrice;
+      case 'One Year':
+        setState(() {
+          currentPrice = widget.gym.priceOneYear.toString();
+        });
+        return currentPrice;
+      default:
+        return '';
     }
   }
 
@@ -236,7 +283,7 @@ class _GymDescrptionState extends State<GymDescrption> {
     // WidgetsBinding.instance!.addPostFrameCallback((_) {
     //   setState(() {});
     // });
-
+    print(widget.price);
     GymModel gym = widget.gym;
     String uid = widget.userid;
     double screenWidth = MediaQuery.of(context).size.width;
@@ -566,7 +613,10 @@ class _GymDescrptionState extends State<GymDescrption> {
                                 "${currentPrice} SAR",
                                 style: TextStyle(fontSize: 30),
                               )
-                            : Text('')),
+                            : Text(
+                                showPrice() + '',
+                                style: TextStyle(fontSize: 30),
+                              )),
                   ]),
                 ],
               ),
@@ -738,7 +788,9 @@ class _GymDescrptionState extends State<GymDescrption> {
                 )),
           ),
           InkWell(
-            // splashColor: colors.blue_base,
+            onTap: () {
+              payNow();
+            },
             child: Container(
                 color: colors.blue_base,
                 width: screenWidth / 2,

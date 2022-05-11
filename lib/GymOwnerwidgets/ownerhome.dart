@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:gymhome/GymOwnerwidgets/gymOwnerCard.dart';
 import 'package:gymhome/models/GymModel.dart';
 import 'package:gymhome/models/gyms.dart';
+import 'package:gymhome/models/user.dart';
 import 'package:gymhome/widgets/edit.dart';
 import 'package:provider/provider.dart';
 import 'package:gymhome/Styles.dart';
@@ -22,13 +23,6 @@ class _WidgtessState extends State<OwnerHome> {
   List<GymModel> _gymsList = [];
   List<Placelocation> _gymsaddress = [];
   String? uid;
-
-  // void getUid() async {
-  //   SharedPreferences _userdata = await SharedPreferences.getInstance();
-  //   setState(() {
-  //     uid = _userdata.getString('uid');
-  //   });
-  // }
 
   @override
   void initState() {
@@ -88,6 +82,16 @@ class _WidgtessState extends State<OwnerHome> {
         ),
         backgroundColor: colors.blue_base,
         elevation: 0,
+        actions: [
+          IconButton(
+              onPressed: () {
+                AppUser.logout(context);
+              },
+              icon: Icon(
+                Icons.logout,
+                // color: colors.red_base,
+              ))
+        ],
       ),
       body: SingleChildScrollView(
         child: SafeArea(
@@ -133,8 +137,8 @@ class _WidgtessState extends State<OwnerHome> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          GymModel _gym = GymModel([], [], [], 0, 0, 0, 0, 0, '', '', '', '',
-              '', null, false, true, '', 0, 0);
+          GymModel _gym = GymModel([], [], [], [], [], 0, 0, 0, 0, 0, '', '',
+              '', '', '', null, false, true, 'Men', 0, 0);
           Navigator.of(context).push(MaterialPageRoute(
               builder: (context) => AddGymInfo(
                     gymsaddress: _gymsaddress,

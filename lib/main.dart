@@ -67,6 +67,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Widget getHome(bool iscustomer) {
+<<<<<<< HEAD
       if (ban!) {
         return welcome();
       } else {
@@ -75,6 +76,18 @@ class MyApp extends StatelessWidget {
         else
           return OwnerHome();
       }
+=======
+      // UserData.isCustomer().then((value) => iscustomer = value);
+      // print('uid = ');
+      // print(uid);
+      //return welcome();
+      // return OwnerHome();
+      if (iscustomer)
+        return NewHome();
+      // return Location();
+      else
+        return OwnerHome();
+>>>>>>> f0aae074224df61ad226baf01e5ce51c7cf3ef2e
     }
 
     return MultiProvider(

@@ -729,7 +729,7 @@ class _GymDescrptionState extends State<GymDescrption> {
                                       width: 3,
                                     ),
                                     Text(
-                                      'Comments',
+                                      'Reviews',
                                       style: TextStyle(
                                           color: window == 'Comments'
                                               ? Colors.white

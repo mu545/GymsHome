@@ -2,7 +2,9 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:gymhome/models/user.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter/material.dart';
 import 'package:gymhome/Admin/AdminHome.dart';
@@ -38,6 +40,8 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 bool? iscustomer;
+String? uid;
+bool? ban;
 // Customer? currentc;
 
 void main() async {
@@ -46,11 +50,14 @@ void main() async {
   await Firebase.initializeApp();
   // MapsInitializer.initialize();
 // to read and write user data
+
   final _userdata = await SharedPreferences.getInstance();
   iscustomer = _userdata.getBool('iscustomer');
+  uid = _userdata.getString('uid');
+  ban = await AppUser.isban(uid!, iscustomer!);
+
   Permission.location.request();
 
-  // UserData.init();
   runApp(const MyApp());
 }
 
@@ -59,23 +66,15 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // get userid
-    // String? uid;
-    // UserData.getUserId().then((value) => uid = value);
-    // bool? iscustomer;
-    // UserData.isCustomer().then((value) => iscustomer = value);
-    //  get home
     Widget getHome(bool iscustomer) {
-      // UserData.isCustomer().then((value) => iscustomer = value);
-      // print('uid = ');
-      // print(uid);
-      //return welcome();
-      // return OwnerHome();
-      if (iscustomer)
-        return NewHome();
-      // return Location();
-      else
-        return OwnerHome();
+      if (ban!) {
+        return welcome();
+      } else {
+        if (iscustomer)
+          return NewHome();
+        else
+          return OwnerHome();
+      }
     }
 
     return MultiProvider(

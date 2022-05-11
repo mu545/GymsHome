@@ -18,6 +18,33 @@ import '../widgets/newhome.dart';
 import 'package:gymhome/models/userdata.dart';
 
 class AppUser {
+  static Future<bool> isban(String uid, iscustomer) async {
+    if (iscustomer) {
+      var _snapshot = await FirebaseFirestore.instance
+          .collection("Customer")
+          .doc(uid)
+          .get();
+      if (_snapshot.exists) {
+        Map<String, dynamic> data = _snapshot.data()!;
+        return data['isban'];
+      } else {
+        return false;
+      }
+    } else {
+      var _snapshot = await FirebaseFirestore.instance
+          .collection("Gym Owner")
+          .doc(uid)
+          .get();
+      if (_snapshot.exists) {
+        Map<String, dynamic> data = _snapshot.data()!;
+        return data['isban'];
+      } else {
+        return false;
+      }
+    }
+
+    // return true;
+  }
   // String email;
   // String name;
   // String password;
@@ -78,7 +105,8 @@ class AppUser {
           'reviews': [],
           'Likes': [],
           'compare': [],
-          'profilePicture': _currentc.profilePicture
+          'profilePicture': _currentc.profilePicture,
+          'isban': false
         });
 
         Navigator.of(cxt).pushReplacement(
@@ -92,7 +120,7 @@ class AppUser {
         FirebaseFirestore.instance
             .collection("Gym Owner")
             .doc(userid)
-            .set({'name': name, 'email': email});
+            .set({'name': name, 'email': email, 'isban': false});
         // Navigator.of(cxt).pushNamed(OwnerHome.rounamed);
         Navigator.of(cxt).pushReplacement(
           MaterialPageRoute(
@@ -126,27 +154,37 @@ class AppUser {
       var docSnapshot = await collection.doc(userid).get();
 
       if (docSnapshot.exists) {
-        Owner _currentOwner =
-            Owner.fromjson(docSnapshot.data() as Map<String, dynamic>, userid);
-        UserData.setUserDate(
-            false, userid, _currentOwner.name, _currentOwner.email);
-        Navigator.of(cxt).pushReplacement(MaterialPageRoute(
-          builder: (context) => OwnerHome(),
-        ));
+        Map<String, dynamic> _data = docSnapshot.data() as Map<String, dynamic>;
+        if (_data['isban'] == false) {
+          Owner _currentOwner = Owner.fromjson(_data, userid);
+
+          UserData.setUserDate(
+              false, userid, _currentOwner.name, _currentOwner.email);
+          Navigator.of(cxt).pushReplacement(MaterialPageRoute(
+            builder: (context) => OwnerHome(),
+          ));
+        } else {
+          message(cxt, false, 'Sorry your account in Banned For some reason');
+        }
       } else {
         var _currentcustomer = await FirebaseFirestore.instance
             .collection('Customer')
             .doc(userid)
             .get();
-        Customer _currentc = Customer.fromJson(
-            _currentcustomer.data() as Map<String, dynamic>, userid);
-        UserData.setUserDate(
-            true, _currentc.uid, _currentc.name, _currentc.email);
-        Navigator.of(cxt).pushReplacement(
-          MaterialPageRoute(
-            builder: (context) => NewHome(),
-          ),
-        );
+        Map<String, dynamic> _data =
+            _currentcustomer.data() as Map<String, dynamic>;
+        if (_data['isban'] == false) {
+          Customer _currentc = Customer.fromJson(_data, userid);
+          UserData.setUserDate(
+              true, _currentc.uid, _currentc.name, _currentc.email);
+          Navigator.of(cxt).pushReplacement(
+            MaterialPageRoute(
+              builder: (context) => NewHome(),
+            ),
+          );
+        } else {
+          message(cxt, false, 'Sorry your account in Banned For some reason');
+        }
       }
     } on FirebaseAuthException catch (e) {
       String messages = e.code;

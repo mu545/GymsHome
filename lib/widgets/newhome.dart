@@ -57,7 +57,7 @@ class _NewHomeState extends State<NewHome> {
       getlist();
     }));
 
-    // if (mounted) getlist();
+    /// if (mounted) getlist();
   }
 
   void getlist() {

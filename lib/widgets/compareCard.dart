@@ -277,7 +277,7 @@ class _compareCardState extends State<compareCard> {
       child: Padding(
         padding: const EdgeInsets.all(5.0),
         child: Container(
-          width: MediaQuery.of(context).size.width * 0.30,
+          width: MediaQuery.of(context).size.width * 0.36,
           child: Card(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -372,35 +372,35 @@ class _compareCardState extends State<compareCard> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          oneDay != '0.0' ? oneDay : 'no price',
+                          oneDay != '0.0' ? oneDay : '--',
                           style: TextStyle(fontSize: 20),
                         ),
                         SizedBox(
                           height: 2,
                         ),
                         Text(
-                          oneMonth != '0.0' ? oneMonth : 'no price',
+                          oneMonth != '0.0' ? oneMonth : '--',
                           style: TextStyle(fontSize: 20),
                         ),
                         SizedBox(
                           height: 2,
                         ),
                         Text(
-                          threeMonths != '0.0' ? threeMonths : 'no price',
+                          threeMonths != '0.0' ? threeMonths : '--',
                           style: TextStyle(fontSize: 20),
                         ),
                         SizedBox(
                           height: 2,
                         ),
                         Text(
-                          sixMonths != '0.0' ? sixMonths : 'no price',
+                          sixMonths != '0.0' ? sixMonths : '--',
                           style: TextStyle(fontSize: 20),
                         ),
                         SizedBox(
                           height: 2,
                         ),
                         Text(
-                          oneYear != '0.0' ? oneYear : 'no price',
+                          oneYear != '0.0' ? oneYear : '--',
                           style: TextStyle(fontSize: 20),
                         ),
                       ],

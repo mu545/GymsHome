@@ -324,6 +324,20 @@ class _GymCardCustomerState extends State<GymCardCustomer> {
                           ),
                         ),
                       ),
+                      Positioned(
+                        left: 10,
+                        top: 10,
+                        child: InkWell(
+                          onTap: () {
+                            getListFav();
+                          },
+                          child: Icon(
+                            Icons.favorite_border,
+                            size: 43,
+                            color: Color.fromARGB(35, 0, 0, 0),
+                          ),
+                        ),
+                      ),
                       // COMPARE
                       Positioned(
                         right: 10,

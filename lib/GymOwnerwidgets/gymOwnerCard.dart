@@ -149,13 +149,13 @@ class _GymCardState extends State<GymCard> {
                       children: [
                         Text(
                           //    price ??
-                          widget.gymInfo.priceOneDay.toString() + ' SAR',
+                          '',
                           style: TextStyle(fontSize: 20, color: Colors.white),
                         ),
                         Row(
                           children: [
                             Text(
-                              ' ' + widget.gymInfo.avg_rate.toString(),
+                              '' + widget.gymInfo.avg_rate.toString(),
                               style:
                                   TextStyle(fontSize: 20, color: Colors.white),
                             ),

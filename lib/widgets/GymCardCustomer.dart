@@ -260,6 +260,7 @@ class _GymCardCustomerState extends State<GymCardCustomer> {
 
   @override
   Widget build(BuildContext context) {
+    getDistance();
     return InkWell(
       onTap: () {
         Navigator.of(context).push(MaterialPageRoute(

@@ -45,11 +45,11 @@ class _FavoriteState extends State<Viewcompare> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.white,
+          backgroundColor: colors.blue_base,
           title: Center(
               child: Text(
             'Compare gyms',
-            style: TextStyle(color: Colors.black),
+            style: TextStyle(color: Colors.white),
           )),
           elevation: 0,
         ),

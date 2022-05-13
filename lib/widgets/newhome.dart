@@ -628,124 +628,139 @@ class _NewWidgetHomeState extends State<NewWidgetHome> {
                 ),
                 child: Row(
                   children: [
-                    ElevatedButton(
-                      onPressed: () {
-                        setState(() {
-                          isSort = false;
-                        });
-                        priceChoose('Day');
-                      },
-                      child: Text(
-                        'Day',
-                        style: TextStyle(
-                          color: priceChoosed == 'One Day'
-                              ? Colors.white
-                              : Colors.black,
+                    Container(
+                      width: 58,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          setState(() {
+                            isSort = false;
+                          });
+                          priceChoose('Day');
+                        },
+                        child: Text(
+                          'Day',
+                          style: TextStyle(
+                            color: priceChoosed == 'One Day'
+                                ? Colors.white
+                                : Colors.black,
+                          ),
                         ),
+                        style: ButtonStyle(
+                            shape: MaterialStateProperty.all<OutlinedBorder>(
+                                RoundedRectangleBorder(side: BorderSide.none)),
+                            backgroundColor: priceChoosed == 'One Day'
+                                ? MaterialStateProperty.all(
+                                    Color.fromARGB(209, 71, 153, 183))
+                                : MaterialStateProperty.all(Colors.white)),
                       ),
-                      style: ButtonStyle(
-                          shape: MaterialStateProperty.all<OutlinedBorder>(
-                              RoundedRectangleBorder(side: BorderSide.none)),
-                          backgroundColor: priceChoosed == 'One Day'
-                              ? MaterialStateProperty.all(
-                                  Color.fromARGB(209, 71, 153, 183))
-                              : MaterialStateProperty.all(Colors.white)),
                     ),
-                    ElevatedButton(
-                      //     minWidth: 10,
-                      onPressed: () {
-                        setState(() {
-                          isSort = false;
-                        });
-                        priceChoose('Month');
-                      },
-                      child: Text(
-                        'Month',
-                        style: TextStyle(
-                          color: priceChoosed == 'One Month'
-                              ? Colors.white
-                              : Colors.black,
+                    Container(
+                      width: 75,
+                      child: ElevatedButton(
+                        //     minWidth: 10,
+                        onPressed: () {
+                          setState(() {
+                            isSort = false;
+                          });
+                          priceChoose('Month');
+                        },
+                        child: Text(
+                          'Month',
+                          style: TextStyle(
+                            color: priceChoosed == 'One Month'
+                                ? Colors.white
+                                : Colors.black,
+                          ),
                         ),
+                        style: ButtonStyle(
+                            shape: MaterialStateProperty.all<OutlinedBorder>(
+                                RoundedRectangleBorder(side: BorderSide.none)),
+                            backgroundColor: priceChoosed == 'One Month'
+                                ? MaterialStateProperty.all(
+                                    Color.fromARGB(209, 71, 153, 183))
+                                : MaterialStateProperty.all(Colors.white)),
                       ),
-                      style: ButtonStyle(
-                          shape: MaterialStateProperty.all<OutlinedBorder>(
-                              RoundedRectangleBorder(side: BorderSide.none)),
-                          backgroundColor: priceChoosed == 'One Month'
-                              ? MaterialStateProperty.all(
-                                  Color.fromARGB(209, 71, 153, 183))
-                              : MaterialStateProperty.all(Colors.white)),
                     ),
-                    ElevatedButton(
-                      //    minWidth: 10,
-                      onPressed: () {
-                        setState(() {
-                          isSort = false;
-                        });
-                        priceChoose('3 Months');
-                      },
-                      child: Text(
-                        '3 Months',
-                        style: TextStyle(
-                          color: priceChoosed == 'Three Months'
-                              ? Colors.white
-                              : Colors.black,
+                    Container(
+                      width: 91,
+                      child: ElevatedButton(
+                        //    minWidth: 10,
+                        onPressed: () {
+                          setState(() {
+                            isSort = false;
+                          });
+                          priceChoose('3 Months');
+                        },
+                        child: Text(
+                          '3 Months',
+                          style: TextStyle(
+                            color: priceChoosed == 'Three Months'
+                                ? Colors.white
+                                : Colors.black,
+                          ),
                         ),
+                        style: ButtonStyle(
+                            shape: MaterialStateProperty.all<OutlinedBorder>(
+                                RoundedRectangleBorder(side: BorderSide.none)),
+                            backgroundColor: priceChoosed == 'Three Months'
+                                ? MaterialStateProperty.all(
+                                    Color.fromARGB(209, 71, 153, 183))
+                                : MaterialStateProperty.all(Colors.white)),
                       ),
-                      style: ButtonStyle(
-                          shape: MaterialStateProperty.all<OutlinedBorder>(
-                              RoundedRectangleBorder(side: BorderSide.none)),
-                          backgroundColor: priceChoosed == 'Three Months'
-                              ? MaterialStateProperty.all(
-                                  Color.fromARGB(209, 71, 153, 183))
-                              : MaterialStateProperty.all(Colors.white)),
                     ),
-                    ElevatedButton(
-                      //   minWidth: 10,
-                      onPressed: () {
-                        setState(() {
-                          isSort = false;
-                        });
-                        priceChoose('6 Months');
-                      },
-                      child: Text(
-                        '6 Months',
-                        style: TextStyle(
-                          color: priceChoosed == 'Six Months'
-                              ? Colors.white
-                              : Colors.black,
+                    Container(
+                      width: 91,
+                      child: ElevatedButton(
+                        //   minWidth: 10,
+                        onPressed: () {
+                          setState(() {
+                            isSort = false;
+                          });
+                          priceChoose('6 Months');
+                        },
+                        child: Text(
+                          '6 Months',
+                          style: TextStyle(
+                            color: priceChoosed == 'Six Months'
+                                ? Colors.white
+                                : Colors.black,
+                          ),
                         ),
+                        style: ButtonStyle(
+                            shape: MaterialStateProperty.all<OutlinedBorder>(
+                                RoundedRectangleBorder(side: BorderSide.none)),
+                            backgroundColor: priceChoosed == 'Six Months'
+                                ? MaterialStateProperty.all(
+                                    Color.fromARGB(209, 71, 153, 183))
+                                : MaterialStateProperty.all(Colors.white)),
                       ),
-                      style: ButtonStyle(
-                          shape: MaterialStateProperty.all<OutlinedBorder>(
-                              RoundedRectangleBorder(side: BorderSide.none)),
-                          backgroundColor: priceChoosed == 'Six Months'
-                              ? MaterialStateProperty.all(
-                                  Color.fromARGB(209, 71, 153, 183))
-                              : MaterialStateProperty.all(Colors.white)),
                     ),
-                    ElevatedButton(
-                      //   minWidth: 10,
-                      onPressed: () {
-                        setState(() {
-                          isSort = false;
-                        });
-                        priceChoose('Year');
-                      },
-                      child: Text(
-                        'Year',
-                        style: TextStyle(
-                          color: priceChoosed == 'One Year'
-                              ? Colors.white
-                              : Colors.black,
+                    Container(
+                      width: 60,
+                      child: ElevatedButton(
+                        //   minWidth: 10,
+                        onPressed: () {
+                          setState(() {
+                            isSort = false;
+                          });
+                          priceChoose('Year');
+                        },
+                        child: Text(
+                          'Year',
+                          style: TextStyle(
+                            color: priceChoosed == 'One Year'
+                                ? Colors.white
+                                : Colors.black,
+                          ),
                         ),
+                        style: ButtonStyle(
+                            shape: MaterialStateProperty.all<OutlinedBorder>(
+                                RoundedRectangleBorder(side: BorderSide.none)),
+                            backgroundColor: priceChoosed == 'One Year'
+                                ? MaterialStateProperty.all(
+                                    Color.fromARGB(209, 71, 153, 183))
+                                : MaterialStateProperty.all(Colors.white)),
                       ),
-                      style: ButtonStyle(
-                          shape: MaterialStateProperty.all<OutlinedBorder>(
-                              RoundedRectangleBorder(side: BorderSide.none)),
-                          backgroundColor: priceChoosed == 'One Year'
-                              ? MaterialStateProperty.all(
-                                  Color.fromARGB(209, 71, 153, 183))
-                              : MaterialStateProperty.all(Colors.white)),
                     ),
                   ],
                 ),

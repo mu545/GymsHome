@@ -50,7 +50,7 @@ void main() async {
   await Firebase.initializeApp();
   // MapsInitializer.initialize();
 // to read and write user data
-
+  //iscustomer = true;
   final _userdata = await SharedPreferences.getInstance();
   iscustomer = _userdata.getBool('iscustomer');
   uid = _userdata.getString('uid');

@@ -1,3 +1,5 @@
+// import 'dart:html';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -7,6 +9,7 @@ import 'package:gymhome/GymOwnerwidgets/gymprice.dart';
 import 'package:gymhome/models/GymModel.dart';
 import 'package:gymhome/widgets/PaymentScreen.dart';
 import 'package:gymhome/widgets/Stripe.dart';
+import 'package:gymhome/widgets/customermap.dart';
 import 'package:gymhome/widgets/locationmap.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:gymhome/models/review.dart';
@@ -354,17 +357,51 @@ class _GymDescrptionState extends State<GymDescrption> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Row(
-                        children: [
-                          SizedBox(
-                            width: 15,
-                          ),
-                          Text(
-                            distance,
-                            style: TextStyle(fontSize: 20),
-                          ),
-                          Icon(Icons.directions_walk_outlined)
-                        ],
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          children: [
+                            Row(
+                              children: [
+                                Text(
+                                  ' ' + distance,
+                                  style: TextStyle(fontSize: 20),
+                                ),
+                                Icon(Icons.directions_walk_outlined),
+                              ],
+                            ),
+                            TextButton.icon(
+                              label: Text(
+                                'See Location',
+                                style: TextStyle(
+                                    color: colors.blue_base, fontSize: 15),
+                              ),
+                              icon: const Icon(
+                                Icons.near_me_rounded,
+                                size: 25,
+                                color: colors.blue_base,
+                              ),
+
+                              // style: ButtonStyle(
+
+                              //     backgroundColor: MaterialStateProperty.all(
+                              //         Color.fromARGB(209, 71, 153, 183))),
+                              onPressed: () {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) => Customermap(
+                                          gym: gym,
+                                        )));
+                              },
+                            ),
+                            // IconButton(
+                            //     onPressed: () => {},
+                            //     icon: const Icon(
+                            //       Icons.near_me_rounded,
+                            //       size: 35,
+                            //       color: colors.blue_base,
+                            //     )),
+                          ],
+                        ),
                       ),
                       Column(
                         children: [

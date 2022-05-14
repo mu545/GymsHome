@@ -63,6 +63,7 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
   json_helpers: ^0.1.5
+  maps_launcher: ^2.0.1
   
 
 dev_dependencies:

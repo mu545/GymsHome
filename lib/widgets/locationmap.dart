@@ -28,8 +28,7 @@ class Placelocation {
         address: json['name'],
         gymid: json['gymId']);
   }
-  static Future<String> calculateDistance(
-      GeoPoint gymLocation, GeoPoint userLocation) async {
+  static String calculateDistance(GeoPoint gymLocation, GeoPoint userLocation) {
     String distance = '10 M';
     // final Position locdata = await Geolocator.getCurrentPosition();
     // GeoPoint userLocation = GeoPoint(locdata.latitude, locdata.longitude);

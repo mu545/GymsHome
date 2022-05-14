@@ -54,7 +54,7 @@ void main() async {
   final _userdata = await SharedPreferences.getInstance();
   iscustomer = _userdata.getBool('iscustomer');
   uid = _userdata.getString('uid');
-  ban = await AppUser.isban(uid!, iscustomer!);
+  if (uid != null) ban = await AppUser.isban(uid!, iscustomer!);
 
   Permission.location.request();
 

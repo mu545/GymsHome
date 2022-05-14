@@ -1,6 +1,7 @@
 // import 'dart:html';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -350,7 +351,7 @@ class _GymDescrptionState extends State<GymDescrption> {
               color: Colors.black,
             ),
             Card(
-              margin: EdgeInsets.all(10),
+              margin: EdgeInsets.only(right: 10, left: 10),
               elevation: 2,
               child: Column(
                 children: [
@@ -434,217 +435,400 @@ class _GymDescrptionState extends State<GymDescrption> {
                   SizedBox(
                     height: 15,
                   ),
-                  SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
+
+                  // SingleChildScrollView(
+                  //   scrollDirection: Axis.horizontal,
+                  //   child: Row(
+                  //     mainAxisAlignment: MainAxisAlignment.center,
+                  //     children: [
+                  //       Container(
+                  // margin: EdgeInsets.only(left: 5),
+                  // height: 20,
+                  // decoration: BoxDecoration(
+                  //     border: Border.all(color: Colors.grey),
+                  //     borderRadius: BorderRadius.circular(5)),
+                  //         child: Row(
+                  //           children: [
+                  //             gym.priceOneDay != 0
+                  //                 ? ElevatedButton(
+                  //                     child: Text(
+                  //                       'Day',
+                  //                       style: TextStyle(
+                  //                           color: currentPrice ==
+                  //                                   gym.priceOneDay.toString()
+                  //                               ? Colors.white
+                  //                               : Colors.black,
+                  //                           fontSize: 13),
+                  //                     ),
+                  //                     style: ButtonStyle(
+                  //                         shape: MaterialStateProperty.all<
+                  //                                 OutlinedBorder>(
+                  //                             RoundedRectangleBorder(
+                  //                                 side: BorderSide.none)),
+                  //                         backgroundColor: currentPrice ==
+                  //                                 gym.priceOneDay.toString()
+                  //                             ? MaterialStateProperty.all(
+                  //                                 Color.fromARGB(
+                  //                                     209, 71, 153, 183))
+                  //                             : MaterialStateProperty.all(
+                  //                                 Colors.white)),
+                  //                     onPressed: () {
+                  //                       setState(() {
+                  //                         currentPrice =
+                  //                             gym.priceOneDay.toString();
+                  //                       });
+                  //                     },
+                  //                   )
+                  //                 : Container(
+                  //                     margin: EdgeInsets.only(left: 10),
+                  //                     width: 30,
+                  //                     child: Text(
+                  //                       'Day',
+                  //                       style: TextStyle(color: Colors.grey),
+                  //                     ),
+                  //                   ),
+                  //             gym.priceOneMonth != 0
+                  //                 ? ElevatedButton(
+                  //                     child: Text(
+                  //                       'Month',
+                  //                       style: TextStyle(
+                  //                           color: currentPrice ==
+                  //                                   gym.priceOneMonth.toString()
+                  //                               ? Colors.white
+                  //                               : Colors.black,
+                  //                           fontSize: 13),
+                  //                     ),
+                  //                     style: ButtonStyle(
+                  //                         shape: MaterialStateProperty.all<
+                  //                                 OutlinedBorder>(
+                  //                             RoundedRectangleBorder(
+                  //                                 side: BorderSide.none)),
+                  //                         backgroundColor: currentPrice ==
+                  //                                 gym.priceOneMonth.toString()
+                  //                             ? MaterialStateProperty.all(
+                  //                                 Color.fromARGB(
+                  //                                     209, 71, 153, 183))
+                  //                             : MaterialStateProperty.all(
+                  //                                 Colors.white)),
+                  //                     onPressed: () {
+                  //                       setState(() {
+                  //                         currentPrice =
+                  //                             gym.priceOneMonth.toString();
+                  //                       });
+                  //                     },
+                  //                   )
+                  //                 : Container(
+                  //                     margin: EdgeInsets.only(left: 20),
+                  //                     width: 50,
+                  //                     child: Text(
+                  //                       'Month',
+                  //                       style: TextStyle(color: Colors.grey),
+                  //                     ),
+                  //                   ),
+                  //             gym.priceThreeMonths != 0
+                  //                 ? ElevatedButton(
+                  //                     child: Text(
+                  //                       '3 Months',
+                  //                       style: TextStyle(
+                  //                           color: currentPrice ==
+                  //                                   gym.priceThreeMonths
+                  //                                       .toString()
+                  //                               ? Colors.white
+                  //                               : Colors.black,
+                  //                           fontSize: 13),
+                  //                     ),
+                  //                     style: ButtonStyle(
+                  //                         shape: MaterialStateProperty.all<
+                  //                                 OutlinedBorder>(
+                  //                             RoundedRectangleBorder(
+                  //                                 side: BorderSide.none)),
+                  //                         backgroundColor: currentPrice ==
+                  //                                 gym.priceThreeMonths
+                  //                                     .toString()
+                  //                             ? MaterialStateProperty.all(
+                  //                                 Color.fromARGB(
+                  //                                     209, 71, 153, 183))
+                  //                             : MaterialStateProperty.all(
+                  //                                 Colors.white)),
+                  //                     onPressed: () {
+                  //                       setState(() {
+                  //                         currentPrice =
+                  //                             gym.priceThreeMonths.toString();
+                  //                       });
+                  //                     },
+                  //                   )
+                  //                 : Container(
+                  //                     margin: EdgeInsets.only(left: 20),
+                  //                     width: 80,
+                  //                     child: Text(
+                  //                       '3 Months',
+                  //                       style: TextStyle(color: Colors.grey),
+                  //                     ),
+                  //                   ),
+                  //             gym.priceSixMonths != 0
+                  //                 ? ElevatedButton(
+                  //                     child: Text(
+                  //                       '6 Months',
+                  //                       style: TextStyle(
+                  //                           color: currentPrice ==
+                  //                                   gym.priceSixMonths
+                  //                                       .toString()
+                  //                               ? Colors.white
+                  //                               : Colors.black,
+                  //                           fontSize: 13),
+                  //                     ),
+                  //                     style: ButtonStyle(
+                  //                         shape: MaterialStateProperty.all<
+                  //                                 OutlinedBorder>(
+                  //                             RoundedRectangleBorder(
+                  //                                 side: BorderSide.none)),
+                  //                         backgroundColor: currentPrice ==
+                  //                                 gym.priceSixMonths.toString()
+                  //                             ? MaterialStateProperty.all(
+                  //                                 Color.fromARGB(
+                  //                                     209, 71, 153, 183))
+                  //                             : MaterialStateProperty.all(
+                  //                                 Colors.white)),
+                  //                     onPressed: () {
+                  //                       setState(() {
+                  //                         currentPrice =
+                  //                             gym.priceSixMonths.toString();
+                  //                       });
+                  //                     },
+                  //                   )
+                  //                 : Container(
+                  //                     margin: EdgeInsets.only(left: 10),
+                  //                     width: 80,
+                  //                     child: Text(
+                  //                       '6 Months',
+                  //                       style: TextStyle(color: Colors.grey),
+                  //                     ),
+                  //                   ),
+                  //             gym.priceOneYear != 0
+                  //                 ? ElevatedButton(
+                  //                     child: Text(
+                  //                       'Year',
+                  //                       style: TextStyle(
+                  // color: currentPrice ==
+                  //         gym.priceOneYear.toString()
+                  //     ? Colors.white
+                  //     : Colors.black,
+                  //                           fontSize: 13),
+                  //                     ),
+                  //                     style: ButtonStyle(
+                  //                         shape: MaterialStateProperty.all<
+                  //                                 OutlinedBorder>(
+                  //                             RoundedRectangleBorder(
+                  //                                 side: BorderSide.none)),
+                  // backgroundColor: currentPrice ==
+                  //         gym.priceOneYear.toString()
+                  //     ? MaterialStateProperty.all(
+                  //         Color.fromARGB(
+                  //             209, 71, 153, 183))
+                  //     : MaterialStateProperty.all(
+                  //         Colors.white)),
+                  //                     onPressed: () {
+                  //                       setState(() {
+                  //                         currentPrice =
+                  //                             gym.priceOneYear.toString();
+                  //                       });
+                  //                     },
+                  //                   )
+                  //                 : Container(
+                  //                     margin: EdgeInsets.only(left: 20),
+                  //                     width: 50,
+                  //                     child: Text(
+                  //                       'Year',
+                  //                       style: TextStyle(color: Colors.grey),
+                  //                     ),
+                  //                   ),
+                  //           ],
+                  //         ),
+                  //       ),
+                  //     ],
+                  //   ),
+                  // ),
+                  Container(
+                    margin: EdgeInsets.all(8),
+                    height: 32,
+                    // width: 200,
+                    decoration: BoxDecoration(
+                        border: Border.all(color: Colors.grey),
+                        borderRadius: BorderRadius.circular(7)),
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Container(
-                          margin: EdgeInsets.only(left: 5),
-                          height: 20,
-                          decoration: BoxDecoration(
-                              border: Border.all(color: Colors.grey),
-                              borderRadius: BorderRadius.circular(5)),
-                          child: Row(
-                            children: [
-                              gym.priceOneDay != 0
-                                  ? ElevatedButton(
-                                      child: Text(
-                                        'Day',
-                                        style: TextStyle(
-                                            color: currentPrice ==
-                                                    gym.priceOneDay.toString()
-                                                ? Colors.white
-                                                : Colors.black,
-                                            fontSize: 13),
-                                      ),
-                                      style: ButtonStyle(
-                                          shape: MaterialStateProperty.all<
-                                                  OutlinedBorder>(
-                                              RoundedRectangleBorder(
-                                                  side: BorderSide.none)),
-                                          backgroundColor: currentPrice ==
-                                                  gym.priceOneDay.toString()
-                                              ? MaterialStateProperty.all(
-                                                  Color.fromARGB(
-                                                      209, 71, 153, 183))
-                                              : MaterialStateProperty.all(
-                                                  Colors.white)),
-                                      onPressed: () {
-                                        setState(() {
-                                          currentPrice =
-                                              gym.priceOneDay.toString();
-                                        });
-                                      },
-                                    )
-                                  : Container(
-                                      margin: EdgeInsets.only(left: 10),
-                                      width: 30,
-                                      child: Text(
-                                        'Day',
-                                        style: TextStyle(color: Colors.grey),
-                                      ),
-                                    ),
-                              gym.priceOneMonth != 0
-                                  ? ElevatedButton(
-                                      child: Text(
-                                        'Month',
-                                        style: TextStyle(
-                                            color: currentPrice ==
-                                                    gym.priceOneMonth.toString()
-                                                ? Colors.white
-                                                : Colors.black,
-                                            fontSize: 13),
-                                      ),
-                                      style: ButtonStyle(
-                                          shape: MaterialStateProperty.all<
-                                                  OutlinedBorder>(
-                                              RoundedRectangleBorder(
-                                                  side: BorderSide.none)),
-                                          backgroundColor: currentPrice ==
-                                                  gym.priceOneMonth.toString()
-                                              ? MaterialStateProperty.all(
-                                                  Color.fromARGB(
-                                                      209, 71, 153, 183))
-                                              : MaterialStateProperty.all(
-                                                  Colors.white)),
-                                      onPressed: () {
-                                        setState(() {
-                                          currentPrice =
-                                              gym.priceOneMonth.toString();
-                                        });
-                                      },
-                                    )
-                                  : Container(
-                                      margin: EdgeInsets.only(left: 20),
-                                      width: 50,
-                                      child: Text(
-                                        'Month',
-                                        style: TextStyle(color: Colors.grey),
-                                      ),
-                                    ),
-                              gym.priceThreeMonths != 0
-                                  ? ElevatedButton(
-                                      child: Text(
-                                        '3 Months',
-                                        style: TextStyle(
-                                            color: currentPrice ==
-                                                    gym.priceThreeMonths
-                                                        .toString()
-                                                ? Colors.white
-                                                : Colors.black,
-                                            fontSize: 13),
-                                      ),
-                                      style: ButtonStyle(
-                                          shape: MaterialStateProperty.all<
-                                                  OutlinedBorder>(
-                                              RoundedRectangleBorder(
-                                                  side: BorderSide.none)),
-                                          backgroundColor: currentPrice ==
-                                                  gym.priceThreeMonths
-                                                      .toString()
-                                              ? MaterialStateProperty.all(
-                                                  Color.fromARGB(
-                                                      209, 71, 153, 183))
-                                              : MaterialStateProperty.all(
-                                                  Colors.white)),
-                                      onPressed: () {
-                                        setState(() {
-                                          currentPrice =
-                                              gym.priceThreeMonths.toString();
-                                        });
-                                      },
-                                    )
-                                  : Container(
-                                      margin: EdgeInsets.only(left: 20),
-                                      width: 80,
-                                      child: Text(
-                                        '3 Months',
-                                        style: TextStyle(color: Colors.grey),
-                                      ),
-                                    ),
-                              gym.priceSixMonths != 0
-                                  ? ElevatedButton(
-                                      child: Text(
-                                        '6 Months',
-                                        style: TextStyle(
-                                            color: currentPrice ==
-                                                    gym.priceSixMonths
-                                                        .toString()
-                                                ? Colors.white
-                                                : Colors.black,
-                                            fontSize: 13),
-                                      ),
-                                      style: ButtonStyle(
-                                          shape: MaterialStateProperty.all<
-                                                  OutlinedBorder>(
-                                              RoundedRectangleBorder(
-                                                  side: BorderSide.none)),
-                                          backgroundColor: currentPrice ==
-                                                  gym.priceSixMonths.toString()
-                                              ? MaterialStateProperty.all(
-                                                  Color.fromARGB(
-                                                      209, 71, 153, 183))
-                                              : MaterialStateProperty.all(
-                                                  Colors.white)),
-                                      onPressed: () {
-                                        setState(() {
-                                          currentPrice =
-                                              gym.priceSixMonths.toString();
-                                        });
-                                      },
-                                    )
-                                  : Container(
-                                      margin: EdgeInsets.only(left: 10),
-                                      width: 80,
-                                      child: Text(
-                                        '6 Months',
-                                        style: TextStyle(color: Colors.grey),
-                                      ),
-                                    ),
-                              gym.priceOneYear != 0
-                                  ? ElevatedButton(
-                                      child: Text(
-                                        'Year',
-                                        style: TextStyle(
-                                            color: currentPrice ==
-                                                    gym.priceOneYear.toString()
-                                                ? Colors.white
-                                                : Colors.black,
-                                            fontSize: 13),
-                                      ),
-                                      style: ButtonStyle(
-                                          shape: MaterialStateProperty.all<
-                                                  OutlinedBorder>(
-                                              RoundedRectangleBorder(
-                                                  side: BorderSide.none)),
-                                          backgroundColor: currentPrice ==
-                                                  gym.priceOneYear.toString()
-                                              ? MaterialStateProperty.all(
-                                                  Color.fromARGB(
-                                                      209, 71, 153, 183))
-                                              : MaterialStateProperty.all(
-                                                  Colors.white)),
-                                      onPressed: () {
-                                        setState(() {
-                                          currentPrice =
-                                              gym.priceOneYear.toString();
-                                        });
-                                      },
-                                    )
-                                  : Container(
-                                      margin: EdgeInsets.only(left: 20),
-                                      width: 50,
-                                      child: Text(
-                                        'Year',
-                                        style: TextStyle(color: Colors.grey),
-                                      ),
-                                    ),
-                            ],
+                        Expanded(
+                          child: TextButton(
+                            style: ButtonStyle(
+                              padding:
+                                  MaterialStateProperty.all(EdgeInsets.all(0)),
+                              backgroundColor:
+                                  currentPrice == gym.priceOneDay.toString()
+                                      ? MaterialStateProperty.all(
+                                          Color.fromARGB(209, 71, 153, 183))
+                                      : MaterialStateProperty.all(Colors.white),
+                            ),
+                            onPressed: gym.priceOneDay == 0
+                                ? null
+                                : () {
+                                    setState(() {
+                                      currentPrice = gym.priceOneDay.toString();
+                                    });
+                                  },
+                            child: Text(
+                              'Day',
+                              style: TextStyle(
+                                fontSize: 13,
+                                color:
+                                    currentPrice == gym.priceOneDay.toString()
+                                        ? Colors.white
+                                        : gym.priceOneDay == 0
+                                            ? Colors.grey
+                                            : Colors.black,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: TextButton(
+                            style: ButtonStyle(
+                              backgroundColor:
+                                  currentPrice == gym.priceOneMonth.toString()
+                                      ? MaterialStateProperty.all(
+                                          Color.fromARGB(209, 71, 153, 183))
+                                      : MaterialStateProperty.all(Colors.white),
+                              padding:
+                                  MaterialStateProperty.all(EdgeInsets.all(0)),
+                            ),
+                            onPressed: gym.priceOneMonth == 0
+                                ? null
+                                : () {
+                                    setState(() {
+                                      currentPrice =
+                                          gym.priceOneMonth.toString();
+                                    });
+                                  },
+                            child: Text(
+                              'Month',
+                              style: TextStyle(
+                                fontSize: 13,
+                                color:
+                                    currentPrice == gym.priceOneMonth.toString()
+                                        ? Colors.white
+                                        : gym.priceOneMonth == 0
+                                            ? Colors.grey
+                                            : Colors.black,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: TextButton(
+                            style: ButtonStyle(
+                              backgroundColor: currentPrice ==
+                                      gym.priceThreeMonths.toString()
+                                  ? MaterialStateProperty.all(
+                                      Color.fromARGB(209, 71, 153, 183))
+                                  : MaterialStateProperty.all(Colors.white),
+                              padding:
+                                  MaterialStateProperty.all(EdgeInsets.all(0)),
+                            ),
+                            onPressed: gym.priceThreeMonths == 0
+                                ? null
+                                : () {
+                                    setState(() {
+                                      currentPrice =
+                                          gym.priceThreeMonths.toString();
+                                    });
+                                  },
+                            child: Text(
+                              '3 Months',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 13,
+                                color: currentPrice ==
+                                        gym.priceThreeMonths.toString()
+                                    ? Colors.white
+                                    : gym.priceThreeMonths == 0
+                                        ? Colors.grey
+                                        : Colors.black,
+                              ),
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: TextButton(
+                            style: ButtonStyle(
+                              backgroundColor:
+                                  currentPrice == gym.priceSixMonths.toString()
+                                      ? MaterialStateProperty.all(
+                                          Color.fromARGB(209, 71, 153, 183))
+                                      : MaterialStateProperty.all(Colors.white),
+                              padding:
+                                  MaterialStateProperty.all(EdgeInsets.all(0)),
+                            ),
+                            onPressed: gym.priceSixMonths == 0
+                                ? null
+                                : () {
+                                    setState(() {
+                                      currentPrice =
+                                          gym.priceSixMonths.toString();
+                                    });
+                                  },
+                            child: Text(
+                              '6 Months',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 13,
+                                color: currentPrice ==
+                                        gym.priceSixMonths.toString()
+                                    ? Colors.white
+                                    : gym.priceSixMonths == 0
+                                        ? Colors.grey
+                                        : Colors.black,
+                              ),
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: TextButton(
+                            style: ButtonStyle(
+                              backgroundColor:
+                                  currentPrice == gym.priceOneYear.toString()
+                                      ? MaterialStateProperty.all(
+                                          Color.fromARGB(209, 71, 153, 183))
+                                      : MaterialStateProperty.all(Colors.white),
+                              padding:
+                                  MaterialStateProperty.all(EdgeInsets.all(0)),
+                            ),
+                            onPressed: gym.priceOneYear == 0
+                                ? null
+                                : () {
+                                    setState(() {
+                                      currentPrice =
+                                          gym.priceOneYear.toString();
+                                    });
+                                  },
+                            child: Text(
+                              'Year',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 13,
+                                color:
+                                    currentPrice == gym.priceOneYear.toString()
+                                        ? Colors.white
+                                        : gym.priceOneYear == 0
+                                            ? Colors.grey
+                                            : Colors.black,
+                              ),
+                            ),
                           ),
                         ),
                       ],
                     ),
+                    //  decoration: BoxDecoration(color: colors.black100),
                   ),
                   SizedBox(
                     height: 15,

@@ -344,19 +344,34 @@ class _compareCardState extends State<compareCard> {
                     style: TextStyle(fontSize: 20),
                   ),
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                Column(
                   children: [
-                    Container(
-                      child: Text(
-                        widget.gymInfo.avg_rate.toString(),
-                        style: TextStyle(fontSize: 20),
-                      ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          child: Text(
+                            widget.gymInfo.avg_rate.toString(),
+                            style: TextStyle(fontSize: 20),
+                          ),
+                        ),
+                        Icon(
+                          Icons.star,
+                          size: 35,
+                          color: colors.yellow_base,
+                        ),
+                      ],
                     ),
-                    Icon(
-                      Icons.star,
-                      size: 35,
-                      color: colors.yellow_base,
+                    Text(
+                      widget.gymInfo.reviews == 0
+                          ? 'No reviews yet'
+                          : "Based on " +
+                              widget.gymInfo.reviews.toString() +
+                              " reviews",
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        fontSize: 13,
+                      ),
                     ),
                   ],
                 ),

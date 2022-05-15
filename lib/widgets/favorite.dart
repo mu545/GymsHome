@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:gymhome/Styles.dart';
 import 'package:gymhome/models/GymModel.dart';
 import 'package:gymhome/models/gyms.dart';
 import 'package:gymhome/models/user.dart';
@@ -30,6 +31,7 @@ class _FavoriteState extends State<Favorite> {
     return _fireStore
         .collection('gyms')
         .where('Likes', arrayContains: widget.userid)
+        .where('isWaiting', isEqualTo: false)
         .snapshots();
   }
 
@@ -41,11 +43,11 @@ class _FavoriteState extends State<Favorite> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.white,
+          backgroundColor: colors.blue_base,
           title: Center(
               child: Text(
             'Favorite gyms',
-            style: TextStyle(color: Colors.black),
+            style: TextStyle(color: Colors.white),
           )),
           elevation: 0,
         ),

@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:gymhome/Styles.dart';
 import 'package:gymhome/models/favorite.dart';
 import 'package:gymhome/models/gyms.dart';
 import 'package:gymhome/provider/gymsitems.dart';
@@ -8,8 +9,9 @@ import 'package:gymhome/widgets/newhome.dart';
 import 'package:gymhome/widgets/widgetss.dart';
 
 import 'package:provider/provider.dart';
-//import 'package:shop_example/Models/Product.dart';
 
+//import 'package:shop_example/Models/Product.dart';
+//not used
 class CompareGrid extends StatelessWidget {
   final bool shoecompare;
 
@@ -23,12 +25,11 @@ class CompareGrid extends StatelessWidget {
     final cartpro = Provider.of<cart>(
       context,
     );
-    final prodctitem =
-       prodactDate.items;
+    final prodctitem = prodactDate.items;
 
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.white,
+          backgroundColor: colors.blue_base,
           title: Center(
               child: Text(
             'Compare gyms',

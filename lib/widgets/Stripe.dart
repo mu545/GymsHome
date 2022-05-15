@@ -54,23 +54,31 @@ class StripeServices {
 
   static Future<StripeTransactionResponse> payNowHandler(
       {required String amount, required String currency}) async {
+    print('1');
     try {
+      print('2');
       var paymentMethod = await StripePayment.paymentRequestWithCardForm(
           CardFormPaymentRequest());
+      print('3');
       var paymentIntent =
           await StripeServices.createPaymentIntent(amount, currency);
+      print('4');
       var response = await StripePayment.confirmPaymentIntent(PaymentIntent(
           clientSecret: paymentIntent['client_secret'],
           paymentMethodId: paymentMethod.id));
+      print('5');
 
       if (response.status == 'succeeded') {
+        print('6');
         return StripeTransactionResponse(
             message: 'Transaction succeful', success: true);
       } else {
+        print('7');
         return StripeTransactionResponse(
             message: 'Transaction failed', success: false);
       }
     } on PlatformException catch (error) {
+      print('error');
       return StripeServices.getErrorAndAnalyze(error);
     }
   }

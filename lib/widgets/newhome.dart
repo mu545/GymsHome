@@ -773,7 +773,6 @@ class _NewWidgetHomeState extends State<NewWidgetHome> {
                         ),
                       ),
                       style: ButtonStyle(
-                          // minimumSize: ,
                           shape: MaterialStateProperty.all<OutlinedBorder>(
                               RoundedRectangleBorder(side: BorderSide.none)),
                           backgroundColor: priceChoosed == 'Six Months'

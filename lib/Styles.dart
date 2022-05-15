@@ -24,4 +24,6 @@ class colors {
   static const black100 = Color.fromARGB(255, 26, 26, 26);
   static const black60 = Color.fromARGB(255, 99, 99, 99);
   static const hinttext = Color.fromARGB(62, 99, 99, 99);
+
+  static const textcolor = Color.fromARGB(255, 27, 27, 27);
 }

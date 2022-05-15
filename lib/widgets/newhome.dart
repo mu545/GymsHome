@@ -40,34 +40,28 @@ class NewHome extends StatefulWidget {
 }
 
 class _NewHomeState extends State<NewHome> {
-  // String? name;
-  // Customer? currentc;
   String? uid;
   int _selectedIndex = 0;
-  // final SharedPreferences _userdata = await SharedPreferences.getInstance();
-  // late Customer c;
-  List<Widget>? _list;
+
+  List<Widget> _list = [Text('loading')];
 
   @override
   void initState() {
-    super.initState();
     SharedPreferences.getInstance().then((userdata) {
       setState(() {
         // name = userdata.getString('name');
         uid = userdata.getString('uid');
       });
     }).whenComplete((() {
-      if (mounted) getlist();
+      getlist();
     }));
-
-    /// if (mounted) getlist();
+    super.initState();
   }
 
   void getlist() {
     setState(() {
       _list = [
         NewWidgetHome(
-          // name: name ?? 'no name',
           userid: uid ?? 'no user',
         ),
         Viewcompare(
@@ -95,7 +89,7 @@ class _NewHomeState extends State<NewHome> {
   Widget build(BuildContext context) {
     // init();
     return Scaffold(
-      body: Center(child: _list![_selectedIndex]),
+      body: Center(child: _list[_selectedIndex]),
       bottomNavigationBar: Container(
         width: 200,
         child: BottomNavigationBar(
@@ -156,8 +150,6 @@ class _NewWidgetHomeState extends State<NewWidgetHome> {
   double? price;
   String genderChoosed = 'Men';
   List<GymModel> _gymsList = [];
-  // List<dynamic> _favs = [];
-  // List<dynamic> _compare = [];
   GeoPoint? userLocation;
 
   @override
@@ -286,13 +278,13 @@ class _NewWidgetHomeState extends State<NewWidgetHome> {
           });
         });
         break;
-      case 5:
-        sortByLocation(false).whenComplete(() {
-          setState(() {
-            isloading = false;
-          });
-        });
-        break;
+      // case 5:
+      //   sortByLocation(false).whenComplete(() {
+      //     setState(() {
+      //       isloading = false;
+      //     });
+      //   });
+      //   break;
       default:
     }
   }
@@ -319,18 +311,19 @@ class _NewWidgetHomeState extends State<NewWidgetHome> {
             _gymsList[j] = _gymsList[j + 1];
             _gymsList[j + 1] = tmp;
           }
-        } else {
-          print('dscending');
-          if (dis1 < dis2) {
-            GymModel tmp = _gymsList[j];
-            _gymsList[j] = _gymsList[j + 1];
-            _gymsList[j + 1] = tmp;
-          }
         }
+        // else {
+        //   print('dscending');
+        //   if (dis1 < dis2) {
+        //     GymModel tmp = _gymsList[j];
+        //     _gymsList[j] = _gymsList[j + 1];
+        //     _gymsList[j + 1] = tmp;
+        //   }
+        // }
       }
     }
 
-    print(_gymsList);
+    // print(_gymsList);
   }
 
   Future<void> sortByRate(bool ascending) async {
@@ -547,11 +540,11 @@ class _NewWidgetHomeState extends State<NewWidgetHome> {
                   enabled: true,
                   value: 4,
                 ),
-                PopupMenuItem(
-                  child: Text("Furthest"),
-                  enabled: true,
-                  value: 5,
-                )
+                // PopupMenuItem(
+                //   child: Text("Furthest"),
+                //   enabled: true,
+                //   value: 5,
+                // )
               ];
             },
           ),
@@ -562,7 +555,7 @@ class _NewWidgetHomeState extends State<NewWidgetHome> {
           Row(
             children: [
               Padding(
-                padding: const EdgeInsets.all(15.0),
+                padding: const EdgeInsets.only(top: 15, left: 15, bottom: 5),
                 child: FutureBuilder(
                     future: FirebaseFirestore.instance
                         .collection('Customer')
@@ -828,58 +821,61 @@ class _NewWidgetHomeState extends State<NewWidgetHome> {
           (!isSort)
               ? Expanded(
                   child: SingleChildScrollView(
-                      child: FutureBuilder(
-                  future: _getData(),
-                  builder:
-                      (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-                    if (snapshot.hasData) {
-                      _gymsList.clear();
-                      snapshot.data.docs.forEach((element) {
-                        _gymsList.add(GymModel.fromJson(element.data()));
-                      });
+                    child: FutureBuilder(
+                      future: _getData(),
+                      builder: (BuildContext context,
+                          AsyncSnapshot<dynamic> snapshot) {
+                        if (snapshot.hasData) {
+                          _gymsList.clear();
+                          snapshot.data.docs.forEach((element) {
+                            _gymsList.add(GymModel.fromJson(element.data()));
+                          });
 
-                      if (_gymsList.isEmpty)
-                        return Center(
-                            child: Container(
-                          margin: EdgeInsets.only(top: 100),
-                          child: Text(
-                            'No gyms found',
-                            textAlign: TextAlign.center,
-                          ),
-                        ));
+                          if (_gymsList.isEmpty)
+                            return Center(
+                                child: Container(
+                              margin: EdgeInsets.only(top: 100),
+                              child: Text(
+                                'No gyms found',
+                                textAlign: TextAlign.center,
+                              ),
+                            ));
 
-                      return Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Column(
-                          children: [
-                            ListView.builder(
-                              controller:
-                                  ScrollController(keepScrollOffset: true),
-                              shrinkWrap: true,
-                              itemCount: _gymsList.length,
-                              itemBuilder: (BuildContext context, int index) {
-                                // bool fav =
-                                //     _favs.contains(_gymsList[index].gymId);
-                                // bool compare =
-                                //     _compare.contains(_gymsList[index].gymId);
-                                // print('FAV$fav' + index.toString());
-                                // print('Compare$compare' + index.toString());
-                                return GymCardCustomer(
-                                  // fav: fav,
-                                  // compare: compare,
-                                  price: priceChoosed,
-                                  gymInfo: _gymsList[index],
-                                  userid: widget.userid,
-                                );
-                              },
-                            )
-                          ],
-                        ),
-                      );
-                    } else
-                      return loading();
-                  },
-                )))
+                          return Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              children: [
+                                ListView.builder(
+                                  controller:
+                                      ScrollController(keepScrollOffset: true),
+                                  shrinkWrap: true,
+                                  itemCount: _gymsList.length,
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    // bool fav =
+                                    //     _favs.contains(_gymsList[index].gymId);
+                                    // bool compare =
+                                    //     _compare.contains(_gymsList[index].gymId);
+                                    // print('FAV$fav' + index.toString());
+                                    // print('Compare$compare' + index.toString());
+                                    return GymCardCustomer(
+                                      // fav: fav,
+                                      // compare: compare,
+                                      price: priceChoosed,
+                                      gymInfo: _gymsList[index],
+                                      userid: widget.userid,
+                                    );
+                                  },
+                                )
+                              ],
+                            ),
+                          );
+                        } else
+                          return loading();
+                      },
+                    ),
+                  ),
+                )
               // ),
               : (!isloading)
                   ? Sort(

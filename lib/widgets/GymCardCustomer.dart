@@ -33,9 +33,10 @@ class GymCardCustomer extends StatefulWidget {
 }
 
 class _GymCardCustomerState extends State<GymCardCustomer> {
-  GeoPoint? userLocation;
+  GeoPoint userLocation = GeoPoint(0, 0);
   List<dynamic> listFav = [];
   List<dynamic> listCompare = [];
+  String distance = 'Loading...';
   // bool? isFav = false;
   // bool? isCompare = false;
 
@@ -183,7 +184,6 @@ class _GymCardCustomerState extends State<GymCardCustomer> {
     });
   }
 
-  String distance = 'Loading...';
   String price = '';
   String showPrice() {
     switch (widget.price) {
@@ -220,47 +220,48 @@ class _GymCardCustomerState extends State<GymCardCustomer> {
   void getDistance() async {
     // final Position locdata = await Geolocator.getCurrentPosition();
     // GeoPoint userLocation = GeoPoint(locdata.latitude, locdata.longitude);
-    final _dis = await Placelocation.calculateDistance(
-        widget.gymInfo.location!, userLocation!);
-    if (mounted)
-      setState(() {
-        distance = _dis;
-      });
+    // var _dis = distance;
+    // if (userLocation.latitude != 0 && userLocation.longitude != 0)
+    final _dis =
+        Placelocation.calculateDistance(widget.gymInfo.location!, userLocation);
+    // if (mounted)
+    setState(() {
+      distance = _dis;
+    });
+    // print('dis$distance');
   }
 
   @override
   void initState() {
     // TODO: implement initState
-    super.initState();
+
     Geolocator.getCurrentPosition().then((value) {
       setState(() {
         userLocation = GeoPoint(value.latitude, value.longitude);
       });
     }).whenComplete(() => getDistance());
-    // list.clear();
-    // var gym = FirebaseFirestore.instance
-    //     .collection('gyms')
-    //     .doc(widget.gymInfo.gymId)
-    //     .get();
-    // print(widget.gymInfo.gymId);
-    // gym.then((value) {
-    //   list = value['Likes'];
-
-    //   print(list);
+    // WidgetsBinding.instance?.addPostFrameCallback((_) {
+    //   // do something
+    //   getDistance();
     // });
-    // isFav = widget.fav;
-    // isCompare = widget.compare;
-    // getDistance();
+    super.initState();
   }
 
   // @override
   // void dispose() {
+  //   setState(() {
+  //     distance='';
+  //   });
   //   super.dispose();
   // }
 
   @override
   Widget build(BuildContext context) {
+    // getDistance();
+    // WidgetsBinding.instance?.addPostFrameCallback((_) {
+    //   // do something
     getDistance();
+    // });
     return InkWell(
       onTap: () {
         Navigator.of(context).push(MaterialPageRoute(
@@ -273,15 +274,17 @@ class _GymCardCustomerState extends State<GymCardCustomer> {
       child: Padding(
         padding: const EdgeInsets.all(10.0),
         child: Container(
-            height: MediaQuery.of(context).size.height * 0.35,
+            height: MediaQuery.of(context).size.height * 0.25,
+            // width: MediaQuery.of(context).size.width * 0.5,
             margin: EdgeInsets.only(bottom: 20),
             decoration: BoxDecoration(
-                color: Color(0xff3d4343),
+                // color: Color.fromARGB(255, 255, 255, 255),
+                color: Colors.white,
                 borderRadius: BorderRadius.circular(15),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.45),
-                    offset: Offset(3, 3),
+                    color: Color.fromARGB(17, 66, 66, 66).withOpacity(0.25),
+                    // offset: Offset(3, 3),
                     spreadRadius: 2,
                     blurRadius: 2,
                   )
@@ -306,6 +309,46 @@ class _GymCardCustomerState extends State<GymCardCustomer> {
                             child: Image.network(widget.gymInfo.imageURL ?? '',
                                 fit: BoxFit.cover)),
                       ),
+                      Positioned.fill(
+                        bottom: 0,
+                        right: 0,
+                        left: 0,
+                        child: Container(
+                          // height: MediaQuery.of(context).size.height,
+                          // padding: EdgeInsets.fromLTRB(0, 10, 10, 10),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(15),
+                                topRight: Radius.circular(15)),
+                            // color: Color.fromARGB(110, 0, 0, 0),
+                            gradient: LinearGradient(
+                                begin: Alignment.bottomCenter,
+                                end: Alignment.topCenter,
+                                colors: [
+                                  Color.fromARGB(110, 0, 0, 0),
+                                  Color.fromARGB(90, 0, 0, 0),
+                                  Color.fromARGB(80, 0, 0, 0),
+                                ]),
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding:
+                                    const EdgeInsets.only(bottom: 3.0, left: 3),
+                                child: Text(
+                                  widget.gymInfo.name!,
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
                       //FAVORITE
                       Positioned(
                         left: 10,
@@ -314,31 +357,42 @@ class _GymCardCustomerState extends State<GymCardCustomer> {
                           onTap: () {
                             getListFav();
                           },
-                          child: Icon(
-                            widget.gymInfo.Likes!.contains(widget.userid)
-                                ? Icons.favorite
-                                : Icons.favorite_border,
-                            size: 42,
-                            color: widget.gymInfo.Likes!.contains(widget.userid)
-                                ? Colors.red
-                                : Colors.black,
+                          child: Container(
+                            height: 35,
+                            width: 35,
+                            decoration: BoxDecoration(
+                              // color: Color.fromARGB(83, 0, 0, 0),
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(21),
+                              ),
+                            ),
+                            child: Icon(
+                              widget.gymInfo.Likes!.contains(widget.userid)
+                                  ? Icons.favorite
+                                  : Icons.favorite_border,
+                              size: 30,
+                              color:
+                                  widget.gymInfo.Likes!.contains(widget.userid)
+                                      ? Colors.red
+                                      : Colors.white,
+                            ),
                           ),
                         ),
                       ),
-                      Positioned(
-                        left: 10,
-                        top: 10,
-                        child: InkWell(
-                          onTap: () {
-                            getListFav();
-                          },
-                          child: Icon(
-                            Icons.favorite_border,
-                            size: 43,
-                            color: Color.fromARGB(35, 0, 0, 0),
-                          ),
-                        ),
-                      ),
+                      // Positioned(
+                      //   left: 10,
+                      //   top: 10,
+                      //   child: InkWell(
+                      //     onTap: () {
+                      //       getListFav();
+                      //     },
+                      //     child: Icon(
+                      //       Icons.favorite_border,
+                      //       size: 43,
+                      //       color: Color.fromARGB(34, 255, 255, 255),
+                      //     ),
+                      //   ),
+                      // ),
                       // COMPARE
                       Positioned(
                         right: 10,
@@ -347,46 +401,39 @@ class _GymCardCustomerState extends State<GymCardCustomer> {
                           onTap: () {
                             getListCompare();
                           },
-                          child: Icon(
-                            Icons.compare_arrows,
-                            size: 42,
-                            color:
-                                widget.gymInfo.compare!.contains(widget.userid)
-                                    ? colors.green_base
-                                    : colors.black100,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              // color: Color.fromARGB(84, 0, 0, 0),
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(21),
+                              ),
+                            ),
+                            child: Icon(
+                              Icons.compare_arrows,
+                              size: 35,
+                              color: widget.gymInfo.compare!
+                                      .contains(widget.userid)
+                                  ? colors.green_base
+                                  : Color.fromARGB(255, 255, 255, 255),
+                            ),
                           ),
                         ),
                       ),
-                      Positioned(
-                        bottom: 0,
-                        right: 0,
-                        left: 0,
-                        child: Container(
-                          padding: EdgeInsets.fromLTRB(0, 10, 10, 10),
-                          decoration: BoxDecoration(
-                              color: Colors.black.withOpacity(0.5),
-                              borderRadius: BorderRadius.only(
-                                  topRight: Radius.circular(50))),
-                          child: Text(
-                            widget.gymInfo.name ?? '',
-                            style: TextStyle(
-                                fontSize: 32,
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                      )
                     ],
                   ),
                 ),
                 Container(
+                  // height: MediaQuery.of(context).size.height * 0.15,
+
+                  // height: 150,
                   decoration: BoxDecoration(
-                      color: Colors.black12,
+
+                      // color: Colors.black12,
                       borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(15),
-                        bottomRight: Radius.circular(15),
-                      )),
-                  padding: EdgeInsets.all(10),
+                    bottomLeft: Radius.circular(15),
+                    bottomRight: Radius.circular(15),
+                  )),
+                  padding: EdgeInsets.all(5),
                   child: Column(
                     children: [
                       Row(
@@ -394,14 +441,17 @@ class _GymCardCustomerState extends State<GymCardCustomer> {
                         children: [
                           Text(
                             showPrice(),
-                            style: TextStyle(fontSize: 20, color: Colors.white),
+                            style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w500,
+                                color: Color.fromARGB(255, 27, 27, 27)),
                           ),
                           Row(
                             children: [
                               Text(
                                 ' ' + widget.gymInfo.avg_rate.toString(),
                                 style: TextStyle(
-                                    fontSize: 20, color: Colors.white),
+                                    fontSize: 20, color: colors.textcolor),
                               ),
                               Icon(
                                 Icons.star,
@@ -412,7 +462,7 @@ class _GymCardCustomerState extends State<GymCardCustomer> {
                           )
                         ],
                       ),
-                      SizedBox(height: 10),
+                      // SizedBox(height: 10),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -421,26 +471,45 @@ class _GymCardCustomerState extends State<GymCardCustomer> {
                               Text(
                                 distance,
                                 style: TextStyle(
-                                    fontSize: 20,
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold),
+                                    fontSize: 18,
+                                    color: colors.textcolor,
+                                    fontWeight: FontWeight.w500),
                               ),
                               Icon(
                                 Icons.directions_walk,
-                                color: Colors.white,
+                                color: Color.fromARGB(174, 0, 0, 0),
+                                size: 35,
                               )
                             ],
                           ),
                           ///////
-                          Text(
-                            widget.gymInfo.reviews == 0
-                                ? 'No reviews yet'
-                                : "Based on " +
-                                    widget.gymInfo.reviews.toString() +
-                                    " reviews",
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(fontSize: 18, color: Colors.white),
-                          ),
+                          widget.gymInfo.reviews == 0
+                              ? Text('No reviews yet',
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                      fontSize: 18, color: colors.textcolor))
+                              : Row(
+                                  children: [
+                                    Text(
+                                      "Based on ",
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          color: colors.textcolor),
+                                    ),
+                                    Text(widget.gymInfo.reviews.toString(),
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold,
+                                            color: colors.textcolor)),
+                                    Text(" reviews",
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            color: colors.textcolor))
+                                  ],
+                                ),
                         ],
                       ),
                     ],

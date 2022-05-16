@@ -107,8 +107,8 @@ class _AddGymInfoState extends State<AddGymInfo> {
         child: Column(
           children: [
             Container(
-              height: 480,
-              width: 390,
+              // height: 480,
+              // width: 390,
               margin: EdgeInsets.symmetric(horizontal: 20),
               child: Card(
                 child: Padding(
@@ -172,9 +172,11 @@ class _AddGymInfoState extends State<AddGymInfo> {
                         SizedBox(
                           height: 20,
                         ),
-                        Padding(
-                          padding: EdgeInsets.all(20),
+                        Container(
+                          height: 30,
+                          margin: EdgeInsets.all(5),
                           child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
                               //is man?
                               GestureDetector(

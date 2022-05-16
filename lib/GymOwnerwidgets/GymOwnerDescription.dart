@@ -6,7 +6,9 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:gymhome/GymOwnerwidgets/gymprice.dart';
+import 'package:gymhome/GymOwnerwidgets/ownerhome.dart';
 import 'package:gymhome/models/GymModel.dart';
+import 'package:gymhome/models/Owner.dart';
 import 'package:gymhome/widgets/edit.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:gymhome/models/review.dart';
@@ -38,6 +40,7 @@ class _GymOwnerDescrptionState extends State<GymOwnerDescrption> {
   List<Review> reviews = [];
   Review? userReview;
   String currentPrice = '';
+  List<String> listReviews = [];
   int activeIndex = 0;
   final controller = CarouselController();
   String? window = 'Description';
@@ -244,6 +247,94 @@ class _GymOwnerDescrptionState extends State<GymOwnerDescrption> {
       );
     }
     return Text('data');
+  }
+
+  deleteGym() {
+    var snapshot = FirebaseFirestore.instance
+        .collection('gyms')
+        .doc(widget.gym.gymId)
+        .collection('Review')
+        .snapshots();
+    //Delete reviews
+    FirebaseFirestore.instance
+        .collection('gyms')
+        .doc(widget.gym.gymId)
+        .collection('Review')
+        .get()
+        .then((snapshot) {
+      for (DocumentSnapshot ds in snapshot.docs) {
+        ds.reference.delete();
+      }
+    });
+
+    snapshot.forEach((element) {
+      element.docs.clear();
+    });
+    listReviews.clear();
+    snapshot.forEach((element) {
+      element.docs.forEach((element) {
+        setState(() {
+          listReviews.add(element.id);
+        });
+      });
+      print(listReviews);
+      if (listReviews.isNotEmpty) {
+        for (var i = 0; i < listReviews.length; i++) {
+          print(listReviews);
+          FirebaseFirestore.instance
+              .collection('Customer')
+              .doc(listReviews[i])
+              .update({
+            'reviews': FieldValue.arrayRemove([widget.gym.gymId])
+          }).then((value) => {
+                    FirebaseFirestore.instance
+                        .collection('gyms')
+                        .doc(widget.gym.gymId)
+                        .delete()
+                        .then((value) => Navigator.of(context).pop())
+                  });
+        }
+      } else {
+        FirebaseFirestore.instance
+            .collection('gyms')
+            .doc(widget.gym.gymId)
+            .delete()
+            .then((value) => Navigator.of(context).pop());
+      }
+    });
+    AppUser.message(context, true, "Gym is Deleted");
+  }
+
+  Widget AlertDialogs() {
+    return AlertDialog(
+      title: Text(
+        'Delete Gym?',
+        style: TextStyle(color: colors.red_base),
+      ),
+      content: Text('Are you sure you want to delete this gym?'),
+      actions: [
+        TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+              deleteGym();
+            },
+            child: Text(
+              'Yes',
+              style: TextStyle(color: colors.red_base),
+            )),
+        TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: Text(
+              'No',
+              style: TextStyle(color: colors.blue_base),
+            )),
+      ],
+      clipBehavior: Clip.antiAliasWithSaveLayer,
+      elevation: 24,
+      // backgroundColor: colors.blue_smooth,
+    );
   }
 
   @override
@@ -729,7 +820,7 @@ class _GymOwnerDescrptionState extends State<GymOwnerDescrption> {
           ),
           InkWell(
             onTap: () {
-              //DELETE GYM HERE:
+              showDialog(context: context, builder: (_) => AlertDialogs());
             },
             child: Container(
                 color: Color.fromARGB(230, 234, 60, 47),

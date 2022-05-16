@@ -217,10 +217,10 @@ class _compareCardState extends State<compareCard> {
     }
   }
 
-  void getDistance() async {
+  void getDistance() {
     // final Position locdata = await Geolocator.getCurrentPosition();
     // GeoPoint userLocation = GeoPoint(locdata.latitude, locdata.longitude);
-    final _dis = await Placelocation.calculateDistance(
+    final _dis = Placelocation.calculateDistance(
         widget.gymInfo.location!, userLocation!);
     if (mounted)
       setState(() {

@@ -7,9 +7,11 @@ import 'package:flutter/material.dart';
 
 import 'dart:io';
 import '../models/gyms.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AddGymMethods with ChangeNotifier {
   String? gymId;
+  String? userId;
   // GymProfile _gymProfile =
   //     GymProfile('', '', '', 0, '', '', '', false, [], true);
 
@@ -26,7 +28,14 @@ class AddGymMethods with ChangeNotifier {
     });
   }
 
-  var userId = FirebaseAuth.instance.currentUser?.uid;
+  // var userId = FirebaseAuth.instance.currentUser?.uid;
+  Future<String?> getuid() async {
+    var _userdata = await SharedPreferences.getInstance();
+
+    return _userdata.getString('uid');
+  }
+
+  // var userId = SharedPreferences.getInstance();
 
   final FirebaseFirestore _1fireStore = FirebaseFirestore.instance;
   Future getGymData() async => _1fireStore.collection('gyms').doc(gymId).get();
@@ -118,31 +127,33 @@ class AddGymMethods with ChangeNotifier {
       if (imageUrl != null) getImageGallery(imageUrl, gym.id);
     } else {
       var gym = FirebaseFirestore.instance.collection('gyms').doc();
-      gym.set({
-        'prices': prices,
-        'gymId': gym.id,
-        'ownerId': userId,
-        'images': [],
-        'Likes': [],
-        'compare': [],
-        'imageURL': 'newGym.imageURL',
-        'Location': newGym.location,
-        'descrption': newGym.description,
-        'faciltrs': newGym.faciltrs,
-        'name': newGym.name,
-        'One Day': newGym.priceOneDay,
-        'One Month': newGym.priceOneMonth,
-        'Three Months': newGym.priceThreeMonths,
-        'Six Months': newGym.priceSixMonths,
-        'One Year': newGym.priceOneYear,
-        'isWaiting': true,
-        'isComplete': false,
-        'gender': newGym.gender,
-        'Avg_rate': newGym.avg_rate,
-        'reviews': newGym.reviews,
-      }).whenComplete(() => getImageGallery(imageUrl, gym.id)
-          .whenComplete(() => uploadFiles(newGymImages, gym.id)));
-      getImageGallery(imageUrl, gym.id);
+      getuid().then((value) => {
+            gym.set({
+              'prices': prices,
+              'gymId': gym.id,
+              'ownerId': value,
+              'images': [],
+              'Likes': [],
+              'compare': [],
+              'imageURL': 'newGym.imageURL',
+              'Location': newGym.location,
+              'descrption': newGym.description,
+              'faciltrs': newGym.faciltrs,
+              'name': newGym.name,
+              'One Day': newGym.priceOneDay,
+              'One Month': newGym.priceOneMonth,
+              'Three Months': newGym.priceThreeMonths,
+              'Six Months': newGym.priceSixMonths,
+              'One Year': newGym.priceOneYear,
+              'isWaiting': true,
+              'isComplete': false,
+              'gender': newGym.gender,
+              'Avg_rate': newGym.avg_rate,
+              'reviews': newGym.reviews,
+            }).whenComplete(() => getImageGallery(imageUrl, gym.id)
+                .whenComplete(() => uploadFiles(newGymImages, gym.id))),
+            getImageGallery(imageUrl, gym.id)
+          });
     }
   }
 }

@@ -107,8 +107,8 @@ class _AddGymInfoState extends State<AddGymInfo> {
         child: Column(
           children: [
             Container(
-              // height: 480,
-              // width: 390,
+              height: 480,
+              width: 390,
               margin: EdgeInsets.symmetric(horizontal: 20),
               child: Card(
                 child: Padding(
@@ -172,87 +172,83 @@ class _AddGymInfoState extends State<AddGymInfo> {
                         SizedBox(
                           height: 20,
                         ),
-                        Container(
-                          height: 30,
-                          margin: EdgeInsets.all(5),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              //is man?
-                              GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    widget.gym.gender = 'Men';
-                                    print(widget.gym.gender);
-                                  });
-                                },
-                                child: SizedBox(
-                                  width: MediaQuery.of(context).size.width / 3,
-                                  child: Row(
-                                    children: [
-                                      Icon(
-                                        Icons.male,
-                                        size: 30,
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            //is man?
+                            GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  widget.gym.gender = 'Men';
+                                  print(widget.gym.gender);
+                                });
+                              },
+                              child: SizedBox(
+                                width: MediaQuery.of(context).size.width / 3,
+                                child: Row(
+                                  children: [
+                                    Icon(
+                                      Icons.male,
+                                      size: 30,
+                                      color: widget.gym.gender == 'Men'
+                                          ? colors.iconscolor
+                                          : colors.hinttext,
+                                    ),
+                                    Text(
+                                      "Men",
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        fontFamily: 'Roborto',
                                         color: widget.gym.gender == 'Men'
                                             ? colors.iconscolor
                                             : colors.hinttext,
+                                        fontWeight: widget.gym.gender == 'Men'
+                                            ? FontWeight.bold
+                                            : FontWeight.normal,
                                       ),
-                                      Text(
-                                        "Men",
-                                        style: TextStyle(
-                                          fontSize: 16,
-                                          fontFamily: 'Roborto',
-                                          color: widget.gym.gender == 'Men'
-                                              ? colors.iconscolor
-                                              : colors.hinttext,
-                                          fontWeight: widget.gym.gender == 'Men'
-                                              ? FontWeight.bold
-                                              : FontWeight.normal,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
+                                    ),
+                                  ],
                                 ),
                               ),
+                            ),
 
-                              // is woman?
-                              GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    widget.gym.gender = 'Women';
-                                    print(widget.gym.gender);
-                                  });
-                                },
-                                child: SizedBox(
-                                  width: MediaQuery.of(context).size.width / 3,
-                                  child: Row(
-                                    children: [
-                                      Icon(
-                                        Icons.female,
-                                        size: 30,
+                            // is woman?
+                            GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  widget.gym.gender = 'Women';
+                                  print(widget.gym.gender);
+                                });
+                              },
+                              child: SizedBox(
+                                width: MediaQuery.of(context).size.width / 3,
+                                child: Row(
+                                  children: [
+                                    Icon(
+                                      Icons.female,
+                                      size: 30,
+                                      color: widget.gym.gender == 'Men'
+                                          ? colors.hinttext
+                                          : colors.iconscolor,
+                                    ),
+                                    Text(
+                                      "Women",
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        fontFamily: 'Roborto',
                                         color: widget.gym.gender == 'Men'
                                             ? colors.hinttext
                                             : colors.iconscolor,
+                                        fontWeight: widget.gym.gender == 'Men'
+                                            ? FontWeight.normal
+                                            : FontWeight.bold,
                                       ),
-                                      Text(
-                                        "Women",
-                                        style: TextStyle(
-                                          fontSize: 16,
-                                          fontFamily: 'Roborto',
-                                          color: widget.gym.gender == 'Men'
-                                              ? colors.hinttext
-                                              : colors.iconscolor,
-                                          fontWeight: widget.gym.gender == 'Men'
-                                              ? FontWeight.normal
-                                              : FontWeight.bold,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
+                                    ),
+                                  ],
                                 ),
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
                         SizedBox(
                           height: 20,

@@ -42,16 +42,16 @@ class _GymDescrptionState extends State<GymDescrption> {
     }).whenComplete(() => getDistance());
   }
 
-  payNow() async {
-    //the amount must be transformed to cents
+  // payNow() async {
+  //   //the amount must be transformed to cents
 
-    var response =
-        await StripeServices.payNowHandler(amount: '888', currency: 'USD');
+  //   var response =
+  //       await StripeServices.payNowHandler(amount: '888', currency: 'USD');
 
-    print(currentPrice);
-    print('response message ${response.message}');
-    print('meowssss');
-  }
+  //   print(currentPrice);
+  //   print('response message ${response.message}');
+  //   print('meowssss');
+  // }
 
   String distance = 'Loading...';
   GeoPoint? userLocation;
@@ -1016,7 +1016,7 @@ class _GymDescrptionState extends State<GymDescrption> {
           ),
           InkWell(
             onTap: () {
-              payNow();
+              // payNow();
             },
             child: Container(
                 color: colors.blue_base,

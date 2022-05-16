@@ -35,7 +35,7 @@ class GymCardCustomer extends StatefulWidget {
 }
 
 class _GymCardCustomerState extends State<GymCardCustomer> {
-  GeoPoint? userLocation;
+  // GeoPoint? userLocation;
   List<dynamic> listFav = [];
   List<dynamic> listCompare = [];
   String distance = 'Loading...';
@@ -155,18 +155,18 @@ class _GymCardCustomerState extends State<GymCardCustomer> {
 
   String getDistance() {
     return Placelocation.calculateDistance(
-        widget.gymInfo.location!, userLocation!);
+        widget.gymInfo.location!, widget.userlocation);
   }
 
   @override
   void initState() {
     // TODO: implement initState
 
-    Geolocator.getCurrentPosition().then((value) {
-      setState(() {
-        userLocation = GeoPoint(value.latitude, value.longitude);
-      });
-    });
+    // Geolocator.getCurrentPosition().then((value) {
+    //   setState(() {
+    //     userLocation = GeoPoint(value.latitude, value.longitude);
+    //   });
+    // });
     // .whenComplete(() => getDistance());
     // WidgetsBinding.instance?.addPostFrameCallback((_) {
     //   // do something
@@ -392,7 +392,7 @@ class _GymCardCustomerState extends State<GymCardCustomer> {
                           Row(
                             children: [
                               Text(
-                                userLocation == null
+                                widget.userlocation == null
                                     ? 'Loading'
                                     : getDistance(),
                                 style: TextStyle(

@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:gymhome/GymOwnerwidgets/gymOwnerCard.dart';
 import 'package:gymhome/models/GymModel.dart';
 import 'package:gymhome/models/gyms.dart';
@@ -23,15 +24,21 @@ class _WidgtessState extends State<OwnerHome> {
   List<GymModel> _gymsList = [];
   List<Placelocation> _gymsaddress = [];
   String? uid;
+  GeoPoint userLocation = GeoPoint(0, 0);
 
   @override
   void initState() {
-    super.initState();
     SharedPreferences.getInstance().then((value) {
       setState(() {
         uid = value.getString('uid');
       });
     });
+    Geolocator.getCurrentPosition().then((value) {
+      setState(() {
+        userLocation = GeoPoint(value.latitude, value.longitude);
+      });
+    });
+    super.initState();
     // getUid();
   }
   // Future? _getData() => _fireStore
@@ -121,6 +128,7 @@ class _WidgtessState extends State<OwnerHome> {
                         itemCount: _gymsList.length,
                         itemBuilder: (BuildContext context, int index) {
                           return GymCard(
+                            userLocation: userLocation,
                             gymsaddress: _gymsaddress,
                             gymInfo: _gymsList[index],
                           );

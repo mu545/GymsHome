@@ -71,8 +71,9 @@ class AppUser {
   //   _userdate.setString('uid', uid);
   //   _userdate.setString('profilePicture', profilePicture);
   // }
-  static void logout(BuildContext cxt) {
+  static void logout(BuildContext cxt) async {
     UserData.deleteUserData();
+    await FirebaseAuth.instance.signOut();
     Navigator.of(cxt).pushReplacement(MaterialPageRoute(
       builder: (context) => welcome(),
     ));

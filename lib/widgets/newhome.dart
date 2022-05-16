@@ -150,7 +150,7 @@ class _NewWidgetHomeState extends State<NewWidgetHome> {
   double? price;
   String genderChoosed = 'Men';
   List<GymModel> _gymsList = [];
-  GeoPoint? userLocation;
+  GeoPoint userLocation = GeoPoint(0, 0);
 
   @override
   void initState() {
@@ -160,13 +160,6 @@ class _NewWidgetHomeState extends State<NewWidgetHome> {
       });
     });
 
-    // Future<String> getDistance(GymModel gym) async {
-    //   // final Position locdata = await Geolocator.getCurrentPosition();
-    //   // GeoPoint userLocation = GeoPoint(locdata.latitude, locdata.longitude);
-    //   final _dis =
-    //       await Placelocation.calculateDistance(gym.location!, userLocation!);
-    //   return _dis;
-    // }
     // var userCompares = FirebaseFirestore.instance
     //     .collection('Customer')
     //     .doc(widget.userid)
@@ -302,8 +295,8 @@ class _NewWidgetHomeState extends State<NewWidgetHome> {
         gym2 = GeoPoint(_gymsList[j + 1].location!.latitude,
             _gymsList[j + 1].location!.longitude);
 
-        dis1 = await Placelocation.distanceInKM(gym1, userLocation!);
-        dis2 = await Placelocation.distanceInKM(gym2, userLocation!);
+        dis1 = await Placelocation.distanceInKM(gym1, userLocation);
+        dis2 = await Placelocation.distanceInKM(gym2, userLocation);
         if (ascending) {
           print('Ascending');
           if (dis1 > dis2) {
@@ -861,6 +854,7 @@ class _NewWidgetHomeState extends State<NewWidgetHome> {
                                     return GymCardCustomer(
                                       // fav: fav,
                                       // compare: compare,
+                                      userlocation: userLocation,
                                       price: priceChoosed,
                                       gymInfo: _gymsList[index],
                                       userid: widget.userid,
@@ -878,41 +872,42 @@ class _NewWidgetHomeState extends State<NewWidgetHome> {
                 )
               // ),
               : (!isloading)
-                  ? Sort(
-                      priceChoosed: priceChoosed,
-                      userid: widget.userid,
-                      gymsList: _gymsList)
-                  // ? Expanded(
-                  //     child: SingleChildScrollView(
-                  //       child: Padding(
-                  //         padding: const EdgeInsets.all(8.0),
-                  //         child: Column(
-                  //           children: [
-                  //             ListView.builder(
-                  //               controller:
-                  //                   ScrollController(keepScrollOffset: true),
-                  //               shrinkWrap: true,
-                  //               itemCount: _gymsList.length,
-                  //               itemBuilder: (BuildContext context, int index) {
-                  //                 // bool fav =
-                  //                 //     _favs.contains(_gymsList[index].gymId);
-                  //                 // bool compare =
-                  //                 //     _compare.contains(_gymsList[index].gymId);
+                  // ? Sort(
+                  //     priceChoosed: priceChoosed,
+                  //     userid: widget.userid,
+                  //     gymsList: _gymsList)
+                  ? Expanded(
+                      child: SingleChildScrollView(
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            children: [
+                              ListView.builder(
+                                controller:
+                                    ScrollController(keepScrollOffset: true),
+                                shrinkWrap: true,
+                                itemCount: _gymsList.length,
+                                itemBuilder: (BuildContext context, int index) {
+                                  // bool fav =
+                                  //     _favs.contains(_gymsList[index].gymId);
+                                  // bool compare =
+                                  //     _compare.contains(_gymsList[index].gymId);
 
-                  //                 return GymCardCustomer(
-                  //                   // fav: fav,
-                  //                   // compare: compare,
-                  //                   price: priceChoosed,
-                  //                   gymInfo: _gymsList[index],
-                  //                   userid: widget.userid,
-                  //                 );
-                  //               },
-                  //             )
-                  //           ],
-                  //         ),
-                  //       ),
-                  //     ),
-                  //   )
+                                  return GymCardCustomer(
+                                    // fav: fav,
+                                    // compare: compare,
+                                    userlocation: userLocation,
+                                    price: priceChoosed,
+                                    gymInfo: _gymsList[index],
+                                    userid: widget.userid,
+                                  );
+                                },
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    )
                   : loading()
         ],
       ),

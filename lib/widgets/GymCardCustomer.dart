@@ -17,10 +17,12 @@ class GymCardCustomer extends StatefulWidget {
   final String userid;
   final GymModel gymInfo;
   final String price;
+  final GeoPoint userlocation;
   // final bool fav;
   // final bool compare;
   const GymCardCustomer(
       {Key? key,
+      required this.userlocation,
       required this.gymInfo,
       required this.userid,
       // required this.compare,
@@ -33,76 +35,10 @@ class GymCardCustomer extends StatefulWidget {
 }
 
 class _GymCardCustomerState extends State<GymCardCustomer> {
-  GeoPoint userLocation = GeoPoint(0, 0);
+  GeoPoint? userLocation;
   List<dynamic> listFav = [];
   List<dynamic> listCompare = [];
   String distance = 'Loading...';
-  // bool? isFav = false;
-  // bool? isCompare = false;
-
-  // bool iconClr(type) {
-  //   list.clear();
-  //   var user = FirebaseFirestore.instance
-  //       .collection('Customer')
-  //       .doc(widget.userid)
-  //       .get();
-  //   user.then((value) {
-  //     list = value[type];
-  //     print(list);
-
-  //     if (list.contains(widget.gymInfo.gymId)) {
-  //       if (type == 'Likes') {
-  //         isFav = true;
-  //         return isFav;
-  //       } else {
-  //         isCompare = true;
-  //         return isCompare;
-  //       }
-
-  //       // return isFav;
-  //     } else {
-  //       if (type == 'Likes') {
-  //         isFav = false;
-  //         return isFav;
-  //       } else {
-  //         isCompare = false;
-  //         return isCompare;
-  //       }
-  //     }
-  //   });
-
-  //   if (type == "Likes") {
-  //     return isFav;
-  //   } else {
-  //     return isCompare;
-  //   }
-  // }
-
-  // bool colorsCompare() {
-  //   list.clear();
-  //   var user = FirebaseFirestore.instance
-  //       .collection('Customer')
-  //       .doc(widget.userid)
-  //       .get();
-  //   user.then((value) {
-  //     list = value['compare'];
-  //     print(list);
-  //     if (list.contains(widget.gymInfo.gymId)) {
-  //       setState(() {
-  //         isCompare = true;
-  //       });
-  //       // return isFav;
-  //     } else {
-  //       setState(() {
-  //         isCompare = false;
-  //       });
-  //       //  return isFav;
-  //     }
-  //   });
-
-  //   return isCompare;
-  //   //return false;
-  // }
 
   getListFav() {
     listFav.clear();
@@ -217,18 +153,9 @@ class _GymCardCustomerState extends State<GymCardCustomer> {
     }
   }
 
-  void getDistance() async {
-    // final Position locdata = await Geolocator.getCurrentPosition();
-    // GeoPoint userLocation = GeoPoint(locdata.latitude, locdata.longitude);
-    // var _dis = distance;
-    // if (userLocation.latitude != 0 && userLocation.longitude != 0)
-    final _dis =
-        Placelocation.calculateDistance(widget.gymInfo.location!, userLocation);
-    // if (mounted)
-    setState(() {
-      distance = _dis;
-    });
-    // print('dis$distance');
+  String getDistance() {
+    return Placelocation.calculateDistance(
+        widget.gymInfo.location!, userLocation!);
   }
 
   @override
@@ -239,7 +166,8 @@ class _GymCardCustomerState extends State<GymCardCustomer> {
       setState(() {
         userLocation = GeoPoint(value.latitude, value.longitude);
       });
-    }).whenComplete(() => getDistance());
+    });
+    // .whenComplete(() => getDistance());
     // WidgetsBinding.instance?.addPostFrameCallback((_) {
     //   // do something
     //   getDistance();
@@ -257,11 +185,6 @@ class _GymCardCustomerState extends State<GymCardCustomer> {
 
   @override
   Widget build(BuildContext context) {
-    // getDistance();
-    // WidgetsBinding.instance?.addPostFrameCallback((_) {
-    //   // do something
-    getDistance();
-    // });
     return InkWell(
       onTap: () {
         Navigator.of(context).push(MaterialPageRoute(
@@ -469,7 +392,9 @@ class _GymCardCustomerState extends State<GymCardCustomer> {
                           Row(
                             children: [
                               Text(
-                                distance,
+                                userLocation == null
+                                    ? 'Loading'
+                                    : getDistance(),
                                 style: TextStyle(
                                     fontSize: 18,
                                     color: colors.textcolor,

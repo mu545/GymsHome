@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:gymhome/Styles.dart';
 import 'package:gymhome/models/GymModel.dart';
 import 'package:gymhome/models/gyms.dart';
@@ -39,6 +40,19 @@ class _FavoriteState extends State<Favorite> {
   double? price;
   String genderChoosed = 'Men';
   List<GymModel> _gymsList = [];
+  GeoPoint userLocation = GeoPoint(0, 0);
+  @override
+  void initState() {
+    // TODO: implement initState
+    Geolocator.getCurrentPosition().then((value) {
+      setState(() {
+        userLocation = GeoPoint(value.latitude, value.longitude);
+      });
+    });
+
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -81,6 +95,7 @@ class _FavoriteState extends State<Favorite> {
                       itemCount: _gymsList.length,
                       itemBuilder: (BuildContext context, int index) {
                         return GymCardCustomer(
+                          userlocation: userLocation,
                           price: priceChoosed,
                           gymInfo: _gymsList[index],
                           userid: widget.userid,

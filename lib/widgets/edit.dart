@@ -286,7 +286,6 @@ class _AddGymInfoState extends State<AddGymInfo> {
                                 child: widget.imageFile != null
                                     ? Container(
                                         width: 299.0,
-                                        height: 149,
                                         child: Image.file(
                                           widget.imageFile!,
                                           fit: BoxFit.contain,

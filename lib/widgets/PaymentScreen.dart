@@ -14,7 +14,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    StripeServices.init();
+    // StripeServices.init();
   }
 
   @override

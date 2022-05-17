@@ -1,3 +1,4 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:gymhome/Styles.dart';
@@ -60,125 +61,291 @@ class _FavoriteState extends State<Viewcompare> {
               SizedBox(
                 width: 5,
               ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Container(
-                    height: MediaQuery.of(context).size.height * 0.2,
-                  ),
-                  Container(
-                    height: MediaQuery.of(context).size.height * 0.1,
-                    child: Text(
-                      'Name',
-                      style: TextStyle(fontSize: 20, color: colors.blue_base),
-                    ),
-                  ),
-                  Container(
-                    child: Icon(
-                      Icons.bar_chart,
-                      size: 35,
-                      color: colors.blue_base,
-                    ),
-                  ),
-                  Container(
-                    child: Icon(
-                      Icons.directions_walk,
-                      size: 35,
-                      color: colors.blue_base,
-                    ),
-                  ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Day',
-                        style: TextStyle(fontSize: 20, color: colors.blue_base),
-                      ),
-                      SizedBox(
-                        height: 2,
-                      ),
-                      Text(
-                        '1 M',
-                        style: TextStyle(fontSize: 20, color: colors.blue_base),
-                      ),
-                      SizedBox(
-                        height: 2,
-                      ),
-                      Text(
-                        '3 M',
-                        style: TextStyle(fontSize: 20, color: colors.blue_base),
-                      ),
-                      SizedBox(
-                        height: 2,
-                      ),
-                      Text(
-                        '6 M',
-                        style: TextStyle(fontSize: 20, color: colors.blue_base),
-                      ),
-                      SizedBox(
-                        height: 2,
-                      ),
-                      Text(
-                        'Year',
-                        style: TextStyle(fontSize: 20, color: colors.blue_base),
-                      ),
-                      SizedBox(
-                        height: 2,
-                      ),
-                      SizedBox(
-                        height: 2,
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+              // Column(
+              //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              //   children: [
+              //     Container(
+              //       height: MediaQuery.of(context).size.height * 0.2,
+              //     ),
+              //     Container(
+              //       height: MediaQuery.of(context).size.height * 0.1,
+              //       child: Text(
+              //         'Name',
+              //         style: TextStyle(fontSize: 20, color: colors.blue_base),
+              //       ),
+              //     ),
+              //     Container(
+              //       child: Icon(
+              //         Icons.bar_chart,
+              //         size: 35,
+              //         color: colors.blue_base,
+              //       ),
+              //     ),
+              //     Container(
+              //       child: Icon(
+              //         Icons.directions_walk,
+              //         size: 35,
+              //         color: colors.blue_base,
+              //       ),
+              //     ),
+              //     Column(
+              //       mainAxisAlignment: MainAxisAlignment.start,
+              //       children: [
+              //         Text(
+              //           'Day',
+              //           style: TextStyle(fontSize: 20, color: colors.blue_base),
+              //         ),
+              //         SizedBox(
+              //           height: 2,
+              //         ),
+              //         Text(
+              //           '1 M',
+              //           style: TextStyle(fontSize: 20, color: colors.blue_base),
+              //         ),
+              //         SizedBox(
+              //           height: 2,
+              //         ),
+              //         Text(
+              //           '3 M',
+              //           style: TextStyle(fontSize: 20, color: colors.blue_base),
+              //         ),
+              //         SizedBox(
+              //           height: 2,
+              //         ),
+              //         Text(
+              //           '6 M',
+              //           style: TextStyle(fontSize: 20, color: colors.blue_base),
+              //         ),
+              //         SizedBox(
+              //           height: 2,
+              //         ),
+              //         Text(
+              //           'Year',
+              //           style: TextStyle(fontSize: 20, color: colors.blue_base),
+              //         ),
+              //         SizedBox(
+              //           height: 2,
+              //         ),
+              //         SizedBox(
+              //           height: 2,
+              //         ),
+              //       ],
+              //     ),
+              //   ],
+              // ),
               SizedBox(
                 width: 3,
               ),
-              StreamBuilder(
-                stream: _getData(),
-                builder:
-                    (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-                  if (snapshot.hasData) {
-                    _gymsList.clear();
-                    snapshot.data.docs.forEach((element) {
-                      _gymsList.add(GymModel.fromJson(element.data()));
-                    });
+              Expanded(
+                child: Row(
+                  children: [
+                    StreamBuilder(
+                      stream: _getData(),
+                      builder: (BuildContext context,
+                          AsyncSnapshot<dynamic> snapshot) {
+                        if (snapshot.hasData) {
+                          _gymsList.clear();
+                          snapshot.data.docs.forEach((element) {
+                            _gymsList.add(GymModel.fromJson(element.data()));
+                          });
 
-                    if (_gymsList.isEmpty)
-                      return Center(
-                          child: Container(
-                        margin: EdgeInsets.only(top: 100),
-                        child: Text(
-                          'No gyms found',
-                          textAlign: TextAlign.center,
-                        ),
-                      ));
+                          if (_gymsList.isEmpty)
+                            return Expanded(
+                                child: Container(
+                              margin: EdgeInsets.only(top: 100),
+                              child: Text(
+                                'No gyms found',
+                                textAlign: TextAlign.center,
+                              ),
+                            ));
 
-                    return Expanded(
-                      child: SizedBox(
-                        //     width: MediaQuery.of(context).size.width,
-                        //   height: 200,
-                        child: ListView.builder(
-                          controller: ScrollController(keepScrollOffset: true),
-                          // shrinkWrap: true,
-                          scrollDirection: Axis.horizontal,
-                          itemCount: _gymsList.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            return compareCard(
-                              price: priceChoosed,
-                              gymInfo: _gymsList[index],
-                              userid: widget.userid,
-                            );
-                          },
+                          return Expanded(
+                            child: SizedBox(
+                                //     width: MediaQuery.of(context).size.width,
+                                //   height: 200,
+                                child: CarouselSlider.builder(
+                              //  carouselController: controller,
+                              options: CarouselOptions(
+                                viewportFraction: 1,
+                                clipBehavior: Clip.hardEdge,
+                                //    autoPlay: true,
+                                //    autoPlayCurve: Curves.fastOutSlowIn,
+                                height: 1000,
+                                enlargeCenterPage: false,
+                                // onPageChanged: (index, reason) =>
+                                //     setState(() => activeIndex = index),
+                              ),
+                              itemCount: _gymsList.length,
+                              itemBuilder: (context, index, realIndex) {
+                                return compareCard(
+                                  price: priceChoosed,
+                                  gymInfo: _gymsList[index],
+                                  userid: widget.userid,
+                                );
+                              },
+                            )
+                                //  ListView.builder(
+                                //   controller: ScrollController(keepScrollOffset: true),
+                                //   // shrinkWrap: true,
+                                //   scrollDirection: Axis.horizontal,
+                                //   itemCount: _gymsList.length,
+                                //   itemBuilder: (BuildContext context, int index) {
+                                // return compareCard(
+                                //   price: priceChoosed,
+                                //   gymInfo: _gymsList[index],
+                                //   userid: widget.userid,
+                                // );
+                                //   },
+                                // ),
+                                ),
+                          );
+                        } else
+                          return Container(
+                            child: Text(''),
+                          );
+                      },
+                    ),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Container(
+                          height: MediaQuery.of(context).size.height * 0.2,
                         ),
-                      ),
-                    );
-                  } else
-                    return Container(
-                      child: Text(''),
-                    );
-                },
+                        Container(
+                          height: MediaQuery.of(context).size.height * 0.1,
+                          child: Text(
+                            'Name',
+                            style: TextStyle(
+                                fontSize: 20, color: colors.blue_base),
+                          ),
+                        ),
+                        Container(
+                          child: Icon(
+                            Icons.bar_chart,
+                            size: 35,
+                            color: colors.blue_base,
+                          ),
+                        ),
+                        Container(
+                          child: Icon(
+                            Icons.directions_walk,
+                            size: 35,
+                            color: colors.blue_base,
+                          ),
+                        ),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Day',
+                              style: TextStyle(
+                                  fontSize: 20, color: colors.blue_base),
+                            ),
+                            SizedBox(
+                              height: 2,
+                            ),
+                            Text(
+                              '1 M',
+                              style: TextStyle(
+                                  fontSize: 20, color: colors.blue_base),
+                            ),
+                            SizedBox(
+                              height: 2,
+                            ),
+                            Text(
+                              '3 M',
+                              style: TextStyle(
+                                  fontSize: 20, color: colors.blue_base),
+                            ),
+                            SizedBox(
+                              height: 2,
+                            ),
+                            Text(
+                              '6 M',
+                              style: TextStyle(
+                                  fontSize: 20, color: colors.blue_base),
+                            ),
+                            SizedBox(
+                              height: 2,
+                            ),
+                            Text(
+                              'Year',
+                              style: TextStyle(
+                                  fontSize: 20, color: colors.blue_base),
+                            ),
+                            SizedBox(
+                              height: 2,
+                            ),
+                            SizedBox(
+                              height: 2,
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                    StreamBuilder(
+                      stream: _getData(),
+                      builder: (BuildContext context,
+                          AsyncSnapshot<dynamic> snapshot) {
+                        if (snapshot.hasData) {
+                          _gymsList.clear();
+                          snapshot.data.docs.forEach((element) {
+                            _gymsList.add(GymModel.fromJson(element.data()));
+                          });
+
+                          if (_gymsList.isEmpty)
+                            return Expanded(
+                                child: Container(
+                              margin: EdgeInsets.only(top: 100),
+                              child: Text(
+                                'No gyms found',
+                                textAlign: TextAlign.center,
+                              ),
+                            ));
+
+                          return Expanded(
+                            child: SizedBox(
+                                //     width: MediaQuery.of(context).size.width,
+                                //   height: 200,
+                                child: CarouselSlider.builder(
+                              //  carouselController: controller,
+                              options: CarouselOptions(
+                                viewportFraction: 1,
+                                height: 1000,
+                                enlargeCenterPage: false,
+                              ),
+                              itemCount: _gymsList.length,
+                              itemBuilder: (context, index, realIndex) {
+                                return compareCard(
+                                  price: priceChoosed,
+                                  gymInfo: _gymsList[index],
+                                  userid: widget.userid,
+                                );
+                              },
+                            )
+                                //  ListView.builder(
+                                //   controller: ScrollController(keepScrollOffset: true),
+                                //   // shrinkWrap: true,
+                                //   scrollDirection: Axis.horizontal,
+                                //   itemCount: _gymsList.length,
+                                //   itemBuilder: (BuildContext context, int index) {
+                                // return compareCard(
+                                //   price: priceChoosed,
+                                //   gymInfo: _gymsList[index],
+                                //   userid: widget.userid,
+                                // );
+                                //   },
+                                // ),
+                                ),
+                          );
+                        } else
+                          return Container(
+                            child: Text(''),
+                          );
+                      },
+                    ),
+                  ],
+                ),
               ),
             ],
           ),

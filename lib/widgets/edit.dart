@@ -107,75 +107,74 @@ class _AddGymInfoState extends State<AddGymInfo> {
         child: Column(
           children: [
             Container(
-              // height: 480,
-              // width: 390,
+              //height: 650,
+              width: 390,
               margin: EdgeInsets.symmetric(horizontal: 20),
               child: Card(
                 child: Padding(
                   padding: EdgeInsets.all(10),
                   child: Form(
                     key: _form,
-                    child: ListView(
-                      padding: EdgeInsets.all(10),
-                      children: [
-                        Text(
-                          'Gym Information',
-                          style:
-                              TextStyle(fontSize: 30, color: colors.blue_base),
-                        ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        TextFormField(
-                            maxLength: 20,
-                            initialValue: widget.gym.name,
+                    child: Expanded(
+                      child: Column(
+                        children: [
+                          Text(
+                            'Gym Information',
+                            style: TextStyle(
+                                fontSize: 30, color: colors.blue_base),
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          TextFormField(
+                              maxLength: 20,
+                              initialValue: widget.gym.name,
+                              decoration: InputDecoration(
+                                labelText: 'Name',
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide:
+                                      BorderSide(color: colors.black100),
+                                ),
+                              ),
+                              onChanged: (value) {
+                                widget.gym.name = value;
+                              },
+                              validator: (value) {
+                                if (value!.isEmpty)
+                                  return 'Please Write the Name of the Gym';
+                                if (value.length <= 2)
+                                  return 'Name is Too Short';
+                              }),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          TextFormField(
+                            maxLength: 256,
+                            initialValue: widget.gym.description,
                             decoration: InputDecoration(
-                              labelText: 'Name',
+                              labelText: 'Description',
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
                                 borderSide: BorderSide(color: colors.black100),
                               ),
                             ),
+                            maxLines: 3,
                             onChanged: (value) {
-                              widget.gym.name = value;
+                              widget.gym.description = value;
                             },
                             validator: (value) {
                               if (value!.isEmpty)
-                                return 'Please Write the Name of the Gym';
-                              if (value.length <= 2) return 'Name is Too Short';
-                            }),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        TextFormField(
-                          maxLength: 256,
-                          initialValue: widget.gym.description,
-                          decoration: InputDecoration(
-                            labelText: 'Description',
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              borderSide: BorderSide(color: colors.black100),
-                            ),
+                                return 'Please Write the Description of your Gym';
+                              if (value.length <= 10)
+                                return 'Description is Too Short';
+                            },
+                            keyboardType: TextInputType.multiline,
                           ),
-                          maxLines: 3,
-                          onChanged: (value) {
-                            widget.gym.description = value;
-                          },
-                          validator: (value) {
-                            if (value!.isEmpty)
-                              return 'Please Write the Description of your Gym';
-                            if (value.length <= 10)
-                              return 'Description is Too Short';
-                          },
-                          keyboardType: TextInputType.multiline,
-                        ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        Container(
-                          height: 30,
-                          margin: EdgeInsets.all(5),
-                          child: Row(
+                          SizedBox(
+                            height: 20,
+                          ),
+                          Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
                               //is man?
@@ -253,62 +252,65 @@ class _AddGymInfoState extends State<AddGymInfo> {
                               ),
                             ],
                           ),
-                        ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        Column(
-                          children: [
-                            Center(
-                              child: Container(
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(20),
-                                    color: colors.blue_base),
-                                child: FlatButton.icon(
-                                  icon: Icon(Icons.camera_alt_rounded,
-                                      color: Colors.white),
-                                  onPressed: () {
-                                    image();
-                                  },
-                                  label: Text(
-                                    "Choose a Picture for Your Gym",
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontFamily: 'Roboto',
+                          SizedBox(
+                            height: 20,
+                          ),
+                          Column(
+                            children: [
+                              Center(
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(20),
+                                      color: colors.blue_base),
+                                  child: FlatButton.icon(
+                                    icon: Icon(Icons.camera_alt_rounded,
+                                        color: Colors.white),
+                                    onPressed: () {
+                                      image();
+                                    },
+                                    label: Text(
+                                      "Choose a Picture for Your Gym",
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontFamily: 'Roboto',
+                                      ),
                                     ),
                                   ),
                                 ),
                               ),
-                            ),
-                            SizedBox(
-                              height: 20,
-                            ),
-                            Container(
-                              width: 300,
-                              height: 300,
-                              child: widget.imageFile != null
-                                  ? Image.file(
-                                      widget.imageFile!,
-                                      fit: BoxFit.contain,
-                                    )
-                                  : widget.oldGym
-                                      ? Container(
-                                          width: 299.0,
-                                          height: 149.0,
-                                          decoration: BoxDecoration(
-                                              image: DecorationImage(
-                                                  image: NetworkImage(
-                                                      widget.gym.imageURL ??
-                                                          ''),
-                                                  fit: BoxFit.contain)),
-                                        )
-                                      : Image.asset(
-                                          "assets/images/gyms_home_logo.png",
-                                          fit: BoxFit.contain),
-                            )
-                          ],
-                        ),
-                      ],
+                              // SizedBox(
+                              //   height: 20,
+                              // ),
+                              Container(
+                                margin: EdgeInsets.all(20),
+                                child: widget.imageFile != null
+                                    ? Container(
+                                        width: 299.0,
+                                        height: 149,
+                                        child: Image.file(
+                                          widget.imageFile!,
+                                          fit: BoxFit.contain,
+                                        ),
+                                      )
+                                    : widget.oldGym
+                                        ? Container(
+                                            width: 299.0,
+                                            height: 149.0,
+                                            decoration: BoxDecoration(
+                                                image: DecorationImage(
+                                                    image: NetworkImage(
+                                                        widget.gym.imageURL ??
+                                                            ''),
+                                                    fit: BoxFit.contain)),
+                                          )
+                                        : Image.asset(
+                                            "assets/images/gyms_home_logo.png",
+                                            fit: BoxFit.contain),
+                              )
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),

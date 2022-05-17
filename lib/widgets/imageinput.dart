@@ -287,8 +287,8 @@ class _ImageInputState extends State<ImageInput> {
           children: [
             Container(
               margin: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-              height: 500,
-              width: 390,
+              // height: 500,
+              // width: 390,
               child: Card(
                 child: Column(
                   children: [
@@ -349,11 +349,8 @@ class _ImageInputState extends State<ImageInput> {
                                       imageFileList!.isNotEmpty
                                   ? viewImages(context)
                                   : Container(),
-                              SizedBox(
-                                height: 25,
-                              ),
                               Container(
-                                margin: EdgeInsets.symmetric(horizontal: 10),
+                                margin: EdgeInsets.symmetric(vertical: 20),
                                 child: Wrap(
                                   runSpacing: 10.0,
                                   spacing: 19.0,
@@ -362,7 +359,12 @@ class _ImageInputState extends State<ImageInput> {
                                     facButton('Lounge Area'),
                                     facButton('Wifi'),
                                     facButton('Squash Courts'),
-                                    facButton('Spin Studio'),
+                                    facButton('Cardio area'),
+                                    facButton('Stretching Area'),
+                                    facButton('Personal Training'),
+                                    facButton('Boxing'),
+                                    facButton('Locker Room'),
+                                    facButton('Group Fitness Studios'),
                                     facButton('Showrs'),
                                     facButton('Basketball Field'),
                                     facButton('Sauna'),

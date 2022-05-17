@@ -277,7 +277,7 @@ class _compareCardState extends State<compareCard> {
       child: Padding(
         padding: const EdgeInsets.all(5.0),
         child: Container(
-          width: MediaQuery.of(context).size.width * 0.36,
+          width: double.infinity,
           child: Card(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,

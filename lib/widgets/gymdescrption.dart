@@ -12,6 +12,7 @@ import 'package:gymhome/widgets/PaymentScreen.dart';
 import 'package:gymhome/widgets/Stripe.dart';
 import 'package:gymhome/widgets/customermap.dart';
 import 'package:gymhome/widgets/locationmap.dart';
+import 'package:ntp/ntp.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:gymhome/models/review.dart';
 import 'package:gymhome/Styles.dart';
@@ -48,16 +49,16 @@ class _GymDescrptionState extends State<GymDescrption> {
     }).whenComplete(() => getDistance());
   }
 
-  payNow() async {
-    //the amount must be transformed to cents
+  // payNow() async {
+  //   //the amount must be transformed to cents
 
-    var response =
-        await StripeServices.payNowHandler(amount: '888', currency: 'USD');
+  //   var response =
+  //       await StripeServices.payNowHandler(amount: '888', currency: 'USD');
 
-    print(currentPrice);
-    print('response message ${response.message}');
-    print('meowssss');
-  }
+  //   print(currentPrice);
+  //   print('response message ${response.message}');
+  //   print('meowssss');
+  // }
 
   String distance = 'Loading...';
   GeoPoint? userLocation;
@@ -1227,186 +1228,191 @@ class _GymDescrptionState extends State<GymDescrption> {
         context: bodyctx,
         builder: (BuildContext cxt) {
           return Center(
-            child: SingleChildScrollView(
-              child: Container(
-                height: 320,
-                width: 900,
-                child: SingleChildScrollView(
-                  child: AlertDialog(
-                      title: Text(
-                        "Payment",
-                        style: TextStyle(
-                            fontFamily: 'Epilogue',
-                            fontSize: 18,
-                            color: colors.blue_base),
-                      ),
-                      content: SingleChildScrollView(
-                        child: SizedBox(
-                          width: 600,
-                          child: Column(children: [
-                            Form(
-                              key: _formKey,
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: <Widget>[
-                                  Row(
-                                    children: [
-                                      //  Text(
-                                      //           " ${currentPrice} SAR",
-                                      //           style: TextStyle(fontSize: 20,color: Color.fromARGB(255, 5, 22, 63)),
-                                      //         ),
-                                    ],
-                                  ),
-                                  SizedBox(
-                                    height: 10,
-                                  ),
-                                  Row(
-                                    children: [
-                                      Container(
-                                        height: 38,
-                                        width: 220,
-                                        child: TextFormField(
-                                            initialValue: comment,
-                                            maxLines: null,
-                                            obscureText: false,
-                                            keyboardType: TextInputType.number,
-                                            decoration: InputDecoration(
-                                              border: OutlineInputBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(8),
-                                              ),
-                                              contentPadding:
-                                                  EdgeInsets.all(10),
-                                              hintText: "Enter Card Number",
-                                              hintStyle: TextStyle(
-                                                color: colors.hinttext,
-                                              ),
-                                            ),
-                                            validator: (value) {
-                                              // check if rate is null
-                                            },
-                                            onChanged: (value) {
-                                              comment = value;
-                                            }),
-                                      ),
-                                      SizedBox(
-                                        width: 10,
-                                      ),
-                                    ],
-                                  ),
-                                  SizedBox(
-                                    height: 10,
-                                  ),
-                                  Row(
-                                    children: [
-                                      Container(
-                                        height: 38,
-                                        width: 100,
-                                        child: TextFormField(
-                                            initialValue: comment,
-                                            maxLines: null,
-                                            obscureText: false,
-                                            keyboardType: TextInputType.number,
-                                            decoration: InputDecoration(
-                                              border: OutlineInputBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(8),
-                                              ),
-                                              contentPadding:
-                                                  EdgeInsets.all(10),
-                                              hintText: "Expiry Date ",
-                                              hintStyle: TextStyle(
-                                                color: colors.hinttext,
-                                              ),
-                                            ),
-                                            validator: (value) {
-                                              // check if rate is null
-                                            },
-                                            onChanged: (value) {
-                                              comment = value;
-                                            }),
-                                      ),
-                                      SizedBox(
-                                        width: 10,
-                                      ),
-                                      Container(
-                                        height: 38,
-                                        width: 60,
-                                        child: TextFormField(
-                                            initialValue: comment,
-                                            maxLines: null,
-                                            obscureText: false,
-                                            keyboardType: TextInputType.number,
-                                            decoration: InputDecoration(
-                                              border: OutlineInputBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(8),
-                                              ),
-                                              contentPadding:
-                                                  EdgeInsets.all(10),
-                                              hintText: "CVV ",
-                                              hintStyle: TextStyle(
-                                                color: colors.hinttext,
-                                              ),
-                                            ),
-                                            validator: (value) {
-                                              // check if rate is null
-                                            },
-                                            onChanged: (value) {
-                                              comment = value;
-                                            }),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
+            child: Container(
+              child: AlertDialog(
+                  title: Text(
+                    "Payment",
+                    style: TextStyle(
+                        fontFamily: 'Epilogue',
+                        fontSize: 18,
+                        color: colors.blue_base),
+                  ),
+                  content: SingleChildScrollView(
+                    child: Column(children: [
+                      Form(
+                        key: _formKey,
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            Row(
+                              children: [
+                                //  Text(
+                                //           " ${currentPrice} SAR",
+                                //           style: TextStyle(fontSize: 20,color: Color.fromARGB(255, 5, 22, 63)),
+                                //         ),
+                              ],
                             ),
-                          ]),
-                        ),
-                      ),
-                      actions: <Widget>[
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            TextButton(
-                              style: TextButton.styleFrom(
-                                primary: colors.blue_base,
-                                // minimumSize:
-                              ),
-                              child: const Text(
-                                "Pay",
-                                style: TextStyle(
-                                  color: colors.blue_base,
-                                  fontFamily: 'Roboto',
-                                  fontSize: 18,
-                                ),
-                              ),
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
+                            SizedBox(
+                              height: 10,
                             ),
-                            TextButton(
-                              style: TextButton.styleFrom(
-                                primary: colors.blue_base,
-                                // minimumSize:
-                              ),
-                              child: const Text(
-                                "Cancel",
-                                style: TextStyle(
-                                  color: colors.red_base,
-                                  fontFamily: 'Roboto',
-                                  fontSize: 18,
+                            Row(
+                              children: [
+                                Container(
+                                  height: 70,
+                                  width: 220,
+                                  child: TextFormField(
+                                      //      initialValue: comment,
+                                      maxLength: 16,
+                                      obscureText: false,
+                                      keyboardType: TextInputType.number,
+                                      decoration: InputDecoration(
+                                        counterText: "",
+                                        border: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                        ),
+                                        contentPadding: EdgeInsets.all(10),
+                                        hintText: "Enter Card Number",
+                                        hintStyle: TextStyle(
+                                          color: colors.hinttext,
+                                        ),
+                                      ),
+                                      validator: (value) {
+                                        if (value!.length != 16) {
+                                          return '';
+                                        }
+                                      },
+                                      onChanged: (value) {}),
                                 ),
-                              ),
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
+                                SizedBox(
+                                  width: 10,
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 4,
+                            ),
+                            Row(
+                              children: [
+                                Container(
+                                  height: 70,
+                                  width: 100,
+                                  child: TextFormField(
+                                      //      initialValue: comment,
+                                      maxLines: null,
+                                      obscureText: false,
+                                      keyboardType: TextInputType.datetime,
+                                      decoration: InputDecoration(
+                                        border: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                        ),
+                                        contentPadding: EdgeInsets.all(10),
+                                        hintText: "Expiry Date",
+                                        hintStyle: TextStyle(
+                                          color: colors.hinttext,
+                                        ),
+                                      ),
+                                      validator: (value) {
+                                        if (value!.indexOf('/') != 2 ||
+                                            value.length != 5) {
+                                          return '';
+                                        }
+                                      },
+                                      onChanged: (value) {}),
+                                ),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Container(
+                                  height: 70,
+                                  width: 60,
+                                  child: TextFormField(
+                                      //   initialValue: comment,
+                                      maxLength: 3,
+                                      obscureText: false,
+                                      keyboardType: TextInputType.number,
+                                      decoration: InputDecoration(
+                                        counterText: '',
+                                        border: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                        ),
+                                        contentPadding: EdgeInsets.all(10),
+                                        hintText: "CVV",
+                                        hintStyle: TextStyle(
+                                          color: colors.hinttext,
+                                        ),
+                                      ),
+                                      validator: (value) {
+                                        if (value!.length != 3) {
+                                          return '';
+                                        }
+                                      },
+                                      onChanged: (value) {}),
+                                ),
+                              ],
                             ),
                           ],
                         ),
-                      ]),
-                ),
-              ),
+                      ),
+                    ]),
+                  ),
+                  actions: <Widget>[
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        TextButton(
+                          style: TextButton.styleFrom(
+                            primary: colors.blue_base,
+                            // minimumSize:
+                          ),
+                          child: const Text(
+                            "Pay",
+                            style: TextStyle(
+                              color: colors.blue_base,
+                              fontFamily: 'Roboto',
+                              fontSize: 18,
+                            ),
+                          ),
+                          onPressed: () async {
+                            if (_formKey.currentState!.validate()) {
+                              print(widget.gym.gender);
+                              DateTime startDate = await NTP.now();
+                              FirebaseFirestore.instance
+                                  .collection('Payments')
+                                  .doc()
+                                  .set({
+                                'ownerId': widget.gym.ownerId,
+                                'gymId': widget.gym.gymId,
+                                'customerId': widget.userid,
+                                'price': currentPrice,
+                                'duration': widget.price,
+                                'date': startDate,
+                              });
+                            }
+                          },
+                        ),
+                        TextButton(
+                          style: TextButton.styleFrom(
+                            primary: colors.blue_base,
+                            // minimumSize:
+                          ),
+                          child: const Text(
+                            "Cancel",
+                            style: TextStyle(
+                              color: colors.red_base,
+                              fontFamily: 'Roboto',
+                              fontSize: 18,
+                            ),
+                          ),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                        ),
+                      ],
+                    ),
+                  ]),
             ),
           );
         });

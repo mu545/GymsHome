@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:gymhome/Styles.dart';
+import 'package:gymhome/models/user.dart';
 
 import 'package:gymhome/widgets/AddGym.dart';
 import 'package:gymhome/widgets/edit.dart';
@@ -366,22 +367,27 @@ class _AddGymState extends State<GymPrice> {
                       prices.remove('One Year');
                     } else
                       prices.add('One Year');
-                    Provider.of<AddGymMethods>(context, listen: false)
-                        .addGym(widget.gym, widget.imageFile,
-                            widget.newGymImages, prices)
-                        .whenComplete(() {
-                      if (widget.gym.gymId == '') {
-                        message(
-                            context, true, 'Thank you, your gym has been sent');
-                      } else {
-                        message(context, true, 'Your gym has been updated');
-                      }
-                    });
-                    Navigator.pop(context);
-                    Navigator.pop(context);
-                    Navigator.pop(context);
-                    Navigator.pop(context);
-                    if (widget.gym.gymId!.isNotEmpty) Navigator.pop(context);
+                    if (prices.isEmpty) {
+                      AppUser.message(context, false,
+                          "please enter at least one of the fields");
+                    } else {
+                      Provider.of<AddGymMethods>(context, listen: false)
+                          .addGym(widget.gym, widget.imageFile,
+                              widget.newGymImages, prices)
+                          .whenComplete(() {
+                        if (widget.gym.gymId == '') {
+                          message(context, true,
+                              'Thank you, your gym has been sent');
+                        } else {
+                          message(context, true, 'Your gym has been updated');
+                        }
+                      });
+                      Navigator.pop(context);
+                      Navigator.pop(context);
+                      Navigator.pop(context);
+                      Navigator.pop(context);
+                      if (widget.gym.gymId!.isNotEmpty) Navigator.pop(context);
+                    }
                   }
                 },
                 padding: EdgeInsets.symmetric(horizontal: 30.0, vertical: 4),

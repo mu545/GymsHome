@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:gymhome/GymOwnerwidgets/dashboard.dart';
 import 'package:gymhome/GymOwnerwidgets/gymOwnerCard.dart';
 import 'package:gymhome/models/GymModel.dart';
 import 'package:gymhome/models/gyms.dart';
@@ -82,64 +83,98 @@ class _WidgtessState extends State<OwnerHome> {
     return Scaffold(
       appBar: AppBar(
         title: Center(
-          child: Text(
-            'HOME',
-            style: TextStyle(color: Colors.white, fontFamily: 'Epilogue'),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              IconButton(
+                  onPressed: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => Dashboard(
+                              ownerid: uid!,
+                              gymsList: _gymsList,
+                            )));
+                  },
+                  icon: Icon(
+                    Icons.query_stats_outlined,
+                    // color: colors.blue_base,
+                    // size: 35,
+                    // color: colors.red_base,
+                  )),
+              Text(
+                'HOME',
+                style: TextStyle(color: Colors.white, fontFamily: 'Epilogue'),
+              ),
+              IconButton(
+                  onPressed: () {
+                    AppUser.logout(context);
+                  },
+                  icon: Icon(
+                    Icons.logout,
+                    // color: colors.red_base,
+                  )),
+            ],
           ),
         ),
         backgroundColor: colors.blue_base,
         elevation: 0,
-        actions: [
-          IconButton(
-              onPressed: () {
-                AppUser.logout(context);
-              },
-              icon: Icon(
-                Icons.logout,
-                // color: colors.red_base,
-              ))
-        ],
+        // actions: [
+        // IconButton(
+        //     onPressed: () {
+        //       AppUser.logout(context);
+        //     },
+        //     icon: Icon(
+        //       Icons.logout,
+        //       // color: colors.red_base,
+        //     )),
+        // ],
       ),
       body: SingleChildScrollView(
         child: SafeArea(
-          child: StreamBuilder(
-            stream: _fireStore
-                .collection("gyms")
-                .where('ownerId', isEqualTo: uid)
-                .where('isWaiting', isEqualTo: false)
-                .snapshots(),
-            builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-              if (snapshot.hasData) {
-                _gymsList.clear();
-                _gymsaddress.clear();
-                snapshot.data.docs.forEach((element) {
-                  _gymsList.add(GymModel.fromJson(element.data()));
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              StreamBuilder(
+                stream: _fireStore
+                    .collection("gyms")
+                    .where('ownerId', isEqualTo: uid)
+                    .where('isWaiting', isEqualTo: false)
+                    .snapshots(),
+                builder:
+                    (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                  if (snapshot.hasData) {
+                    _gymsList.clear();
+                    _gymsaddress.clear();
+                    snapshot.data.docs.forEach((element) {
+                      _gymsList.add(GymModel.fromJson(element.data()));
 
-                  _gymsaddress
-                      .add(Placelocation.getListAddress(element.data()));
-                });
-                return Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    children: [
-                      ListView.builder(
-                        controller: ScrollController(keepScrollOffset: true),
-                        shrinkWrap: true,
-                        itemCount: _gymsList.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return GymCard(
-                            userLocation: userLocation,
-                            gymsaddress: _gymsaddress,
-                            gymInfo: _gymsList[index],
-                          );
-                        },
-                      )
-                    ],
-                  ),
-                );
-              } else
-                return Center(child: CircularProgressIndicator());
-            },
+                      _gymsaddress
+                          .add(Placelocation.getListAddress(element.data()));
+                    });
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        children: [
+                          ListView.builder(
+                            controller:
+                                ScrollController(keepScrollOffset: true),
+                            shrinkWrap: true,
+                            itemCount: _gymsList.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              return GymCard(
+                                userLocation: userLocation,
+                                gymsaddress: _gymsaddress,
+                                gymInfo: _gymsList[index],
+                              );
+                            },
+                          )
+                        ],
+                      ),
+                    );
+                  } else
+                    return Center(child: CircularProgressIndicator());
+                },
+              ),
+            ],
           ),
         ),
       ),

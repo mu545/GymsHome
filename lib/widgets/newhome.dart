@@ -305,18 +305,8 @@ class _NewWidgetHomeState extends State<NewWidgetHome> {
             _gymsList[j + 1] = tmp;
           }
         }
-        // else {
-        //   print('dscending');
-        //   if (dis1 < dis2) {
-        //     GymModel tmp = _gymsList[j];
-        //     _gymsList[j] = _gymsList[j + 1];
-        //     _gymsList[j + 1] = tmp;
-        //   }
-        // }
       }
     }
-
-    // print(_gymsList);
   }
 
   Future<void> sortByRate(bool ascending) async {
@@ -378,28 +368,6 @@ class _NewWidgetHomeState extends State<NewWidgetHome> {
         break;
     }
   }
-
-  // getListCompare() {
-  //   var user = FirebaseFirestore.instance
-  //       .collection('Customer')
-  //       .doc(widget.userid)
-  //       .get();
-  //   user.then((value) {
-  //     _compare = value['compare'];
-  //     print(_compare);
-  //   });
-  // }
-
-  // getListLikes() {
-  //   var user = FirebaseFirestore.instance
-  //       .collection('Customer')
-  //       .doc(widget.userid)
-  //       .get();
-  //   user.then((value) {
-  //     _favs = value['Likes'];
-  //     print(_favs);
-  //   });
-  // }
 
   @override
   Widget build(BuildContext context) {

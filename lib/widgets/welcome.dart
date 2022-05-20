@@ -12,7 +12,7 @@ import 'package:gymhome/models/user.dart';
 import 'package:provider/provider.dart';
 
 class welcome extends StatefulWidget {
-  //const welcome({Key? key}) : super(key: key);
+  const welcome({Key? key}) : super(key: key);
 
   @override
   _welcomeState createState() => _welcomeState();

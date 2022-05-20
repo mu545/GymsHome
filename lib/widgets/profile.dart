@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/widgets.dart';
 import 'package:gymhome/GymOwnerwidgets/facilities.dart';
+import 'package:gymhome/models/PaymentModel.dart';
 // import 'package:gymhome/authintactions/auth.dart';
 import 'package:gymhome/provider/customer.dart';
 import 'package:flutter/src/rendering/box.dart';
@@ -12,6 +13,7 @@ import 'package:gymhome/provider/customer.dart';
 // import 'package:gymhome/models/user.dart';
 import 'package:gymhome/widgets/edit.dart';
 import 'package:gymhome/widgets/imageinput.dart';
+import 'package:gymhome/widgets/subscribeCard.dart';
 import 'package:gymhome/widgets/welcome.dart';
 import 'package:flutter/material.dart';
 import 'package:gymhome/Styles.dart';
@@ -38,6 +40,7 @@ class Profile extends StatefulWidget {
 class _ProfileState extends State<Profile> {
   bool isedit = false;
   bool uploading = false;
+  List<PaymentModel> subsList = [];
   TextEditingController _nameTEC = TextEditingController();
 
   final FirebaseAuth auth = FirebaseAuth.instance;
@@ -101,6 +104,10 @@ class _ProfileState extends State<Profile> {
 
   ProfileModel _userProfile = ProfileModel('', '', '');
   Future? _getData() => _fireStore.collection('Customer').doc(userId).get();
+  Future? _getDataSub() => _fireStore
+      .collection('Payments')
+      .where('customerId', isEqualTo: userId)
+      .get();
   String? name;
   @override
   Widget build(BuildContext context) {
@@ -457,6 +464,63 @@ class _ProfileState extends State<Profile> {
                     SizedBox(
                       height: 20,
                     ),
+                    Card(
+                        child: Column(
+                      children: [
+                        Container(
+                          width: double.infinity,
+                          child: Text(
+                            'Subscriptions',
+                            style: TextStyle(
+                                color: colors.blue_base, fontSize: 23),
+                          ),
+                        ),
+                        Divider(thickness: 2),
+                        FutureBuilder(
+                          future: _getDataSub(),
+                          builder: (BuildContext context,
+                              AsyncSnapshot<dynamic> snapshot) {
+                            if (snapshot.hasData) {
+                              subsList.clear();
+                              snapshot.data.docs.forEach((element) {
+                                subsList
+                                    .add(PaymentModel.fromJson(element.data()));
+                              });
+
+                              if (subsList.isEmpty)
+                                return Container(
+                                  margin: EdgeInsets.symmetric(
+                                      horizontal: 30, vertical: 30),
+                                  child: Text(
+                                    'You have not subscribed to a gym yet',
+                                    textAlign: TextAlign.center,
+                                  ),
+                                );
+
+                              return Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Column(
+                                  children: [
+                                    ListView.builder(
+                                      controller: ScrollController(
+                                          keepScrollOffset: true),
+                                      shrinkWrap: true,
+                                      itemCount: subsList.length,
+                                      itemBuilder:
+                                          (BuildContext context, int index) {
+                                        return SubscribeCard(
+                                            sub: subsList[index]);
+                                      },
+                                    )
+                                  ],
+                                ),
+                              );
+                            } else
+                              return CircularProgressIndicator();
+                          },
+                        )
+                      ],
+                    )),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [

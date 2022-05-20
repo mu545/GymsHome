@@ -83,7 +83,7 @@ class newSearch extends SearchDelegate {
 
                         Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) => GymDescrption(
-                                  price: '',
+                                  price: 'non',
                                   gym: fetchGym,
                                   userid: uid!,
                                 )));

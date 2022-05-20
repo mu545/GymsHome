@@ -42,6 +42,7 @@ class _GymDescrptionState extends State<GymDescrption> {
   @override
   void initState() {
     super.initState();
+    isSubscribed();
     Geolocator.getCurrentPosition().then((value) {
       setState(() {
         userLocation = GeoPoint(value.latitude, value.longitude);
@@ -62,8 +63,11 @@ class _GymDescrptionState extends State<GymDescrption> {
 
   String distance = 'Loading...';
   GeoPoint? userLocation;
+  bool? isSub = false;
+  DateTime? expireDate;
   List<Review> reviews = [];
   Review? userReview;
+  List subsGyms = [];
   String currentPrice = '';
   int activeIndex = 0;
   final controller = CarouselController();
@@ -93,6 +97,60 @@ class _GymDescrptionState extends State<GymDescrption> {
       //     window = '';
       //   });
     }
+  }
+
+  setExpireDate(DateTime startDate) {
+    switch (widget.price) {
+      case 'One Day':
+        setState(() {
+          expireDate = startDate.add(const Duration(days: 1));
+        });
+        break;
+      case 'One Month':
+        setState(() {
+          expireDate = startDate.add(const Duration(days: 30));
+        });
+        break;
+      case 'Three Months':
+        setState(() {
+          expireDate = startDate.add(const Duration(days: 90));
+        });
+        break;
+      case 'Six Months':
+        setState(() {
+          expireDate = startDate.add(const Duration(days: 180));
+        });
+        break;
+      case 'One Year':
+        setState(() {
+          expireDate = startDate.add(const Duration(days: 360));
+        });
+        break;
+      default:
+        return '';
+    }
+  }
+
+  isSubscribed() async {
+    var snapshot = FirebaseFirestore.instance
+        .collection('Payments')
+        .where('customerId', isEqualTo: widget.userid)
+        .where('gymId', isEqualTo: widget.gym.gymId)
+        .snapshots();
+
+    snapshot.forEach((element) {
+      if (element.docs.isEmpty) {
+        print(element.docs.length);
+        setState(() {
+          isSub = false;
+        });
+      } else {
+        setState(() {
+          print(element.docs.length);
+          isSub = true;
+        });
+      }
+    });
   }
 
   String showPrice() {
@@ -680,6 +738,7 @@ class _GymDescrptionState extends State<GymDescrption> {
                                 : () {
                                     setState(() {
                                       currentPrice = gym.priceOneDay.toString();
+                                      widget.price = 'One Day';
                                     });
                                   },
                             child: Text(
@@ -714,6 +773,7 @@ class _GymDescrptionState extends State<GymDescrption> {
                                     setState(() {
                                       currentPrice =
                                           gym.priceOneMonth.toString();
+                                      widget.price = 'One Month';
                                     });
                                   },
                             child: Text(
@@ -748,6 +808,7 @@ class _GymDescrptionState extends State<GymDescrption> {
                                     setState(() {
                                       currentPrice =
                                           gym.priceThreeMonths.toString();
+                                      widget.price = 'Three Months';
                                     });
                                   },
                             child: Text(
@@ -782,6 +843,7 @@ class _GymDescrptionState extends State<GymDescrption> {
                                     setState(() {
                                       currentPrice =
                                           gym.priceSixMonths.toString();
+                                      widget.price = 'Six Months';
                                     });
                                   },
                             child: Text(
@@ -816,6 +878,7 @@ class _GymDescrptionState extends State<GymDescrption> {
                                     setState(() {
                                       currentPrice =
                                           gym.priceOneYear.toString();
+                                      widget.price = 'One Year';
                                     });
                                   },
                             child: Text(
@@ -1007,7 +1070,7 @@ class _GymDescrptionState extends State<GymDescrption> {
             // splashColor: colors.blue_base,
             child: Container(
                 color: Color.fromARGB(251, 119, 140, 33),
-                width: screenWidth / 2,
+                width: isSub! ? screenWidth : screenWidth / 2,
                 height: 50,
                 child: Center(
                   child: Text(
@@ -1021,28 +1084,31 @@ class _GymDescrptionState extends State<GymDescrption> {
                   ),
                 )),
           ),
-          InkWell(
-            onTap: () {
-              print('uid' + widget.userid.toString());
-              print('gymid' + widget.gym.gymId.toString());
-              payform(context, widget.gym.gymId);
-            },
-            child: Container(
-                color: colors.blue_base,
-                width: screenWidth / 2,
-                height: 50,
-                child: Center(
-                  child: Text(
-                    // userReview != null ? 'Edit my review' : "Write a review",
-                    'Pay',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                      fontFamily: 'Roboto',
+          if (isSub == false)
+            InkWell(
+              onTap: widget.price == 'non'
+                  ? null
+                  : () {
+                      print('uid' + widget.userid.toString());
+                      print('gymid' + widget.gym.gymId.toString());
+                      payform(context, widget.gym.gymId);
+                    },
+              child: Container(
+                  color: widget.price == 'non' ? Colors.grey : colors.blue_base,
+                  width: screenWidth / 2,
+                  height: 50,
+                  child: Center(
+                    child: Text(
+                      // userReview != null ? 'Edit my review' : "Write a review",
+                      'Pay',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontFamily: 'Roboto',
+                      ),
                     ),
-                  ),
-                )),
-          ),
+                  )),
+            )
         ],
       ),
     );
@@ -1165,6 +1231,14 @@ class _GymDescrptionState extends State<GymDescrption> {
                               fontSize: 18,
                             ),
                           ),
+                          //  ? null
+                          //       : () {
+                          //           setState(() {
+                          //             currentPrice =
+                          //                 gym.priceOneMonth.toString();
+                          //             widget.price = 'One Month';
+                          //           });
+                          //         },
                           onPressed: () {
                             if (_formKey.currentState!.validate() &&
                                 rate != 0.0) {
@@ -1174,11 +1248,11 @@ class _GymDescrptionState extends State<GymDescrption> {
                                         bodyctx, true, 'Thank you'))
                                     .onError((error, stackTrace) =>
                                         AppUser.message(
-                                            bodyctx, false, error.toString()));
+                                            bodyctx, false, error.toString()))
+                                    .whenComplete(
+                                        () => Review.setRateToGym(gymid));
 
                                 Navigator.pop(context);
-
-                                ;
                               } else {
                                 Review.addReviwe(
                                         gymid!, rate, comment, widget.userid)
@@ -1186,7 +1260,9 @@ class _GymDescrptionState extends State<GymDescrption> {
                                         bodyctx, true, 'Thank you'))
                                     .onError((error, stackTrace) =>
                                         AppUser.message(
-                                            bodyctx, false, error.toString()));
+                                            bodyctx, false, error.toString()))
+                                    .whenComplete(
+                                        () => Review.setRateToGym(gymid));
 
                                 Navigator.pop(context);
                               }
@@ -1299,10 +1375,11 @@ class _GymDescrptionState extends State<GymDescrption> {
                                   width: 100,
                                   child: TextFormField(
                                       //      initialValue: comment,
-                                      maxLines: null,
+                                      maxLength: 5,
                                       obscureText: false,
                                       keyboardType: TextInputType.datetime,
                                       decoration: InputDecoration(
+                                        counterText: '',
                                         border: OutlineInputBorder(
                                           borderRadius:
                                               BorderRadius.circular(8),
@@ -1375,23 +1452,33 @@ class _GymDescrptionState extends State<GymDescrption> {
                               fontSize: 18,
                             ),
                           ),
-                          onPressed: () async {
-                            if (_formKey.currentState!.validate()) {
-                              print(widget.gym.gender);
-                              DateTime startDate = await NTP.now();
-                              FirebaseFirestore.instance
-                                  .collection('Payments')
-                                  .doc()
-                                  .set({
-                                'ownerId': widget.gym.ownerId,
-                                'gymId': widget.gym.gymId,
-                                'customerId': widget.userid,
-                                'price': currentPrice,
-                                'duration': widget.price,
-                                'date': startDate,
-                              });
-                            }
-                          },
+                          onPressed: widget.price == 'non'
+                              ? null
+                              : () {
+                                  print("The Price" + widget.price);
+                                  if (_formKey.currentState!.validate()) {
+                                    print(widget.gym.gender);
+                                    DateTime startDate = DateTime.now();
+
+                                    setExpireDate(startDate);
+                                    FirebaseFirestore.instance
+                                        .collection('Payments')
+                                        .doc()
+                                        .set({
+                                      'ownerId': widget.gym.ownerId,
+                                      'gymName': widget.gym.name,
+                                      'gymId': widget.gym.gymId,
+                                      'customerId': widget.userid,
+                                      'price': currentPrice,
+                                      'duration': widget.price,
+                                      'date': startDate,
+                                      'expirationDate': expireDate
+                                    });
+                                  } else {
+                                    AppUser.message(context, false,
+                                        'Check your card information');
+                                  }
+                                },
                         ),
                         TextButton(
                           style: TextButton.styleFrom(
@@ -1442,6 +1529,7 @@ class _GymDescrptionState extends State<GymDescrption> {
               Review.deleteReview(gymid, uid).whenComplete(() {
                 Navigator.pop(context, true);
                 AppUser.message(context, false, 'The review has been deleted');
+                Review.setRateToGym(gymid);
               });
             },
             child: const Text(

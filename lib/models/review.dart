@@ -170,7 +170,7 @@ class Review {
         .collection('Review')
         .get();
     if (snapshot.size == 0) {
-      setAvgRate(gymid, 0.0);
+      setAvgRate(gymid, 0.0, 0);
     } else {
       int size = snapshot.docs.length;
       for (var doc in snapshot.docs) {
@@ -181,16 +181,15 @@ class Review {
       var s = avg.toStringAsFixed(2);
       avg = double.parse(s);
 
-      setAvgRate(gymid, avg);
+      setAvgRate(gymid, avg, size);
     }
-    ;
   }
 
-  static setAvgRate(String gymid, double avg) {
+  static setAvgRate(String gymid, double avg, int size) {
     FirebaseFirestore.instance
         .collection('gyms')
         .doc(gymid)
-        .update({'Avg_rate': avg});
+        .update({'Avg_rate': avg, 'reviews': size});
   }
 
   factory Review.fromjson(Map<String, dynamic> data) {

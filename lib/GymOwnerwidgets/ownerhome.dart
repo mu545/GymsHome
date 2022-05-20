@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:gymhome/GymOwnerwidgets/gymOwnerCard.dart';
+import 'package:gymhome/GymOwnerwidgets/showSub.dart';
 import 'package:gymhome/models/GymModel.dart';
 import 'package:gymhome/models/gyms.dart';
 import 'package:gymhome/models/user.dart';
@@ -92,7 +93,11 @@ class _WidgtessState extends State<OwnerHome> {
         actions: [
           IconButton(
               onPressed: () {
-                AppUser.logout(context);
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => showSub(
+                          uid: uid!,
+                        )));
+                //   AppUser.logout(context);
               },
               icon: Icon(
                 Icons.logout,

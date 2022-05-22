@@ -15,9 +15,31 @@ class commentCard extends StatefulWidget {
 
 class _commentCardState extends State<commentCard> {
   final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
-
+  String customerName = '';
   Future? _getData() {
     return _fireStore.collection("Customer").doc(widget.review.uid).get();
+  }
+
+  @override
+  initState() {
+    super.initState();
+    getName().then((value) {
+      setState(() {
+        customerName = value;
+      });
+    });
+  }
+
+  Future getName() async {
+    var customer = await FirebaseFirestore.instance
+        .collection('Customer')
+        .doc(widget.review.uid)
+        .get();
+
+    Map<String, dynamic> _dataCustomer =
+        customer.data() as Map<String, dynamic>;
+
+    return _dataCustomer['name'];
   }
 
   ProfileModel _userProfile = ProfileModel('', '', '');
@@ -76,7 +98,7 @@ class _commentCardState extends State<commentCard> {
                             Padding(
                                 padding: EdgeInsets.only(bottom: 5),
                                 child: Text(
-                                  widget.review.name,
+                                  customerName,
                                   style: TextStyle(
                                       color: colors.blue_base, fontSize: 18),
                                 )),

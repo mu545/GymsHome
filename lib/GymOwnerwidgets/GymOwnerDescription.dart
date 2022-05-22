@@ -53,9 +53,9 @@ class _GymOwnerDescrptionState extends State<GymOwnerDescrption> {
         });
         print('comm');
         break;
-      case 'Facilites':
+      case 'Facilities':
         setState(() {
-          window = "Facilites";
+          window = "Facilities";
         });
         print('fac');
         break;
@@ -183,7 +183,7 @@ class _GymOwnerDescrptionState extends State<GymOwnerDescrption> {
           );
         }, //end then
       );
-    } else if (window == 'Facilites') {
+    } else if (window == 'Facilities') {
       return Column(
         children: [
           Wrap(
@@ -739,7 +739,7 @@ class _GymOwnerDescrptionState extends State<GymOwnerDescrption> {
                                     topLeft: Radius.circular(15),
                                     topRight: Radius.circular(15),
                                   ),
-                                  color: window == 'Facilites'
+                                  color: window == 'Facilities'
                                       ? Color.fromARGB(195, 71, 153, 183)
                                       : Colors.white,
                                 ),
@@ -751,9 +751,9 @@ class _GymOwnerDescrptionState extends State<GymOwnerDescrption> {
                                       width: 3,
                                     ),
                                     Text(
-                                      'Facilites',
+                                      'Facilities',
                                       style: TextStyle(
-                                        color: window == 'Facilites'
+                                        color: window == 'Facilities'
                                             ? Colors.white
                                             : Colors.black,
                                       ),
@@ -762,7 +762,7 @@ class _GymOwnerDescrptionState extends State<GymOwnerDescrption> {
                                 )),
                               ),
                               onTap: () {
-                                windowChoose("Facilites");
+                                windowChoose("Facilities");
                               },
                             ),
                           ),

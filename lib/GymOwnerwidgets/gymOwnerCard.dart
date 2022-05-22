@@ -55,7 +55,7 @@ class _GymCardState extends State<GymCard> {
         //         )));
       },
       child: Container(
-          height: MediaQuery.of(context).size.height * 0.25,
+          height: MediaQuery.of(context).size.height * 0.31,
           margin: EdgeInsets.only(bottom: 20),
           decoration: BoxDecoration(
               color: Colors.white,

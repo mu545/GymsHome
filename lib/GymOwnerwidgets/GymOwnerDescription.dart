@@ -7,6 +7,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:gymhome/GymOwnerwidgets/gymprice.dart';
 import 'package:gymhome/GymOwnerwidgets/ownerhome.dart';
+import 'package:gymhome/GymOwnerwidgets/subscribed.dart';
 import 'package:gymhome/models/GymModel.dart';
 import 'package:gymhome/models/Owner.dart';
 import 'package:gymhome/widgets/edit.dart';
@@ -86,10 +87,10 @@ class _GymOwnerDescrptionState extends State<GymOwnerDescrption> {
     // GeoPoint userLocation = GeoPoint(locdata.latitude, locdata.longitude);
     final _dis = await Placelocation.calculateDistance(
         widget.gym.location!, userLocation!);
-    if (mounted)
-      setState(() {
-        distance = _dis;
-      });
+    // if (mounted)
+    setState(() {
+      distance = _dis;
+    });
   }
 
   Widget buildIndicator() => AnimatedSmoothIndicator(
@@ -412,16 +413,42 @@ class _GymOwnerDescrptionState extends State<GymOwnerDescrption> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Row(
+                      Column(
                         children: [
-                          SizedBox(
-                            width: 15,
+                          Row(
+                            children: [
+                              SizedBox(
+                                width: 15,
+                              ),
+                              Text(
+                                distance,
+                                style: TextStyle(fontSize: 20),
+                              ),
+                              Icon(Icons.directions_walk_outlined)
+                            ],
                           ),
-                          Text(
-                            distance,
-                            style: TextStyle(fontSize: 20),
+                          TextButton(
+                            onPressed: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => Subscribed(
+                                        gymid: gym.gymId!,
+                                        // ownerid: uid!,
+                                        // gymsList: _gymsList,
+                                      )));
+                            },
+                            child: Text(
+                              'Subscribed',
+                              style: TextStyle(
+                                  color: colors.blue_base, fontSize: 15),
+                            ),
+
+                            // icon: Icon(
+                            //   Icons.subscrip,
+                            //   // color: colors.blue_base,
+                            //   // size: 35,
+                            //   // color: colors.red_base,
+                            // ), label:Text('Subscribed'),
                           ),
-                          Icon(Icons.directions_walk_outlined)
                         ],
                       ),
                       Column(

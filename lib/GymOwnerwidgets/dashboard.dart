@@ -3,7 +3,7 @@ import 'dart:ffi';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
-import 'package:syncfusion_flutter_charts/sparkcharts.dart';
+// import 'package:syncfusion_flutter_charts/sparkcharts.dart';
 import 'package:gymhome/Styles.dart';
 
 import '../models/GymModel.dart';
@@ -64,61 +64,97 @@ class _DashboardState extends State<Dashboard> {
           ),
           backgroundColor: colors.blue_base,
         ),
-        body: !isloading
-            ? SingleChildScrollView(
-                child: StreamBuilder<Object>(
-                    stream: null,
-                    builder: (context, snapshot) {
-                      return Column(children: [
-                        SizedBox(
-                          height: 30,
-                        ),
+        body: (!isloading)
+            ? (widget.gymsList.isNotEmpty)
+                ? SingleChildScrollView(
+                    child: Column(children: [
+                    SizedBox(
+                      height: 30,
+                    ),
+                    // Initialize the chart widget
+                    SfCartesianChart(
+                        title: ChartTitle(text: 'Number of subscriptions'),
+                        primaryXAxis: CategoryAxis(),
+                        // primaryYAxis: NumericAxis(minimum: 0, maximum: 40, interval: 10),
+                        tooltipBehavior: TooltipBehavior(enable: true),
+                        series: <ChartSeries<_Data, String>>[
+                          ColumnSeries<_Data, String>(
+                              dataSource: data,
+                              xValueMapper: (_Data data, _) => data.name,
+                              yValueMapper: (_Data data, _) => data.number,
+                              // name: 'Gold',
+                              color: colors.yellow_base)
+                        ]),
+                    SfCircularChart(
+                      tooltipBehavior: TooltipBehavior(enable: true),
+                      // ignore: prefer_const_literals_to_create_immutables
+                      series: [
+                        // DoughnutSeries<_Data, String>(
+                        //   dataSource: data,
+                        //   xValueMapper: (_Data data, _) => data.name,
+                        //   yValueMapper: (_Data data, _) => data.number,
+                        //   dataLabelSettings: DataLabelSettings(isVisible: true),
+                        //   dataLabelMapper: (_Data data, _) => data.name,
+                        // )
 
-                        // Initialize the chart widget
+// --------------------------------------------------------------------------------------------------------------
 
-                        SfCartesianChart(
-                            title: ChartTitle(text: 'Number of subscriptions'),
-                            primaryXAxis: CategoryAxis(),
-                            // primaryYAxis: NumericAxis(minimum: 0, maximum: 40, interval: 10),
-                            tooltipBehavior: TooltipBehavior(enable: true),
-                            series: <ChartSeries<_Data, String>>[
-                              ColumnSeries<_Data, String>(
-                                  dataSource: data,
-                                  xValueMapper: (_Data data, _) => data.name,
-                                  yValueMapper: (_Data data, _) => data.number,
-                                  name: 'Gold',
-                                  color: colors.yellow_base)
-                            ]),
+                        PieSeries<_Data, String>(
+                          dataSource: data,
+                          xValueMapper: (_Data data, _) => data.name,
+                          yValueMapper: (_Data data, _) => data.number,
+                          dataLabelSettings: DataLabelSettings(
+                              isVisible: true,
+                              labelPosition: ChartDataLabelPosition.outside),
+                          dataLabelMapper: (_Data data, _) => data.name,
 
-                        SfCartesianChart(
-                            primaryXAxis: CategoryAxis(),
-                            // Chart title
-                            // borderColor: colors.blue_base,
-                            // Enable legend
-                            // legend: Legend(isVisible: true),
-                            // Enable tooltip
-                            tooltipBehavior: TooltipBehavior(enable: true),
-                            series: <ChartSeries<_Data, String>>[
-                              LineSeries<_Data, String>(
-                                color: colors.green_base,
-                                dataSource: data,
-                                xValueMapper: (_Data sales, _) => sales.name,
-                                yValueMapper: (_Data sales, _) => sales.number,
-                                // name: 'Sales',
-                                // Enable data label
-                                // dataLabelSettings: DataLabelSettings(isVisible: true)
-                              )
-                            ]),
-                      ]);
-                    }))
+                          // name: 'Gold',
+                        )
+
+                        // RadialBarSeries<_Data, String>(
+                        //   dataSource: data,
+                        //   xValueMapper: (_Data data, _) => data.name,
+                        //   yValueMapper: (_Data data, _) => data.number,
+                        //   dataLabelSettings: DataLabelSettings(
+                        //       isVisible: true,
+                        //       labelPosition: ChartDataLabelPosition.outside),
+                        //   dataLabelMapper: (_Data data, _) => data.name,
+                        // )
+                      ],
+                    ),
+
+                    // widget.gymsList.length >= 2
+                    //     ? SfCartesianChart(
+                    //         primaryXAxis: CategoryAxis(),
+                    //         tooltipBehavior: TooltipBehavior(enable: true),
+                    //         series: <ChartSeries<_Data, String>>[
+                    //             LineSeries<_Data, String>(
+                    //               color: colors.green_base,
+                    //               dataSource: data,
+                    //               xValueMapper: (_Data sales, _) => sales.name,
+                    //               yValueMapper: (_Data sales, _) =>
+                    //                   sales.number,
+                    //               // name: 'Sales',
+                    //               // Enable data label
+                    //               // dataLabelSettings:
+                    //               // DataLabelSettings(isVisible: true),
+                    //             )
+                    //           ])
+                    //     : Text(''),
+                  ]))
+                : SizedBox(
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height / 2,
+                    child: Center(child: Text('No gyms yet')))
             : loading());
+    // :Text('No gyms yet')
   }
 
   Widget loading() {
-    return SizedBox(
+    return (SizedBox(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height / 2,
-        child: Center(child: CircularProgressIndicator()));
+        child: Center(child: CircularProgressIndicator())));
   }
 }
 
@@ -128,7 +164,7 @@ class _Data {
   final String name;
   final int number;
 
-  factory _Data.fromjson(Map<String, dynamic> data) {
-    return _Data(data[''], data['']);
-  }
+  // factory _Data.fromjson(Map<String, dynamic> data) {
+  //   return _Data(data[''], data['']);
+  // }
 }

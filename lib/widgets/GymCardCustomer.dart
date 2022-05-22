@@ -160,28 +160,8 @@ class _GymCardCustomerState extends State<GymCardCustomer> {
 
   @override
   void initState() {
-    // TODO: implement initState
-
-    // Geolocator.getCurrentPosition().then((value) {
-    //   setState(() {
-    //     userLocation = GeoPoint(value.latitude, value.longitude);
-    //   });
-    // });
-    // .whenComplete(() => getDistance());
-    // WidgetsBinding.instance?.addPostFrameCallback((_) {
-    //   // do something
-    //   getDistance();
-    // });
     super.initState();
   }
-
-  // @override
-  // void dispose() {
-  //   setState(() {
-  //     distance='';
-  //   });
-  //   super.dispose();
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -197,7 +177,7 @@ class _GymCardCustomerState extends State<GymCardCustomer> {
       child: Padding(
         padding: const EdgeInsets.all(10.0),
         child: Container(
-            height: MediaQuery.of(context).size.height * 0.25,
+            height: MediaQuery.of(context).size.height * 0.31,
             // width: MediaQuery.of(context).size.width * 0.5,
             margin: EdgeInsets.only(bottom: 20),
             decoration: BoxDecoration(

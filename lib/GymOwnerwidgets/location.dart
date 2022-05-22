@@ -40,13 +40,13 @@ class _LocationState extends State<Location> {
           backgroundColor: colors.blue_base,
           elevation: 0,
           actions: <Widget>[
-            IconButton(
-              onPressed: () {},
-              icon: Icon(
-                Icons.more_vert,
-                color: Colors.white,
-              ),
-            )
+            //   // IconButton(
+            //   //   onPressed: () {},
+            //   //   icon: Icon(
+            //   //     Icons.more_vert,
+            //   //     color: Colors.white,
+            //   //   ),
+            //   // )
           ],
         ),
         body: PlaceLocation(

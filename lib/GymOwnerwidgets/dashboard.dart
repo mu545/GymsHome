@@ -85,24 +85,62 @@ class _DashboardState extends State<Dashboard> {
                               // name: 'Gold',
                               color: colors.yellow_base)
                         ]),
-                    widget.gymsList.length >= 2
-                        ? SfCartesianChart(
-                            primaryXAxis: CategoryAxis(),
-                            tooltipBehavior: TooltipBehavior(enable: true),
-                            series: <ChartSeries<_Data, String>>[
-                                LineSeries<_Data, String>(
-                                  color: colors.green_base,
-                                  dataSource: data,
-                                  xValueMapper: (_Data sales, _) => sales.name,
-                                  yValueMapper: (_Data sales, _) =>
-                                      sales.number,
-                                  // name: 'Sales',
-                                  // Enable data label
-                                  // dataLabelSettings:
-                                  // DataLabelSettings(isVisible: true),
-                                )
-                              ])
-                        : Text(''),
+                    SfCircularChart(
+                      tooltipBehavior: TooltipBehavior(enable: true),
+                      // ignore: prefer_const_literals_to_create_immutables
+                      series: [
+                        // DoughnutSeries<_Data, String>(
+                        //   dataSource: data,
+                        //   xValueMapper: (_Data data, _) => data.name,
+                        //   yValueMapper: (_Data data, _) => data.number,
+                        //   dataLabelSettings: DataLabelSettings(isVisible: true),
+                        //   dataLabelMapper: (_Data data, _) => data.name,
+                        // )
+
+// --------------------------------------------------------------------------------------------------------------
+
+                        PieSeries<_Data, String>(
+                          dataSource: data,
+                          xValueMapper: (_Data data, _) => data.name,
+                          yValueMapper: (_Data data, _) => data.number,
+                          dataLabelSettings: DataLabelSettings(
+                              isVisible: true,
+                              labelPosition: ChartDataLabelPosition.outside),
+                          dataLabelMapper: (_Data data, _) => data.name,
+
+                          // name: 'Gold',
+                        )
+
+                        // RadialBarSeries<_Data, String>(
+                        //   dataSource: data,
+                        //   xValueMapper: (_Data data, _) => data.name,
+                        //   yValueMapper: (_Data data, _) => data.number,
+                        //   dataLabelSettings: DataLabelSettings(
+                        //       isVisible: true,
+                        //       labelPosition: ChartDataLabelPosition.outside),
+                        //   dataLabelMapper: (_Data data, _) => data.name,
+                        // )
+                      ],
+                    ),
+
+                    // widget.gymsList.length >= 2
+                    //     ? SfCartesianChart(
+                    //         primaryXAxis: CategoryAxis(),
+                    //         tooltipBehavior: TooltipBehavior(enable: true),
+                    //         series: <ChartSeries<_Data, String>>[
+                    //             LineSeries<_Data, String>(
+                    //               color: colors.green_base,
+                    //               dataSource: data,
+                    //               xValueMapper: (_Data sales, _) => sales.name,
+                    //               yValueMapper: (_Data sales, _) =>
+                    //                   sales.number,
+                    //               // name: 'Sales',
+                    //               // Enable data label
+                    //               // dataLabelSettings:
+                    //               // DataLabelSettings(isVisible: true),
+                    //             )
+                    //           ])
+                    //     : Text(''),
                   ]))
                 : SizedBox(
                     width: MediaQuery.of(context).size.width,

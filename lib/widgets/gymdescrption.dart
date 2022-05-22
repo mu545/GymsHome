@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:gymhome/GymOwnerwidgets/gymprice.dart';
@@ -1368,43 +1369,96 @@ class _GymDescrptionState extends State<GymDescrption> {
                             SizedBox(
                               height: 4,
                             ),
-                            Row(
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Container(
-                                  height: 70,
-                                  width: 100,
-                                  child: TextFormField(
-                                      //      initialValue: comment,
-                                      maxLength: 5,
-                                      obscureText: false,
-                                      keyboardType: TextInputType.datetime,
-                                      decoration: InputDecoration(
-                                        counterText: '',
-                                        border: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(8),
-                                        ),
-                                        contentPadding: EdgeInsets.all(10),
-                                        hintText: "Expiry Date",
-                                        hintStyle: TextStyle(
-                                          color: colors.hinttext,
-                                        ),
-                                      ),
-                                      validator: (value) {
-                                        if (value!.indexOf('/') != 2 ||
-                                            value.length != 5) {
-                                          return '';
-                                        }
-                                      },
-                                      onChanged: (value) {
-                                        // if (value.length == 2) {
-                                        // value.padRight(2, '/');
-                                        //  value.indexOf(pattern)
-                                        // }
-                                      }),
+                                Row(
+                                  children: [
+                                    Container(
+                                      height: 70,
+                                      width: 60,
+                                      child: TextFormField(
+
+                                          //  initialValue: comment,
+                                          maxLength: 5,
+                                          obscureText: false,
+                                          keyboardType: TextInputType.number,
+                                          inputFormatters: <TextInputFormatter>[
+                                            FilteringTextInputFormatter
+                                                .digitsOnly
+                                          ],
+                                          decoration: InputDecoration(
+                                            counterText: '',
+                                            border: OutlineInputBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(8),
+                                            ),
+                                            contentPadding: EdgeInsets.all(10),
+                                            hintText: "Month",
+                                            hintStyle: TextStyle(
+                                              color: colors.hinttext,
+                                            ),
+                                          ),
+                                          validator: (value) {
+                                            int va = int.parse(value!);
+                                            if (va > 12 || value.length > 2) {
+                                              return '';
+                                            }
+                                          },
+                                          onChanged: (value) {
+                                            // if (value.length == 2) {
+                                            // value.padRight(2, '/');
+                                            //  value.indexOf(pattern)
+                                            // }
+                                          }),
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    Text('/',
+                                        style: TextStyle(
+                                            color: colors.black60,
+                                            fontSize: 22)),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    Container(
+                                      height: 70,
+                                      width: 60,
+                                      child: TextFormField(
+                                          //      initialValue: comment,
+                                          maxLength: 5,
+                                          obscureText: false,
+                                          keyboardType: TextInputType.datetime,
+                                          decoration: InputDecoration(
+                                            counterText: '',
+                                            border: OutlineInputBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(8),
+                                            ),
+                                            contentPadding: EdgeInsets.all(10),
+                                            hintText: "Year",
+                                            hintStyle: TextStyle(
+                                              color: colors.hinttext,
+                                            ),
+                                          ),
+                                          validator: (value) {
+                                            int va = int.parse(value!);
+                                            if (va < 22 || value.length > 2) {
+                                              return '';
+                                            }
+                                          },
+                                          onChanged: (value) {
+                                            // if (value.length == 2) {
+                                            // value.padRight(2, '/');
+                                            //  value.indexOf(pattern)
+                                            // }
+                                          }),
+                                    ),
+                                  ],
                                 ),
                                 SizedBox(
-                                  width: 10,
+                                  height: 10,
                                 ),
                                 Container(
                                   height: 70,

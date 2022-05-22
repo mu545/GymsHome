@@ -118,16 +118,6 @@ class _WidgtessState extends State<OwnerHome> {
         ),
         backgroundColor: colors.blue_base,
         elevation: 0,
-        // actions: [
-        // IconButton(
-        //     onPressed: () {
-        //       AppUser.logout(context);
-        //     },
-        //     icon: Icon(
-        //       Icons.logout,
-        //       // color: colors.red_base,
-        //     )),
-        // ],
       ),
       body: SingleChildScrollView(
         child: SafeArea(

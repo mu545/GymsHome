@@ -48,13 +48,13 @@ class _AddGymState extends State<GymPrice> {
         backgroundColor: colors.blue_base,
         elevation: 0,
         actions: <Widget>[
-          IconButton(
-            onPressed: () {},
-            icon: Icon(
-              Icons.more_vert,
-              color: Colors.black,
-            ),
-          )
+          // IconButton(
+          //   onPressed: () {},
+          //   icon: Icon(
+          //     Icons.more_vert,
+          //     color: Colors.black,
+          //   ),
+          // )
         ],
       ),
       body: SingleChildScrollView(

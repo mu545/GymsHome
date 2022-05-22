@@ -1396,7 +1396,12 @@ class _GymDescrptionState extends State<GymDescrption> {
                                           return '';
                                         }
                                       },
-                                      onChanged: (value) {}),
+                                      onChanged: (value) {
+                                        // if (value.length == 2) {
+                                        // value.padRight(2, '/');
+                                        //  value.indexOf(pattern)
+                                        // }
+                                      }),
                                 ),
                                 SizedBox(
                                   width: 10,

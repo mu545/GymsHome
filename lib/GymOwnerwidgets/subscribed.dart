@@ -2,6 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:gymhome/Styles.dart';
 
+import '../models/PaymentModel.dart';
+import '../widgets/subscribeCard.dart';
+
 class Subscribed extends StatefulWidget {
   final String gymid;
   const Subscribed({required this.gymid, Key? key}) : super(key: key);
@@ -11,6 +14,8 @@ class Subscribed extends StatefulWidget {
 }
 
 class _SubscribedState extends State<Subscribed> {
+  List<PaymentModel> subsList = [];
+
   Future? _getDataSub() => FirebaseFirestore.instance
       .collection('Payments')
       .where('gymId', isEqualTo: widget.gymid)
@@ -27,49 +32,46 @@ class _SubscribedState extends State<Subscribed> {
       ),
       body: Column(
         children: [
-          Container(
-            width: double.infinity,
-            child: Text(
-              'Subscriptions',
-              style: TextStyle(color: colors.blue_base, fontSize: 23),
-            ),
-          ),
-          Divider(thickness: 2),
           FutureBuilder(
             future: _getDataSub(),
             builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
               if (snapshot.hasData) {
-                // subsList.clear();
+                subsList.clear();
                 snapshot.data.docs.forEach((element) {
-                  // subsList.add(PaymentModel.fromJson(element.data()));
+                  subsList.add(PaymentModel.fromJson(element.data()));
                 });
 
-                // if (subsList.isEmpty)
-                return Container(
-                  margin: EdgeInsets.symmetric(horizontal: 30, vertical: 30),
-                  child: Text(
-                    'You have not subscribed to a gym yet',
-                    textAlign: TextAlign.center,
+                if (subsList.isEmpty)
+                  return SizedBox(
+                    child: Container(
+                      width: MediaQuery.of(context).size.width,
+                      height: MediaQuery.of(context).size.height / 2,
+                      child: Center(
+                        child: Text(
+                          'No one subscribed this gym',
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ),
+                  );
+
+                return Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    children: [
+                      ListView.builder(
+                        controller: ScrollController(keepScrollOffset: true),
+                        shrinkWrap: true,
+                        itemCount: subsList.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return SubscribeCard(sub: subsList[index]);
+                        },
+                      )
+                    ],
                   ),
                 );
-
-                // return Padding(
-                //   padding: const EdgeInsets.all(8.0),
-                //   child: Column(
-                //     children: [
-                //       ListView.builder(
-                //         controller: ScrollController(keepScrollOffset: true),
-                //         shrinkWrap: true,
-                //         itemCount: subsList.length,
-                //         itemBuilder: (BuildContext context, int index) {
-                //           return SubscribeCard(sub: subsList[index]);
-                //         },
-                //       )
-                //     ],
-                //   ),
-                // );
-              } else
-                return CircularProgressIndicator();
+              }
+              return CircularProgressIndicator();
             },
           )
         ],
@@ -77,3 +79,23 @@ class _SubscribedState extends State<Subscribed> {
     );
   }
 }
+
+// class Bill {
+// //  String? customerId;
+//   Timestamp? date;
+//   Timestamp? expirationDate;
+//   String? duration;
+//   // String? gymId;
+//   double? price;
+//   // String? ownerId;
+//   String? gymName;
+//   String? customername;
+
+//   Bill(
+//       {this.customername,
+//       this.gymName,
+//       this.price,
+//       this.duration,
+//       this.expirationDate,
+//       this.date});
+// }

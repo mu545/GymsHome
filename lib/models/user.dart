@@ -175,7 +175,7 @@ class AppUser {
   static warning(BuildContext cxt, String message) {
     ScaffoldMessenger.of(cxt).showSnackBar(
       SnackBar(
-        duration: Duration(seconds: 5),
+        duration: Duration(seconds: 4),
         content: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,

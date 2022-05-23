@@ -68,6 +68,7 @@ class _GymDescrptionState extends State<GymDescrption> {
     'Customer Name': '',
     "Customer Email": '',
   };
+  bool click = true;
   String distance = 'Loading...';
   GeoPoint? userLocation;
   bool? isSub = false;
@@ -1348,6 +1349,9 @@ class _GymDescrptionState extends State<GymDescrption> {
                                       maxLength: 16,
                                       obscureText: false,
                                       keyboardType: TextInputType.number,
+                                      inputFormatters: <TextInputFormatter>[
+                                        FilteringTextInputFormatter.digitsOnly
+                                      ],
                                       decoration: InputDecoration(
                                         counterText: "",
                                         border: OutlineInputBorder(
@@ -1386,7 +1390,7 @@ class _GymDescrptionState extends State<GymDescrption> {
                                       child: TextFormField(
 
                                           //  initialValue: comment,
-                                          maxLength: 5,
+                                          maxLength: 2,
                                           obscureText: false,
                                           keyboardType: TextInputType.number,
                                           inputFormatters: <TextInputFormatter>[
@@ -1433,7 +1437,7 @@ class _GymDescrptionState extends State<GymDescrption> {
                                       width: 60,
                                       child: TextFormField(
                                           //      initialValue: comment,
-                                          maxLength: 5,
+                                          maxLength: 2,
                                           obscureText: false,
                                           keyboardType: TextInputType.datetime,
                                           decoration: InputDecoration(
@@ -1521,16 +1525,20 @@ class _GymDescrptionState extends State<GymDescrption> {
                               ? null
                               : () {
                                   print("The Price" + widget.price);
-
                                   if (_formKey.currentState!.validate()) {
+                                    Navigator.of(context).pop();
+                                    setState(() {
+                                      click == false;
+                                    });
                                     print(widget.gym.gender);
                                     DateTime startDate = DateTime.now();
                                     setExpireDate(startDate);
                                     getInfo().whenComplete(() {
                                       var docId = FirebaseFirestore.instance
                                           .collection('Payments')
-                                          .doc()
-                                          .set({
+                                          .doc();
+
+                                      docId.set({
                                         'ownerName': _data["Owner Name"],
                                         'customerName': _data["Customer Name"],
                                         'ownerId': widget.gym.ownerId,
@@ -1540,7 +1548,11 @@ class _GymDescrptionState extends State<GymDescrption> {
                                         'price': currentPrice,
                                         'duration': widget.price,
                                         'date': startDate,
+                                        'paymentID': docId.id,
                                         'expirationDate': expireDate,
+                                      }).whenComplete(() {
+                                        AppUser.message(context, true,
+                                            'Thank You for you subscription, please check your email');
                                       }).whenComplete(() {
                                         sendOwnerEmail(
                                             customerName:
@@ -1554,14 +1566,10 @@ class _GymDescrptionState extends State<GymDescrption> {
                                           customerEmail:
                                               _data["Customer Email"],
                                         );
-                                      }).whenComplete(() {
-                                        Navigator.of(context).pop();
-                                        AppUser.message(context, false,
-                                            'Thank You for you subscription, please check your email');
                                       });
                                     });
                                   } else {
-                                    AppUser.message(context, true,
+                                    AppUser.message(context, false,
                                         'Check your card information');
                                   }
                                 },

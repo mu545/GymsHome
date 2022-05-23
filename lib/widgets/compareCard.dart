@@ -291,19 +291,26 @@ class _compareCardState extends State<compareCard> {
                         fit: BoxFit.cover,
                       ),
                     ),
-                    Positioned(
-                      child: InkWell(
-                        onTap: () {
-                          getListFav();
-                        },
-                        child: Icon(
-                          widget.gymInfo.Likes!.contains(widget.userid)
-                              ? Icons.favorite
-                              : Icons.favorite_border,
-                          size: 42,
-                          color: widget.gymInfo.Likes!.contains(widget.userid)
-                              ? Colors.red
-                              : Colors.black,
+                    Positioned.fill(
+                      bottom: 0,
+                      right: 0,
+                      left: 0,
+                      child: Container(
+                        // height: MediaQuery.of(context).size.height,
+                        // padding: EdgeInsets.fromLTRB(0, 10, 10, 10),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(15),
+                              topRight: Radius.circular(15)),
+                          // color: Color.fromARGB(110, 0, 0, 0),
+                          gradient: LinearGradient(
+                              begin: Alignment.bottomCenter,
+                              end: Alignment.topCenter,
+                              colors: [
+                                Color.fromARGB(110, 0, 0, 0),
+                                Color.fromARGB(90, 0, 0, 0),
+                                Color.fromARGB(80, 0, 0, 0),
+                              ]),
                         ),
                       ),
                     ),
@@ -312,10 +319,24 @@ class _compareCardState extends State<compareCard> {
                         onTap: () {
                           getListFav();
                         },
-                        child: Icon(
-                          Icons.favorite_border,
-                          size: 43,
-                          color: Color.fromARGB(35, 0, 0, 0),
+                        child: Container(
+                          height: 35,
+                          width: 35,
+                          decoration: BoxDecoration(
+                            // color: Color.fromARGB(83, 0, 0, 0),
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(21),
+                            ),
+                          ),
+                          child: Icon(
+                            widget.gymInfo.Likes!.contains(widget.userid)
+                                ? Icons.favorite
+                                : Icons.favorite_border,
+                            size: 30,
+                            color: widget.gymInfo.Likes!.contains(widget.userid)
+                                ? Colors.red
+                                : Colors.white,
+                          ),
                         ),
                       ),
                     ),
@@ -326,12 +347,21 @@ class _compareCardState extends State<compareCard> {
                         onTap: () {
                           getListCompare();
                         },
-                        child: Icon(
-                          Icons.compare_arrows,
-                          size: 42,
-                          color: widget.gymInfo.compare!.contains(widget.userid)
-                              ? colors.green_base
-                              : colors.black100,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            //  color: Color.fromARGB(84, 0, 0, 0),
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(21),
+                            ),
+                          ),
+                          child: Icon(
+                            Icons.compare_arrows,
+                            size: 35,
+                            color:
+                                widget.gymInfo.compare!.contains(widget.userid)
+                                    ? colors.green_base
+                                    : Color.fromARGB(255, 255, 255, 255),
+                          ),
                         ),
                       ),
                     ),

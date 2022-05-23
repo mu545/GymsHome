@@ -8,6 +8,7 @@ import 'package:gymhome/widgets/AddGym.dart';
 import 'package:gymhome/widgets/edit.dart';
 import 'package:provider/provider.dart';
 import '../models/GymModel.dart';
+import 'package:flutter/services.dart';
 
 class GymPrice extends StatefulWidget {
   GymModel gym;
@@ -111,6 +112,9 @@ class _AddGymState extends State<GymPrice> {
                                     ),
                                     textInputAction: TextInputAction.next,
                                     keyboardType: TextInputType.number,
+                                    inputFormatters: <TextInputFormatter>[
+                                      FilteringTextInputFormatter.digitsOnly
+                                    ],
                                     onChanged: (value) {
                                       if (value.isNotEmpty) {
                                         widget.gym.priceOneDay =
@@ -160,6 +164,9 @@ class _AddGymState extends State<GymPrice> {
                                     ),
                                     textInputAction: TextInputAction.next,
                                     keyboardType: TextInputType.number,
+                                    inputFormatters: <TextInputFormatter>[
+                                      FilteringTextInputFormatter.digitsOnly
+                                    ],
                                     onChanged: (value) {
                                       if (value.isNotEmpty) {
                                         widget.gym.priceOneMonth =
@@ -209,6 +216,9 @@ class _AddGymState extends State<GymPrice> {
                                     ),
                                     textInputAction: TextInputAction.next,
                                     keyboardType: TextInputType.number,
+                                    inputFormatters: <TextInputFormatter>[
+                                      FilteringTextInputFormatter.digitsOnly
+                                    ],
                                     onChanged: (value) {
                                       if (value.isNotEmpty) {
                                         widget.gym.priceThreeMonths =
@@ -258,6 +268,9 @@ class _AddGymState extends State<GymPrice> {
                                     ),
                                     textInputAction: TextInputAction.next,
                                     keyboardType: TextInputType.number,
+                                    inputFormatters: <TextInputFormatter>[
+                                      FilteringTextInputFormatter.digitsOnly
+                                    ],
                                     onChanged: (value) {
                                       if (value.isNotEmpty) {
                                         widget.gym.priceSixMonths =
@@ -307,6 +320,9 @@ class _AddGymState extends State<GymPrice> {
                                     ),
                                     textInputAction: TextInputAction.next,
                                     keyboardType: TextInputType.number,
+                                    inputFormatters: <TextInputFormatter>[
+                                      FilteringTextInputFormatter.digitsOnly
+                                    ],
                                     onChanged: (value) {
                                       if (value.isNotEmpty) {
                                         widget.gym.priceOneYear =
@@ -386,7 +402,9 @@ class _AddGymState extends State<GymPrice> {
                       Navigator.pop(context);
                       Navigator.pop(context);
                       Navigator.pop(context);
-                      if (widget.gym.gymId!.isNotEmpty) Navigator.pop(context);
+                      if (widget.gym.gymId!.isNotEmpty) {
+                        Navigator.pop(context);
+                      }
                     }
                   }
                 },
@@ -411,6 +429,7 @@ class _AddGymState extends State<GymPrice> {
                   ),
                 ),
                 onPressed: () {
+                  Navigator.of(context).pop();
                   Navigator.of(context).pop();
                   Navigator.of(context).pop();
                   Navigator.of(context).pop();

@@ -1070,7 +1070,7 @@ class _GymDescrptionState extends State<GymDescrption> {
             },
             // splashColor: colors.blue_base,
             child: Container(
-                color: Color.fromARGB(251, 119, 140, 33),
+                color: colors.blue_base,
                 width: isSub! ? screenWidth : screenWidth / 2,
                 height: 50,
                 child: Center(
@@ -1095,7 +1095,9 @@ class _GymDescrptionState extends State<GymDescrption> {
                       payform(context, widget.gym.gymId);
                     },
               child: Container(
-                  color: widget.price == 'non' ? Colors.grey : colors.blue_base,
+                  color: widget.price == 'non'
+                      ? Colors.grey
+                      : Color.fromRGBO(119, 140, 33, 0.984),
                   width: screenWidth / 2,
                   height: 50,
                   child: Center(

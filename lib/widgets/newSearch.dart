@@ -15,15 +15,16 @@ import 'package:shared_preferences/shared_preferences.dart';
 // }
 
 class newSearch extends SearchDelegate {
-  CollectionReference _firebaseFirestore =
-      FirebaseFirestore.instance.collection('gyms');
+  var _firebaseFirestore = FirebaseFirestore.instance
+      .collection('gyms')
+      .where('isWaiting', isEqualTo: false);
 
   @override
   List<Widget> buildActions(BuildContext context) {
     return <Widget>[
       IconButton(
         icon: Icon(Icons.close),
-        color: Colors.red,
+        color: Colors.black,
         onPressed: () {
           query = "";
         },

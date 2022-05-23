@@ -113,7 +113,7 @@ class _ProfileState extends State<Profile> {
   Widget build(BuildContext context) {
     Widget bottomSheet() {
       return Container(
-        height: 150,
+        height: 200,
         margin: EdgeInsets.symmetric(
           horizontal: 20,
           vertical: 20,
@@ -187,6 +187,27 @@ class _ProfileState extends State<Profile> {
                     label: Text("Cancel"),
                   ),
                 ]),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    FlatButton.icon(
+                      icon: Icon(
+                        Icons.delete,
+                        //color: colors.red_base,
+                      ),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                        FirebaseFirestore.instance
+                            .collection('Customer')
+                            .doc(userId)
+                            .update({'profilePicture': ''});
+                      },
+                      label: Text(
+                        "Delete Image",
+                      ),
+                    ),
+                  ],
+                )
               ],
             )
           ],

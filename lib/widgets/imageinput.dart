@@ -455,7 +455,10 @@ class _ImageInputState extends State<ImageInput> {
                         style: BorderStyle.solid),
                     borderRadius: BorderRadius.circular(50)),
               ),
-            )
+            ),
+            SizedBox(
+              height: 10,
+            ),
           ],
         ),
       ),

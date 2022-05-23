@@ -315,6 +315,7 @@ class _ProfileState extends State<Profile> {
                                 child: isedit
                                     ? TextFormField(
                                         initialValue: name,
+                                        maxLength: 10,
                                         onChanged: (value) {
                                           name = value;
                                         },
@@ -364,9 +365,6 @@ class _ProfileState extends State<Profile> {
                                   if (name!.isEmpty) {
                                     message(context, false,
                                         'Name cannot be empty!');
-                                  } else if (name!.length <= 2) {
-                                    message(
-                                        context, false, 'Name is too short!');
                                   } else {
                                     setState(() {
                                       if (isedit == true) {
@@ -509,6 +507,7 @@ class _ProfileState extends State<Profile> {
                                       itemBuilder:
                                           (BuildContext context, int index) {
                                         return SubscribeCard(
+                                            isCustomer: true,
                                             sub: subsList[index]);
                                       },
                                     )

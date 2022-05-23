@@ -25,7 +25,7 @@ class _SubscribedState extends State<Subscribed> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Subscribed',
+          'Subscriptions',
           style: TextStyle(color: Colors.white, fontFamily: 'Epilogue'),
         ),
         backgroundColor: colors.blue_base,
@@ -48,7 +48,7 @@ class _SubscribedState extends State<Subscribed> {
                       height: MediaQuery.of(context).size.height / 2,
                       child: Center(
                         child: Text(
-                          'No one subscribed this gym',
+                          'No one subscribed in this gym',
                           textAlign: TextAlign.center,
                         ),
                       ),
@@ -64,7 +64,10 @@ class _SubscribedState extends State<Subscribed> {
                         shrinkWrap: true,
                         itemCount: subsList.length,
                         itemBuilder: (BuildContext context, int index) {
-                          return SubscribeCard(sub: subsList[index]);
+                          return SubscribeCard(
+                            sub: subsList[index],
+                            isCustomer: false,
+                          );
                         },
                       )
                     ],

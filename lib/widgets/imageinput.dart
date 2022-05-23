@@ -298,7 +298,7 @@ class _ImageInputState extends State<ImageInput> {
                           margin: EdgeInsets.symmetric(
                               horizontal: 20, vertical: 10),
                           child: Text(
-                            'Facilites',
+                            'Facilities',
                             style: TextStyle(
                                 fontFamily: 'Epilogue',
                                 fontSize: 30,

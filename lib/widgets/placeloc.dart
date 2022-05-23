@@ -158,7 +158,7 @@ class _PlaceLocationState extends State<PlaceLocation> {
                         ),
                         onPressed: () {
                           Future.delayed(
-                            Duration(seconds: 1),
+                            Duration(milliseconds: 500),
                             () {
                               Navigator.of(context).push(MaterialPageRoute(
                                   builder: (context) => GymPrice(

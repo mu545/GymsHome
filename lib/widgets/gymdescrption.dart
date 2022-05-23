@@ -1,5 +1,6 @@
 // import 'dart:html';
-
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -61,7 +62,13 @@ class _GymDescrptionState extends State<GymDescrption> {
   //   print('response message ${response.message}');
   //   print('meowssss');
   // }
-
+  Map<String, dynamic> _data = {
+    'Owner Name': '',
+    "Owner Email": '',
+    'Customer Name': '',
+    "Customer Email": '',
+  };
+  bool click = true;
   String distance = 'Loading...';
   GeoPoint? userLocation;
   bool? isSub = false;
@@ -81,9 +88,9 @@ class _GymDescrptionState extends State<GymDescrption> {
         });
         print('comm');
         break;
-      case 'Facilites':
+      case 'Facilities':
         setState(() {
-          window = "Facilites";
+          window = "Facilities";
         });
         print('fac');
         break;
@@ -205,8 +212,8 @@ class _GymDescrptionState extends State<GymDescrption> {
         effect: ScrollingDotsEffect(
             activeDotColor: colors.blue_base,
             dotColor: Colors.grey,
-            dotHeight: 12,
-            dotWidth: 12),
+            dotHeight: 8,
+            dotWidth: 8),
       );
 
   void animateToSlide(int index) => controller.animateToPage(index);
@@ -282,7 +289,7 @@ class _GymDescrptionState extends State<GymDescrption> {
           );
         }, //end then
       );
-    } else if (window == 'Facilites') {
+    } else if (window == 'Facilities') {
       return Column(
         children: [
           Wrap(
@@ -979,7 +986,7 @@ class _GymDescrptionState extends State<GymDescrption> {
                                       topLeft: Radius.circular(15),
                                       topRight: Radius.circular(15),
                                     ),
-                                    color: window == 'Facilites'
+                                    color: window == 'Facilities'
                                         ? Color.fromARGB(209, 71, 153, 183)
                                         : Colors.white),
                                 child: Center(
@@ -990,9 +997,9 @@ class _GymDescrptionState extends State<GymDescrption> {
                                       width: 3,
                                     ),
                                     Text(
-                                      'Facilites',
+                                      'Facilities',
                                       style: TextStyle(
-                                          color: window == 'Facilites'
+                                          color: window == 'Facilities'
                                               ? Colors.white
                                               : Colors.black),
                                     ),
@@ -1000,7 +1007,7 @@ class _GymDescrptionState extends State<GymDescrption> {
                                 )),
                               ),
                               onTap: () {
-                                windowChoose("Facilites");
+                                windowChoose("Facilities");
                               },
                             ),
                           ),
@@ -1344,6 +1351,9 @@ class _GymDescrptionState extends State<GymDescrption> {
                                       maxLength: 16,
                                       obscureText: false,
                                       keyboardType: TextInputType.number,
+                                      inputFormatters: <TextInputFormatter>[
+                                        FilteringTextInputFormatter.digitsOnly
+                                      ],
                                       decoration: InputDecoration(
                                         counterText: "",
                                         border: OutlineInputBorder(
@@ -1382,7 +1392,7 @@ class _GymDescrptionState extends State<GymDescrption> {
                                       child: TextFormField(
 
                                           //  initialValue: comment,
-                                          maxLength: 5,
+                                          maxLength: 2,
                                           obscureText: false,
                                           keyboardType: TextInputType.number,
                                           inputFormatters: <TextInputFormatter>[
@@ -1429,7 +1439,7 @@ class _GymDescrptionState extends State<GymDescrption> {
                                       width: 60,
                                       child: TextFormField(
                                           //      initialValue: comment,
-                                          maxLength: 5,
+                                          maxLength: 2,
                                           obscureText: false,
                                           keyboardType: TextInputType.datetime,
                                           decoration: InputDecoration(
@@ -1518,22 +1528,47 @@ class _GymDescrptionState extends State<GymDescrption> {
                               : () {
                                   print("The Price" + widget.price);
                                   if (_formKey.currentState!.validate()) {
+                                    Navigator.of(context).pop();
+                                    setState(() {
+                                      click == false;
+                                    });
                                     print(widget.gym.gender);
                                     DateTime startDate = DateTime.now();
-
                                     setExpireDate(startDate);
-                                    FirebaseFirestore.instance
-                                        .collection('Payments')
-                                        .doc()
-                                        .set({
-                                      'ownerId': widget.gym.ownerId,
-                                      'gymName': widget.gym.name,
-                                      'gymId': widget.gym.gymId,
-                                      'customerId': widget.userid,
-                                      'price': currentPrice,
-                                      'duration': widget.price,
-                                      'date': startDate,
-                                      'expirationDate': expireDate
+                                    getInfo().whenComplete(() {
+                                      var docId = FirebaseFirestore.instance
+                                          .collection('Payments')
+                                          .doc();
+
+                                      docId.set({
+                                        'ownerName': _data["Owner Name"],
+                                        'customerName': _data["Customer Name"],
+                                        'ownerId': widget.gym.ownerId,
+                                        'gymName': widget.gym.name,
+                                        'gymId': widget.gym.gymId,
+                                        'customerId': widget.userid,
+                                        'price': currentPrice,
+                                        'duration': widget.price,
+                                        'date': startDate,
+                                        'paymentID': docId.id,
+                                        'expirationDate': expireDate,
+                                      }).whenComplete(() {
+                                        AppUser.message(context, true,
+                                            'Thank You for you subscription, please check your email');
+                                      }).whenComplete(() {
+                                        sendOwnerEmail(
+                                            customerName:
+                                                _data["Customer Name"],
+                                            gymName: widget.gym.name!,
+                                            ownerEmail: _data["Owner Email"],
+                                            ownerName: _data["Owner Name"]);
+                                        sendCustomerEmail(
+                                          customerName: _data["Customer Name"],
+                                          gymName: widget.gym.name!,
+                                          customerEmail:
+                                              _data["Customer Email"],
+                                        );
+                                      });
                                     });
                                   } else {
                                     AppUser.message(context, false,
@@ -1564,6 +1599,90 @@ class _GymDescrptionState extends State<GymDescrption> {
             ),
           );
         });
+  }
+
+  Future sendCustomerEmail({
+    required String customerName,
+    required String customerEmail,
+    required String gymName,
+  }) async {
+    final serviceId = 'service_esjrub6';
+    final templateId = 'template_0qhl68q';
+    final userId = 'wRl-gztCaHY5z6ghO';
+
+    final url = Uri.parse('https://api.emailjs.com/api/v1.0/email/send');
+    final response = await http.post(
+      url,
+      headers: {
+        'origin': 'http://localhost',
+        'Content-Type': 'application/json',
+      },
+      body: json.encode({
+        'service_id': serviceId,
+        'template_id': templateId,
+        'user_id': userId,
+        'template_params': {
+          'user_name': customerName,
+          'user_email': customerEmail,
+          'gym_name': gymName,
+        }
+      }),
+    );
+    print(response.body);
+  }
+
+  Future sendOwnerEmail({
+    required String ownerName,
+    required String ownerEmail,
+    required String customerName,
+    required String gymName,
+  }) async {
+    final serviceId = 'service_esjrub6';
+    final templateId = 'template_rb64zcn';
+    final userId = 'wRl-gztCaHY5z6ghO';
+
+    final url = Uri.parse('https://api.emailjs.com/api/v1.0/email/send');
+    final response = await http.post(
+      url,
+      headers: {
+        'origin': 'http://localhost',
+        'Content-Type': 'application/json',
+      },
+      body: json.encode({
+        'service_id': serviceId,
+        'template_id': templateId,
+        'user_id': userId,
+        'template_params': {
+          'user_name': customerName,
+          'user_email': ownerEmail,
+          'to_name': ownerName,
+          'gym_name': gymName,
+        }
+      }),
+    );
+    print(response.body);
+  }
+
+  Future getInfo() async {
+    var owner = await FirebaseFirestore.instance
+        .collection('Gym Owner')
+        .doc(widget.gym.ownerId)
+        .get();
+    var customer = await FirebaseFirestore.instance
+        .collection('Customer')
+        .doc(widget.userid)
+        .get();
+
+    Map<String, dynamic> _dataOwner = owner.data() as Map<String, dynamic>;
+    Map<String, dynamic> _dataCustomer =
+        customer.data() as Map<String, dynamic>;
+    _data['Owner Name'] = _dataOwner['name'];
+    _data['Owner Email'] = _dataOwner['email'];
+    _data['Customer Name'] = _dataCustomer['name'];
+    _data['Customer Email'] = _dataCustomer['email'];
+
+    setState(() {});
+    print(_data);
   }
 
   // /////////////////////////////////////////////////////////////////////////

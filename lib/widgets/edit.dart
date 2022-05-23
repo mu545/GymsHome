@@ -150,7 +150,7 @@ class _AddGymInfoState extends State<AddGymInfo> {
                             height: 20,
                           ),
                           TextFormField(
-                            maxLength: 256,
+                            maxLength: 300,
                             initialValue: widget.gym.description,
                             decoration: InputDecoration(
                               labelText: 'Description',
@@ -159,14 +159,14 @@ class _AddGymInfoState extends State<AddGymInfo> {
                                 borderSide: BorderSide(color: colors.black100),
                               ),
                             ),
-                            maxLines: 3,
+                            maxLines: 6,
                             onChanged: (value) {
                               widget.gym.description = value;
                             },
                             validator: (value) {
                               if (value!.isEmpty)
                                 return 'Please Write the Description of your Gym';
-                              if (value.length <= 10)
+                              if (value.length <= 30)
                                 return 'Description is Too Short';
                             },
                             keyboardType: TextInputType.multiline,

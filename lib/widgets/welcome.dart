@@ -259,6 +259,7 @@ class _welcomeState extends State<welcome> {
         Padding(
           padding: const EdgeInsets.only(bottom: 20),
           child: TextFormField(
+              maxLength: 10,
               obscureText: false,
               keyboardType: TextInputType.emailAddress,
               decoration: InputDecoration(
@@ -330,7 +331,7 @@ class _welcomeState extends State<welcome> {
               ),
             ),
             validator: (value) {
-              if (value!.isEmpty || value.length < 5) {
+              if (value!.isEmpty || value.length < 6) {
                 return 'Password is too short!';
               }
             },

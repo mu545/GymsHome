@@ -2,13 +2,16 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:gymhome/Styles.dart';
+import 'package:gymhome/main.dart';
 import 'package:gymhome/models/PaymentModel.dart';
 import 'package:intl/intl.dart';
 
 class SubscribeCard extends StatefulWidget {
   PaymentModel sub;
+  bool isCustomer;
 
-  SubscribeCard({Key? key, required this.sub}) : super(key: key);
+  SubscribeCard({Key? key, required this.sub, required this.isCustomer})
+      : super(key: key);
 
   @override
   State<SubscribeCard> createState() => _SubscribeCardState();
@@ -60,14 +63,23 @@ class _SubscribeCardState extends State<SubscribeCard> {
         child: Column(
           children: [
             Container(
-              child: Text(
-                'You have a Subscription at: ${widget.sub.gymName}',
-                style: TextStyle(
-                    color: isExpired! ? colors.black60 : colors.blue_base,
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                    fontFamily: 'Epilogue'),
-              ),
+              child: widget.isCustomer
+                  ? Text(
+                      'You have a subscription at ${widget.sub.gymName}',
+                      style: TextStyle(
+                          color: isExpired! ? colors.black60 : colors.blue_base,
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: 'Epilogue'),
+                    )
+                  : Text(
+                      '${widget.sub.customerName} subscribed at your gym: ${widget.sub.gymName}',
+                      style: TextStyle(
+                          color: isExpired! ? colors.black60 : colors.blue_base,
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: 'Epilogue'),
+                    ),
             ),
             SizedBox(
               height: 5,
@@ -138,6 +150,24 @@ class _SubscribeCardState extends State<SubscribeCard> {
                 ),
                 Text(
                   "${widget.sub.price.toString()} SAR",
+                ),
+              ],
+            ),
+            SizedBox(
+              height: 5,
+            ),
+            Row(
+              children: [
+                Text(
+                  'Subscription ID: ',
+                  style: TextStyle(
+                      color: isExpired! ? colors.black60 : colors.blue_base,
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'Epilogue'),
+                ),
+                Text(
+                  widget.sub.paymentID ?? '',
                 ),
               ],
             )
